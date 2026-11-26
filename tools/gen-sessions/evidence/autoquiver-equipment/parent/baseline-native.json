@@ -1,0 +1,689 @@
+[
+  {
+    "segment": 0,
+    "name": "wielded-bow-arrows",
+    "boundaries": {
+      "expected": 56,
+      "actual": 56
+    },
+    "frozenScreens": 54,
+    "fullStyleScreens": 54,
+    "matchingStyleCells": 107498,
+    "totalCells": 107520,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 22,
+    "screenDifferences": [
+      {
+        "step": 47,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1908,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 12,
+        "firstFullStyleDifference": {
+          "x": 12,
+          "y": 0,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 12,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 54,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1910,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 10,
+        "firstFullStyleDifference": {
+          "x": 54,
+          "y": 2,
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 54,
+          "y": 2,
+          "kind": "ch",
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 56,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2532,
+      "rawActual": 2532,
+      "discardedEntries": 0,
+      "expected": 2532,
+      "actual": 2532,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 56,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 56,
+      "actualSlices": 56,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "464c73fc8c8e30050465762c0ca8f834ad53a872a3fc86100ff268648ba8c040",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "755b266d53fcd726c3ae4344522f6d79c4f76cc894912bfcc8166cb990a87a18",
+        "slices": "1ed23d9da42e074d6359b1710abaf55bb9ae0308eb52ec6f99d60e0fa05fab4a",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "js": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6"
+      },
+      "js": {
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "alternate-bow-arrows",
+    "boundaries": {
+      "expected": 63,
+      "actual": 63
+    },
+    "frozenScreens": 61,
+    "fullStyleScreens": 61,
+    "matchingStyleCells": 120938,
+    "totalCells": 120960,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 22,
+    "screenDifferences": [
+      {
+        "step": 54,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1908,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 12,
+        "firstFullStyleDifference": {
+          "x": 12,
+          "y": 0,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 12,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 61,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1910,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 10,
+        "firstFullStyleDifference": {
+          "x": 50,
+          "y": 2,
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 50,
+          "y": 2,
+          "kind": "ch",
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 63,
+      "actual": 63,
+      "matched": 63,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2542,
+      "rawActual": 2542,
+      "discardedEntries": 0,
+      "expected": 2542,
+      "actual": 2542,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 63,
+      "actual": 63,
+      "matched": 63,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 63,
+      "actualSlices": 63,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "e7527c12006326e0ed96c268b59ddc196799fb1b26d5dc9d763552bfa210cda5",
+        "cursors": "22f04f9420d8c7b0d0c06b967b217c9f91651c0ea266f1f3a69d94fbb14499c7",
+        "calls": "bd65bfe5f0d58ac4432d862f610c89012dba1a75251963fa86e69a78aa0954ab",
+        "slices": "71e40a92dd3d36266c2d26160dff2bae4a003aaa96da083c50e88042022b1df6",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      },
+      "js": {
+        "screens": "02c70e2b62b0b83fce4ed00578d291b91bb0119e5256470feb3e2f43b241b54b",
+        "cursors": "22f04f9420d8c7b0d0c06b967b217c9f91651c0ea266f1f3a69d94fbb14499c7",
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007"
+      },
+      "js": {
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "preserve-existing-missiles",
+    "boundaries": {
+      "expected": 54,
+      "actual": 54
+    },
+    "frozenScreens": 52,
+    "fullStyleScreens": 52,
+    "matchingStyleCells": 103642,
+    "totalCells": 103680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 38,
+    "screenDifferences": [
+      {
+        "step": 45,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1906,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 14,
+        "firstFullStyleDifference": {
+          "x": 20,
+          "y": 0,
+          "c": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 20,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": ".",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 52,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1896,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 24,
+        "firstFullStyleDifference": {
+          "x": 53,
+          "y": 1,
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 53,
+          "y": 1,
+          "kind": "ch",
+          "c": {
+            "ch": "(",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2524,
+      "rawActual": 2524,
+      "discardedEntries": 0,
+      "expected": 2524,
+      "actual": 2524,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 54,
+      "actualSlices": 54,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "327554b69e220fb4a01a863a241f0cab973dbb3472186ee7fb10d16d281003c5",
+        "cursors": "4d873b2fcd984b0c2765be79a18b7fa29b19348249dfdd524ab8c7406d05eedb",
+        "calls": "5cb9d7de3a63d6c90c3f2c4b5512b04d7fabbaffee6ae29d5ec13cad8d76c1ed",
+        "slices": "7c81c33abf47699bcff015dafcb077f68bca4993f0d66214e7f2e7f5e596526e",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "js": {
+        "screens": "226decf2a9276c89338b5f71c001a01d1ed3371cebb030bb6e5ad5182b18a81a",
+        "cursors": "4d873b2fcd984b0c2765be79a18b7fa29b19348249dfdd524ab8c7406d05eedb",
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507"
+      },
+      "js": {
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "disabled-wielded-bow",
+    "boundaries": {
+      "expected": 56,
+      "actual": 56
+    },
+    "frozenScreens": 56,
+    "fullStyleScreens": 56,
+    "matchingStyleCells": 107520,
+    "totalCells": 107520,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 56,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2532,
+      "rawActual": 2532,
+      "discardedEntries": 0,
+      "expected": 2532,
+      "actual": 2532,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 56,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 56,
+      "actualSlices": 56,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "37d31d5570d0d2da75f201e6d102674a6c78804b481542a7aba96925ebda3964",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "755b266d53fcd726c3ae4344522f6d79c4f76cc894912bfcc8166cb990a87a18",
+        "slices": "1ed23d9da42e074d6359b1710abaf55bb9ae0308eb52ec6f99d60e0fa05fab4a",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "js": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6"
+      },
+      "js": {
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "name": "no-matching-launcher",
+    "boundaries": {
+      "expected": 28,
+      "actual": 28
+    },
+    "frozenScreens": 28,
+    "fullStyleScreens": 28,
+    "matchingStyleCells": 53760,
+    "totalCells": 53760,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 28,
+      "actual": 28,
+      "matched": 28,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2516,
+      "rawActual": 2516,
+      "discardedEntries": 0,
+      "expected": 2516,
+      "actual": 2516,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 28,
+      "actual": 28,
+      "matched": 28,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 28,
+      "actualSlices": 28,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "46b0a2b45cf5ebbc93b0cd20600667f9b68c0a9ca47b2568045a837cd1789771",
+        "cursors": "5a215c6cdb9f6d33953a0b570f65fb18826319975d089e4cd5a63f8d9af58a00",
+        "calls": "eebf6a0d0b2c871e26d8c6e918484513fad031c198d0ff337ba1648fc2ac0b4c",
+        "slices": "1e7f5a5b0518125572e565c9a732ba3735b1365e36170e81de7b69375a58b27d",
+        "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+      },
+      "js": {
+        "screens": "d8805f412dc3a28de26bc75b39146fbe168ecb5f1e51ea4a7a6c62a56f430d31",
+        "cursors": "5a215c6cdb9f6d33953a0b570f65fb18826319975d089e4cd5a63f8d9af58a00",
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908",
+        "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908"
+      },
+      "js": {
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 5,
+    "name": "first-missile",
+    "boundaries": {
+      "expected": 27,
+      "actual": 27
+    },
+    "frozenScreens": 27,
+    "fullStyleScreens": 27,
+    "matchingStyleCells": 51840,
+    "totalCells": 51840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 27,
+      "actual": 27,
+      "matched": 27,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2516,
+      "rawActual": 2516,
+      "discardedEntries": 0,
+      "expected": 2516,
+      "actual": 2516,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 27,
+      "actual": 27,
+      "matched": 27,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 27,
+      "actualSlices": 27,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "6b0d29bf063c36f4e33840975fa80dc1fcd3136d0ca12b5d19ed53629e9edde1",
+        "cursors": "bd2139841f174ffb9c6604f6f401b344728fb754043d691e954b234403828193",
+        "calls": "07a556b79ba832ef961313a7f4f2ea2ef0251013a82da9c7b46d6560af5b2aa1",
+        "slices": "d0919faae6a8375817c4bfc064c014ffc60c6ca3bfae9753678e47164140b25d",
+        "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+      },
+      "js": {
+        "screens": "d81271a0f2519e5c39d242dde2d0e2f93eb3d8d3848cbcf6d180c7ad5c1a6d3b",
+        "cursors": "bd2139841f174ffb9c6604f6f401b344728fb754043d691e954b234403828193",
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61",
+        "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61"
+      },
+      "js": {
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

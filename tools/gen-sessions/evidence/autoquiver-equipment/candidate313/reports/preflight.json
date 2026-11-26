@@ -1,0 +1,154 @@
+{
+  "beforeGameplayImports": true,
+  "sourceMembers": 26,
+  "runtimeModules": 280,
+  "preEditLockSHA256": "218f28342e927bb6961db4c290e000d6193d25f8d77eff53bf975b1b5fcb2243",
+  "rawSHA256": "54db7d4198da45130957f40f757f43e084988526f91b866ec40b9932182832f9",
+  "recipeSHA256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd",
+  "sourceC5": true,
+  "rootMetadata": true,
+  "fiveFieldPresenceAndValues": true,
+  "allKeysExact": true,
+  "integrityErrors": [],
+  "primaryErrors": [],
+  "primaryAssertions": 6,
+  "inventoryRows": [
+    {
+      "index": 0,
+      "step": 54,
+      "letter": "a",
+      "row": "                                         a - a bow (weapon in right hand)",
+      "includes": [
+        "bow",
+        "(weapon in right hand)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 0,
+      "step": 54,
+      "letter": "b",
+      "row": "                                         b - 5 arrows (in quiver)",
+      "includes": [
+        "arrows",
+        "(in quiver)"
+      ],
+      "excludes": [
+        "(at the ready)"
+      ]
+    },
+    {
+      "index": 1,
+      "step": 61,
+      "letter": "a",
+      "row": "                                     a - a bow (alternate weapon; not wielded)",
+      "includes": [
+        "bow",
+        "(alternate weapon; not wielded)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 1,
+      "step": 61,
+      "letter": "b",
+      "row": "                                     b - 5 arrows (in quiver)",
+      "includes": [
+        "arrows",
+        "(in quiver)"
+      ],
+      "excludes": [
+        "(at the ready)"
+      ]
+    },
+    {
+      "index": 2,
+      "step": 52,
+      "letter": "a",
+      "row": "                                         a - 3 darts (at the ready)",
+      "includes": [
+        "darts",
+        "(at the ready)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 2,
+      "step": 52,
+      "letter": "b",
+      "row": "                                         b - 3 throwing stars",
+      "includes": [],
+      "excludes": [
+        "(at the ready)",
+        "(in quiver)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 3,
+      "step": 54,
+      "letter": "a",
+      "row": "                                         a - a bow (weapon in right hand)",
+      "includes": [
+        "bow",
+        "(weapon in right hand)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 3,
+      "step": 54,
+      "letter": "b",
+      "row": "                                         b - 5 arrows",
+      "includes": [
+        "arrows"
+      ],
+      "excludes": [
+        "(in quiver)",
+        "(at the ready)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 4,
+      "step": 26,
+      "letter": "a",
+      "row": "                                         a - 5 arrows",
+      "includes": [
+        "arrows"
+      ],
+      "excludes": [
+        "(in quiver)",
+        "(at the ready)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 5,
+      "step": 25,
+      "letter": "a",
+      "row": "                                         a - 3 darts (at the ready)",
+      "includes": [
+        "darts",
+        "(at the ready)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    }
+  ],
+  "totals": {
+    "keys": 278,
+    "boundaries": 284,
+    "calls": 15162,
+    "frames": 0
+  }
+}

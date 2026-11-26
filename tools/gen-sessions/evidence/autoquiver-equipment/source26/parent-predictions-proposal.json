@@ -1,0 +1,329 @@
+{
+  "classification": "source predictions locked before JS observation and C recording",
+  "positiveIndexes": [
+    0,
+    1,
+    2
+  ],
+  "negativeIndexes": [
+    3,
+    4,
+    5
+  ],
+  "primaryLimit": "Recipe substring checks are coarse producer predicates. Parent C confirmation must also evaluate every decoded inventoryRows rule at the locked inventory boundary; no raw ANSI position assumptions.",
+  "cases": [
+    {
+      "index": 0,
+      "name": "wielded-bow-arrows",
+      "branch": "autoquiver-equipment.wielded-bow-arrows",
+      "autoquiver": true,
+      "beforeLastWish": 28,
+      "afterDelivery": 53,
+      "inventory": 54,
+      "final": 55,
+      "priorItems": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        }
+      ],
+      "priorQuiver": null,
+      "items": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        },
+        {
+          "letter": "b",
+          "type": "ARROW",
+          "quantity": 5
+        }
+      ],
+      "slots": {
+        "uwep": "a",
+        "uswapwep": null,
+        "uquiver": "b"
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "bow",
+            "(weapon in right hand)"
+          ],
+          "excludes": [
+            "(in quiver)"
+          ]
+        },
+        {
+          "letter": "b",
+          "includes": [
+            "arrows",
+            "(in quiver)"
+          ],
+          "excludes": [
+            "(at the ready)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract fails",
+      "sourceExpectation": "arrow stack b in quiver"
+    },
+    {
+      "index": 1,
+      "name": "alternate-bow-arrows",
+      "branch": "autoquiver-equipment.alternate-bow-arrows",
+      "autoquiver": true,
+      "beforeLastWish": 35,
+      "afterDelivery": 60,
+      "inventory": 61,
+      "final": 62,
+      "priorItems": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        }
+      ],
+      "priorQuiver": null,
+      "items": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        },
+        {
+          "letter": "b",
+          "type": "ARROW",
+          "quantity": 5
+        }
+      ],
+      "slots": {
+        "uwep": null,
+        "uswapwep": "a",
+        "uquiver": "b"
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "bow",
+            "(alternate weapon; not wielded)"
+          ],
+          "excludes": [
+            "(in quiver)"
+          ]
+        },
+        {
+          "letter": "b",
+          "includes": [
+            "arrows",
+            "(in quiver)"
+          ],
+          "excludes": [
+            "(at the ready)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract fails",
+      "sourceExpectation": "bow a in alternate weapon slot, arrows b in quiver"
+    },
+    {
+      "index": 2,
+      "name": "preserve-existing-missiles",
+      "branch": "autoquiver-equipment.preserve-existing-missiles",
+      "autoquiver": true,
+      "beforeLastWish": 24,
+      "afterDelivery": 51,
+      "inventory": 52,
+      "final": 53,
+      "priorItems": [
+        {
+          "letter": "a",
+          "type": "DART",
+          "quantity": 3
+        }
+      ],
+      "priorQuiver": "a",
+      "items": [
+        {
+          "letter": "a",
+          "type": "DART",
+          "quantity": 3
+        },
+        {
+          "letter": "b",
+          "type": "SHURIKEN",
+          "quantity": 3
+        }
+      ],
+      "slots": {
+        "uwep": null,
+        "uswapwep": null,
+        "uquiver": "a"
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "darts",
+            "(at the ready)"
+          ],
+          "excludes": [
+            "(in quiver)"
+          ]
+        },
+        {
+          "letter": "b",
+          "includes": [],
+          "excludes": [
+            "(at the ready)",
+            "(in quiver)",
+            "(wielded)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract fails",
+      "sourceExpectation": "dart stack a stays in quiver after shuriken b arrives"
+    },
+    {
+      "index": 3,
+      "name": "disabled-wielded-bow",
+      "branch": "autoquiver-equipment.disabled-wielded-bow",
+      "autoquiver": false,
+      "beforeLastWish": 28,
+      "afterDelivery": 53,
+      "inventory": 54,
+      "final": 55,
+      "priorItems": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        }
+      ],
+      "priorQuiver": null,
+      "items": [
+        {
+          "letter": "a",
+          "type": "BOW",
+          "quantity": 1
+        },
+        {
+          "letter": "b",
+          "type": "ARROW",
+          "quantity": 5
+        }
+      ],
+      "slots": {
+        "uwep": "a",
+        "uswapwep": null,
+        "uquiver": null
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "bow",
+            "(weapon in right hand)"
+          ],
+          "excludes": [
+            "(in quiver)"
+          ]
+        },
+        {
+          "letter": "b",
+          "includes": [
+            "arrows"
+          ],
+          "excludes": [
+            "(in quiver)",
+            "(at the ready)",
+            "(wielded)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract passes",
+      "sourceExpectation": "empty quiver"
+    },
+    {
+      "index": 4,
+      "name": "no-matching-launcher",
+      "branch": "autoquiver-equipment.no-matching-launcher",
+      "autoquiver": true,
+      "beforeLastWish": 0,
+      "afterDelivery": 25,
+      "inventory": 26,
+      "final": 27,
+      "priorItems": [],
+      "priorQuiver": null,
+      "items": [
+        {
+          "letter": "a",
+          "type": "ARROW",
+          "quantity": 5
+        }
+      ],
+      "slots": {
+        "uwep": null,
+        "uswapwep": null,
+        "uquiver": null
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "arrows"
+          ],
+          "excludes": [
+            "(in quiver)",
+            "(at the ready)",
+            "(wielded)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract passes",
+      "sourceExpectation": "empty quiver"
+    },
+    {
+      "index": 5,
+      "name": "first-missile",
+      "branch": "autoquiver-equipment.first-missile",
+      "autoquiver": true,
+      "beforeLastWish": 0,
+      "afterDelivery": 24,
+      "inventory": 25,
+      "final": 26,
+      "priorItems": [],
+      "priorQuiver": null,
+      "items": [
+        {
+          "letter": "a",
+          "type": "DART",
+          "quantity": 3
+        }
+      ],
+      "slots": {
+        "uwep": null,
+        "uswapwep": null,
+        "uquiver": "a"
+      },
+      "inventoryRows": [
+        {
+          "letter": "a",
+          "includes": [
+            "darts",
+            "(at the ready)"
+          ],
+          "excludes": [
+            "(in quiver)"
+          ]
+        }
+      ],
+      "predictedBaseline": "source contract passes",
+      "sourceExpectation": "dart stack a in quiver"
+    }
+  ]
+}

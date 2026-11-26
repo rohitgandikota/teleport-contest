@@ -1,0 +1,28 @@
+{
+  "classification": "Portable derivation from immutable source26/candidate313, no runtime or patch payload",
+  "observationAndAssertionBodySHA256": "5ea556f8ebf2fc612ce8c88e381629b700b906279c5e3d4fd34a154d3223422d",
+  "bodyStart": "const outputs = run =>",
+  "bodyEnd": "\nconst report = {classification:",
+  "assertionsPerCase": 16,
+  "cases": 6,
+  "authoritativeTotal": 96,
+  "historicalSourcePass": 86,
+  "candidateLegacyPass": 94,
+  "expectationChanges": [
+    {
+      "path": ".branchAssertions[0].screenIncludes[0]",
+      "old": "(weapon in hands)",
+      "new": "(weapon in right hand)"
+    },
+    {
+      "path": ".branchAssertions[3].screenIncludes[0]",
+      "old": "(weapon in hands)",
+      "new": "(weapon in right hand)"
+    }
+  ],
+  "fiveFieldsAndEveryKeyUnchanged": true,
+  "defaultWrites": false,
+  "optionalReport": "exclusive new compact JSON file",
+  "nativeReplay": false,
+  "runtimeSelection": "current installed ../js relative to gate; fixed candidate280 only for this promotion validation"
+}

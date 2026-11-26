@@ -1,0 +1,9 @@
+{
+  "classification": "Three-read candidate,96/96 and native6/6; source86/96 and candidate legacy94/96 retained",
+  "members": 313,
+  "manifestSHA256": "bd102182db3ed234790b3cc88f973c44b7899e307e071a0ba8b217082d67775b",
+  "preEditLockSHA256": "218f28342e927bb6961db4c290e000d6193d25f8d77eff53bf975b1b5fcb2243",
+  "runtimeSHA256": "8fb3e31b9b6dcb428bec9ec6a6f34f7ea06907534ce2c789d44b343c54db667d",
+  "nativeHandoffSHA256": "f4f148d64723b503b1856f602bc6950424d1647d5855071862f75b8c0b8931b6",
+  "verifierSHA256": "4c9f3325db1528e4e761214ec861e91841114a5c661eecad789a65a3516450ef"
+}

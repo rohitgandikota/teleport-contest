@@ -1,0 +1,44 @@
+[
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.wielded-bow-arrows",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Autoquiver received arrows when the matching bow is the actual wielded weapon."
+  },
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.alternate-bow-arrows",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Autoquiver received arrows when the matching bow is in the actual alternate weapon slot."
+  },
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.preserve-existing-missiles",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Preserve the actual dart quiver when a distinct shuriken stack is received."
+  },
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.disabled-wielded-bow",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Leave received ammunition unquivered when autoquiver is disabled despite a matching wielded bow."
+  },
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.no-matching-launcher",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Leave received arrows unquivered without a matching current or alternate launcher."
+  },
+  {
+    "group": "Autoquiver equipment fields",
+    "id": "autoquiver-equipment.first-missile",
+    "cFile": "src/invent.c",
+    "cFunction": "hold_another_object",
+    "description": "Autoquiver the first received dart stack without a launcher."
+  }
+]

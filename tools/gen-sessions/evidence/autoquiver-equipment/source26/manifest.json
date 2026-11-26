@@ -1,0 +1,136 @@
+{
+  "classification": "Immutable source-only packet; no runtime candidate. Manifest/seal excluded from member enumeration.",
+  "members": {
+    "PLAN.md": {
+      "kind": "file",
+      "sha256": "bff3b51f5794727dba7d5bb251f3904e5e18d56d2b60a6e9fe44946a2aeac343",
+      "bytes": 866
+    },
+    "README.md": {
+      "kind": "file",
+      "sha256": "9fb6222a1a2f1dcfaacfc344dfd19c91356fbd6e600a5d756b146e7424c7f306",
+      "bytes": 2033
+    },
+    "SOURCE-REVIEW.md": {
+      "kind": "file",
+      "sha256": "67e58b0a638073d5250f258bb400d7525fcdfd67f4dc77e8684dda794808cdc4",
+      "bytes": 6707
+    },
+    "STATUS.md": {
+      "kind": "file",
+      "sha256": "8b748ba4f4f38bc98355bd66f64ef7514a577fdb79a7465b05bd6841d17ec273",
+      "bytes": 1955
+    },
+    "WORDING-ATTRIBUTION.md": {
+      "kind": "file",
+      "sha256": "ed54dd10819aea6466d1e500a6cd6b92c591f2d00e74fb48eba828253031a616",
+      "bytes": 2572
+    },
+    "baseline": {
+      "kind": "directory-link",
+      "target": "../crowning-log-parent-composed"
+    },
+    "baseline-runtime.json": {
+      "kind": "file-link",
+      "sha256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+      "bytes": 24861,
+      "target": "../crowning-log-parent-composed/runtime.json"
+    },
+    "input-lock.json": {
+      "kind": "file",
+      "sha256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+      "bytes": 9586
+    },
+    "native-handoff.json": {
+      "kind": "file",
+      "sha256": "aa3a27756198aeda22cd763df3850677b910ef14852c9878c8b5ff5052609d90",
+      "bytes": 3490
+    },
+    "parent-predictions-proposal.json": {
+      "kind": "file",
+      "sha256": "e2c9f9286c2525498ab5ea762c5bc157dcfd9eb542adcaa0e91c3d60f29e6e75",
+      "bytes": 7229
+    },
+    "parent-primary-proposal.json": {
+      "kind": "file",
+      "sha256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd",
+      "bytes": 4970
+    },
+    "parent-proposal-DRAFT.json": {
+      "kind": "file",
+      "sha256": "b8664b2f0a17bcf2a53613bb08f419b102171aa720a92cd288d679d4fb59688d",
+      "bytes": 4965
+    },
+    "parent-source-leads.json": {
+      "kind": "file",
+      "sha256": "ec0d92444be34224b23d02e3a68cce2207ca7e6e25717382b8c4143a3989fdc7",
+      "bytes": 2819
+    },
+    "predictions.json": {
+      "kind": "file",
+      "sha256": "76482da145c0a4c2f739b1613a55df3cb24e6bc24a67a8485342bb300e6befed",
+      "bytes": 7219
+    },
+    "probe.mjs": {
+      "kind": "file",
+      "sha256": "0694e64f64b4eaf817d01aa807bda43ffe5cfd28457db1376b7b0a71be92ae6a",
+      "bytes": 14005
+    },
+    "recipe.json": {
+      "kind": "file",
+      "sha256": "766781995675acea69ffe98da7decc3bf32cb9ae056dfbd1ea926f76bc1c93a3",
+      "bytes": 4960
+    },
+    "reports/baseline.json": {
+      "kind": "file",
+      "sha256": "009189f646957973e732f0c7b97bcf7bdca3f3aeea1c358c31613867db376ae7",
+      "bytes": 51286
+    },
+    "reports/batch-receipt.json": {
+      "kind": "file",
+      "sha256": "fbe09100257f6dcb3c7a6ad1b8040976b98ea019ab45015c3bde51a9e9840857",
+      "bytes": 518
+    },
+    "reports/batch-start.json": {
+      "kind": "file",
+      "sha256": "39e435b4305e18259f0395188375b5236b0e83e427ef22fdaa8b0c8b30bd69e0",
+      "bytes": 400
+    },
+    "reports/batch.log": {
+      "kind": "file",
+      "sha256": "730d3434f77d19b635e7496cb4d8d8594494dc4a6097bd4dceb5f7df9956caed",
+      "bytes": 727
+    },
+    "reports/negative-controls.json": {
+      "kind": "file",
+      "sha256": "5876d64bec0e26e67e26290bbfb86837ba1acd5af29304942cbc1d179a2ca023",
+      "bytes": 23712
+    },
+    "reports/setup-pin-failure.json": {
+      "kind": "file",
+      "sha256": "65594c28c5f7b7202efe97134dc5446166153cc7f5dcb09d368eff5119ef9aa3",
+      "bytes": 495
+    },
+    "run-once.py": {
+      "kind": "file",
+      "sha256": "e4869d75fa3f6a29f77f5370e56cc21dd162cac83c4bba4806d9117c7512bd7a",
+      "bytes": 1421
+    },
+    "source-pins.json": {
+      "kind": "file",
+      "sha256": "54c1bfa51aad799c14a58cd0dc143dad94f17387144ac46d780ad03b1c4d1c35",
+      "bytes": 2627
+    },
+    "verify-packet.py": {
+      "kind": "file",
+      "sha256": "514097eb31cd65d1a3cf56683e51dcc015efa12702989e8e7bed9f2061c4c92d",
+      "bytes": 6306
+    },
+    "wording-correction.json": {
+      "kind": "file",
+      "sha256": "7b1731faa539c6d57cc12c116161d312c4a8da2904ea71349df56e58087f0ce4",
+      "bytes": 2704
+    }
+  },
+  "linkedRuntimeModules": 280
+}

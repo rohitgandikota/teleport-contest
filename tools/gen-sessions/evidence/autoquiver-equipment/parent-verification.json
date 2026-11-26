@@ -1,0 +1,553 @@
+{
+  "verifiedAt": "2026-11-26T20:39:10.174033+00:00",
+  "baselineCommit": "aaf3548321d4c819972ae7b99e6461da7318f869",
+  "composition": {
+    "baselineCommit": "aaf3548321d4c819972ae7b99e6461da7318f869",
+    "baselineRuntimeSHA256": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+    "candidateRuntimeSHA256": "8fb3e31b9b6dcb428bec9ec6a6f34f7ea06907534ce2c789d44b343c54db667d",
+    "candidateSealSHA256": "6df9242221b2e7484ba2639aa0a521b4129562e2f50cf4a944351becdc6307d7",
+    "patchSHA256": "4662bfc17d9c87c77177e6c847fb84c10c821db3bec11ca0a199830f8b0d7986",
+    "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+    "runtimeChanged": [
+      "js/invent.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 6,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "ec5a0b3bebe41682eb447fda21475717489048090269476cf66b50e54e243286",
+    "mainReportSHA256": "b8e472d070cf956c7f6ac76d31331cfecc4d46dacfdceab7120d51fc3bb43623",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/autoquiver-equipment-gate.mjs",
+      ".cache/restart-20261122/autoquiver-equipment-main-ordinary.json"
+    ],
+    "seconds": 2.531,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "ec5a0b3bebe41682eb447fda21475717489048090269476cf66b50e54e243286",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "b8e472d070cf956c7f6ac76d31331cfecc4d46dacfdceab7120d51fc3bb43623"
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T20:38:12.587673+00:00",
+    "payloads": [
+      {
+        "path": "payload/tools/autoquiver-equipment-gate.mjs",
+        "target": "tools/autoquiver-equipment-gate.mjs",
+        "sha256": "e289abb8f746e108c90936678fc0ed7de99f1fa406b5f87bfdc537a206429f5b",
+        "bytes": 24307,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/README.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/README.md",
+        "sha256": "2576fd4284909fe0a3edf55140ad99b555236f666b93082b516cfbb094f05173",
+        "bytes": 1619,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/CONTRACT-ACCOUNTING.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/CONTRACT-ACCOUNTING.md",
+        "sha256": "2e02c6f3285cca3dbfa74985db809975b3fed7c89535217d3345533fb03cecfc",
+        "bytes": 2955,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/README.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/README.md",
+        "sha256": "ab8e020fb4237add0aac82c2dd6432ee030f04a97261938729475e630b4030ad",
+        "bytes": 2408,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/SEAL.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/SEAL.json",
+        "sha256": "6df9242221b2e7484ba2639aa0a521b4129562e2f50cf4a944351becdc6307d7",
+        "bytes": 580,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/manifest.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/manifest.json",
+        "sha256": "bd102182db3ed234790b3cc88f973c44b7899e307e071a0ba8b217082d67775b",
+        "bytes": 65091,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/pre-edit-lock.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/pre-edit-lock.json",
+        "sha256": "218f28342e927bb6961db4c290e000d6193d25f8d77eff53bf975b1b5fcb2243",
+        "bytes": 12448,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/batch-receipt.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/batch-receipt.json",
+        "sha256": "73c0b9641143cc2cf071fc90afbaec44df425590614c6f8d5f3a7d4229474de9",
+        "bytes": 463,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/conclusion.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/conclusion.json",
+        "sha256": "16328b1e955097e6ff16e8fbd52464ed46211c92d0eba1789345a761eec21bb6",
+        "bytes": 1908,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/native.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/native.json",
+        "sha256": "3fc163617b368fde2a45cf3842dbb197b3b98157db86e37e5d5d8c2d1b58d11b",
+        "bytes": 14606,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/negative-accounting.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/negative-accounting.json",
+        "sha256": "004e848fc4d2324a9f7784d7c29cb3b3fec00f8c1bace434e50c985b46ee8afe",
+        "bytes": 1912,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/ordinary.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/ordinary.json",
+        "sha256": "5dc4df4ef94d6cc145c0526232a212069ffd52077223c809a872290c9139acbb",
+        "bytes": 50154,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/original-expectations.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/original-expectations.json",
+        "sha256": "0f99f5092fbe86ba750985e819d17ca9c5cdde12ca957aa1f72859f6b970aff3",
+        "bytes": 50322,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/preflight.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/candidate313/reports/preflight.json",
+        "sha256": "865ca7796b0ea8957c3317c865189a661ea585e6be62a14efb8ad6fbbcfb358d",
+        "bytes": 3446,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/baseline-native.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/baseline-native.json",
+        "sha256": "fdeb158cabe8a0c345775cce0d6ebf19212995449c3689694b57fe8fe5f686ca",
+        "bytes": 19763,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/input-lock.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/input-lock.json",
+        "sha256": "646a6699372bfaf552787c6eeda4891352396f9ad5ad6c4784bb2d1502454232",
+        "bytes": 451,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/inventory-preflight.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/inventory-preflight.json",
+        "sha256": "b7b0ecf0f9cc6b890ac7a3b5232474df894e3a77b1b172dbc978b812a064b423",
+        "bytes": 2871,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/metadata-review.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/metadata-review.json",
+        "sha256": "f878af4048718b14db61f28eae336fc54a62f29865a00c14abe910ad416d5e96",
+        "bytes": 786,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/native-recording.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/native-recording.json",
+        "sha256": "4ee58b54476e3b3301a0464f7aacfa692125a5becccecd3c3dd6ff89b1cb94b9",
+        "bytes": 1625,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/native-recording.log",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/native-recording.log",
+        "sha256": "4408b8a14195893cd34f1bd2d4ba037d002e32d9afca3cfdabbe9e6a808824da",
+        "bytes": 304,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/parent/preflight.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/parent/preflight.json",
+        "sha256": "816910d7d52935f407dc7ca1794f96dd0499d4121b81abf7c2c17095f5b20f1d",
+        "bytes": 372,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/portable-provenance.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/portable-provenance.json",
+        "sha256": "c4ab87106be1d2ec7ec1681662e4e6a30b292c06141d7f1f045cfe7b52cc2d64",
+        "bytes": 1019,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/requirements-additions.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/requirements-additions.json",
+        "sha256": "52cca49b76d32162c93817a0a9d2f9dc4ebd59d0daa2d56be532c1daecd9dbc5",
+        "bytes": 1673,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source-contract.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source-contract.json",
+        "sha256": "013a5e3d9d1c95040d5b0af2ff5521973a8b73de7d554ea46557dd29ecf7bcb8",
+        "bytes": 10706,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/README.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/README.md",
+        "sha256": "9fb6222a1a2f1dcfaacfc344dfd19c91356fbd6e600a5d756b146e7424c7f306",
+        "bytes": 2033,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/SEAL.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/SEAL.json",
+        "sha256": "0ab23ab30b2742df3044c21e612e548cc4e8bc49ecf90b36f1bdcc95192cde33",
+        "bytes": 607,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/SOURCE-REVIEW.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/SOURCE-REVIEW.md",
+        "sha256": "67e58b0a638073d5250f258bb400d7525fcdfd67f4dc77e8684dda794808cdc4",
+        "bytes": 6707,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/WORDING-ATTRIBUTION.md",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/WORDING-ATTRIBUTION.md",
+        "sha256": "ed54dd10819aea6466d1e500a6cd6b92c591f2d00e74fb48eba828253031a616",
+        "bytes": 2572,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/input-lock.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/input-lock.json",
+        "sha256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+        "bytes": 9586,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/manifest.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/manifest.json",
+        "sha256": "1c5c2c44245e7cbafd420a79a705ebf1d312055b1a24f4ca65710a7cc8678bf5",
+        "bytes": 4404,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/parent-predictions-proposal.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/parent-predictions-proposal.json",
+        "sha256": "e2c9f9286c2525498ab5ea762c5bc157dcfd9eb542adcaa0e91c3d60f29e6e75",
+        "bytes": 7229,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/predictions.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/predictions.json",
+        "sha256": "76482da145c0a4c2f739b1613a55df3cb24e6bc24a67a8485342bb300e6befed",
+        "bytes": 7219,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/probe.mjs",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/probe.mjs",
+        "sha256": "0694e64f64b4eaf817d01aa807bda43ffe5cfd28457db1376b7b0a71be92ae6a",
+        "bytes": 14005,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/recipe.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/recipe.json",
+        "sha256": "766781995675acea69ffe98da7decc3bf32cb9ae056dfbd1ea926f76bc1c93a3",
+        "bytes": 4960,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/baseline.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/baseline.json",
+        "sha256": "009189f646957973e732f0c7b97bcf7bdca3f3aeea1c358c31613867db376ae7",
+        "bytes": 51286,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/batch-receipt.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/batch-receipt.json",
+        "sha256": "fbe09100257f6dcb3c7a6ad1b8040976b98ea019ab45015c3bde51a9e9840857",
+        "bytes": 518,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/batch.log",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/batch.log",
+        "sha256": "730d3434f77d19b635e7496cb4d8d8594494dc4a6097bd4dceb5f7df9956caed",
+        "bytes": 727,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/negative-controls.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/negative-controls.json",
+        "sha256": "5876d64bec0e26e67e26290bbfb86837ba1acd5af29304942cbc1d179a2ca023",
+        "bytes": 23712,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/setup-pin-failure.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/reports/setup-pin-failure.json",
+        "sha256": "65594c28c5f7b7202efe97134dc5446166153cc7f5dcb09d368eff5119ef9aa3",
+        "bytes": 495,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/source-pins.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/source-pins.json",
+        "sha256": "54c1bfa51aad799c14a58cd0dc143dad94f17387144ac46d780ad03b1c4d1c35",
+        "bytes": 2627,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/autoquiver-equipment/source26/wording-correction.json",
+        "target": "tools/gen-sessions/evidence/autoquiver-equipment/source26/wording-correction.json",
+        "sha256": "7b1731faa539c6d57cc12c116161d312c4a8da2904ea71349df56e58087f0ce4",
+        "bytes": 2704,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/generated/autoquiver-equipment.session.json",
+        "target": "tools/gen-sessions/generated/autoquiver-equipment.session.json",
+        "sha256": "54db7d4198da45130957f40f757f43e084988526f91b866ec40b9932182832f9",
+        "bytes": 775691,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/recipes/autoquiver-equipment.json",
+        "target": "tools/gen-sessions/recipes/autoquiver-equipment.json",
+        "sha256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd",
+        "bytes": 4970,
+        "acceptExistingOnlyIfExact": true
+      }
+    ],
+    "promotionSealSHA256": "87ec850d4b04575d313818c71ed6143557f7e79325ac5af116005382a079759e",
+    "branchRowsBefore": 4772,
+    "branchRowsAfter": 4778,
+    "coverageRows": 111,
+    "coverageSHA256Unchanged": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197"
+  },
+  "retained": [
+    {
+      "name": "inventory-merge-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-merge-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.562,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-inventory-merge-state-gate.log",
+      "sha256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+    },
+    {
+      "name": "inventory-selection-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-selection-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 14.959,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-inventory-selection-state-gate.log",
+      "sha256": "174b7715fd1081128f415f30f0a15309091974252fe4890318bfe2ca751c13c3"
+    },
+    {
+      "name": "inventory-adjust-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-adjust-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.328,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-inventory-adjust-state-gate.log",
+      "sha256": "3ec68999b3019c55c7f473aaa8a1acaf14251c88e1eec86a5e428ce6988d8755"
+    },
+    {
+      "name": "autopickup-options-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/autopickup-options-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.512,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-autopickup-options-state-gate.log",
+      "sha256": "a5126d50d43221689abb152306b6f64f798591031e1fb2ddf5c6f19ceb281690"
+    },
+    {
+      "name": "floor-pickup-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/floor-pickup-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 17.851,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-floor-pickup-state-gate.log",
+      "sha256": "551a0426b91aeeda8493175c6c3bf2336e37e209712f7b7a991455eef95d82f4"
+    },
+    {
+      "name": "save-inventory-letter-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/save-inventory-letter-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.028,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-save-inventory-letter-state-gate.log",
+      "sha256": "1148ecc2c79a5980cda3260687ee2d55e4557885f321490449c078437a81c974"
+    },
+    {
+      "name": "inventory-prize-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-prize-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.085,
+      "log": ".cache/restart-20261122/autoquiver-equipment-retained-inventory-prize-state-gate.log",
+      "sha256": "2da05b7ea9997f47b356747c27e508e7024bff21d4958df89105a14008ce1f22"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/autoquiver-equipment.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.171,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/autoquiver-equipment-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T20:35:16.430155+00:00",
+    "sessions": 948,
+    "passed": 948,
+    "failures": [],
+    "totals": {
+      "screens": 947039,
+      "cursors": 947039,
+      "rngCalls": 20777870,
+      "animFrames": 33218
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 948,
+    "allFilesFixed": 1239,
+    "allFilesSHA256": "3f694e9ce4ffe33e083e8eade2d5d42e5bce73130b07b64e748d432d6d838f1c",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T20:24:42.451383+00:00",
+      "workers": 2,
+      "pid": 3606513,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.0859375,
+        1.43408203125,
+        2.11328125
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "3f694e9ce4ffe33e083e8eade2d5d42e5bce73130b07b64e748d432d6d838f1c"
+    },
+    "logs": {
+      "shard-1.log": "19451ffcb0f05ac6acd4d33867ef7078e378eeeb3e857047b3a0d1ba3cfb77e2",
+      "shard-0.log": "b949a2f8e15eef8103f2f7e3176996541199be5db69d3fc3e70368d3e8f69ec6"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "444002713e2c2a2afb0b34d59f3be10aa791a4f8f8a1413554e0f60f4f0565b1",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/autoquiver-equipment-full948-js-20261126",
+  "limits": [
+    "948 recorded games establish corpus parity, not whole-port completion or a held-out result.",
+    "Only the three hold_another_object equipment reads change.",
+    "Original 86/96 source diagnostic and candidate legacy94/96 remain preserved; the authoritative96/96 result includes two source-backed bow-wording corrections approved before C recording."
+  ]
+}

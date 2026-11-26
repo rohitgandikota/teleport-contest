@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/autoquiver-equipment-candidate/batch.mjs"
+  ],
+  "timeoutSeconds": 55,
+  "preEditLockSHA256": "218f28342e927bb6961db4c290e000d6193d25f8d77eff53bf975b1b5fcb2243",
+  "startedUTC": "2026-11-26T20:19:28.078600+00:00",
+  "exitCode": 0,
+  "timedOut": false,
+  "elapsedSeconds": 3.23
+}

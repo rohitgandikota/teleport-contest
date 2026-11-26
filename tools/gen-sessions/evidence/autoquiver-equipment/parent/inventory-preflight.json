@@ -1,0 +1,137 @@
+{
+  "beforeGameplayImports": true,
+  "cases": 6,
+  "checked": [
+    {
+      "index": 0,
+      "step": 54,
+      "letter": "a",
+      "row": "                                         a - a bow (weapon in right hand)",
+      "includes": [
+        "bow",
+        "(weapon in right hand)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 0,
+      "step": 54,
+      "letter": "b",
+      "row": "                                         b - 5 arrows (in quiver)",
+      "includes": [
+        "arrows",
+        "(in quiver)"
+      ],
+      "excludes": [
+        "(at the ready)"
+      ]
+    },
+    {
+      "index": 1,
+      "step": 61,
+      "letter": "a",
+      "row": "                                     a - a bow (alternate weapon; not wielded)",
+      "includes": [
+        "bow",
+        "(alternate weapon; not wielded)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 1,
+      "step": 61,
+      "letter": "b",
+      "row": "                                     b - 5 arrows (in quiver)",
+      "includes": [
+        "arrows",
+        "(in quiver)"
+      ],
+      "excludes": [
+        "(at the ready)"
+      ]
+    },
+    {
+      "index": 2,
+      "step": 52,
+      "letter": "a",
+      "row": "                                         a - 3 darts (at the ready)",
+      "includes": [
+        "darts",
+        "(at the ready)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 2,
+      "step": 52,
+      "letter": "b",
+      "row": "                                         b - 3 throwing stars",
+      "includes": [],
+      "excludes": [
+        "(at the ready)",
+        "(in quiver)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 3,
+      "step": 54,
+      "letter": "a",
+      "row": "                                         a - a bow (weapon in right hand)",
+      "includes": [
+        "bow",
+        "(weapon in right hand)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    },
+    {
+      "index": 3,
+      "step": 54,
+      "letter": "b",
+      "row": "                                         b - 5 arrows",
+      "includes": [
+        "arrows"
+      ],
+      "excludes": [
+        "(in quiver)",
+        "(at the ready)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 4,
+      "step": 26,
+      "letter": "a",
+      "row": "                                         a - 5 arrows",
+      "includes": [
+        "arrows"
+      ],
+      "excludes": [
+        "(in quiver)",
+        "(at the ready)",
+        "(wielded)"
+      ]
+    },
+    {
+      "index": 5,
+      "step": 25,
+      "letter": "a",
+      "row": "                                         a - 3 darts (at the ready)",
+      "includes": [
+        "darts",
+        "(at the ready)"
+      ],
+      "excludes": [
+        "(in quiver)"
+      ]
+    }
+  ]
+}

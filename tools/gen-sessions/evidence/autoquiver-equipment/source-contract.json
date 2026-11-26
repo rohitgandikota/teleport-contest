@@ -1,0 +1,200 @@
+{
+  "recipe": {
+    "path": "tools/gen-sessions/recipes/autoquiver-equipment.json",
+    "sha256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd"
+  },
+  "native": {
+    "path": "tools/gen-sessions/generated/autoquiver-equipment.session.json",
+    "sha256": "54db7d4198da45130957f40f757f43e084988526f91b866ec40b9932182832f9",
+    "bytes": 775691
+  },
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "recordedBinarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recordedRecorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "reviewedCSourcePins": {
+    "../../../nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "../../../nethack-c/upstream/src/wield.c": "dccf8af84cf299ac659ab07ee6c106d9c8f9726d1fca1360a4df81d576adbd4c",
+    "../../../nethack-c/upstream/src/worn.c": "0414baea25644ea52cc7b628dff4ab1a533eada1523405eaabe7d7555bc3d4cf",
+    "../../../nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "../../../nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "../../../nethack-c/upstream/src/objnam.c": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "../../../nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "../../../nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "../../../nethack-c/upstream/src/u_init.c": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71",
+    "../../../nethack-c/upstream/src/decl.c": "4855daf7884706b74e694aff3e8373418706793265084727bd78abe44693d96e",
+    "../../../nethack-c/upstream/include/obj.h": "a4d1b994c5acd6fe04d411485d84491553d6df02dfbd7480181a15a7a05456e2",
+    "../../../nethack-c/upstream/include/objects.h": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "../../../nethack-c/upstream/include/optlist.h": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+    "../../../nethack-c/upstream/include/objclass.h": "101f92e0024e4404033845fb15171f8ed4b79374907a6a172b4eb7b026e1eb52",
+    "../../../nethack-c/upstream/include/you.h": "d19cfa0233582f1ad550b9dfc788f26166f3ff21225e3d8a0cd43b6de2094289",
+    "../../../nethack-c/upstream/src/objects.c": "1f1cc8de922d1f41f688da28b8d88d80eca2884619283b60f38418e7b965b340"
+  },
+  "reviewedCSourcePinsAreHistoricalOnly": true,
+  "portableDependencyPins": {
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "sealedPackets": {
+    "source26": {
+      "members": 26,
+      "sealSHA256": "0ab23ab30b2742df3044c21e612e548cc4e8bc49ecf90b36f1bdcc95192cde33",
+      "manifestSHA256": "1c5c2c44245e7cbafd420a79a705ebf1d312055b1a24f4ca65710a7cc8678bf5"
+    },
+    "candidate313": {
+      "members": 313,
+      "sealSHA256": "6df9242221b2e7484ba2639aa0a521b4129562e2f50cf4a944351becdc6307d7",
+      "manifestSHA256": "bd102182db3ed234790b3cc88f973c44b7899e307e071a0ba8b217082d67775b"
+    }
+  },
+  "sealedEvidence": {
+    "source26/README.md": {
+      "packet": "source26",
+      "member": "README.md"
+    },
+    "source26/SOURCE-REVIEW.md": {
+      "packet": "source26",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "source26/WORDING-ATTRIBUTION.md": {
+      "packet": "source26",
+      "member": "WORDING-ATTRIBUTION.md"
+    },
+    "source26/recipe.json": {
+      "packet": "source26",
+      "member": "recipe.json"
+    },
+    "source26/predictions.json": {
+      "packet": "source26",
+      "member": "predictions.json"
+    },
+    "source26/input-lock.json": {
+      "packet": "source26",
+      "member": "input-lock.json"
+    },
+    "source26/probe.mjs": {
+      "packet": "source26",
+      "member": "probe.mjs"
+    },
+    "source26/source-pins.json": {
+      "packet": "source26",
+      "member": "source-pins.json"
+    },
+    "source26/wording-correction.json": {
+      "packet": "source26",
+      "member": "wording-correction.json"
+    },
+    "source26/parent-predictions-proposal.json": {
+      "packet": "source26",
+      "member": "parent-predictions-proposal.json"
+    },
+    "source26/reports/baseline.json": {
+      "packet": "source26",
+      "member": "reports/baseline.json"
+    },
+    "source26/reports/negative-controls.json": {
+      "packet": "source26",
+      "member": "reports/negative-controls.json"
+    },
+    "source26/reports/setup-pin-failure.json": {
+      "packet": "source26",
+      "member": "reports/setup-pin-failure.json"
+    },
+    "source26/reports/batch-receipt.json": {
+      "packet": "source26",
+      "member": "reports/batch-receipt.json"
+    },
+    "source26/reports/batch.log": {
+      "packet": "source26",
+      "member": "reports/batch.log"
+    },
+    "candidate313/README.md": {
+      "packet": "candidate313",
+      "member": "README.md"
+    },
+    "candidate313/CONTRACT-ACCOUNTING.md": {
+      "packet": "candidate313",
+      "member": "CONTRACT-ACCOUNTING.md"
+    },
+    "candidate313/pre-edit-lock.json": {
+      "packet": "candidate313",
+      "member": "pre-edit-lock.json"
+    },
+    "candidate313/reports/ordinary.json": {
+      "packet": "candidate313",
+      "member": "reports/ordinary.json"
+    },
+    "candidate313/reports/original-expectations.json": {
+      "packet": "candidate313",
+      "member": "reports/original-expectations.json"
+    },
+    "candidate313/reports/native.json": {
+      "packet": "candidate313",
+      "member": "reports/native.json"
+    },
+    "candidate313/reports/negative-accounting.json": {
+      "packet": "candidate313",
+      "member": "reports/negative-accounting.json"
+    },
+    "candidate313/reports/preflight.json": {
+      "packet": "candidate313",
+      "member": "reports/preflight.json"
+    },
+    "candidate313/reports/batch-receipt.json": {
+      "packet": "candidate313",
+      "member": "reports/batch-receipt.json"
+    },
+    "candidate313/reports/conclusion.json": {
+      "packet": "candidate313",
+      "member": "reports/conclusion.json"
+    }
+  },
+  "evidencePins": {
+    "README.md": "2576fd4284909fe0a3edf55140ad99b555236f666b93082b516cfbb094f05173",
+    "candidate313/CONTRACT-ACCOUNTING.md": "2e02c6f3285cca3dbfa74985db809975b3fed7c89535217d3345533fb03cecfc",
+    "candidate313/README.md": "ab8e020fb4237add0aac82c2dd6432ee030f04a97261938729475e630b4030ad",
+    "candidate313/SEAL.json": "6df9242221b2e7484ba2639aa0a521b4129562e2f50cf4a944351becdc6307d7",
+    "candidate313/manifest.json": "bd102182db3ed234790b3cc88f973c44b7899e307e071a0ba8b217082d67775b",
+    "candidate313/pre-edit-lock.json": "218f28342e927bb6961db4c290e000d6193d25f8d77eff53bf975b1b5fcb2243",
+    "candidate313/reports/batch-receipt.json": "73c0b9641143cc2cf071fc90afbaec44df425590614c6f8d5f3a7d4229474de9",
+    "candidate313/reports/conclusion.json": "16328b1e955097e6ff16e8fbd52464ed46211c92d0eba1789345a761eec21bb6",
+    "candidate313/reports/native.json": "3fc163617b368fde2a45cf3842dbb197b3b98157db86e37e5d5d8c2d1b58d11b",
+    "candidate313/reports/negative-accounting.json": "004e848fc4d2324a9f7784d7c29cb3b3fec00f8c1bace434e50c985b46ee8afe",
+    "candidate313/reports/ordinary.json": "5dc4df4ef94d6cc145c0526232a212069ffd52077223c809a872290c9139acbb",
+    "candidate313/reports/original-expectations.json": "0f99f5092fbe86ba750985e819d17ca9c5cdde12ca957aa1f72859f6b970aff3",
+    "candidate313/reports/preflight.json": "865ca7796b0ea8957c3317c865189a661ea585e6be62a14efb8ad6fbbcfb358d",
+    "parent/baseline-native.json": "fdeb158cabe8a0c345775cce0d6ebf19212995449c3689694b57fe8fe5f686ca",
+    "parent/input-lock.json": "646a6699372bfaf552787c6eeda4891352396f9ad5ad6c4784bb2d1502454232",
+    "parent/inventory-preflight.json": "b7b0ecf0f9cc6b890ac7a3b5232474df894e3a77b1b172dbc978b812a064b423",
+    "parent/metadata-review.json": "f878af4048718b14db61f28eae336fc54a62f29865a00c14abe910ad416d5e96",
+    "parent/native-recording.json": "4ee58b54476e3b3301a0464f7aacfa692125a5becccecd3c3dd6ff89b1cb94b9",
+    "parent/native-recording.log": "4408b8a14195893cd34f1bd2d4ba037d002e32d9afca3cfdabbe9e6a808824da",
+    "parent/preflight.json": "816910d7d52935f407dc7ca1794f96dd0499d4121b81abf7c2c17095f5b20f1d",
+    "portable-provenance.json": "c4ab87106be1d2ec7ec1681662e4e6a30b292c06141d7f1f045cfe7b52cc2d64",
+    "requirements-additions.json": "52cca49b76d32162c93817a0a9d2f9dc4ebd59d0daa2d56be532c1daecd9dbc5",
+    "source26/README.md": "9fb6222a1a2f1dcfaacfc344dfd19c91356fbd6e600a5d756b146e7424c7f306",
+    "source26/SEAL.json": "0ab23ab30b2742df3044c21e612e548cc4e8bc49ecf90b36f1bdcc95192cde33",
+    "source26/SOURCE-REVIEW.md": "67e58b0a638073d5250f258bb400d7525fcdfd67f4dc77e8684dda794808cdc4",
+    "source26/WORDING-ATTRIBUTION.md": "ed54dd10819aea6466d1e500a6cd6b92c591f2d00e74fb48eba828253031a616",
+    "source26/input-lock.json": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+    "source26/manifest.json": "1c5c2c44245e7cbafd420a79a705ebf1d312055b1a24f4ca65710a7cc8678bf5",
+    "source26/parent-predictions-proposal.json": "e2c9f9286c2525498ab5ea762c5bc157dcfd9eb542adcaa0e91c3d60f29e6e75",
+    "source26/predictions.json": "76482da145c0a4c2f739b1613a55df3cb24e6bc24a67a8485342bb300e6befed",
+    "source26/probe.mjs": "0694e64f64b4eaf817d01aa807bda43ffe5cfd28457db1376b7b0a71be92ae6a",
+    "source26/recipe.json": "766781995675acea69ffe98da7decc3bf32cb9ae056dfbd1ea926f76bc1c93a3",
+    "source26/reports/baseline.json": "009189f646957973e732f0c7b97bcf7bdca3f3aeea1c358c31613867db376ae7",
+    "source26/reports/batch-receipt.json": "fbe09100257f6dcb3c7a6ad1b8040976b98ea019ab45015c3bde51a9e9840857",
+    "source26/reports/batch.log": "730d3434f77d19b635e7496cb4d8d8594494dc4a6097bd4dceb5f7df9956caed",
+    "source26/reports/negative-controls.json": "5876d64bec0e26e67e26290bbfb86837ba1acd5af29304942cbc1d179a2ca023",
+    "source26/reports/setup-pin-failure.json": "65594c28c5f7b7202efe97134dc5446166153cc7f5dcb09d368eff5119ef9aa3",
+    "source26/source-pins.json": "54c1bfa51aad799c14a58cd0dc143dad94f17387144ac46d780ad03b1c4d1c35",
+    "source26/wording-correction.json": "7b1731faa539c6d57cc12c116161d312c4a8da2904ea71349df56e58087f0ce4"
+  },
+  "observationBodySHA256": "5ea556f8ebf2fc612ce8c88e381629b700b906279c5e3d4fd34a154d3223422d",
+  "originalInputLockSHA256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+  "negativeIndexes": [
+    3,
+    4,
+    5
+  ]
+}

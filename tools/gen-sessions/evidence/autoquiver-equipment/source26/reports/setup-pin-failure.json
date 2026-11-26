@@ -1,0 +1,7 @@
+{
+  "classification": "pre-lock pin assembly failure, no gameplay or gameplay imports",
+  "error": "FileNotFoundError: baseline/frozen/terminal.js",
+  "cause": "The fixed graph provides terminal.js under js, already covered by its 280-module map; only screen-decode.mjs exists under baseline/frozen.",
+  "resolution": "Remove the nonexistent redundant dependency from the unsealed pre-lock pin list. Preserve all 280 runtime pins; no runtime or input changed.",
+  "syntaxOnlyCheckExitCode": 0
+}

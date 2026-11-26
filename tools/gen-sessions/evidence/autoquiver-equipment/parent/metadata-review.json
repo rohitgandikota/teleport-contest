@@ -1,0 +1,25 @@
+{
+  "originalRecipeSHA256": "766781995675acea69ffe98da7decc3bf32cb9ae056dfbd1ea926f76bc1c93a3",
+  "primaryProposalSHA256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd",
+  "differences": [
+    {
+      "path": ".branchAssertions[0].screenIncludes[0]",
+      "old": "(weapon in hands)",
+      "new": "(weapon in right hand)"
+    },
+    {
+      "path": ".branchAssertions[3].screenIncludes[0]",
+      "old": "(weapon in hands)",
+      "new": "(weapon in right hand)"
+    }
+  ],
+  "allInputFieldsAndEveryKeyUnchanged": true,
+  "sourceVerified": [
+    "objects.h BOW macro big=0",
+    "objclass.h oc_bimanual alias",
+    "obj.h bimanual guard",
+    "objnam.c1580-1596 non-bimanual right/left suffix"
+  ],
+  "original86of96DiagnosticPreserved": true,
+  "beforeC": true
+}

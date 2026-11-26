@@ -1,0 +1,53 @@
+{
+  "negativeIndexes": [
+    3,
+    4,
+    5
+  ],
+  "ordinary": [
+    {
+      "index": 3,
+      "allFiveHashesExact": true,
+      "completeOriginalRowExact": true,
+      "authoritativeDifference": "only approved bow wording assertion result",
+      "originalRowSHA256": "d346f2f9bacb7268a98737a5d173f86bc594cf20b0f65711a81f0b1e7119cb39",
+      "candidateLegacyRowSHA256": "d346f2f9bacb7268a98737a5d173f86bc594cf20b0f65711a81f0b1e7119cb39"
+    },
+    {
+      "index": 4,
+      "allFiveHashesExact": true,
+      "completeOriginalRowExact": true,
+      "authoritativeDifference": "none",
+      "originalRowSHA256": "1e755bbb2a52cc4f9a12ca65325651c53d6c63cc909ef1814f5ddb5caa6dd613",
+      "candidateLegacyRowSHA256": "1e755bbb2a52cc4f9a12ca65325651c53d6c63cc909ef1814f5ddb5caa6dd613"
+    },
+    {
+      "index": 5,
+      "allFiveHashesExact": true,
+      "completeOriginalRowExact": true,
+      "authoritativeDifference": "none",
+      "originalRowSHA256": "00c88020291689f188913fddec0e2dc8bd5b5172bb29b30eae546d7b87c0e910",
+      "candidateLegacyRowSHA256": "00c88020291689f188913fddec0e2dc8bd5b5172bb29b30eae546d7b87c0e910"
+    }
+  ],
+  "native": [
+    {
+      "index": 3,
+      "completeRowExact": true,
+      "baselineRowSHA256": "157392408a5a19f49ddc3f6df28d617932477afef4a2e3eadb6d24939d2d47ab",
+      "candidateRowSHA256": "157392408a5a19f49ddc3f6df28d617932477afef4a2e3eadb6d24939d2d47ab"
+    },
+    {
+      "index": 4,
+      "completeRowExact": true,
+      "baselineRowSHA256": "adf67a1164c0978cd753f58e04bf63ef28a62e16ddbf5416e6df8b30bfd85e2d",
+      "candidateRowSHA256": "adf67a1164c0978cd753f58e04bf63ef28a62e16ddbf5416e6df8b30bfd85e2d"
+    },
+    {
+      "index": 5,
+      "completeRowExact": true,
+      "baselineRowSHA256": "cb8c5051db43676fa9e810773b9d46d476fdc15d3ec3ef8536a15a9da74c194b",
+      "candidateRowSHA256": "cb8c5051db43676fa9e810773b9d46d476fdc15d3ec3ef8536a15a9da74c194b"
+    }
+  ]
+}

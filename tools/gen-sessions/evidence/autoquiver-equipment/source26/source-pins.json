@@ -1,0 +1,28 @@
+{
+  "runtimeSHA256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+  "runtimeModules": 280,
+  "externalFiles": {
+    "../../../nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "../../../nethack-c/upstream/src/wield.c": "dccf8af84cf299ac659ab07ee6c106d9c8f9726d1fca1360a4df81d576adbd4c",
+    "../../../nethack-c/upstream/src/worn.c": "0414baea25644ea52cc7b628dff4ab1a533eada1523405eaabe7d7555bc3d4cf",
+    "../../../nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "../../../nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "../../../nethack-c/upstream/src/objnam.c": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "../../../nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "../../../nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "../../../nethack-c/upstream/src/u_init.c": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71",
+    "../../../nethack-c/upstream/src/decl.c": "4855daf7884706b74e694aff3e8373418706793265084727bd78abe44693d96e",
+    "../../../nethack-c/upstream/include/obj.h": "a4d1b994c5acd6fe04d411485d84491553d6df02dfbd7480181a15a7a05456e2",
+    "../../../nethack-c/upstream/include/objects.h": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "../../../nethack-c/upstream/include/optlist.h": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+    "../../../frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe",
+    "../../../tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "../../../tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "../../../tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "../../../tools/gen-sessions/recipes/beatitude-light-equipment.json": "37af556b874c05908a57822310346edbc661c60e463f6c7d67a9477903f387e4",
+    "baseline/package.json": "2cf11600dde45377115ca285655e2c049f8a4f1f126e5e0264df1419b094a6e4"
+  },
+  "runtimeScope": "Read-only fixed cf8d280. No copied runtime source or candidate.",
+  "parentDraftSHA256": "b8664b2f0a17bcf2a53613bb08f419b102171aa720a92cd288d679d4fb59688d",
+  "recipeProfileSHA256": "37af556b874c05908a57822310346edbc661c60e463f6c7d67a9477903f387e4"
+}

@@ -1,5 +1,67 @@
 # STATUS — live handoff board
 
+## 2026-11-26: autoquiver checkpoint verified on full948
+
+Published main is aaf3548321d4c819972ae7b99e6461da7318f869. Both the fire
+damage fix and the source-backed living-ant observer correction are pushed.
+The only current gameplay change is three equipment reads in invent.js:
+hold_another_object now uses game.u's actual quiver, primary and alternate
+weapon slots. Candidate313 and fresh parent composition both pass all six
+original C cases, versus three on the fixed baseline. Their complete native
+reports match. Runtime-map SHA256:
+496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a.
+
+Promotion111 is verified and all 43 exact payloads are installed. The fresh
+installed gate passes in 2.531s with a complete report equal to promotion.
+All 96 authoritative checks, 42 setup checks, 12 neutrality comparisons and
+six pending-input checks pass. All 15 negative hashes and three complete
+original ordinary/native negative rows are unchanged. Original 86/96 and
+candidate legacy94/96 diagnostics remain intact. Only two bow-wording
+expectations were corrected separately, before C recording. Every original
+input and primary recipe remains fixed. Six branch additions bring the
+registry to 4,778; aggregate coverage stays 111.
+
+Full948 passes on NFS with two CPU workers, default45s limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/autoquiver-equipment-full948-js-20261126.
+PID3606513 is complete. All948 recordings pass, with 947,039 screens/cursors,
+20,777,870 random calls and33,218 frames. All1,239 files are fixed.
+All-files SHA256:
+3f694e9ce4ffe33e083e8eade2d5d42e5bce73130b07b64e748d432d6d838f1c.
+Verification SHA256:
+444002713e2c2a2afb0b34d59f3be10aa791a4f8f8a1413554e0f60f4f0565b1.
+Seven retained inventory gates,45 strict workers and the empty source audit
+pass. Public parent proof is in the autoquiver-equipment evidence. Next: stage
+the intended paths, verify all tested Git blobs, commit and immediately push.
+
+Balrog candidate339 is sealed: only game.uwep to game.u.uwep in weapon.js,
+32/32 ordinary checks, native4/4, eight neutrality checks and ten negative
+hashes. Both complete negative ordinary/native rows are unchanged. Leibniz
+owns portable promotion; parent composition follows autoquiver publication.
+Sartre's role-init gender source27 is sealed. Parent's exact original C4
+recording passes all primary predicates; baseline native is3/4, with only the
+invalid-male Valkyrie screen different. Raw SHA256:
+daa5157ad653a5c49e7d431e40f6b4e91862598a8920eeeb488232aab65f86c5.
+Sartre owns an isolated gender-guard candidate. C selection can normalize
+initgend before role_init; the attribution limit remains explicit.
+
+Parent's separate dofiretrap-slime source15 is sealed, with six actual setups,
+24 producer checks,14/18 source checks and12 neutrality comparisons. Only the
+two slimed fire triggers fail timer cleanup and feedback. Four negative rows
+and20 hashes are fixed;10 healthy hashes match the prior fire family. All940
+keys remain ordinary inputs. Original C6 recorded once and all six primary
+predicates pass; baseline native is4/6, with every negative report exact.
+Raw SHA256:6014eaea22a8a560cc691c15c2a825bf036a344f4e8d059694c7e8d3a1f19531.
+There is no slime runtime candidate yet. Scope is the omitted burn_away_slime
+call after fire damage; underwater, human HP-floor and other gaps stay separate.
+
+The official feed checked at20:25:28Z reports agentic rank7, overall11 and
+659 unmatched screens, unchanged. Last scored19:34:29Z, before crown, mounted
+prompt and fire publication. Public44/44 and held-out43/56 remain the measured
+result. Receipt:leaderboard-current-recheck-20261126-202528.json. No scored
+commit is supplied. Official November14 readability update and November18/20
+addenda were read; the reported recorder byte/capture fix is already published
+here as7c96e4d3 and the current recorder uses Latin-1. No rerecording is needed.
+
 ## 2026-11-26: fire damage published; retained observer corrected
 
 Published main is b2f5a53cd96b4ecf9a8c13ea9afed3268145eeb9. The fire-damage

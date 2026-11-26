@@ -1,0 +1,1747 @@
+{
+  "classification": "source-only baseline, not native confirmation",
+  "inputLockSHA256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+  "runtimeSHA256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+  "preselectedNegativeIndexes": [
+    3,
+    4,
+    5
+  ],
+  "rows": [
+    {
+      "index": 0,
+      "name": "wielded-bow-arrows",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   uquiver: null,\n-   uquiver: 51,\n    uswapwep: null,\n    uwep: 50\n  }\n"
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": false,
+          "error": "inventory b\n\n0 !== 512\n"
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": false,
+          "error": "a missing (weapon in hands):                                          a - a bow (weapon in right hand)"
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 28,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            }
+          ]
+        },
+        "after": {
+          "step": 53,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        },
+        "final": {
+          "step": 55,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        }
+      },
+      "inventoryStep": 54,
+      "inventoryRows": [
+        "                                         Weapons",
+        "                                         a - a bow (weapon in right hand)",
+        "                                         b - 5 arrows",
+        "                                         (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@··│",
+        "                                                  │·$:│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "plainHashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "deferredHashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 55,
+        "expected": 55,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 56,
+      "calls": 2532,
+      "frames": 0
+    },
+    {
+      "index": 1,
+      "name": "alternate-bow-arrows",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   uquiver: null,\n-   uquiver: 51,\n    uswapwep: 50,\n    uwep: null\n  }\n"
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": false,
+          "error": "inventory b\n\n0 !== 512\n"
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": false,
+          "error": "b missing (in quiver):                                      b - 5 arrows"
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 35,
+          "turn": 3,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": 50,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 1024,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            }
+          ]
+        },
+        "after": {
+          "step": 60,
+          "turn": 3,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": 50,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 1024,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        },
+        "final": {
+          "step": 62,
+          "turn": 3,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": 50,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 1024,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        }
+      },
+      "inventoryStep": 61,
+      "inventoryRows": [
+        "                                     Weapons",
+        "                                     a - a bow (alternate weapon; not wielded)",
+        "                                     b - 5 arrows",
+        "                                     (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@:·│",
+        "                                                  │·$·│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "02c70e2b62b0b83fce4ed00578d291b91bb0119e5256470feb3e2f43b241b54b",
+        "cursors": "22f04f9420d8c7b0d0c06b967b217c9f91651c0ea266f1f3a69d94fbb14499c7",
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      },
+      "plainHashes": {
+        "screens": "02c70e2b62b0b83fce4ed00578d291b91bb0119e5256470feb3e2f43b241b54b",
+        "cursors": "22f04f9420d8c7b0d0c06b967b217c9f91651c0ea266f1f3a69d94fbb14499c7",
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      },
+      "deferredHashes": {
+        "screens": "02c70e2b62b0b83fce4ed00578d291b91bb0119e5256470feb3e2f43b241b54b",
+        "cursors": "22f04f9420d8c7b0d0c06b967b217c9f91651c0ea266f1f3a69d94fbb14499c7",
+        "calls": "f4a0588ebe508e43d712cf4389dfe6d84148c9ab738798afbd5ac0959a18d4cc",
+        "slices": "8c4af8c0ccb488bc6149a1daa0fcc99c29ed5d144be92f21690ebf6d2c357007",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 62,
+        "expected": 62,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 63,
+      "calls": 2542,
+      "frames": 0
+    },
+    {
+      "index": 2,
+      "name": "preserve-existing-missiles",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   uquiver: 51,\n-   uquiver: 50,\n    uswapwep: null,\n    uwep: null\n  }\n"
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": false,
+          "error": "inventory a\n\n0 !== 512\n"
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": false,
+          "error": "a missing (at the ready):                                          a - 3 darts"
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 24,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": 50
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 24,
+              "letter": "a",
+              "quantity": 3,
+              "mask": 512,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -23
+            }
+          ]
+        },
+        "after": {
+          "step": 51,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": 51
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 24,
+              "letter": "a",
+              "quantity": 3,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -23
+            },
+            {
+              "id": 51,
+              "type": 25,
+              "letter": "b",
+              "quantity": 3,
+              "mask": 512,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -24
+            }
+          ]
+        },
+        "final": {
+          "step": 53,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": 51
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 24,
+              "letter": "a",
+              "quantity": 3,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -23
+            },
+            {
+              "id": 51,
+              "type": 25,
+              "letter": "b",
+              "quantity": 3,
+              "mask": 512,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -24
+            }
+          ]
+        }
+      },
+      "inventoryStep": 52,
+      "inventoryRows": [
+        "                                         Weapons",
+        "                                         a - 3 darts",
+        "                                         b - 3 throwing stars (at the ready)",
+        "                                         (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@··│",
+        "                                                  │·$:│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "226decf2a9276c89338b5f71c001a01d1ed3371cebb030bb6e5ad5182b18a81a",
+        "cursors": "4d873b2fcd984b0c2765be79a18b7fa29b19348249dfdd524ab8c7406d05eedb",
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "plainHashes": {
+        "screens": "226decf2a9276c89338b5f71c001a01d1ed3371cebb030bb6e5ad5182b18a81a",
+        "cursors": "4d873b2fcd984b0c2765be79a18b7fa29b19348249dfdd524ab8c7406d05eedb",
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "deferredHashes": {
+        "screens": "226decf2a9276c89338b5f71c001a01d1ed3371cebb030bb6e5ad5182b18a81a",
+        "cursors": "4d873b2fcd984b0c2765be79a18b7fa29b19348249dfdd524ab8c7406d05eedb",
+        "calls": "cd42e1452608c11f08932a562ece17cc424e44fdf8cee573749afd5d2aec1ba9",
+        "slices": "0c323035647a4652a32a7f1cef7ddcf4c3e711fa698d984c45bceb6fb86f6507",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 53,
+        "expected": 53,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 54,
+      "calls": 2524,
+      "frames": 0
+    },
+    {
+      "index": 3,
+      "name": "disabled-wielded-bow",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": false,
+          "error": "a missing (weapon in hands):                                          a - a bow (weapon in right hand)"
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": false,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 28,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": false,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            }
+          ]
+        },
+        "after": {
+          "step": 53,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": false,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        },
+        "final": {
+          "step": 55,
+          "turn": 2,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": false,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": 50,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 83,
+              "letter": "a",
+              "quantity": 1,
+              "mask": 256,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": 20
+            },
+            {
+              "id": 51,
+              "type": 18,
+              "letter": "b",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        }
+      },
+      "inventoryStep": 54,
+      "inventoryRows": [
+        "                                         Weapons",
+        "                                         a - a bow (weapon in right hand)",
+        "                                         b - 5 arrows",
+        "                                         (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@··│",
+        "                                                  │·$:│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "plainHashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "deferredHashes": {
+        "screens": "9d989e9736ad0fd8b54376cefe83debf1f0c7313bd4d37d76e69da8ac105e618",
+        "cursors": "03fdab167d4870ca5cd10325f9495988bac833bb3d9535c6c346a3dfa5c43b3c",
+        "calls": "97e94bfb5080ff6a1b7e6234696babbede05f490a94da28bc058655b1c0ea965",
+        "slices": "2490e858831f4e5925fb4947c3e8a0f833de009e448f7d4cc297bffd20a837c6",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 55,
+        "expected": 55,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 56,
+      "calls": 2532,
+      "frames": 0
+    },
+    {
+      "index": 4,
+      "name": "no-matching-launcher",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "after": {
+          "step": 25,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 18,
+              "letter": "a",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        },
+        "final": {
+          "step": 27,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 18,
+              "letter": "a",
+              "quantity": 5,
+              "mask": 0,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -20
+            }
+          ]
+        }
+      },
+      "inventoryStep": 26,
+      "inventoryRows": [
+        "                                         Weapons",
+        "                                         a - 5 arrows",
+        "                                         (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@··│",
+        "                                                  │·$:│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "d8805f412dc3a28de26bc75b39146fbe168ecb5f1e51ea4a7a6c62a56f430d31",
+        "cursors": "5a215c6cdb9f6d33953a0b570f65fb18826319975d089e4cd5a63f8d9af58a00",
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908",
+        "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+      },
+      "plainHashes": {
+        "screens": "d8805f412dc3a28de26bc75b39146fbe168ecb5f1e51ea4a7a6c62a56f430d31",
+        "cursors": "5a215c6cdb9f6d33953a0b570f65fb18826319975d089e4cd5a63f8d9af58a00",
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908",
+        "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+      },
+      "deferredHashes": {
+        "screens": "d8805f412dc3a28de26bc75b39146fbe168ecb5f1e51ea4a7a6c62a56f430d31",
+        "cursors": "5a215c6cdb9f6d33953a0b570f65fb18826319975d089e4cd5a63f8d9af58a00",
+        "calls": "1cbbe9c3832a86f5c1dba0d1fbd0af5f4dd83c79b5010d79ea63ba165858ebf8",
+        "slices": "bfaed0270d10f4a44856395ef9a39c6334bfb24565c2bff114962587f035e908",
+        "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 27,
+        "expected": 27,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 28,
+      "calls": 2516,
+      "frames": 0
+    },
+    {
+      "index": 5,
+      "name": "first-missile",
+      "checks": [
+        {
+          "kind": "setup",
+          "name": "empty healthy pauper and exact RC option",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real launchers before receipt",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "real prior quiver",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "all intended wishes delivered as distinct inventory objects",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "received objects carried uncursed and not artifacts",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "survival and canonical slot ownership at every boundary",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "active and alternate launcher identities preserved",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "canonical quiver has source-selected object",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "all inventory worn masks agree with source equipment",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "inventory display and Escape preserve all equipment",
+          "ok": true
+        },
+        {
+          "kind": "setup",
+          "name": "inventory menu contains each actual inventory letter once",
+          "ok": true
+        },
+        {
+          "kind": "contract",
+          "name": "decoded inventory row suffixes match C equipment readers",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "all keys and five streams captured without lost RNG slices",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "observer-free five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "neutrality",
+          "name": "delayed-input five streams exact",
+          "ok": true
+        },
+        {
+          "kind": "boundary",
+          "name": "delayed EOF remains pending with unchanged output",
+          "ok": true
+        }
+      ],
+      "checkpoints": {
+        "initial": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "before": {
+          "step": 0,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": null
+          },
+          "topLevelSlots": [],
+          "inventory": []
+        },
+        "after": {
+          "step": 24,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": 50
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 24,
+              "letter": "a",
+              "quantity": 3,
+              "mask": 512,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -23
+            }
+          ]
+        },
+        "final": {
+          "step": 26,
+          "turn": 1,
+          "hp": 16,
+          "mortality": 0,
+          "gameover": false,
+          "wizard": true,
+          "autoquiver": true,
+          "pauper": true,
+          "rcErrors": [],
+          "unhandled": [],
+          "slots": {
+            "uwep": null,
+            "uswapwep": null,
+            "uquiver": 50
+          },
+          "topLevelSlots": [],
+          "inventory": [
+            {
+              "id": 50,
+              "type": 24,
+              "letter": "a",
+              "quantity": 3,
+              "mask": 512,
+              "where": 3,
+              "blessed": false,
+              "cursed": false,
+              "artifact": 0,
+              "howLost": 0,
+              "skill": -23
+            }
+          ]
+        }
+      },
+      "inventoryStep": 25,
+      "inventoryRows": [
+        "                                         Weapons",
+        "                                         a - 3 darts (at the ready)",
+        "                                         (end)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "                                                  ┌·──┐",
+        "                                                   ·)··",
+        "                                                  │·(·│",
+        "                                                  │@··│",
+        "                                                  │·$:│",
+        "                                                  └───┘",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Wizard the Stripling           St:18/03 Dx:14 Co:13 In:7 Wi:10 Ch:10 Lawful",
+        "Dlvl:1 $:0 HP:16(16) Pw:2(2) AC:10 Xp:1"
+      ],
+      "hashes": {
+        "screens": "d81271a0f2519e5c39d242dde2d0e2f93eb3d8d3848cbcf6d180c7ad5c1a6d3b",
+        "cursors": "bd2139841f174ffb9c6604f6f401b344728fb754043d691e954b234403828193",
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61",
+        "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+      },
+      "plainHashes": {
+        "screens": "d81271a0f2519e5c39d242dde2d0e2f93eb3d8d3848cbcf6d180c7ad5c1a6d3b",
+        "cursors": "bd2139841f174ffb9c6604f6f401b344728fb754043d691e954b234403828193",
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61",
+        "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+      },
+      "deferredHashes": {
+        "screens": "d81271a0f2519e5c39d242dde2d0e2f93eb3d8d3848cbcf6d180c7ad5c1a6d3b",
+        "cursors": "bd2139841f174ffb9c6604f6f401b344728fb754043d691e954b234403828193",
+        "calls": "ed01b1463e5ca1f82c645f41e85eedc13a7644b167269554e5a5c92fc0d5660c",
+        "slices": "a443ad65b6f827793b0d096dadc63c6ba9ebd103b75936778619248c4f99fa61",
+        "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+      },
+      "pending": {
+        "winner": "input",
+        "consumed": 26,
+        "expected": 26,
+        "settled": false,
+        "unchanged": true
+      },
+      "boundaries": 27,
+      "calls": 2516,
+      "frames": 0
+    }
+  ],
+  "summary": {
+    "cases": 6,
+    "pass": 86,
+    "total": 96,
+    "casePass": 2,
+    "setup": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "neutrality": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "errors": 0
+  }
+}

@@ -1,0 +1,7 @@
+{"index":0,"name":"wielded-bow-arrows","pass":13,"total":16}
+{"index":1,"name":"alternate-bow-arrows","pass":13,"total":16}
+{"index":2,"name":"preserve-existing-missiles","pass":13,"total":16}
+{"index":3,"name":"disabled-wielded-bow","pass":15,"total":16}
+{"index":4,"name":"no-matching-launcher","pass":16,"total":16}
+{"index":5,"name":"first-missile","pass":16,"total":16}
+{"cases":6,"pass":86,"total":96,"casePass":2,"setup":[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],"neutrality":[true,true,true,true,true,true,true,true,true,true,true,true],"errors":0}

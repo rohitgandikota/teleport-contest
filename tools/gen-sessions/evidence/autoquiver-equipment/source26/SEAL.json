@@ -1,0 +1,10 @@
+{
+  "classification": "Source-only sealed evidence; original86/96 diagnostic and bow-wording metadata error retained",
+  "members": 26,
+  "manifestSHA256": "1c5c2c44245e7cbafd420a79a705ebf1d312055b1a24f4ca65710a7cc8678bf5",
+  "runtimeModules": 280,
+  "runtimeSHA256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+  "inputLockSHA256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+  "nativeHandoffSHA256": "aa3a27756198aeda22cd763df3850677b910ef14852c9878c8b5ff5052609d90",
+  "verifierSHA256": "514097eb31cd65d1a3cf56683e51dcc015efa12702989e8e7bed9f2061c4c92d"
+}

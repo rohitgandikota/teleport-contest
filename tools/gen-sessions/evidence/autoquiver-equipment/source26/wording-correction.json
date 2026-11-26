@@ -1,0 +1,65 @@
+{
+  "classification": "separate source-backed metadata proposal, original locked failures retained; no replay or native execution",
+  "originalRecipeSHA256": "766781995675acea69ffe98da7decc3bf32cb9ae056dfbd1ea926f76bc1c93a3",
+  "originalPredictionsSHA256": "76482da145c0a4c2f739b1613a55df3cb24e6bc24a67a8485342bb300e6befed",
+  "originalInputLockSHA256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+  "originalProbeSHA256": "0694e64f64b4eaf817d01aa807bda43ffe5cfd28457db1376b7b0a71be92ae6a",
+  "baselineReportSHA256": "009189f646957973e732f0c7b97bcf7bdca3f3aeea1c358c31613867db376ae7",
+  "proposedRecipeSHA256": "feeb0a9e8f58a69e4a7f4c8a142ebb8090fb595243e0a290a08d421f235d20fd",
+  "proposedPredictionsSHA256": "e2c9f9286c2525498ab5ea762c5bc157dcfd9eb542adcaa0e91c3d60f29e6e75",
+  "changes": [
+    {
+      "file": "recipe.json",
+      "path": "/branchAssertions/0/screenIncludes/0",
+      "old": "(weapon in hands)",
+      "proposed": "(weapon in right hand)"
+    },
+    {
+      "file": "recipe.json",
+      "path": "/branchAssertions/3/screenIncludes/0",
+      "old": "(weapon in hands)",
+      "proposed": "(weapon in right hand)"
+    },
+    {
+      "file": "predictions.json",
+      "path": "/cases/0/inventoryRows/0/includes/1",
+      "old": "(weapon in hands)",
+      "proposed": "(weapon in right hand)"
+    },
+    {
+      "file": "predictions.json",
+      "path": "/cases/3/inventoryRows/0/includes/1",
+      "old": "(weapon in hands)",
+      "proposed": "(weapon in right hand)"
+    }
+  ],
+  "allFiveFieldsAndEveryKeyUnchanged": true,
+  "storedRowsOnly": [
+    {
+      "index": 0,
+      "step": 54,
+      "row": "                                         a - a bow (weapon in right hand)",
+      "sourceProposedWordingPresent": true,
+      "originalWordingPresent": false
+    },
+    {
+      "index": 3,
+      "step": 54,
+      "row": "                                         a - a bow (weapon in right hand)",
+      "sourceProposedWordingPresent": true,
+      "originalWordingPresent": false
+    }
+  ],
+  "additionalSourcePins": {
+    "../../../nethack-c/upstream/include/objclass.h": "101f92e0024e4404033845fb15171f8ed4b79374907a6a172b4eb7b026e1eb52",
+    "../../../nethack-c/upstream/include/you.h": "d19cfa0233582f1ad550b9dfc788f26166f3ff21225e3d8a0cd43b6de2094289",
+    "../../../nethack-c/upstream/src/objects.c": "1f1cc8de922d1f41f688da28b8d88d80eca2884619283b60f38418e7b965b340"
+  },
+  "originalDiagnostic": {
+    "pass": 86,
+    "total": 96,
+    "casePass": 2,
+    "cases": 6
+  },
+  "remainingPrerequisite": "Parent independently reviews metadata proposals and confirms all original C outputs. No candidate authorization or corrected gameplay result is implied."
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/autoquiver-equipment-source-audit/probe.mjs"
+  ],
+  "timeoutSeconds": 55,
+  "inputLockSHA256": "8ca6cd7a3dba4d288b11c8e480de20a6ff0bc1de759897d46291715489db77ab",
+  "startedUTC": "2026-11-26T20:00:45.898480+00:00",
+  "exitCode": 1,
+  "timedOut": false,
+  "elapsedSeconds": 2.428,
+  "finishedUTC": "2026-11-26T20:00:48.327014+00:00"
+}

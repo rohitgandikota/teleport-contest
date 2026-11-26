@@ -12,11 +12,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Mounted teleport feedback is pushed as `4002d990`, with all 1,237 full946
-tested Git files verified against the publication. The polymorphed fire fix
-passes all eight C cases, 248 setup/source checks, 45 strict workers and all
-947 maintained recordings. Six retained gates pass; an older ice-melting
-assertion fails identically on the published baseline. Publication is next.
+Polymorphed fire damage is pushed as `b2f5a53c`, with all 1,238 full947
+tested Git files verified against the publication. All eight C cases,
+248 setup/source checks, 45 strict workers and 947 maintained recordings pass.
+Six retained gates passed initially; the seventh counted a dead ant that C
+retains until cleanup. Its corrected living-ant observer passes both fixed
+runtimes without changing inputs, expected states or gameplay.
 Autoquiver and Balrog weapon selection now have original C witnesses, passing
 negative controls and isolated candidates in progress. Startup gender
 normalization has a separate source investigation. Gremlin light fear is queued.

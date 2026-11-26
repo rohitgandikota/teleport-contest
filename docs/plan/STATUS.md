@@ -1,5 +1,28 @@
 # STATUS — live handoff board
 
+## 2026-11-26: fire damage published; retained observer corrected
+
+Published main is b2f5a53cd96b4ecf9a8c13ea9afed3268145eeb9. The fire-damage
+checkpoint is pushed, and all 1,238 full947 tested Git blobs match publication.
+Publication receipt SHA256:
+172e08f7aa5b76ac4b5456d740af15faa615f40069dcbba37a106b2ad4fcdcea.
+
+The retained ice failure is now explained. A read-only diagnostic before the
+unchanged assertions finds one dead ant on both fixed runtimes: mhp=0,
+mstate=2, coordinates [10,6], purge count1. C monst.h:213-214 explicitly keeps
+dead monsters on fmon until dmonsfree. Complete m_detach and dmonsfree owners
+confirm this lifecycle. The observer counted allocated nodes, not living ants.
+Only its fireAnts predicate changes, using !DEADMONSTER; all expected states,
+inputs and other observations remain unchanged. Both original cases pass on
+the published baseline and fire composition, in 0.664s and 0.632s. No gameplay
+files change and no broad run was repeated. The original failed reports remain
+fixed. Public follow-up evidence: retained-observer-correction.json under
+tools/gen-sessions/evidence/dofiretrap-polymorph, SHA256:
+a5d68e5145c2fabeabae79741e6927ba4d7feca009794f7e3fb173c5e1dd96e3.
+Next: publish this observer correction, then compose verified equipment fixes.
+Euclid owns autoquiver, Leibniz Balrog selection, Sartre startup gender source
+coverage. Their scopes and preserved prior failures are recorded below.
+
 ## 2026-11-26: mounted prompt published; polymorphed fire checkpoint verified
 
 Published main is 4002d9904af1ede9cf83a29d537838c757ee8904. All 1,237

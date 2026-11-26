@@ -1,0 +1,178 @@
+{
+  "verifiedAt": "2026-11-26T20:22:20.917655+00:00",
+  "sourceLock": {
+    "createdAt": "2026-11-26T20:21:46.202331+00:00",
+    "originalGateSHA256": "3f87f2fec4bfd2662538eb19d0e97ee3b4cd14466768ed8e6619d625265a0c21",
+    "recipeSHA256": "7fd7b709498a73ae11d24fa4a97a54eff7d1353fe58b1a80c46ac31e5de1a188",
+    "locks": {
+      "baseline": {
+        "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+        "gateSHA256": "2167e37bfb594a9c7818e13ec181f8d48dc8a99a0f163ad22bf8431ddeabe2c0"
+      },
+      "current": {
+        "runtimeSHA256": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+        "gateSHA256": "2167e37bfb594a9c7818e13ec181f8d48dc8a99a0f163ad22bf8431ddeabe2c0"
+      }
+    },
+    "hypothesis": "The endpoint counts a detached mhp=0 fire ant still retained until dmonsfree. Diagnostic adds read-only state before unchanged assertions.",
+    "source": {
+      "nethack-c/upstream/include/monst.h:213-214": "dead monsters stay on fmon until dmonsfree; DEADMONSTER is mhp<1",
+      "nethack-c/upstream/src/mon.c:2734-2802": "m_detach takes off map, sets mhp=0 and MON_DETACH, increments purge without unlinking",
+      "nethack-c/upstream/src/mon.c:2487-2512": "dmonsfree unlinks non-guard dead monsters",
+      "js/mon.js:363-377": "matching delayed removal",
+      "js/mon.js:2237-2298": "matching detach"
+    }
+  },
+  "originalFailure": [
+    {
+      "runtime": "baseline",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/ice-melting-observer-review/baseline/tools/gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.725,
+      "observed": {
+        "states": [
+          {
+            "position": [
+              25,
+              5
+            ],
+            "terrain": 17,
+            "icedpool": 0,
+            "fireTrap": false,
+            "hp": [
+              12,
+              12
+            ],
+            "fireResistance": true,
+            "waterWalking": true,
+            "relevantUnported": []
+          },
+          {
+            "terrain": 16,
+            "icedpool": 0,
+            "fireTrap": false,
+            "fireAnts": 1,
+            "boulders": 1,
+            "heroHp": 12,
+            "relevantUnported": []
+          }
+        ],
+        "fireAnts": [
+          {
+            "mhp": 0,
+            "mstate": 2,
+            "isgd": false,
+            "mx": 10,
+            "my": 6
+          }
+        ],
+        "purge": 1
+      },
+      "stdoutSHA256": "4d472692253a75cb1f5e87822d7d9ed4e01485abf5173a5379b9757eb5d373cf",
+      "stderrSHA256": "31864c1e4121871f8fc6d2f28fea15a94a7c286be95f785b41d2db6119bd77de"
+    },
+    {
+      "runtime": "current",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/ice-melting-observer-review/current/tools/gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.573,
+      "observed": {
+        "states": [
+          {
+            "position": [
+              25,
+              5
+            ],
+            "terrain": 17,
+            "icedpool": 0,
+            "fireTrap": false,
+            "hp": [
+              12,
+              12
+            ],
+            "fireResistance": true,
+            "waterWalking": true,
+            "relevantUnported": []
+          },
+          {
+            "terrain": 16,
+            "icedpool": 0,
+            "fireTrap": false,
+            "fireAnts": 1,
+            "boulders": 1,
+            "heroHp": 12,
+            "relevantUnported": []
+          }
+        ],
+        "fireAnts": [
+          {
+            "mhp": 0,
+            "mstate": 2,
+            "isgd": false,
+            "mx": 10,
+            "my": 6
+          }
+        ],
+        "purge": 1
+      },
+      "stdoutSHA256": "4d472692253a75cb1f5e87822d7d9ed4e01485abf5173a5379b9757eb5d373cf",
+      "stderrSHA256": "ce54394fcc5bae88ead3bf191b019d81c26e75622d4c33da399920053c91fe9f"
+    }
+  ],
+  "correction": {
+    "createdAt": "2026-11-26T20:22:19.619259+00:00",
+    "gateSHA256": "35659d2d447108a77925e93ff0333ce43dc2487f6f0762e49feff825cd72f610",
+    "originalDiagnosticSHA256": "504bcfbf71e8eaa9fbf034198a2bad50ceee92a33f18b14884c099f9cd1836eb",
+    "change": "Import DEADMONSTER and exclude dead nodes from the fireAnts count; retain every other observation and assertion and all keys."
+  },
+  "correctedResults": [
+    {
+      "runtime": "baseline",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/ice-melting-observer-review/baseline/tools/corrected.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.664,
+      "stdoutSHA256": "ff1b22df95d942630a9a6c28ebc292c2217859095bbc9ed74cc22f379c74f69b",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "runtime": "current",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/ice-melting-observer-review/current/tools/corrected.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.632,
+      "stdoutSHA256": "ff1b22df95d942630a9a6c28ebc292c2217859095bbc9ed74cc22f379c74f69b",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtimeChanges": [],
+  "inputsAndExpectedStatesUnchanged": true,
+  "finding": "Both runtimes retain one detached ant with mhp=0, mstate=2 and purge count1. C explicitly retains dead nodes until dmonsfree. The old observer counted allocated nodes rather than living ants. The corrected predicate excludes DEADMONSTER nodes.",
+  "limits": [
+    "The initial six-pass/one-failure checkpoint result is retained unchanged.",
+    "This follow-up corrects only the observer, with no replay input or gameplay change.",
+    "The two corrected ordinary cases pass on each fixed runtime; full947 already passed with exactly the same production files."
+  ]
+}

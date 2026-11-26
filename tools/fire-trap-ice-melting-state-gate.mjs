@@ -10,6 +10,7 @@ import {
 } from '../js/const.js';
 import { ONAMES } from '../js/objects_data.js';
 import { PMNAMES } from '../js/monst_data.js';
+import { DEADMONSTER } from '../js/monst.js';
 
 const recipe = JSON.parse(await readFile(new URL(
     'gen-sessions/recipes/fire-trap-ice-melting.json', import.meta.url),
@@ -54,8 +55,9 @@ for (const [index, segment] of recipe.segments.entries()) {
         fireTrap: (game.level?.traps || []).some(trap =>
             trap.ttyp === FIRE_TRAP
             && trap.tx === poolX && trap.ty === poolY),
+        // C retains dead monsters on fmon until dmonsfree at the end of a turn.
         fireAnts: (game.level?.monsters || []).filter(mon =>
-            mon.mnum === PMNAMES.PM_FIRE_ANT).length,
+            mon.mnum === PMNAMES.PM_FIRE_ANT && !DEADMONSTER(mon)).length,
         boulders: (game.level?.objects || []).filter(obj =>
             obj.where === OBJ_FLOOR && obj.otyp === ONAMES.BOULDER
             && obj.ox === poolX && obj.oy === poolY - 1).length,

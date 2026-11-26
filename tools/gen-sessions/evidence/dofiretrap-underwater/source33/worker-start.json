@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-source-audit/probe.mjs"
+  ],
+  "startedUTC": "2026-11-26T21:23:51.014848+00:00",
+  "timeoutSeconds": 55,
+  "memoryMB": 512,
+  "inputLockSHA256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+  "expectedSourceFailureIsDiagnostic": true,
+  "runtimeCandidate": false,
+  "newCRecordings": 0
+}

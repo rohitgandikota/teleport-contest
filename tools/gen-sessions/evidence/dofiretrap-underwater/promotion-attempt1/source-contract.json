@@ -1,0 +1,321 @@
+{
+  "recipe": {
+    "path": "tools/gen-sessions/recipes/dofiretrap-underwater.json",
+    "sha256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f"
+  },
+  "native": {
+    "path": "tools/gen-sessions/generated/dofiretrap-underwater.session.json",
+    "sha256": "d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de",
+    "bytes": 1208359
+  },
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "recordedBinarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recordedRecorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "reviewedCSourcePins": {
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/trap.c": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/hack.c": "547cab9e7aaa922aa5bb8b5ad38696f9f74e3e1e31c264509a9448a689cb4665",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/sit.c": "b9c9d7d0eb82b003c984eb1e2868c97edf71c44570b0490ae21e8bd33cfb72e1",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/objnam.c": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/timeout.c": "779540f647749e0da11109f18a90e11c9e7bc36af44ed6455440b40fc6910596",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/allmain.c": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/engrave.c": "2adb1765b8010f9916e92473b831db17478459e6fcc0aef5a5f2f05a303541d2",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/include/monsters.h": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/display.c": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/dbridge.c": "b1dbdca4e2fc9e5a2a17ed5d0c80d79f900ea5997dd0b2c4a3171977bee0260f",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/dungeon.c": "4b3e7b2a8afa70fc442a99fd79551982836def70864f738085926f3f326906e9",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/include/obj.h": "a4d1b994c5acd6fe04d411485d84491553d6df02dfbd7480181a15a7a05456e2",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/include/hack.h": "2840a9bd41fb0c09384839fafdbd427a5d8705ad8d3eb5e2a0308cccea36813b"
+  },
+  "reviewedCSourcePinsAreHistoricalOnly": true,
+  "portableDependencyPins": {
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "sealedPackets": {
+    "source33": {
+      "members": 33,
+      "sealSHA256": "3bec9aaa5d4ce898240b779942b920e8375f3ce55207455510ec349a615afca6",
+      "manifestSHA256": "ff08eb870ee28071e87a7ab08d76d46fb274fbed3e425c7c13f99d88806d5d33"
+    },
+    "candidate336": {
+      "members": 336,
+      "sealSHA256": "601130fd8a0769ab9895af4e98b622cc1cf38e93a0503aa0b899f8ab1034f6cd",
+      "manifestSHA256": "951665e3621c2ded7b57884dfdbdcfda6fded5e283ea39d3a6a3929a17f14282"
+    }
+  },
+  "sealedEvidence": {
+    "source33/SOURCE-REVIEW.md": {
+      "packet": "source33",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "source33/LOOK-TIME-ATTRIBUTION.md": {
+      "packet": "source33",
+      "member": "LOOK-TIME-ATTRIBUTION.md"
+    },
+    "source33/look-attribution.json": {
+      "packet": "source33",
+      "member": "look-attribution.json"
+    },
+    "source33/PLAN.md": {
+      "packet": "source33",
+      "member": "PLAN.md"
+    },
+    "source33/STATUS.md": {
+      "packet": "source33",
+      "member": "STATUS.md"
+    },
+    "source33/probe.mjs": {
+      "packet": "source33",
+      "member": "probe.mjs"
+    },
+    "source33/input-lock.json": {
+      "packet": "source33",
+      "member": "input-lock.json"
+    },
+    "source33/recipe.json": {
+      "packet": "source33",
+      "member": "recipe.json"
+    },
+    "source33/predictions.json": {
+      "packet": "source33",
+      "member": "predictions.json"
+    },
+    "source33/source-pins.json": {
+      "packet": "source33",
+      "member": "source-pins.json"
+    },
+    "source33/producer-provenance.json": {
+      "packet": "source33",
+      "member": "producer-provenance.json"
+    },
+    "source33/runtime.json": {
+      "packet": "source33",
+      "member": "runtime.json"
+    },
+    "source33/baseline-observation.json": {
+      "packet": "source33",
+      "member": "baseline-observation.json"
+    },
+    "source33/negative-hashes.json": {
+      "packet": "source33",
+      "member": "negative-hashes.json"
+    },
+    "source33/summary.json": {
+      "packet": "source33",
+      "member": "summary.json"
+    },
+    "source33/worker-start.json": {
+      "packet": "source33",
+      "member": "worker-start.json"
+    },
+    "source33/worker.json": {
+      "packet": "source33",
+      "member": "worker.json"
+    },
+    "source33/worker.log": {
+      "packet": "source33",
+      "member": "worker.log"
+    },
+    "source33/native-handoff.json": {
+      "packet": "source33",
+      "member": "native-handoff.json"
+    },
+    "source33/preseal-verification.json": {
+      "packet": "source33",
+      "member": "preseal-verification.json"
+    },
+    "source33/run-once.py": {
+      "packet": "source33",
+      "member": "run-once.py"
+    },
+    "candidate336/SOURCE-REVIEW.md": {
+      "packet": "candidate336",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "candidate336/PLAN.md": {
+      "packet": "candidate336",
+      "member": "PLAN.md"
+    },
+    "candidate336/README.md": {
+      "packet": "candidate336",
+      "member": "README.md"
+    },
+    "candidate336/STATUS.md": {
+      "packet": "candidate336",
+      "member": "STATUS.md"
+    },
+    "candidate336/ASSERTION-ACCOUNTING.md": {
+      "packet": "candidate336",
+      "member": "ASSERTION-ACCOUNTING.md"
+    },
+    "candidate336/pre-edit-lock.json": {
+      "packet": "candidate336",
+      "member": "pre-edit-lock.json"
+    },
+    "candidate336/source-pins.json": {
+      "packet": "candidate336",
+      "member": "source-pins.json"
+    },
+    "candidate336/edit-receipt.json": {
+      "packet": "candidate336",
+      "member": "edit-receipt.json"
+    },
+    "candidate336/runtime.json": {
+      "packet": "candidate336",
+      "member": "runtime.json"
+    },
+    "candidate336/probe.mjs": {
+      "packet": "candidate336",
+      "member": "probe.mjs"
+    },
+    "candidate336/batch.mjs": {
+      "packet": "candidate336",
+      "member": "batch.mjs"
+    },
+    "candidate336/preflight.mjs": {
+      "packet": "candidate336",
+      "member": "preflight.mjs"
+    },
+    "candidate336/preseal-verification.json": {
+      "packet": "candidate336",
+      "member": "preseal-verification.json"
+    },
+    "candidate336/handoff.json": {
+      "packet": "candidate336",
+      "member": "handoff.json"
+    },
+    "candidate336/reports/preflight.json": {
+      "packet": "candidate336",
+      "member": "reports/preflight.json"
+    },
+    "candidate336/reports/accounting.json": {
+      "packet": "candidate336",
+      "member": "reports/accounting.json"
+    },
+    "candidate336/reports/candidate-observation.json": {
+      "packet": "candidate336",
+      "member": "reports/candidate-observation.json"
+    },
+    "candidate336/reports/candidate-negative-hashes.json": {
+      "packet": "candidate336",
+      "member": "reports/candidate-negative-hashes.json"
+    },
+    "candidate336/reports/candidate-summary.json": {
+      "packet": "candidate336",
+      "member": "reports/candidate-summary.json"
+    },
+    "candidate336/reports/legacy-candidate-accounting.json": {
+      "packet": "candidate336",
+      "member": "reports/legacy-candidate-accounting.json"
+    },
+    "candidate336/reports/candidate-native.json": {
+      "packet": "candidate336",
+      "member": "reports/candidate-native.json"
+    },
+    "candidate336/reports/batch-start.json": {
+      "packet": "candidate336",
+      "member": "reports/batch-start.json"
+    },
+    "candidate336/reports/batch-receipt.json": {
+      "packet": "candidate336",
+      "member": "reports/batch-receipt.json"
+    },
+    "candidate336/reports/batch.log": {
+      "packet": "candidate336",
+      "member": "reports/batch.log"
+    }
+  },
+  "evidencePins": {
+    "README.md": "80fe1b3093d5856ba0a3af140af7325f57f2968a08679d9daf7209f032e07c2d",
+    "candidate336/ASSERTION-ACCOUNTING.md": "e27759c44ac1b94bf5d020ec8a29273fb86507955d6692ffb0f8194d0b02bb32",
+    "candidate336/MANIFEST.json": "951665e3621c2ded7b57884dfdbdcfda6fded5e283ea39d3a6a3929a17f14282",
+    "candidate336/PLAN.md": "c3a037cf2e54efa312d8ed0928cd42d32a1af1ad0a0c1d8f87d24e5db767a8c4",
+    "candidate336/README.md": "502997e50afdd6ea89e5a7f2c3c883cbffcfd975f7b875fee3c49daa5fa16baa",
+    "candidate336/SEAL.json": "601130fd8a0769ab9895af4e98b622cc1cf38e93a0503aa0b899f8ab1034f6cd",
+    "candidate336/SOURCE-REVIEW.md": "7b513945460ba9c24d4538899b785d52f42e7a558a8b84755e04c8b978081677",
+    "candidate336/STATUS.md": "bb95ff8be5904dce92e13c24a67d85f7f9207983236a90f9c377c56f3c03c9a2",
+    "candidate336/batch.mjs": "0f37d10230daa224c7178be25012ee88c9d47fa6c62cc5c64d980f222e2e2afa",
+    "candidate336/edit-receipt.json": "a575e9273c81e23748d73339111a1f60ad993c4ea49b4c7835b22030f4577cb2",
+    "candidate336/handoff.json": "4252b80055200f4c3b8258ed65f815db660ce0937772f97b63b1ba0229a4b168",
+    "candidate336/pre-edit-lock.json": "e6facf75ec5f46d3a7ba508d511fa8d0b0049939797362e4e019f7bd43d66807",
+    "candidate336/preflight.mjs": "a876028337ad52e1f35539006b342ba6d75411b6496f75a9f348213fc9c11e53",
+    "candidate336/preseal-verification.json": "f8d1fa31a54ed58673a51a2fd03d4ea8da4a318a085cd365f6f4c8484726aed5",
+    "candidate336/probe.mjs": "abac91bb4d2167e931dc78ea5b3492c009080510c1a94afb98a634f6532d8615",
+    "candidate336/reports/accounting.json": "e5b2d186427bcc2556651d97c97a12dcfa9ec27508494f4e481235dd64ab46b2",
+    "candidate336/reports/batch-receipt.json": "42c6223476d23efecb043f5b041d72f266715fe9395ea940be3490c8261f3781",
+    "candidate336/reports/batch-start.json": "1c3d2fed1a1844056d27b02a101cedd5974b5442ba601bc353271cbc06ed423d",
+    "candidate336/reports/batch.log": "04fe399af17395a95f83f129005acd252cfd862bb2792fbd8bd3825cbabbb4eb",
+    "candidate336/reports/candidate-native.json": "e5ad383cf623969c37a380eef4fe8c6439072bfb9e8a400e615be149b6ead67d",
+    "candidate336/reports/candidate-negative-hashes.json": "da21a91a90106f94071b96b63a88adc5117e5ac80ac9bb879799351f0aaf3b03",
+    "candidate336/reports/candidate-observation.json": "00f83076bdf745fd087e33a7f33f21452f613b6e6a3e76cacb09f43888918ec4",
+    "candidate336/reports/candidate-summary.json": "1ff7691b6ab9f623b04e6ef50e6cdff6c48174ded7c434ecf5549b62df173fcc",
+    "candidate336/reports/legacy-candidate-accounting.json": "071e47155058ec2fb2492d71bc448c2d3919da05495b77faab512b716a78f4db",
+    "candidate336/reports/preflight.json": "94211890de1b16ee6d0d2da37a8f56140466861f93f5eb441d65c32a5dca9f2d",
+    "candidate336/runtime.json": "788255129685be0ecf9d4541b98f7afabc6eddf2e21777d6195c56cd22d9440a",
+    "candidate336/source-pins.json": "c3143793e1d7529137bd147a07575d3820a5355539fefdf97dfd0a8c182b2950",
+    "correction/authoritative-baseline-accounting.json": "d20197bca2fc1670303c70db8b2892e5445e6ebeb23fca43b90055d1088ce869",
+    "correction/correction-lock.json": "5a2485d6a023ee95e6a86932ad86ae743e87a1baa438637685a212c67457d7c7",
+    "parent/baseline-command.json": "dff881e72e7aed59d185284fa505782377e1a3ff22fc6b89c21c6e035cc69f96",
+    "parent/baseline-native.json": "10840797611c71b8a79d1113866fc91e78c6133ce716251830e1dc2b73b697e7",
+    "parent/baseline.log": "6a8de8e0bd3a7f15617360dad9f775fe6d257b0016d99cb28b2e594c148fdcb4",
+    "parent/input-lock.json": "b4f1ed29298808cee3aba4f35856e7272d01881840b0018df46892ba54ce302b",
+    "parent/native-recording.json": "84edb17d066fa7a0a9edf8c6835f527279c3966947745d7bbbb162235020a6c8",
+    "parent/native-recording.log": "e3e8cce2e37991d1dd01be08f0422d7d7dd375450249864d92aadf3a6a9c5955",
+    "parent/preflight.json": "90dbc681595cbf562580b6b4d80fc29aa4d608cbc57ff1ee6ccf6396b3aa97d2",
+    "portable-provenance.json": "9e774d3762f49f4fe3f6b468d979e7fddfca80ee8a30159fa409915e0412de84",
+    "requirements-additions.json": "c9fb909d965f40646e7c68bca6bbf014083f2078ebed423b3dcde2672ea253e6",
+    "source33/LOOK-TIME-ATTRIBUTION.md": "ae177e7ee6a33859450b84783d2e453bfdef1dec77ec353c08827757ab31071e",
+    "source33/MANIFEST.json": "ff08eb870ee28071e87a7ab08d76d46fb274fbed3e425c7c13f99d88806d5d33",
+    "source33/PLAN.md": "e41fe31444af7b94ceca667d7b89d47e6a325167bc9da161391f67d97cad8031",
+    "source33/SEAL.json": "3bec9aaa5d4ce898240b779942b920e8375f3ce55207455510ec349a615afca6",
+    "source33/SOURCE-REVIEW.md": "8d857e91f12b5ada8b3697e10e20dabeba55598a746fd5428ed739c7bbe668ec",
+    "source33/STATUS.md": "49e910dc103b9cf28e5ab715329ccc7e75ffe356e051601d5803af41ef01bf98",
+    "source33/baseline-observation.json": "b93c73c221bc6976516a20f931e9752df83ce1e2ad90121bb963cef8c058141d",
+    "source33/input-lock.json": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+    "source33/look-attribution.json": "ccc3f750e04fc3814c60fade63e5216a598211cd6c2640b973968356592cd57c",
+    "source33/native-handoff.json": "2c9c3c94693a5200ed5ada67cbb170c50be4a458776b203a8d1e183f7984a140",
+    "source33/negative-hashes.json": "da21a91a90106f94071b96b63a88adc5117e5ac80ac9bb879799351f0aaf3b03",
+    "source33/predictions.json": "5be58e8b822c9125b38c3d43b9feaeafc079a08623fc2643d22f5f204467ad8f",
+    "source33/preseal-verification.json": "4d9aca82f890fdd7279c857f7bbc4521b9d481087931a07dfe9fcb0f34abaab7",
+    "source33/probe.mjs": "b80818ff1ff56e7d9c297d5ec9085370904ea319b63902df83c24ae513f3b649",
+    "source33/producer-provenance.json": "9a5130ddfb43f84712c5811bc1b72dd6e32510472a5bf247beb4207c9ae2b026",
+    "source33/recipe.json": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+    "source33/run-once.py": "b3908bd35d8c4552ba1d54f12712f5b4a8312ff3f3a61802d983ab491c295ab8",
+    "source33/runtime.json": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+    "source33/source-pins.json": "3bb54ea054be11514fa4c822977f2bf545e16be650bf747e98ac83932d934747",
+    "source33/summary.json": "fe709a0b6feecaff2dd051ed72e1c73a38ab7be1ea67dab956c8d2a12c137ddd",
+    "source33/worker-start.json": "fce4e24e4fb87529f8e61f5fd6f1799a88874cc703938491d5a01babec0efd4d",
+    "source33/worker.json": "6ee8e36b4198a0fca5ebee98ed6b0da80ca3b7f36217ac1d81cd79006a431ef7",
+    "source33/worker.log": "d271ba672008e2dc7b8a57ca92207f090701f1bd7c59f826bdb8709f988ba8ae"
+  },
+  "originalInputLockSHA256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+  "correctionLockSHA256": "5a2485d6a023ee95e6a86932ad86ae743e87a1baa438637685a212c67457d7c7",
+  "originalBodySHA256": "f17b13870b8eae22a5b7335883ea183eceee38f591eaa679b1c6c790c74a645a",
+  "correctedBodySHA256": "a97bb4b3d3f2a16ecbdfe4c387a3c80072030549fac137cd4c3bdeeeb8f87ca6",
+  "portableBodySHA256": "cc0d9660c2d228091d55d76a230fa6d370331d68ea4ee904e14c36453de9b9b0",
+  "negativeIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "totals": {
+    "cases": 6,
+    "keys": 867,
+    "boundaries": 873,
+    "calls": 16839,
+    "frames": 21
+  },
+  "originalChecks": "88/102",
+  "authoritativeBaseline": "90/102",
+  "candidateChecks": "102/102",
+  "legacyCandidateChecks": "100/102",
+  "coverageAdditions": [],
+  "aggregateCoverageUnchanged": 111,
+  "scope": "Native floor/null-box only; no box-coordinate coverage claim."
+}

@@ -1,0 +1,365 @@
+// Source-derived underwater fire checks on the current installed runtime.
+import assert from 'node:assert/strict';
+import {readFileSync, writeFileSync, existsSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+
+const root = new URL('../', import.meta.url);
+const evidence = new URL('tools/gen-sessions/evidence/dofiretrap-underwater/', root);
+const json = url => JSON.parse(readFileSync(url));
+const evidenceJSON = name => json(new URL(name, evidence));
+const read = name => evidenceJSON('source33/' + name);
+const sha = value => createHash('sha256').update(value).digest('hex');
+const hash = value => sha(JSON.stringify(value));
+const digest = url => sha(readFileSync(url));
+assert.ok(process.argv.length <= 3, 'usage: node tools/dofiretrap-underwater-gate.mjs [new-report.json]');
+const reportPath = process.argv[2] || null;
+assert.ok(!reportPath || (!reportPath.startsWith('-') && !existsSync(reportPath)), 'report must be a new file');
+const contractFile = new URL('source-contract.json', evidence);
+assert.equal(digest(contractFile), '83232d1c1365c39b0f0e804bef170afa6f35cf5fc5f9d52a0e618792c07960b9');
+const contract = json(contractFile);
+for (const [name, expected] of Object.entries(contract.evidencePins))
+    assert.equal(digest(new URL(name, evidence)), expected, name);
+for (const [name, expected] of Object.entries(contract.portableDependencyPins))
+    assert.equal(digest(new URL(name, root)), expected, name);
+for (const [label, pin] of Object.entries(contract.sealedPackets)) {
+    const seal = evidenceJSON(label + '/SEAL.json');
+    const manifest = evidenceJSON(label + '/MANIFEST.json');
+    assert.equal(digest(new URL(label + '/SEAL.json', evidence)), pin.sealSHA256);
+    assert.equal(digest(new URL(label + '/MANIFEST.json', evidence)), pin.manifestSHA256);
+    assert.equal(seal.manifestSHA256, pin.manifestSHA256);
+    assert.equal(seal.members, pin.members);
+    assert.equal(Object.keys(manifest).length, pin.members);
+}
+for (const [name, origin] of Object.entries(contract.sealedEvidence))
+    assert.equal(digest(new URL(name, evidence)), evidenceJSON(origin.packet + '/MANIFEST.json')[origin.member], name);
+const sourceSeal = read('SEAL.json');
+const candidateSeal = evidenceJSON('candidate336/SEAL.json');
+assert.equal(candidateSeal.sourceSealSHA256, contract.sealedPackets.source33.sealSHA256);
+const lock = read('input-lock.json');
+assert.equal(digest(new URL('source33/input-lock.json', evidence)), contract.originalInputLockSHA256);
+assert.equal(lock.probeSHA256, contract.evidencePins['source33/probe.mjs']);
+for (const name of ['recipe.json', 'predictions.json', 'source-pins.json', 'SOURCE-REVIEW.md'])
+    assert.equal(lock.files[name], contract.evidencePins['source33/' + name]);
+const correction = evidenceJSON('correction/correction-lock.json');
+assert.equal(contract.correctionLockSHA256, contract.evidencePins['correction/correction-lock.json']);
+assert.equal(correction.sourceSealSHA256, contract.sealedPackets.source33.sealSHA256);
+assert.equal(correction.authoritativeAccountingSHA256, contract.evidencePins['correction/authoritative-baseline-accounting.json']);
+assert.ok(correction.beforeC);
+const provenance = evidenceJSON('portable-provenance.json');
+assert.deepEqual(provenance.approvedPredicateReplacements, correction.replacements);
+const sourceText = readFileSync(new URL('source33/probe.mjs', evidence), 'utf8');
+const gateText = readFileSync(new URL(import.meta.url), 'utf8');
+const originalBody = sourceText.slice(sourceText.indexOf(provenance.bodyStart),
+    sourceText.indexOf(provenance.sourceBodyEnd, sourceText.indexOf(provenance.bodyStart)));
+assert.equal(sha(originalBody), contract.originalBodySHA256);
+let portableBody = originalBody;
+for (const replacement of correction.replacements) {
+    assert.equal(portableBody.split(replacement.before).length, 2);
+    portableBody = portableBody.replace(replacement.before, replacement.after);
+}
+assert.equal(sha(portableBody), contract.correctedBodySHA256);
+for (const {old, new: replacement} of provenance.importReplacements)
+    portableBody = portableBody.replaceAll(old, replacement);
+assert.equal(sha(portableBody), contract.portableBodySHA256);
+assert.equal(gateText.slice(gateText.indexOf(provenance.bodyStart), gateText.indexOf(provenance.portableBodyEnd)), portableBody);
+
+const recipeFile = new URL(contract.recipe.path, root);
+assert.equal(digest(recipeFile), contract.recipe.sha256);
+const recipe = json(recipeFile), predictions = read('predictions.json');
+assert.deepEqual(recipe, read('recipe.json'));
+assert.equal(sourceSeal.recipeSHA256, contract.recipe.sha256);
+assert.deepEqual(lock.fields, ['name', 'seed', 'datetime', 'nethackrc', 'moves']);
+const tuples = parts => parts.map(part => lock.fields.map(field =>
+    ({field, present: Object.hasOwn(part, field), value: part[field]})));
+assert.deepEqual(tuples(recipe.segments), lock.tuples);
+assert.deepEqual(recipe.segments.map(s => Array.from(s.moves, c => c.charCodeAt(0))), lock.keys);
+assert.deepEqual(lock.negativeIndexes, [2, 3, 4, 5]);
+const parentLock = evidenceJSON('parent/input-lock.json');
+const recording = evidenceJSON('parent/native-recording.json');
+assert.equal(parentLock.beforeC, true);
+assert.equal(recording.cExecutedOnce, true);
+assert.equal(recording.exit, 0);
+assert.ok(correction.createdAt < recording.startedAt);
+assert.equal(parentLock.sourceSealSHA256, contract.sealedPackets.source33.sealSHA256);
+assert.equal(recording.sourceSealSHA256, contract.sealedPackets.source33.sealSHA256);
+for (const name of ['sourceRecipeSHA256', 'primaryRecipeSHA256', 'minimalSHA256'])
+    assert.equal(parentLock[name], contract.recipe.sha256);
+assert.equal(recording.inputSHA256, contract.recipe.sha256);
+assert.equal(recording.primaryRecipeSHA256, contract.recipe.sha256);
+assert.equal(recording.rawSha256, contract.native.sha256);
+assert.equal(recording.cPin, contract.cPin);
+assert.equal(recording.binarySha256, contract.recordedBinarySHA256);
+assert.equal(recording.recorderSha256, contract.recordedRecorderSHA256);
+assert.equal(recording.logSHA256, contract.evidencePins['parent/native-recording.log']);
+
+const rawBytes = readFileSync(new URL(contract.native.path, root));
+assert.equal(sha(rawBytes), contract.native.sha256);
+assert.equal(rawBytes.length, 1208359);
+const native = JSON.parse(rawBytes);
+assert.equal(native.source, 'c');
+assert.equal(native.version, 5);
+assert.deepEqual(Object.keys(native).sort(), Object.keys(recipe).sort());
+for (const name of Object.keys(recipe))
+    if (name !== 'segments') assert.deepEqual(native[name], recipe[name], name);
+assert.equal(native.segments.length, 6);
+assert.deepEqual(tuples(native.segments), lock.tuples);
+for (const [index, part] of recipe.segments.entries()) {
+    assert.deepEqual(native.segments[index].steps.map(step => step.key), [null, ...part.moves]);
+    assert.equal(recipe.branchAssertions[index].branch, recipe.branches[index]);
+    assert.equal(recipe.branchAssertions[index].segment, index);
+}
+const totals = {cases: native.segments.length, keys: recipe.segments.reduce((n, s) => n + s.moves.length, 0),
+    boundaries: native.segments.reduce((n, s) => n + s.steps.length, 0),
+    calls: native.segments.flatMap(s => s.steps).flatMap(s => s.rng || []).length,
+    frames: native.segments.flatMap(s => s.steps).flatMap(s => s.animation_frames || []).length};
+assert.deepEqual(totals, {cases: 6, keys: 867, boundaries: 873, calls: 16839, frames: 21});
+assert.deepEqual(totals, contract.totals);
+const {branchAssertionErrors, recordingIntegrityErrors} = await import('./gen-sessions/assertions.mjs');
+assert.deepEqual(recordingIntegrityErrors(native), []);
+assert.deepEqual(branchAssertionErrors(recipe, native), []);
+assert.equal(recipe.requireBranchAssertions, true);
+assert.equal(recipe.branchAssertions.length, 6);
+const requirements = evidenceJSON('requirements-additions.json');
+assert.deepEqual(requirements.map(row => row.id), recipe.branches);
+assert.ok(requirements.every(row => row.cFile === 'src/trap.c' && row.cFunction === 'dofiretrap'));
+
+const originalRows = read('baseline-observation.json');
+const baselineRows = evidenceJSON('correction/authoritative-baseline-accounting.json');
+const candidateRows = evidenceJSON('candidate336/reports/candidate-observation.json');
+const legacyRows = evidenceJSON('candidate336/reports/legacy-candidate-accounting.json');
+const baselineNative = evidenceJSON('parent/baseline-native.json');
+const candidateNative = evidenceJSON('candidate336/reports/candidate-native.json');
+const exact = row => row.fullStyleExact && row.frozenScreenCursorExact && row.fullRngExact && row.animationExact;
+const passed = data => data.flatMap(r => r.checks).filter(c => c.pass).length;
+assert.deepEqual([originalRows, baselineRows, candidateRows, legacyRows].map(passed), [88, 90, 102, 100]);
+assert.ok([originalRows, baselineRows, candidateRows, legacyRows].every(data => data.flatMap(r => r.checks).length === 102));
+assert.deepEqual(originalRows.filter(r => !r.source).map(r => r.index), [0, 1, 4]);
+assert.deepEqual(baselineRows.filter(r => !r.source).map(r => r.index), [0, 1]);
+assert.deepEqual(legacyRows.filter(r => !r.source).map(r => r.index), [4]);
+assert.deepEqual(baselineNative.map(exact), [false, false, true, true, true, true]);
+assert.equal(candidateNative.length, 6);
+assert.ok(candidateNative.every(exact));
+assert.equal(candidateSeal.nativeReportSHA256, contract.evidencePins['candidate336/reports/candidate-native.json']);
+const behavior = ({checks, producer, source, ...rest}) => rest;
+for (const index of contract.negativeIndexes) {
+    assert.deepEqual(candidateRows[index], baselineRows[index]);
+    assert.deepEqual(legacyRows[index], originalRows[index]);
+    assert.deepEqual(behavior(candidateRows[index]), behavior(originalRows[index]));
+    assert.deepEqual(candidateNative[index], baselineNative[index]);
+    assert.deepEqual(candidateNative[index].rawHashes.js, originalRows[index].outputHashes);
+}
+assert.deepEqual(read('negative-hashes.json'), contract.negativeIndexes
+    .map(index => ({index, outputHashes: originalRows[index].outputHashes})));
+const nativePreflight = {beforeGameplayImports: true, sourceC5: true,
+    rawSHA256: contract.native.sha256, recipeSHA256: contract.recipe.sha256,
+    allRootMetadata: true, fiveFieldPresenceAndValues: true, allKeysExact: true,
+    integrityErrors: [], primaryErrors: [], primaryAssertions: 6, totals};
+
+// Keep the original probe progress records in the single JSON report.
+const progress = [];
+const console = {log: line => progress.push(JSON.parse(line))};
+
+const {runSegment} = await import('../js/jsmain.js');
+const {InMemoryStorage} = await import('../js/storage.js');
+const {PMNAMES} = await import('../js/monst_data.js');
+const {FIRE_TRAP, ROOM, POOL} = await import('../js/const.js');
+const {Underwater, Fire_resistance, Swimming, Breathless, Blind, Flying, Levitation, Fumbling} = await import('../js/youprop.js');
+const {can_reach_floor} = await import('../js/pickup.js');
+const {decodeScreen, renderCell} = await import('../frozen/screen-decode.mjs');
+const {outputs, hashes, deferred} = await import('./half-damage-reader-observe.mjs');
+const cure = 'The slime that covers you is burned away!';
+const steam = 'A cascade of steamy bubbles erupts';
+const flame = 'A tower of flame erupts';
+const rows = [];
+for (const [index, part] of recipe.segments.entries()) {
+    const p = predictions[index], states = [], checks = [];
+    const check = (kind, name, fn) => {
+        try { fn(); checks.push({kind, name, pass: true}); }
+        catch (error) { checks.push({kind, name, pass: false, error: error.message}); }
+    };
+    const previous = Object.getOwnPropertyDescriptor(globalThis, '__step_snapshot');
+    let run;
+    try {
+        globalThis.__step_snapshot = {step: '*', cb(g, step) {
+            if (!g.u || !g.level) return;
+            const trap = g.level.traps.find(t => t.tx === g.u.ux && t.ty === g.u.uy);
+            states.push({step, turn: g.moves, form: g.u.umonnum,
+                hp: g.u.uhp, hpmax: g.u.uhpmax, mh: g.u.mh, mhmax: g.u.mhmax,
+                mortality: g.u.umortality || 0, gameover: !!g.program_state?.gameover,
+                xy: [g.u.ux, g.u.uy], terrain: g.level.at(g.u.ux, g.u.uy).typ,
+                underwater: !!Underwater(), uinwater: !!g.u.uinwater,
+                resistant: !!Fire_resistance(), swimming: !!Swimming(), breathless: !!Breathless(),
+                blind: !!Blind(), flying: !!Flying(), levitating: !!Levitation(), fumbling: !!Fumbling(),
+                canReachFloor: !!can_reach_floor(false), utrap: g.u.utrap || 0,
+                slime: g.u.uprops?.SLIMED || 0, gloves: g.u.uarmg?.otyp ?? null,
+                inventory: (g.invent || []).map(o => ({id: o.o_id, type: o.otyp, count: o.quan, worn: o.owornmask || 0})),
+                floor: g.level.objectsAt(g.u.ux, g.u.uy).map(o => ({id: o.o_id, type: o.otyp, count: o.quan})),
+                trap: trap ? {type: trap.ttyp, seen: !!trap.tseen} : null,
+                liveMonsters: g.level.monsters.filter(m => m.mhp > 0).length});
+        }};
+        run = await runSegment({...part, storage: new InMemoryStorage()});
+    } finally {
+        if (previous) Object.defineProperty(globalThis, '__step_snapshot', previous);
+        else delete globalThis.__step_snapshot;
+    }
+    assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis, '__step_snapshot'), previous);
+    const out = structuredClone(outputs(run));
+    const texts = out.screens.map(screen => decodeScreen(screen)
+        .map(row => row.map(renderCell).join('').trimEnd()).join('\n'));
+    const at = step => states.find(s => s.step === step);
+    const phases = Object.fromEntries(Object.entries(p.boundaries).map(([name, step]) => [name, at(step)]));
+    const before = phases.beforeAction, after = states.at(-1);
+    const actionTexts = texts.slice(p.boundaries.beforeAction + 1);
+    const actionCalls = out.slices.slice(p.boundaries.beforeAction + 1).flat();
+    const actionFrames = out.frames.slice(p.boundaries.beforeAction + 1).flat().length;
+    const has = text => actionTexts.some(s => s.includes(text));
+    check('producer', 'real cleanup reaches empty room square with no living monster', () => {
+        assert.deepEqual(phases.cleanup.xy, p.xy); assert.equal(phases.cleanup.terrain, ROOM);
+        assert.equal(phases.cleanup.liveMonsters, 0); assert.deepEqual(phases.cleanup.floor, []);
+        assert.deepEqual(phases.cleanup.inventory, []);
+    });
+    check('producer', 'actual form supplies the intended resistance and safe-water properties', () => {
+        assert.equal(before.form, PMNAMES[p.form]); assert.equal(before.resistant, p.resistant);
+        assert.equal(before.swimming, p.swimming); assert.equal(before.breathless, true);
+        assert.equal(before.blind, p.blind); assert.ok(before.mh > 12);
+    });
+    check('producer', 'unseen fire trap is created on dry floor before any pool', () => {
+        assert.equal(phases.trap.terrain, ROOM);
+        assert.deepEqual(phases.trap.trap, {type: FIRE_TRAP, seen: false});
+        assert.deepEqual(phases.trap.floor, []); assert.equal(phases.trap.underwater, false);
+    });
+    check('producer', 'real wait establishes water state and separates iron entry rust', () => {
+        assert.equal(phases.settled.underwater, p.wet); assert.equal(phases.settled.uinwater, p.wet);
+        assert.equal(phases.settled.terrain, p.wet ? POOL : ROOM);
+        if (p.wet && p.resistant) assert.ok(phases.settled.mhmax < phases.trap.mhmax);
+        else assert.equal(phases.settled.mhmax, phases.trap.mhmax);
+    });
+    check('producer', 'action starts with actual pool/trap and no floor or equipment interception', () => {
+        assert.equal(before.underwater, p.wet); assert.equal(before.uinwater, p.wet);
+        assert.equal(before.terrain, p.wet ? POOL : ROOM); assert.deepEqual(before.xy, p.xy);
+        assert.deepEqual(before.trap, {type: FIRE_TRAP, seen: false});
+        assert.deepEqual(before.inventory, []); assert.deepEqual(before.floor, []);
+        assert.equal(before.gloves, null); assert.equal(before.fumbling, false);
+        assert.equal(before.canReachFloor, true); assert.equal(before.levitating, false);
+        assert.equal(before.flying, false); assert.equal(before.utrap, 0); assert.equal(before.liveMonsters, 0);
+    });
+    check('producer', 'real intrinsic menu gives timer100 and no fire occurred during setup', () => {
+        assert.equal(before.slime, 100);
+        assert.ok(texts.slice(0, p.boundaries.beforeAction + 1).some(t => t.includes('You are turning into slime.')));
+        assert.ok(!texts.slice(0, p.boundaries.beforeAction + 1).some(t => t.includes(flame) || t.includes(steam)));
+    });
+    check('producer', 'all ordinary keys finish without death, rehumanization or displacement', () => {
+        assert.equal(after.step, part.moves.length); assert.equal(out.screens.length, part.moves.length + 1);
+        assert.deepEqual(out.slices.flat(), out.calls);
+        assert.ok(states.every(s => s.hp > 0 && !s.mortality && !s.gameover));
+        assert.equal(after.form, PMNAMES[p.form]); assert.ok(after.mh > 0);
+        assert.deepEqual(after.xy, p.xy); assert.deepEqual(after.inventory, []); assert.deepEqual(after.floor, []);
+    });
+    check('source', 'sit actually triggers and reveals the trap while look does not', () => {
+        assert.equal(has(flame) || has(steam), p.trigger);
+        assert.deepEqual(after.trap, {type: FIRE_TRAP, seen: p.trigger});
+    });
+    check('source', 'steamy bubbles occur exactly for underwater fire', () => assert.equal(has(steam), p.expectedCSteam));
+    check('source', 'flame feedback occurs only for dry fire', () => assert.equal(has(flame), p.expectedCFlame));
+    check('source', 'underwater return retains slime apart from elapsed turns; dry fire cures', () => {
+        if (!p.trigger)
+            assert.equal(after.slime, before.slime - (after.turn - before.turn));
+        else if (p.wet) {
+            assert.ok(after.slime > 0);
+            assert.equal(after.slime, before.slime - (after.turn - before.turn));
+        } else assert.equal(after.slime, 0);
+    });
+    check('source', 'slime cure feedback occurs only for dry fire', () => assert.equal(has(cure), p.expectedCCure));
+    check('source', 'underwater fire preserves maximum and applies only the source boiling-water damage', () => {
+        assert.equal(after.hpmax, before.hpmax); assert.equal(after.hp, before.hp);
+        if (p.wet || !p.trigger) assert.equal(after.mhmax, before.mhmax);
+        if (!p.trigger || (p.wet && p.resistant)) assert.equal(after.mh, before.mh);
+        else if (p.wet) assert.ok(after.mh >= before.mh - 3 && after.mh <= before.mh);
+        else assert.ok(after.mhmax <= before.mhmax && after.mh <= before.mh);
+    });
+    check('source', 'source trap RNG prefix is preserved without filtering world-turn calls', () => {
+        if (!p.trigger) {
+            assert.equal(after.turn > before.turn, p.blind);
+            if (!p.blind) assert.deepEqual(actionCalls, []);
+        }
+        for (const [i, call] of p.expectedCTrapRngPrefix.entries())
+            assert.ok(actionCalls[i]?.startsWith(call + '='), `${call}: ${actionCalls[i]}`);
+    });
+    check('source', 'underwater return has no shield animation', () => {
+        if (!p.wet && p.trigger && p.resistant) assert.ok(actionFrames > 0);
+        else assert.equal(actionFrames, 0);
+    });
+    const plain = structuredClone(outputs(await runSegment({...part, storage: new InMemoryStorage()})));
+    const delayed = await deferred(part);
+    check('neutrality', 'passive observer preserves all five streams', () => assert.deepEqual(out, plain));
+    check('neutrality', 'deferred input preserves all five streams', () => assert.deepEqual(out, delayed));
+    rows.push({index, name: part.name, negative: p.negative, checks,
+        producer: checks.filter(c => c.kind === 'producer').every(c => c.pass),
+        source: checks.filter(c => c.kind === 'source').every(c => c.pass),
+        phases, before, after, actionCalls, actionFrames,
+        statesSHA256: sha(JSON.stringify(states)), outputHashes: hashes(out),
+        boundaries: out.screens.length, calls: out.calls.length, frames: out.frames.flat().length});
+    console.log(JSON.stringify({index, name: part.name, producer: rows.at(-1).producer,
+        source: rows.at(-1).source, failed: checks.filter(c => !c.pass).map(c => c.name)}));
+}
+// Portable accounting, no further gameplay.
+assert.ok(rows.every(row => row.checks.every(check => check.pass)), JSON.stringify(rows.map(row =>
+    ({name: row.name, failures: row.checks.filter(check => !check.pass)}))));
+// Match the candidate's persisted JSON boundary. Only the two initially
+// undefined polymorph HP fields may be absent; every other value must agree.
+const persistedRows = JSON.parse(JSON.stringify(rows));
+for (const [index, row] of rows.entries()) {
+    const live = structuredClone(row);
+    for (const field of ['mh', 'mhmax']) {
+        assert.ok(Object.hasOwn(live.phases.cleanup, field));
+        assert.equal(live.phases.cleanup[field], undefined);
+        delete live.phases.cleanup[field];
+    }
+    assert.deepEqual(live, persistedRows[index]);
+}
+const legacy = structuredClone(persistedRows);
+for (const row of legacy) {
+    if (predictions[row.index].trigger) continue;
+    for (const check of row.checks) {
+        let evaluate;
+        if (check.name === 'underwater return retains slime apart from elapsed turns; dry fire cures')
+            evaluate = () => assert.equal(row.after.slime, 100);
+        else if (check.name === 'source trap RNG prefix is preserved without filtering world-turn calls')
+            evaluate = () => assert.deepEqual(row.actionCalls, []);
+        if (!evaluate) continue;
+        try { evaluate(); check.pass = true; delete check.error; }
+        catch (error) { check.pass = false; check.error = error.message; }
+    }
+    row.source = row.checks.filter(c => c.kind === 'source').every(c => c.pass);
+}
+assert.equal(passed(legacy), 100);
+assert.deepEqual(legacy.filter(r => !r.source).map(r => r.index), [4]);
+assert.deepEqual(legacy[4].checks.filter(c => !c.pass), originalRows[4].checks.filter(c => !c.pass));
+for (const index of contract.negativeIndexes) {
+    assert.deepEqual(persistedRows[index], baselineRows[index]);
+    assert.deepEqual(legacy[index], originalRows[index]);
+    assert.deepEqual(behavior(persistedRows[index]), behavior(originalRows[index]));
+    assert.deepEqual(rows[index].outputHashes, baselineNative[index].rawHashes.js);
+}
+const report = {
+    summary: {cases: 6, passed: passed(rows), total: 102, producerChecks: 42, sourceChecks: 48,
+        neutrality: 12, negativeHashes: 20, completeCorrectedOrdinaryNegatives: 4,
+        completeLegacyOrdinaryNegatives: 4, behaviorOnlyNegatives: 4, persistedRowChecks: 6},
+    sourcePreflight: {immutableEvidence: Object.keys(contract.evidencePins).length,
+        exactTwoApprovedPredicateReplacements: true, observerBodyUnchanged: true,
+        onlyOtherChangesAreImportPaths: true, nativeReplay: false},
+    nativePreflight,
+    runtimeOwnerSHA256: digest(new URL('js/trap.js', root)),
+    history: {source: '88/102', authoritativeBaseline: '90/102', legacyCandidate: '100/102',
+        freshLegacyChecks: passed(legacy), nativeBaseline: '4/6', nativeCandidate: '6/6',
+        fullNativeNegativeRows: 4, legacyAccountingWithoutReplay: true,
+        preservedPortableFailure: 'attempt1 live-versus-persisted undefined fields'},
+    progress,
+    results: rows.map((row, i) => ({index: row.index, name: row.name, negative: row.negative,
+        passed: row.checks.filter(c => c.pass).length, total: row.checks.length,
+        fullRowSHA256: hash(row), legacyFullRowSHA256: hash(legacy[i]),
+        statesSHA256: row.statesSHA256, hashes: row.outputHashes})),
+    legacyFailures: legacy.flatMap(row => row.checks.filter(c => !c.pass).map(c => ({index: row.index, ...c})))
+};
+if (reportPath) writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n', {flag: 'wx'});
+globalThis.console.log(JSON.stringify(report, null, 2));

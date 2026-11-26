@@ -1,0 +1,20 @@
+{
+  "sealedUTC": "2026-11-26T21:32:23.485205+00:00",
+  "members": 33,
+  "manifestSHA256": "ff08eb870ee28071e87a7ab08d76d46fb274fbed3e425c7c13f99d88806d5d33",
+  "runtimeSHA256": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+  "recipeSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "inputLockSHA256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+  "observationSHA256": "b93c73c221bc6976516a20f931e9752df83ce1e2ad90121bb963cef8c058141d",
+  "presealVerificationSHA256": "4d9aca82f890fdd7279c857f7bbc4521b9d481087931a07dfe9fcb0f34abaab7",
+  "runtimeModules": 280,
+  "originalChecks": "88/102",
+  "producerChecks": "42/42",
+  "neutrality": "12/12",
+  "negativeHashes": 20,
+  "retainedPremiseFailure": 4,
+  "gameplayBatches": 1,
+  "newCRecordings": 0,
+  "runtimeCandidate": false,
+  "priorSlimeSourceMembers": 15
+}

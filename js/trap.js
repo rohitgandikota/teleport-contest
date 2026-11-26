@@ -390,6 +390,15 @@ async function dofiretrap(box) {
     const source = the(box ? xname(box)
                            : surface(game.u.ux, game.u.uy));
 
+    if ((box && !carried(box)) ? is_pool(box.ox, box.oy) : Underwater()) {
+        await pline(`A cascade of steamy bubbles erupts from ${source}!`);
+        if (Fire_resistance())
+            await You('are uninjured.');
+        else
+            await losehp(rnd(3), 'boiling water', KILLED_BY);
+        return;
+    }
+
     await pline(`A tower of flame ${box ? 'bursts' : 'erupts'} from ${source}!`);
     if (Fire_resistance()) {
         await shieldeff(game.u.ux, game.u.uy);

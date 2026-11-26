@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-parent-review/native.mjs"
+  ],
+  "exit": 1,
+  "seconds": 1.637,
+  "logSHA256": "6a8de8e0bd3a7f15617360dad9f775fe6d257b0016d99cb28b2e594c148fdcb4"
+}

@@ -1,0 +1,33 @@
+{
+  "startedAt": "2026-11-26T21:44:14.444568+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/dofiretrap-underwater-parent-minimal.session.json",
+  "inputSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "primaryRecipeSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "sourceSealSHA256": "3bec9aaa5d4ce898240b779942b920e8375f3ce55207455510ec349a615afca6",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/dofiretrap-underwater-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T21:44:15.065375+00:00",
+  "log": ".cache/restart-20261122/dofiretrap-underwater-parent-native-recording.log",
+  "logSHA256": "e3e8cce2e37991d1dd01be08f0422d7d7dd375450249864d92aadf3a6a9c5955",
+  "rawSha256": "d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de",
+  "bytes": 1208359,
+  "segments": 6,
+  "boundaries": 873,
+  "keys": 867,
+  "calls": 16839,
+  "frames": 21,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "rootMetadataPreserved": true,
+  "cExecutedOnce": true
+}

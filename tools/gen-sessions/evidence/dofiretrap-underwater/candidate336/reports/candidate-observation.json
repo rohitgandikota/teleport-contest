@@ -1,0 +1,2609 @@
+[
+  {
+    "index": 0,
+    "name": "wet-water-trigger",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 80,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 96,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 110,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 119,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 140,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 153,
+        "turn": 9,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 47,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 98,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 140,
+      "turn": 7,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 153,
+      "turn": 9,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 47,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 98,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "d(2,4)=3",
+      "rnd(3)=1",
+      "rn2(70)=56",
+      "rn2(20)=17",
+      "rn2(85)=29",
+      "rn2(70)=39",
+      "rn2(20)=10",
+      "rn2(85)=40"
+    ],
+    "actionFrames": 0,
+    "statesSHA256": "ef6067d7613eba0a807e9d92946ae0544d9dc95f9820e4f81a7402bf2d5f2a4f",
+    "outputHashes": {
+      "screens": "b12e5054e12866664045dfa5907f5d08196736858c17d34fc83b1f45d2bb6b9b",
+      "cursors": "36bf66fe6eb0a22e72b98254e03422fe3af42c09f1be82e6555f8585f30a6d27",
+      "calls": "431ba053321b519a9bcd187b89e4dc45a0295d471fe8fac7f47c0eea9dbddcb2",
+      "slices": "3fa734eda39cc451c8673b0e6af13a5ef8d91ac49c0396cdde9117c067f5cebf",
+      "frames": "d741aba3aa90c31dcc41a0cc3474d6a9dd05a4102006c9c05ce48db22a4ec723"
+    },
+    "boundaries": 154,
+    "calls": 2808,
+    "frames": 0
+  },
+  {
+    "index": 1,
+    "name": "wet-iron-trigger",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 75,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 91,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 105,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 114,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 135,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 148,
+        "turn": 8,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 98,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 135,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 113,
+      "mhmax": 113,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 148,
+      "turn": 8,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 113,
+      "mhmax": 113,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 98,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "d(2,4)=4",
+      "rn2(70)=23",
+      "rn2(20)=13",
+      "rn2(85)=16",
+      "rn2(70)=61",
+      "rn2(20)=5",
+      "rn2(85)=27"
+    ],
+    "actionFrames": 0,
+    "statesSHA256": "b59869df09074cfca8da5f12bfdf75ba166f99ce7f49ad8e56ba819d5f3da7bb",
+    "outputHashes": {
+      "screens": "c463e6a9b09178310e8655bdaa8c52078ab1a10f63b1a8332948d949c545334e",
+      "cursors": "be5fceab81db5caf1ac59b2f9956adf5368be892aafd5357bdbde52f0d66df46",
+      "calls": "2c18e0bc19591e204c1b60ebd43ac31b914566244bbd713c61cf87e64c67866b",
+      "slices": "5991d238ef52329aafd1c8041849d3988bdbe75fe8599e84e4a8e614d7aafe1e",
+      "frames": "693791fe6f6c9828d91f4a5cf0a516797213b230aa59ac1668210d9a6024ec24"
+    },
+    "boundaries": 149,
+    "calls": 2803,
+    "frames": 0
+  },
+  {
+    "index": 2,
+    "name": "dry-water-trigger",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 80,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 96,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 96,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 105,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 126,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 139,
+        "turn": 9,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 42,
+        "mhmax": 45,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 126,
+      "turn": 7,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "underwater": false,
+      "uinwater": false,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 139,
+      "turn": 9,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 42,
+      "mhmax": 45,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "underwater": false,
+      "uinwater": false,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 0,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "d(2,4)=3",
+      "rn2(4)=3",
+      "rn2(5)=1",
+      "rn2(5)=2",
+      "rn2(70)=19",
+      "rn2(400)=229",
+      "rn2(200)=150",
+      "rn2(20)=15",
+      "rn2(85)=40",
+      "rn2(70)=54",
+      "rn2(400)=90",
+      "rn2(200)=182",
+      "rn2(20)=10",
+      "rn2(85)=48"
+    ],
+    "actionFrames": 0,
+    "statesSHA256": "50775daca20981e4c58cec0e81de52f10538bd3fe200d80626d3f445a191e8ab",
+    "outputHashes": {
+      "screens": "b0f21dcb7706f2d41bc3a09a5428214f9e4f5041ea13363c383226b2e31eff47",
+      "cursors": "ebc727ce52bfb0bc3a454a3da34da1f3d0325ba47544ae1fd441f409e04aa41c",
+      "calls": "dffd1b67a36f25a835585d19af93c7992f34ecdc1325347717214be3eb4074df",
+      "slices": "3e8c46cc130ac771dfea47c5eea3fcc8ad850e30831fd3eb0d98c25dfeddb274",
+      "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+    },
+    "boundaries": 140,
+    "calls": 2814,
+    "frames": 0
+  },
+  {
+    "index": 3,
+    "name": "dry-iron-trigger",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 75,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 91,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 91,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 100,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 121,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 134,
+        "turn": 8,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 121,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "underwater": false,
+      "uinwater": false,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 134,
+      "turn": 8,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "underwater": false,
+      "uinwater": false,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 0,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "d(2,4)=3",
+      "rn2(2)=0",
+      "rn2(5)=2",
+      "rn2(5)=3",
+      "rn2(5)=3",
+      "rn2(5)=1",
+      "rn2(5)=1",
+      "rn2(70)=5",
+      "rn2(400)=292",
+      "rn2(200)=83",
+      "rn2(20)=3",
+      "rn2(85)=78",
+      "rn2(70)=1",
+      "rn2(400)=251",
+      "rn2(200)=196",
+      "rn2(20)=17",
+      "rn2(85)=29"
+    ],
+    "actionFrames": 21,
+    "statesSHA256": "5a7e3c3f06937d63d1840e619088e5a833691d6b9f3c0bbc241c71ccb07e9ce5",
+    "outputHashes": {
+      "screens": "557df8f8aee30a3762ed2a6f977c1f29e8f5bd7f2015a6d0a282eb4723fd6565",
+      "cursors": "e34b5b302e42ac6360b83eca1152db6db1c07705848655b7ca2cf064e3c011fd",
+      "calls": "44d8558e3679927a9a78f774e70bd152c7fb0a9c8e1cf38d76159428175a1321",
+      "slices": "a77efcfe8e646a414b105afbebfa0b459726a06ca8498460a80a31285d769185",
+      "frames": "7a19c8b7d2cf09ca072229b35a108000dc5b2fd93f877855ac957183ee9b7354"
+    },
+    "boundaries": 135,
+    "calls": 2812,
+    "frames": 21
+  },
+  {
+    "index": 4,
+    "name": "wet-water-look",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 80,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 96,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 110,
+        "turn": 3,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 119,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 140,
+        "turn": 7,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 149,
+        "turn": 9,
+        "form": 157,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 48,
+        "mhmax": 48,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": false,
+        "swimming": true,
+        "breathless": true,
+        "blind": true,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 98,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 140,
+      "turn": 7,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 149,
+      "turn": 9,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 98,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "rn2(70)=38",
+      "rn2(20)=1",
+      "rn2(85)=11",
+      "rn2(70)=56",
+      "rn2(20)=17",
+      "rn2(85)=29"
+    ],
+    "actionFrames": 0,
+    "statesSHA256": "31b1f714a738912549b0170c469e96a5b000f70eab904f715edffd212e3efa08",
+    "outputHashes": {
+      "screens": "1e33befeed6d79aa36a89f73c811dc5e3b4aab1c85f92e1964a7e242e2dfab03",
+      "cursors": "3bba8c1039139559c46b8793830dfa026e4ba0f344b3f7c4416b82fb653f1ee9",
+      "calls": "05d38833851d1f6b9caf53041d6a113951de18aab5ea6c37b21a63e11d645a4f",
+      "slices": "86d5c0513f76ced793daacffbee3c81a3003482a41a329bbe17a8a808a168877",
+      "frames": "2b42d7de36a189bc47c57bea468f955d10f1c67505a58e654190ca4726d4bf7d"
+    },
+    "boundaries": 150,
+    "calls": 2806,
+    "frames": 0
+  },
+  {
+    "index": 5,
+    "name": "wet-iron-look",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real cleanup reaches empty room square with no living monster",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form supplies the intended resistance and safe-water properties",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "unseen fire trap is created on dry floor before any pool",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real wait establishes water state and separates iron entry rust",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "action starts with actual pool/trap and no floor or equipment interception",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real intrinsic menu gives timer100 and no fire occurred during setup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all ordinary keys finish without death, rehumanization or displacement",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "sit actually triggers and reveals the trap while look does not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "steamy bubbles occur exactly for underwater fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "flame feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "slime cure feedback occurs only for dry fire",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater fire preserves maximum and applies only the source boiling-water damage",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "underwater return has no shield animation",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "phases": {
+      "cleanup": {
+        "step": 49,
+        "turn": 3,
+        "form": 343,
+        "hp": 12,
+        "hpmax": 12,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": false,
+        "swimming": false,
+        "breathless": false,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "form": {
+        "step": 75,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "liveMonsters": 0
+      },
+      "trap": {
+        "step": 91,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "terrain": {
+        "step": 105,
+        "turn": 3,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": false,
+        "uinwater": false,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "settled": {
+        "step": 114,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "beforeAction": {
+        "step": 135,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      },
+      "end": {
+        "step": 144,
+        "turn": 6,
+        "form": 259,
+        "hp": 12,
+        "hpmax": 12,
+        "mh": 113,
+        "mhmax": 113,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 16,
+        "underwater": true,
+        "uinwater": true,
+        "resistant": true,
+        "swimming": false,
+        "breathless": true,
+        "blind": false,
+        "flying": false,
+        "levitating": false,
+        "fumbling": false,
+        "canReachFloor": true,
+        "utrap": 0,
+        "slime": 100,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0
+      }
+    },
+    "before": {
+      "step": 135,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 113,
+      "mhmax": 113,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 144,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 113,
+      "mhmax": 113,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": true,
+      "swimming": false,
+      "breathless": true,
+      "blind": false,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [],
+    "actionFrames": 0,
+    "statesSHA256": "01f3472e260960f4765705710be3ca002ae90100a6d8c661bf910fda28cd7aec",
+    "outputHashes": {
+      "screens": "593ec8813196a27a8f3767783dd86881877dfc0cad0bff198b860a4f162ac494",
+      "cursors": "fa7d74bb045b8a8c23d3a2c5b89fd5d7105437f5f965706c8cfde62528ed1a64",
+      "calls": "9e132f496667119d70cefda8b31b78e3292ad94add6fc47df9807710faf1bec1",
+      "slices": "4f02daa2dc30e776c9d7c669a99b72c08ee520dcaf226cb1ff6ffc8e7d438fef",
+      "frames": "92d41b9f7c881cec4c231375aaf4f24aefc574798ecc5af912d2d73dd456e7aa"
+    },
+    "boundaries": 145,
+    "calls": 2796,
+    "frames": 0
+  }
+]

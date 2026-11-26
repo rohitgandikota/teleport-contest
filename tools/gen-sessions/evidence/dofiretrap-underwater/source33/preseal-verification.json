@@ -1,0 +1,17 @@
+{
+  "runtimeModules": 280,
+  "preservedPriorMembers": 15,
+  "cases": 6,
+  "keys": 867,
+  "originalChecks": "88/102",
+  "setups": "42/42",
+  "neutrality": "12/12",
+  "negativeHashes": 20,
+  "sourceFailures": [
+    0,
+    1
+  ],
+  "retainedPremiseFailure": 4,
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

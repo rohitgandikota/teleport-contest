@@ -1,0 +1,59 @@
+{
+  "status": "Candidate ready for parent scoped composition after final seal verification.",
+  "runtime": {
+    "baselineSHA256": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+    "candidateSHA256": "788255129685be0ecf9d4541b98f7afabc6eddf2e21777d6195c56cd22d9440a",
+    "modules": 280,
+    "changed": [
+      "js/trap.js"
+    ]
+  },
+  "patch": {
+    "path": "scoped-runtime.patch",
+    "sha256": "7871cb6e37f4ec5828e9759d5ed5cd4607c6a47e1ff9d9b1392bdef3eed0a885",
+    "insertions": 9,
+    "deletions": 0
+  },
+  "sourceSealSHA256": "3bec9aaa5d4ce898240b779942b920e8375f3ce55207455510ec349a615afca6",
+  "preEditLockSHA256": "e6facf75ec5f46d3a7ba508d511fa8d0b0049939797362e4e019f7bd43d66807",
+  "correctionLockSHA256": "5a2485d6a023ee95e6a86932ad86ae743e87a1baa438637685a212c67457d7c7",
+  "recipeSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "raw": {
+    "path": "native.session.json",
+    "sha256": "d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de",
+    "bytes": 1208359,
+    "linkedNotCopied": true
+  },
+  "reports": {
+    "reports/preflight.json": "94211890de1b16ee6d0d2da37a8f56140466861f93f5eb441d65c32a5dca9f2d",
+    "reports/accounting.json": "e5b2d186427bcc2556651d97c97a12dcfa9ec27508494f4e481235dd64ab46b2",
+    "reports/candidate-observation.json": "00f83076bdf745fd087e33a7f33f21452f613b6e6a3e76cacb09f43888918ec4",
+    "reports/legacy-candidate-accounting.json": "071e47155058ec2fb2492d71bc448c2d3919da05495b77faab512b716a78f4db",
+    "reports/candidate-native.json": "e5ad383cf623969c37a380eef4fe8c6439072bfb9e8a400e615be149b6ead67d",
+    "reports/batch-receipt.json": "42c6223476d23efecb043f5b041d72f266715fe9395ea940be3490c8261f3781"
+  },
+  "authoritative": "102/102",
+  "legacyCandidate": "100/102",
+  "original": "88/102",
+  "authoritativeBaseline": "90/102",
+  "native": "6/6",
+  "baselineNative": "4/6",
+  "negativeIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "negativeHashes": 20,
+  "completeCorrectedOrdinaryNegatives": 4,
+  "completeLegacyOrdinaryNegatives": 4,
+  "completeNativeNegatives": 4,
+  "behaviorOnlyNegatives": 4,
+  "neutrality": 12,
+  "verifyCommand": "python3 .cache/restart-20261122/dofiretrap-underwater-candidate/verify-candidate.py",
+  "remainingPrerequisites": [
+    "Parent scoped-hunk composition and current-runtime verification.",
+    "Portable promotion is separate and not yet part of this candidate seal.",
+    "Parent owns wider checks/publication. Floor/null-box only is native-covered; box-coordinate/item/low-HP cases remain unclaimed."
+  ]
+}

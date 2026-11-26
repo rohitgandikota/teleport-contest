@@ -1,0 +1,60 @@
+{
+  "fixedRuntimeSHA256": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+  "maintainedReferences": {
+    "references/underwater-decor.recipe.json": {
+      "sha256": "5f3e890749009d66dedc2816e78e7d951c36c010b7e131e96e1cb3f89f2f4a3a",
+      "bytes": 1705
+    },
+    "references/underwater-decor.session.json": {
+      "sha256": "f67daf18b04cf421bac043bc2f99ab75591d63666a6392ef5e4b9b1c925b428d",
+      "bytes": 156713
+    },
+    "references/underwater-decor-input-gate.mjs": {
+      "sha256": "1dec7e8642b3635dfa4ecb13ef15aea10973c593336fac016f8404d317d25d38",
+      "bytes": 4173
+    },
+    "references/slime.recipe.json": {
+      "sha256": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+      "bytes": 6038
+    },
+    "references/slime-source-SEAL.json": {
+      "sha256": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+      "bytes": 422
+    },
+    "references/slime-baseline.json": {
+      "sha256": "3a90873f7b4b0b4510eb748abbcf31020bdb2a5765fe9b401abb0a4b64ee03c2",
+      "bytes": 17567
+    },
+    "references/polymorph-cleanup.recipe.json": {
+      "sha256": "89a5937fa4330ba9d45418d4ccb73c4662b5330e3a81496354e9a96241ef0557",
+      "bytes": 9551
+    }
+  },
+  "cleanupFromSlimeSourceIndex": 1,
+  "cleanupPrefixExact": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh ",
+  "cleanupPrefixSHA256": "f9d826d608947b08c65ebf5036f8f0f8a4a6d3e6962017c2db750c8035abe20a",
+  "seedSearch": false,
+  "producerOrder": [
+    "existing cleanup and move to empty room square",
+    "actual polymorph",
+    "wish unseen fire trap on dry room floor",
+    "wet cases only: wish pool over the existing trap",
+    "actual wait to reach stationary pooleffects/drown",
+    "real wizintrinsic100c menu producer",
+    "sit or look followed by bounded acknowledgements"
+  ],
+  "newCRecordings": 0,
+  "runtimeCandidate": false,
+  "plannedNegativeIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "plannedNegativeHashCount": 20,
+  "expectedPositiveIndexes": [
+    0,
+    1
+  ],
+  "inventoryDesign": "Pauper/nudist; the cleanup scroll is consumed. Require empty inventory and floor at action. Nonempty item destruction is not claimed."
+}

@@ -1,0 +1,122 @@
+{
+  "checks": [
+    {
+      "name": "corrected102 checks pass",
+      "pass": true
+    },
+    {
+      "name": "legacy accounting retains exactly the two blind-look failures",
+      "pass": true
+    },
+    {
+      "name": "native moves4/6 to6/6 without changing inputs",
+      "pass": true
+    },
+    {
+      "name": "all20 negative hashes unchanged",
+      "pass": true
+    },
+    {
+      "name": "2: complete corrected ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "2: complete legacy ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "2: original behavior-only negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "2: complete native negative report unchanged",
+      "pass": true
+    },
+    {
+      "name": "3: complete corrected ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "3: complete legacy ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "3: original behavior-only negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "3: complete native negative report unchanged",
+      "pass": true
+    },
+    {
+      "name": "4: complete corrected ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "4: complete legacy ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "4: original behavior-only negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "4: complete native negative report unchanged",
+      "pass": true
+    },
+    {
+      "name": "5: complete corrected ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "5: complete legacy ordinary negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "5: original behavior-only negative row unchanged",
+      "pass": true
+    },
+    {
+      "name": "5: complete native negative report unchanged",
+      "pass": true
+    },
+    {
+      "name": "all30 observed JS hashes equal native-comparator JS hashes",
+      "pass": true
+    }
+  ],
+  "ordinary": {
+    "cases": 6,
+    "checks": 102,
+    "passed": 102,
+    "producerChecks": 42,
+    "sourceChecks": 48,
+    "neutrality": 12
+  },
+  "history": {
+    "original": "88/102",
+    "authoritativeBaseline": "90/102",
+    "legacyCandidatePassed": 100,
+    "legacyDerivedWithoutReplay": true,
+    "originalAssertionsPreserved": true
+  },
+  "native": {
+    "before": 4,
+    "after": 6,
+    "cases": 6,
+    "boundaries": 873,
+    "calls": 16839,
+    "frames": 21
+  },
+  "negativeIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "sourceInputsUnchanged": true,
+  "changedRuntimeFiles": [
+    "js/trap.js"
+  ],
+  "newCRecordings": 0
+}

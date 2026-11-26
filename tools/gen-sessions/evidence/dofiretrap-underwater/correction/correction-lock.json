@@ -1,0 +1,48 @@
+{
+  "createdAt": "2026-11-26T21:44:10.885687+00:00",
+  "beforeC": true,
+  "nativeRecordings": 0,
+  "gameplayReruns": 0,
+  "sourceSealSHA256": "3bec9aaa5d4ce898240b779942b920e8375f3ce55207455510ec349a615afca6",
+  "originalProbeSHA256": "b80818ff1ff56e7d9c297d5ec9085370904ea319b63902df83c24ae513f3b649",
+  "recipeSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "inputLockSHA256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+  "originalObservationSHA256": "b93c73c221bc6976516a20f931e9752df83ce1e2ad90121bb963cef8c058141d",
+  "negativeHashesSHA256": "da21a91a90106f94071b96b63a88adc5117e5ac80ac9bb879799351f0aaf3b03",
+  "sourceAttributionSHA256": "ccc3f750e04fc3814c60fade63e5216a598211cd6c2640b973968356592cd57c",
+  "completeOwnersRead": [
+    "C invent.c:4104-4314 look_here",
+    "C invent.c:4319-4333 dolook",
+    "JS invent.js:826-985 look_here",
+    "JS invent.js:989-995 dolook",
+    "C trap.c:4233-4314 dofiretrap"
+  ],
+  "replacements": [
+    {
+      "before": "        if (!p.trigger) assert.equal(after.slime, 100);",
+      "after": "        if (!p.trigger)\n            assert.equal(after.slime, before.slime - (after.turn - before.turn));"
+    },
+    {
+      "before": "        if (!p.trigger) assert.deepEqual(actionCalls, []);",
+      "after": "        if (!p.trigger) {\n            assert.equal(after.turn > before.turn, p.blind);\n            if (!p.blind) assert.deepEqual(actionCalls, []);\n        }"
+    }
+  ],
+  "originalChecks": "88/102",
+  "authoritativeChecks": "90/102",
+  "authoritativeAccountingSHA256": "d20197bca2fc1670303c70db8b2892e5445e6ebeb23fca43b90055d1088ce869",
+  "originalFailureIndexes": [
+    0,
+    1,
+    4
+  ],
+  "authoritativeFailureIndexes": [
+    0,
+    1
+  ],
+  "reason": "Blind empty-floor look returns ECMD_TIME. The slime timer decreases with elapsed turns; only sighted look is expected to take no time and no action RNG. Exact negative RNG streams and all four full original negative rows remain fixed and must be compared, including case4.",
+  "preservation": "No original source-audit file, input tuple, primary branch predicate, output stream or negative selection is modified. The accounting is a separate evaluation of two source-corrected predicates on retained snapshots; it is not a new gameplay result.",
+  "limits": [
+    "Exact C timing and calls have not yet been observed.",
+    "The expected fire-trap RNG prefix remains unchanged."
+  ]
+}

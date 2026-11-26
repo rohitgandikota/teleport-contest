@@ -1,0 +1,26 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-promotion/validation-root/tools/dofiretrap-underwater-gate.mjs"
+  ],
+  "startedAt": "2026-11-26T22:00:32.558769+00:00",
+  "lockSHA256": "9717317cd9c77fcf390dad8749dfcebb64577cc87b4b4d3d643aa8d77a6c21f5",
+  "memoryMB": 512,
+  "timeoutSeconds": 55,
+  "defaultMode": true,
+  "optionalReportArgument": false,
+  "nativeReplay": false,
+  "noCacheDirectory": true,
+  "noCCheckout": true,
+  "runtimeModulesVerified": 280,
+  "exitCode": 1,
+  "timedOut": false,
+  "seconds": 2.919,
+  "defaultNoWrite": true,
+  "fingerprintedEntries": 416,
+  "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSHA256": "81239aa3e0bbd76cc3d26a92e586d88de6bad8dfea9f2930334f8a3aedb85af6"
+}

@@ -1,0 +1,27 @@
+{
+  "cases": 6,
+  "setupCases": 6,
+  "producerChecks": 42,
+  "producerTotal": 42,
+  "sourceChecks": 48,
+  "sourceTotal": 48,
+  "neutrality": 12,
+  "checksPassed": 102,
+  "checksTotal": 102,
+  "setupFailedIndexes": [],
+  "sourceFailedIndexes": [],
+  "reachedSourceFailures": [],
+  "negativeIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "negativeHashes": 20,
+  "keys": 867,
+  "boundaries": 873,
+  "calls": 16839,
+  "frames": 21,
+  "nativeRecordings": 0,
+  "runtimeCandidate": true
+}

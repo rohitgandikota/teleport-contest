@@ -1,0 +1,203 @@
+[
+  {
+    "index": 0,
+    "name": "wet-water-trigger",
+    "form": "PM_WATER_ELEMENTAL",
+    "resistant": false,
+    "wet": true,
+    "trigger": true,
+    "negative": false,
+    "blind": true,
+    "swimming": true,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 80,
+      "trap": 96,
+      "terrain": 110,
+      "settled": 119,
+      "beforeAction": 140,
+      "end": 153
+    },
+    "initialSlime": 100,
+    "expectedCSteam": true,
+    "expectedCFlame": false,
+    "expectedCCure": false,
+    "expectedCSlimeRemains": true,
+    "expectedCTrapRngPrefix": [
+      "d(2,4)",
+      "rnd(3)"
+    ],
+    "expectedJSFailure": true
+  },
+  {
+    "index": 1,
+    "name": "wet-iron-trigger",
+    "form": "PM_IRON_GOLEM",
+    "resistant": true,
+    "wet": true,
+    "trigger": true,
+    "negative": false,
+    "blind": false,
+    "swimming": false,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 75,
+      "trap": 91,
+      "terrain": 105,
+      "settled": 114,
+      "beforeAction": 135,
+      "end": 148
+    },
+    "initialSlime": 100,
+    "expectedCSteam": true,
+    "expectedCFlame": false,
+    "expectedCCure": false,
+    "expectedCSlimeRemains": true,
+    "expectedCTrapRngPrefix": [
+      "d(2,4)"
+    ],
+    "expectedJSFailure": true
+  },
+  {
+    "index": 2,
+    "name": "dry-water-trigger",
+    "form": "PM_WATER_ELEMENTAL",
+    "resistant": false,
+    "wet": false,
+    "trigger": true,
+    "negative": true,
+    "blind": true,
+    "swimming": true,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 80,
+      "trap": 96,
+      "terrain": 96,
+      "settled": 105,
+      "beforeAction": 126,
+      "end": 139
+    },
+    "initialSlime": 100,
+    "expectedCSteam": false,
+    "expectedCFlame": true,
+    "expectedCCure": true,
+    "expectedCSlimeRemains": false,
+    "expectedCTrapRngPrefix": [
+      "d(2,4)"
+    ],
+    "expectedJSFailure": false
+  },
+  {
+    "index": 3,
+    "name": "dry-iron-trigger",
+    "form": "PM_IRON_GOLEM",
+    "resistant": true,
+    "wet": false,
+    "trigger": true,
+    "negative": true,
+    "blind": false,
+    "swimming": false,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 75,
+      "trap": 91,
+      "terrain": 91,
+      "settled": 100,
+      "beforeAction": 121,
+      "end": 134
+    },
+    "initialSlime": 100,
+    "expectedCSteam": false,
+    "expectedCFlame": true,
+    "expectedCCure": true,
+    "expectedCSlimeRemains": false,
+    "expectedCTrapRngPrefix": [
+      "d(2,4)"
+    ],
+    "expectedJSFailure": false
+  },
+  {
+    "index": 4,
+    "name": "wet-water-look",
+    "form": "PM_WATER_ELEMENTAL",
+    "resistant": false,
+    "wet": true,
+    "trigger": false,
+    "negative": true,
+    "blind": true,
+    "swimming": true,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 80,
+      "trap": 96,
+      "terrain": 110,
+      "settled": 119,
+      "beforeAction": 140,
+      "end": 149
+    },
+    "initialSlime": 100,
+    "expectedCSteam": false,
+    "expectedCFlame": false,
+    "expectedCCure": false,
+    "expectedCSlimeRemains": true,
+    "expectedCTrapRngPrefix": [],
+    "expectedJSFailure": false
+  },
+  {
+    "index": 5,
+    "name": "wet-iron-look",
+    "form": "PM_IRON_GOLEM",
+    "resistant": true,
+    "wet": true,
+    "trigger": false,
+    "negative": true,
+    "blind": false,
+    "swimming": false,
+    "breathless": true,
+    "xy": [
+      58,
+      6
+    ],
+    "boundaries": {
+      "cleanup": 49,
+      "form": 75,
+      "trap": 91,
+      "terrain": 105,
+      "settled": 114,
+      "beforeAction": 135,
+      "end": 144
+    },
+    "initialSlime": 100,
+    "expectedCSteam": false,
+    "expectedCFlame": false,
+    "expectedCCure": false,
+    "expectedCSlimeRemains": true,
+    "expectedCTrapRngPrefix": [],
+    "expectedJSFailure": false
+  }
+]

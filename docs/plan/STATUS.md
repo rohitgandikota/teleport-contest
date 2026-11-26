@@ -1,5 +1,120 @@
 # STATUS — live handoff board
 
+## 2026-11-26: underwater fire verified on full953
+
+The nine-line liquid early return is ready to publish. Parent and isolated
+native reports match,6/6 versus4/6 before. The fresh installed gate passes
+102/102 in3.405s and its complete report is byte-identical to portable185:
+7bfd05c051c55ec80883ba8d274ce9b4dc9183a79e4a8508230899d674e241ab.
+All73 payloads are installed exactly, including original C bytes. Six registry
+rows bring the total to4,803; aggregate coverage remains111. Original88/102,
+corrected90/102, legacy100/102 and the portable serialization diagnostic remain
+preserved separately. All20 negative hashes and four complete ordinary/native
+negative rows are unchanged. Runtime SHA:
+37be1fb4af27b98e5a5e73d6a06ff3771ccd30f9b3f634a383fd7c98f9716b70.
+
+Full953 passes on NFS with two workers, default45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-underwater-full953-js-20261126.
+All953 recordings pass, covering950,441 screens/cursors,20,847,456 random calls
+and33,281 frames. All1,244 tested files are fixed.
+All-files SHA:e337cb532fd95b1d6abe7ec732b3c9ab2b0445844d91b4b4fe915e6777564838.
+Verification SHA:2fd11b1153ce5c1b45a8d51694f6fabbd014f726c9b1279a28228cb669bbfb95.
+Nine retained gates,45 strict workers and empty source audit pass. Public
+parent proof is under evidence/dofiretrap-underwater. Stage the exact paths,
+verify all tested Git blobs, commit and immediately push, then write its
+publication receipt.
+
+Chest-floor candidate334 is sealed: only !box short-circuits floor burning.
+It passes27/27, six neutrality checks,native3/3 and both retained floor fire
+and ignition gates. Ten negative hashes and two complete ordinary/native rows
+are unchanged. Its source60f runtime differs from current underwater37be in
+trap.js, so parent composition must apply only the single guard and prove both
+changes remain. Leibniz owns portable promotion. Source39 giant and failed
+human HP-floor evidence remain separate; corrected source proposals are
+authorized after preserving their failures. Full954 scripts are prepared only.
+
+## 2026-11-26: underwater full953 running; chest-floor C confirmed
+
+Published main remainsb939e5a6, with the nine-line underwater return currently
+installed but uncommitted. Candidate336 is sealed and independently verified.
+Parent composition passes6/6 with the complete candidate report unchanged.
+Composed runtime SHA:37be1fb4af27b98e5a5e73d6a06ff3771ccd30f9b3f634a383fd7c98f9716b70.
+Full953 started21:55Z, PID3650927, at the standard NFS artifact root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-underwater-full953-js-20261126.
+All1,244 files fixed, all-files SHA:
+e337cb532fd95b1d6abe7ec732b3c9ab2b0445844d91b4b4fe915e6777564838.
+Poll only; no retries. All nine retained gates pass,45 strict workers pass in
+31.949s, source audit is empty. Portable promotion is not yet sealed. Its
+first2.919s packaging attempt passed live gameplay checks but failed comparing
+undefined cleanup mh/mhmax with persisted JSON. That attempt is preserved;
+the narrow serialization accounting correction passes in3.16s. Original
+88/102, corrected90/102 and candidate102/102 remain separately recorded.
+
+Parent reached a real chest-floor omission with three locked cases on fixed60f.
+Original seed7037 fire chest has a starting oil lamp. Replacing df with de
+drops that existing lamp; replacing loot with af opens the retained chest.
+All three setups and six neutrality comparisons pass; original25/27 has only
+the two intended floor-lamp state/message failures. Two negative rows and ten
+hashes are fixed. Source15 seal:
+da788716cafe30043538a5aa22f5b942f961ec71a2434357d2cfbeaed391969e.
+Before C, a separate metadata correction maps the unregistered items.containers
+label to existing object.tools-containers. Original source recipe is unchanged;
+all input fields, their presence, keys and primary predicates are unchanged.
+Correction lock:69030cf7c179f283a16fe09adabb55d3c3c42f66cfdae135394eef432c85821e.
+
+Parent C3 recorded once:156 keys,159 boundaries,8,018 calls,36 frames. Raw SHA:
+e822528540fa739189e0743021e04c0f7f5c851e952ad11e4fca683c1fedcfef.
+All metadata/fields/presence/keys/integrity and three primary predicates pass
+before JS imports. Native baseline2/3: only the held-chest ground-lamp case
+has a screen/cursor difference; its random stream and animation already match.
+Both negatives are exact. Leibniz owns an isolated candidate adding only !box
+to the floor-burn call on source60f, plus retained floor-fire/ignition checks.
+Parent must compose this guard onto the newer underwater trap.js, preserving
+both independent changes. Full954 scripts are prepared but NOT launched.
+
+Giant source39 is sealed with47/76 and zero valid choice producers. Wrong
+terrain/vacating assumptions left the weapon pile under the hero, so pets did
+not acquire both weapons. No C or candidate exists. Original failures are
+preserved; Euclid may prepare a separately locked corrected source family
+after underwater promotion. Human HP-floor source batch38/189 reaches no
+actual crossing; four setups fail and the polymorph control passes. Sartre
+owns failure attribution and a separate corrected proposal if justified.
+
+## 2026-11-26: gremlin published; underwater candidate passes
+
+Gremlin light fear is pushed asb939e5a6bb331758858bb54c6545b2355a6864cc.
+All1,243 tested Git blobs match the published tree. Full952 publication receipt
+SHA:d3249296f0819c5eaad19d973cf5ffff815a6954adf09fb7e313fdbde08935f3.
+
+Underwater source33 remains immutable at88/102. The separate two-predicate
+blind-look correction was locked before C, SHA:
+5a2485d6a023ee95e6a86932ad86ae743e87a1baa438637685a212c67457d7c7.
+Its source-backed accounting is90/102 on the same saved observations. Original
+negative4 errors, all four negative rows and20 hashes are preserved.
+Parent recorded the original six inputs once:867 keys,873 boundaries,16,839
+random calls and21 frames. Raw SHA:
+d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de.
+All root metadata, five field values/presence, exact keys, integrity and six
+primary predicates pass before JS imports. Fixed2b baseline is4/6: only the
+two wet triggers fail. All four negatives, including blind look, are C-exact.
+
+Euclid's isolated one-file candidate adds the complete nine-line liquid return
+in trap.js. Its sole3.832s batch passes102/102 and native6/6. Four complete
+negative rows and20 hashes are unchanged, with original and corrected
+assertion versions compared separately. Legacy candidate accounting100/102
+retains the two old blind-look errors. Candidate sealing is pending; portable
+promotion is assigned next. Parent composed/full953/retained scripts are
+prepared but NOT run. Parent reviewed complete C/JS owner and liquid/damage
+helpers. Only null-box floor traps are natively covered; box-coordinate, item,
+human HP-floor and low-HP death remain outside this family.
+
+Leibniz locked four giant weapon source proposals and owns their sole bounded
+probe. Sartre continues the human HP-floor producer review and may run one
+locked bounded source batch when justified. Parent recorded a source-only
+chest-floor plan: dofiretrap omits C's !box guard before burning floor objects.
+No positive ordinary chest-floor reach or runtime edit exists. Its plan is
+in dofiretrap-chest-floor-source-plan/PLAN.json.
+
 ## 2026-11-26: gremlin light fear verified on full952
 
 The figurine timer observer correction is pushed as1d6eaf44. Its original

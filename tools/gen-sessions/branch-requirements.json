@@ -5714,6 +5714,48 @@
       "cFile": "src/monmove.c",
       "cFunction": "distfleeck",
       "description": "A newt next to a real wielded lit Sunsword does not use gremlin light fear; all five output hashes remain unchanged."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.wet-water-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Nonresistant submerged floor-trap trigger emits bubbles, retains slime and maximum HP, and applies rnd(3) boiling-water damage."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.wet-iron-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Fire-resistant submerged floor-trap trigger emits bubbles and uninjured feedback, retaining HP and slime without shield animation."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.dry-water-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Dry water-elemental floor-trap trigger retains ordinary fire consequences and clears slime."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.dry-iron-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Dry iron-golem floor-trap trigger retains ordinary resistant fire consequences and clears slime."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.wet-water-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Blind submerged look does not trigger the unseen fire trap; timed slime decreases with elapsed turns."
+    },
+    {
+      "group": "Underwater fire-trap early return",
+      "id": "traps.fire.underwater.wet-iron-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Sighted submerged look does not trigger the unseen fire trap and consumes no time or action RNG."
     }
   ]
 }

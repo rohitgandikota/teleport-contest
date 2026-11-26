@@ -1,0 +1,22 @@
+{
+  "sourceMembers": 33,
+  "runtimeModules": 280,
+  "changedRuntimeFiles": [
+    "js/trap.js"
+  ],
+  "insertedLines": 9,
+  "authoritative": "102/102",
+  "legacy": "100/102",
+  "original": "88/102",
+  "authoritativeBaseline": "90/102",
+  "native": "6/6",
+  "baselineNative": "4/6",
+  "neutrality": 12,
+  "negativeHashes": 20,
+  "correctedOrdinaryNegatives": 4,
+  "legacyOrdinaryNegatives": 4,
+  "completeNativeNegatives": 4,
+  "behaviorOnlyNegatives": 4,
+  "nativeRecordings": 0,
+  "gameplayBatches": 1
+}

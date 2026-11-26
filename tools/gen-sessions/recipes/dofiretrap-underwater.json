@@ -1,0 +1,140 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "dofiretrap-underwater",
+  "description": "Actual trap-before-pool and stationary water entry, wet boiling-water versus dry fire, with matched look controls. Source proposal only; no C recording yet.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "terrain.water-lava",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "traps.fire.underwater.wet-water-trigger",
+    "traps.fire.underwater.wet-iron-trigger",
+    "traps.fire.underwater.dry-water-trigger",
+    "traps.fire.underwater.dry-iron-trigger",
+    "traps.fire.underwater.wet-water-look",
+    "traps.fire.underwater.wet-iron-look"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "traps.fire.underwater.wet-water-trigger",
+      "segment": 0,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "A cascade of steamy bubbles erupts"
+      ],
+      "screenExcludes": [
+        "A tower of flame",
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.underwater.wet-iron-trigger",
+      "segment": 1,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "A cascade of steamy bubbles erupts",
+        "You are uninjured."
+      ],
+      "screenExcludes": [
+        "A tower of flame",
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.underwater.dry-water-trigger",
+      "segment": 2,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "A tower of flame erupts",
+        "The slime that covers you is burned away!"
+      ],
+      "screenExcludes": [
+        "A cascade of steamy bubbles"
+      ]
+    },
+    {
+      "branch": "traps.fire.underwater.dry-iron-trigger",
+      "segment": 3,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "A tower of flame erupts",
+        "The slime that covers you is burned away!"
+      ],
+      "screenExcludes": [
+        "A cascade of steamy bubbles"
+      ]
+    },
+    {
+      "branch": "traps.fire.underwater.wet-water-look",
+      "segment": 4,
+      "screenIncludes": [
+        "You are turning into slime."
+      ],
+      "screenExcludes": [
+        "A cascade of steamy bubbles",
+        "A tower of flame",
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.underwater.wet-iron-look",
+      "segment": 5,
+      "screenIncludes": [
+        "You are turning into slime."
+      ],
+      "screenExcludes": [
+        "A cascade of steamy bubbles",
+        "A tower of flame",
+        "The slime that covers you is burned away!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "wet-water-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rwater elemental\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b\u0017pool\r      \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r      \u001b\u001b"
+    },
+    {
+      "name": "wet-iron-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b\u0017pool\r      \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r      \u001b\u001b"
+    },
+    {
+      "name": "dry-water-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rwater elemental\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r      \u001b\u001b"
+    },
+    {
+      "name": "dry-iron-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r      \u001b\u001b"
+    },
+    {
+      "name": "wet-water-look",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rwater elemental\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b\u0017pool\r      \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:      \u001b\u001b"
+    },
+    {
+      "name": "wet-iron-look",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b\u0017pool\r      \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:      \u001b\u001b"
+    }
+  ]
+}

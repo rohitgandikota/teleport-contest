@@ -1,0 +1,13 @@
+{
+  "writtenUTC": "2026-11-26T21:50:21.340461+00:00",
+  "preEditLockSHA256": "e6facf75ec5f46d3a7ba508d511fa8d0b0049939797362e4e019f7bd43d66807",
+  "beforeSHA256": "8cfeb889f9f13ea8122422d435c29399c54cd66890a67b21ce8f7c693efc6776",
+  "afterSHA256": "c41bc26276a903e751dc1c8a436e05dcea93e10ef655a04873f9cc3a2aae7e37",
+  "runtimeFilesChanged": [
+    "js/trap.js"
+  ],
+  "insertions": 9,
+  "deletions": 0,
+  "importsChanged": false,
+  "preservesDryFireRemainder": true
+}

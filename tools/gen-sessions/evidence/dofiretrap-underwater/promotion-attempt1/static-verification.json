@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "payloads": 65,
+  "immutableEvidence": 61,
+  "portableDependencies": 4,
+  "historicalCPins": 16,
+  "authoritativeAssertions": 102,
+  "approvedPredicateReplacements": 2,
+  "observerBodyUnchanged": true,
+  "importRelocations": 8,
+  "nativePreflightBeforeGameplay": true,
+  "defaultWriteCalls": 0,
+  "optionalExclusiveWriteCheckedStatically": true,
+  "runtimeOrPatchPayload": false,
+  "noCacheOrCCheckoutNeeded": true,
+  "requirements": 6,
+  "coverageAdditions": 0,
+  "aggregateCoverageUnchanged": 111,
+  "gameplayExecuted": false
+}

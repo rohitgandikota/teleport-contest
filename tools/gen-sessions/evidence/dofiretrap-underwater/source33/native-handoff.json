@@ -1,0 +1,215 @@
+{
+  "status": "Sealed source observations only; original C recording and any candidate authorization remain with parent.",
+  "packet": "dofiretrap-underwater-source-audit",
+  "recipe": {
+    "path": "recipe.json",
+    "sha256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f"
+  },
+  "inputLock": {
+    "path": "input-lock.json",
+    "sha256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd"
+  },
+  "predictions": {
+    "path": "predictions.json",
+    "sha256": "5be58e8b822c9125b38c3d43b9feaeafc079a08623fc2643d22f5f204467ad8f"
+  },
+  "probe": {
+    "path": "probe.mjs",
+    "sha256": "b80818ff1ff56e7d9c297d5ec9085370904ea319b63902df83c24ae513f3b649"
+  },
+  "runtime": {
+    "path": "../dofiretrap-slime-parent-composed/runtime.json",
+    "sha256": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+    "modules": 280
+  },
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "caseCount": 6,
+  "keys": 867,
+  "boundaries": 873,
+  "cases": [
+    {
+      "index": 0,
+      "name": "wet-water-trigger",
+      "keys": 153,
+      "negative": false,
+      "primary": {
+        "branch": "traps.fire.underwater.wet-water-trigger",
+        "segment": 0,
+        "screenIncludes": [
+          "You are turning into slime.",
+          "A cascade of steamy bubbles erupts"
+        ],
+        "screenExcludes": [
+          "A tower of flame",
+          "The slime that covers you is burned away!"
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "name": "wet-iron-trigger",
+      "keys": 148,
+      "negative": false,
+      "primary": {
+        "branch": "traps.fire.underwater.wet-iron-trigger",
+        "segment": 1,
+        "screenIncludes": [
+          "You are turning into slime.",
+          "A cascade of steamy bubbles erupts",
+          "You are uninjured."
+        ],
+        "screenExcludes": [
+          "A tower of flame",
+          "The slime that covers you is burned away!"
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "name": "dry-water-trigger",
+      "keys": 139,
+      "negative": true,
+      "primary": {
+        "branch": "traps.fire.underwater.dry-water-trigger",
+        "segment": 2,
+        "screenIncludes": [
+          "You are turning into slime.",
+          "A tower of flame erupts",
+          "The slime that covers you is burned away!"
+        ],
+        "screenExcludes": [
+          "A cascade of steamy bubbles"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "name": "dry-iron-trigger",
+      "keys": 134,
+      "negative": true,
+      "primary": {
+        "branch": "traps.fire.underwater.dry-iron-trigger",
+        "segment": 3,
+        "screenIncludes": [
+          "You are turning into slime.",
+          "A tower of flame erupts",
+          "The slime that covers you is burned away!"
+        ],
+        "screenExcludes": [
+          "A cascade of steamy bubbles"
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "name": "wet-water-look",
+      "keys": 149,
+      "negative": true,
+      "primary": {
+        "branch": "traps.fire.underwater.wet-water-look",
+        "segment": 4,
+        "screenIncludes": [
+          "You are turning into slime."
+        ],
+        "screenExcludes": [
+          "A cascade of steamy bubbles",
+          "A tower of flame",
+          "The slime that covers you is burned away!"
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "name": "wet-iron-look",
+      "keys": 144,
+      "negative": true,
+      "primary": {
+        "branch": "traps.fire.underwater.wet-iron-look",
+        "segment": 5,
+        "screenIncludes": [
+          "You are turning into slime."
+        ],
+        "screenExcludes": [
+          "A cascade of steamy bubbles",
+          "A tower of flame",
+          "The slime that covers you is burned away!"
+        ]
+      }
+    }
+  ],
+  "result": {
+    "cases": 6,
+    "setupCases": 6,
+    "producerChecks": 42,
+    "producerTotal": 42,
+    "sourceChecks": 34,
+    "sourceTotal": 48,
+    "neutrality": 12,
+    "checksPassed": 88,
+    "checksTotal": 102,
+    "setupFailedIndexes": [],
+    "sourceFailedIndexes": [
+      0,
+      1,
+      4
+    ],
+    "reachedSourceFailures": [
+      0,
+      1,
+      4
+    ],
+    "negativeIndexes": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "negativeHashes": 20,
+    "keys": 867,
+    "boundaries": 873,
+    "calls": 16845,
+    "frames": 42,
+    "nativeRecordings": 0,
+    "runtimeCandidate": false
+  },
+  "originalHypothesisFailedIndexes": [
+    0,
+    1
+  ],
+  "sourceMissingArmIndexes": [
+    0,
+    1
+  ],
+  "postObservationPremiseFailure": {
+    "index": 4,
+    "checks": 2,
+    "reference": "look-attribution.json",
+    "originalAssertionsAndFailuresPreserved": true
+  },
+  "completePassingControlIndexes": [
+    2,
+    3,
+    5
+  ],
+  "allOriginalControlIndexes": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "allOriginalControlHashes": 20,
+  "readOnlyVerifyCommand": "python3 .cache/restart-20261122/dofiretrap-underwater-source-audit/verify-audit.py",
+  "nativeRecordings": 0,
+  "runtimeCandidate": false,
+  "remainingPrerequisites": [
+    "Parent original-C recording of all six unchanged tuples and six original primary assertions, with version/source, field presence, every key and recording integrity checked before gameplay imports.",
+    "Separate C/source-backed reconciliation of the two blind-look zero-time assertions; preserve this original 88/102 diagnostic and all four negative rows/hashes.",
+    "Parent review and explicit isolated candidate authorization. Box-not-carried and nonempty item damage remain unclaimed."
+  ]
+}

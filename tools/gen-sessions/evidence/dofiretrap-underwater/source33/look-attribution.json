@@ -1,0 +1,143 @@
+{
+  "classification": "Post-observation source attribution, not a correction to the locked assertions or a native result.",
+  "originalInputLockSHA256": "b8002642554d73959ce0158d66e1082871e22c7e263fbcc6d560bd385da696fd",
+  "originalProbeSHA256": "b80818ff1ff56e7d9c297d5ec9085370904ea319b63902df83c24ae513f3b649",
+  "originalObservationSHA256": "b93c73c221bc6976516a20f931e9752df83ce1e2ad90121bb963cef8c058141d",
+  "sourcePins": {
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-source-audit/js/invent.js": "cf97894ce91184e7912b34c031fd46c98c91389e90fc5cad6d59ce11e34ce54a",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-source-audit/js/cmd.js": "bb486a6d082e5a7602923d97450b50ba24ecbe1aa0f0176a06666f14bde777f7",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-source-audit/js/extcmd_data.js": "2e9355a55243f1708e2513ee48d6ae0d92af9a939defd2bba756421aa906bdc0"
+  },
+  "completeOwnersRead": [
+    "C invent.c:4104-4314 look_here",
+    "C invent.c:4319-4333 dolook",
+    "fixed JS invent.js:826-985 look_here",
+    "fixed JS invent.js:989-995 dolook"
+  ],
+  "actualCallRoute": [
+    "C cmd.c:1758 colon -> dolook",
+    "JS extcmd_data.js:70 key58 -> look; cmd.js:1312 -> invent.dolook",
+    "invent.js:66 Blind imported as heroBlind",
+    "dolook returns look_here result unchanged"
+  ],
+  "reachedReturn": "C invent.c:4241-4248 and JS invent.js:907-918: empty floor returns Blind ? ECMD_TIME : ECMD_OK.",
+  "caseIndex": 4,
+  "name": "wet-water-look",
+  "originalFailedChecks": [
+    {
+      "kind": "source",
+      "name": "underwater return retains slime apart from elapsed turns; dry fire cures",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n98 !== 100\n"
+    },
+    {
+      "kind": "source",
+      "name": "source trap RNG prefix is preserved without filtering world-turn calls",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'rn2(70)=38',\n+   'rn2(20)=1',\n+   'rn2(85)=11',\n+   'rn2(70)=56',\n+   'rn2(20)=17',\n+   'rn2(85)=29'\n+ ]\n- []\n"
+    }
+  ],
+  "originalExpectations": {
+    "slimeAfter": 100,
+    "actionCalls": []
+  },
+  "observed": {
+    "before": {
+      "step": 140,
+      "turn": 7,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 100,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 149,
+      "turn": 9,
+      "form": 157,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 48,
+      "mhmax": 48,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 16,
+      "underwater": true,
+      "uinwater": true,
+      "resistant": false,
+      "swimming": true,
+      "breathless": true,
+      "blind": true,
+      "flying": false,
+      "levitating": false,
+      "fumbling": false,
+      "canReachFloor": true,
+      "utrap": 0,
+      "slime": 98,
+      "gloves": null,
+      "inventory": [],
+      "floor": [],
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0
+    },
+    "actionCalls": [
+      "rn2(70)=38",
+      "rn2(20)=1",
+      "rn2(85)=11",
+      "rn2(70)=56",
+      "rn2(20)=17",
+      "rn2(85)=29"
+    ],
+    "actionFrames": 0,
+    "outputHashes": {
+      "screens": "1e33befeed6d79aa36a89f73c811dc5e3b4aab1c85f92e1964a7e242e2dfab03",
+      "cursors": "3bba8c1039139559c46b8793830dfa026e4ba0f344b3f7c4416b82fb653f1ee9",
+      "calls": "05d38833851d1f6b9caf53041d6a113951de18aab5ea6c37b21a63e11d645a4f",
+      "slices": "86d5c0513f76ced793daacffbee3c81a3003482a41a329bbe17a8a808a168877",
+      "frames": "2b42d7de36a189bc47c57bea468f955d10f1c67505a58e654190ca4726d4bf7d"
+    }
+  },
+  "interpretation": "The NOEYES water elemental is blind. Its empty-floor look consumes time in both owners. Thus the zero-time timer100/no-RNG premise is invalid. The stored row retains an unseen trap, no fire feedback, unchanged HP/form and a positive slime timer reduced by elapsed turns. Exact native timing/calls remain unverified.",
+  "lockedFilesEdited": false,
+  "assertionsRelabeled": false,
+  "gameplayRerun": false,
+  "nativeRecordings": 0,
+  "passingLookControlIndex": 5,
+  "nextPrerequisite": "Parent records the original locked six once. Any authoritative blind-look predicate reconciliation must be separate and preserve both original failures."
+}

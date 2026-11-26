@@ -14,12 +14,17 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 Fire-trap slime cleanup, startup gender validation, and their test corrections
 are pushed. The latest test-only checkpoint is `1d6eaf44`, which checks surviving
-timers after a figurine is consumed. Gremlin light fear is ready to publish: all
+timers after a figurine is consumed. Gremlin light fear is pushed as `b939e5a6`: all
 five native cases,65 source/producer checks,10 neutrality comparisons,45 strict
 workers and952 maintained recordings pass. Its complete installed report equals
 the isolated result. Original observer failures remain preserved separately.
-Underwater fire return, human HP-floor handling and giant weapon preference are
-the next source reviews. The latest official result remains agentic rank7 with
+Underwater fire return is ready to publish: six native cases,102 focused
+checks,nine retained gates,45 strict workers and953 maintained recordings pass.
+The installed report is byte-identical to its portable result. The next scoped
+fix prevents chest fire from igniting floor objects; its isolated three C cases
+and retained floor-fire checks pass. Human HP-floor handling and giant weapon
+selection need corrected ordinary producers, with failed attempts retained.
+The latest official result remains agentic rank7 with
 659 unmatched screens; its timestamp predates these newest gameplay pushes.
 See STATUS for exact evidence and limits.
 

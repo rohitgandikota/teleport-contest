@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-underwater-candidate/batch.mjs"
+  ],
+  "timeoutSeconds": 55,
+  "memoryMB": 512,
+  "preEditLockSHA256": "e6facf75ec5f46d3a7ba508d511fa8d0b0049939797362e4e019f7bd43d66807",
+  "startedUTC": "2026-11-26T21:50:44.837207+00:00"
+}

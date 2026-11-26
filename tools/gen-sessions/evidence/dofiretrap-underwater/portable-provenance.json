@@ -1,0 +1,42 @@
+{
+  "bodyStart": "const {runSegment}",
+  "sourceBodyEnd": "\nverifyRuntime();",
+  "portableBodyEnd": "\n// Portable accounting, no further gameplay.",
+  "correctionLockSHA256": "5a2485d6a023ee95e6a86932ad86ae743e87a1baa438637685a212c67457d7c7",
+  "approvedPredicateReplacements": [
+    {
+      "before": "        if (!p.trigger) assert.equal(after.slime, 100);",
+      "after": "        if (!p.trigger)\n            assert.equal(after.slime, before.slime - (after.turn - before.turn));"
+    },
+    {
+      "before": "        if (!p.trigger) assert.deepEqual(actionCalls, []);",
+      "after": "        if (!p.trigger) {\n            assert.equal(after.turn > before.turn, p.blind);\n            if (!p.blind) assert.deepEqual(actionCalls, []);\n        }"
+    }
+  ],
+  "importReplacements": [
+    {
+      "old": "'./js/",
+      "new": "'../js/"
+    },
+    {
+      "old": "'./frozen/",
+      "new": "'../frozen/"
+    },
+    {
+      "old": "'./tools/",
+      "new": "'./"
+    }
+  ],
+  "importReplacementCounts": [
+    6,
+    1,
+    1
+  ],
+  "originalBodySHA256": "f17b13870b8eae22a5b7335883ea183eceee38f591eaa679b1c6c790c74a645a",
+  "correctedBodySHA256": "a97bb4b3d3f2a16ecbdfe4c387a3c80072030549fac137cd4c3bdeeeb8f87ca6",
+  "portableBodySHA256": "cc0d9660c2d228091d55d76a230fa6d370331d68ea4ee904e14c36453de9b9b0",
+  "assertionCount": 102,
+  "observerUnchanged": true,
+  "inputsUnchanged": true,
+  "legacyReevaluatedWithoutReplay": true
+}

@@ -1,5 +1,21 @@
 # STATUS — live handoff board
 
+## 2026-11-26: startup gender published; combat comment corrected
+
+Startup gender is pushed as3453b003. All1,242 full951 tested Git blobs match
+the published tree; role-init-gender-full951-publication-verification.json
+records the exact commit and hashes. The only current edit to game source
+replaces an obsolete hmon_hitmon warning with the actual C1779
+armor/shield rule. The complete syntax tree is identical apart from source
+positions. No gameplay behavior changes and no broad regression is repeated.
+The prepared comment graph has runtime SHA:
+6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8.
+Its source lock, parsed-tree comparison and install receipt are under
+uhitm-comment-readability and uhitm-comment-main-install.json. Stage only
+js/uhitm.js and these two plan documents, commit and push, then create
+uhitm-comment-publication.json before starting the prepared gremlin composition.
+The gremlin candidate and portable promotion remain separate from this change.
+
 ## 2026-11-26: pickup correction published; startup gender verified on full951
 
 Published main is8c3b7e1f, the separate pickup-test correction. Fire-trap slime

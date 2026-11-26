@@ -13,10 +13,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-26
 
 Fire-trap slime cleanup is pushed as `b15a043c`; the pickup-test correction is
-pushed as `8c3b7e1f`. Startup gender normalization passes all four C cases,
+pushed as `8c3b7e1f`. Startup gender normalization is pushed as `3453b003`.
+It passes all four C cases,
 44 ordinary checks, both retained startup gates, 45 strict workers and all
 951 maintained recordings. The installed behavior report matches the isolated
-report; only the measured runtime hash differs. Publication is next. The
+report; only the measured runtime hash differs. An obsolete combat warning
+has been replaced with the current C rule, with the parsed code unchanged. The
 gremlin candidate passes all five C cases and is being prepared for integration.
 Separate fire-trap source reviews cover underwater return and the human HP floor.
 The latest official result remains agentic rank7 with659 unmatched

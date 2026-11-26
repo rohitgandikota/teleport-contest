@@ -1,0 +1,129 @@
+{
+  "originalInputLockSHA256": "afa0134ea23ffa3c81aa90479b6aab147fe820bffd63b6f5ea378bfcd86826ce",
+  "recipeSHA256": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "explore-stasis-blocked"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001bzcro\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wizard-stasis-bypass"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001bzcro\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "explore-without-stasis"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wizard-without-stasis"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    ]
+  ],
+  "tuplesSHA256": "7de53ff9ad64c5b839657dc70def4993391bbb361e6bfdd7f33c459b5311f820",
+  "allKeysSHA256": "e258f4d19768ce04d2d95fe90e83b8923a2236ca86fef83e70d7a1f45d4fd467",
+  "cases": 4,
+  "keys": 210,
+  "boundaries": 214,
+  "recipeChanged": false,
+  "inputChanged": false,
+  "derivation": "Metadata only. Original pre-gameplay lock included options presence and byte-pinned the entire recipe including names. This canonical recorder table explicitly lists name, seed, datetime, nethackrc, moves and uses character keys. Original recipe, historical lock, probe and output evidence remain unchanged."
+}

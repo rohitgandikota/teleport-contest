@@ -1,0 +1,11 @@
+# Scrolltele stasis evidence
+
+This family uses a real charged starting wand, a real blessed teleport scroll and the ordinary debug-to-explore command. Original C rejects the nonwizard stasis attempt before controlled destination selection. The isolated eight-line guard repair improves ordinary43/44 to44/44 and native3/4 to4/4, including214boundaries,10,724calls and0frames. Three complete negative ordinary/native rows and15 hashes remain unchanged.
+
+Run tools/scrolltele-stasis-input-gate.mjs with no arguments for read-only validation, or pass one new compact report path. All44 original checks inspect fresh passive observations. Plain and deferred-EOF runs must preserve all five streams. The gate checks every current ordinary row against the fixed candidate proof and retains the complete negative controls. Its C preflight is mandatory before importing the installed game; inherited native proof is not a fresh native comparison.
+
+Only tracked recipe/raw/evidence and maintained decoder/observer helpers are required. The installed js graph is discovered and hashed at invocation time. Historical graph and C-build hashes in provenance are not executable dependencies or runtime acceptance pins. The preserved original probe is text evidence, not a public entry point. Its original options-presence lock is unchanged; canonical-input-lock.json adds the recorder's explicit name/seed/datetime/nethackrc/moves table from the same prelocked recipe bytes. The recipe's historical description still says confirmation pending; original C later confirmed it without changing any recipe or raw metadata.
+
+The runtime patch itself stays in immutable research evidence; scope.json records its hash and exact owner. No patch or baseline runtime snapshot is a public payload. source-provenance.json records all source/candidate anchors. Four registry additions belong only in branch-requirements.json. Parent owns composition, fresh native verification, broader regression and publication.
+
+Blindness refresh and mounted prompt omissions remain separate. These inputs cancel placement on the faulty baseline and prove blocked-attempt feedback/input ordering, not movement through stasis. Other restriction, amulet/tower, unconscious, expired/repeated stasis and placement/helper branches remain unobserved.

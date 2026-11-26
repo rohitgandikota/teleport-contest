@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/shop-chat-quote-container-coins-parent-review/native.mjs"
+  ],
+  "exit": 0,
+  "seconds": 1.476,
+  "logSHA256": "4fcabf59e10441e7aef704e31101b7dd1217964a0a6f929f882a5b7768a3c18f"
+}

@@ -1,0 +1,351 @@
+{
+  "name": "shop-quote-container-coins",
+  "classification": "source-only ordinary proposal, no presumed defect",
+  "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "seedSearch": false,
+  "segments": [
+    {
+      "name": "contents-only",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\rsp  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "owned-contents-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\rsq  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "empty-owned-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\ro  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "leading-coins",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "interleaved-coins",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "coins-only-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ],
+  "predictions": [
+    {
+      "name": "contents-only",
+      "kind": "container-stock",
+      "negative": false,
+      "phases": {
+        "setup": 31,
+        "sackWishStart": 33,
+        "sackWish": 58,
+        "pickupStart": 58,
+        "pickup": 63,
+        "appleWishStart": 63,
+        "appleWish": 86,
+        "sackDropStart": 86,
+        "sackDrop": 94,
+        "lootStart": 94,
+        "loot": 106,
+        "chatStart": 106,
+        "chatEnter": 112,
+        "end": 118
+      },
+      "floor": [
+        [
+          "SACK",
+          1,
+          true
+        ]
+      ],
+      "contents": [
+        [
+          "PICK_AXE",
+          1,
+          false,
+          false
+        ]
+      ],
+      "billCount": 0,
+      "credit": 0,
+      "quoteExpected": true,
+      "chatTurnDelta": 1,
+      "C": {
+        "requiredPhrases": [
+          "The contents of ",
+          "bag containing 1 item, price 67 zorkmids."
+        ],
+        "producerPhrases": [
+          "Sell it?",
+          "You put a pick-axe into the bag."
+        ],
+        "quoteExcludes": [],
+        "ownerRNG": "Sober contents-only/free/menu branch has no quote-owner core RNG; normal turn calls remain separate.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    },
+    {
+      "name": "owned-contents-control",
+      "kind": "container-owned",
+      "negative": true,
+      "phases": {
+        "setup": 31,
+        "sackWishStart": 33,
+        "sackWish": 58,
+        "pickupStart": 58,
+        "pickup": 63,
+        "appleWishStart": 63,
+        "appleWish": 86,
+        "sackDropStart": 86,
+        "sackDrop": 94,
+        "lootStart": 94,
+        "loot": 106,
+        "chatStart": 106,
+        "chatEnter": 112,
+        "end": 118
+      },
+      "floor": [
+        [
+          "SACK",
+          1,
+          true
+        ]
+      ],
+      "contents": [
+        [
+          "APPLE",
+          2,
+          true,
+          false
+        ]
+      ],
+      "billCount": 1,
+      "credit": 0,
+      "quoteExpected": true,
+      "chatTurnDelta": 1,
+      "C": {
+        "requiredPhrases": [
+          "bag containing 1 item, no charge!"
+        ],
+        "producerPhrases": [
+          "Sell it?",
+          "You put 2 apples into the bag."
+        ],
+        "quoteExcludes": [
+          "The contents of "
+        ],
+        "ownerRNG": "Sober contents-only/free/menu branch has no quote-owner core RNG; normal turn calls remain separate.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    },
+    {
+      "name": "empty-owned-control",
+      "kind": "container-empty",
+      "negative": true,
+      "phases": {
+        "setup": 31,
+        "sackWishStart": 33,
+        "sackWish": 58,
+        "pickupStart": 58,
+        "pickup": 63,
+        "appleWishStart": 63,
+        "appleWish": 86,
+        "sackDropStart": 86,
+        "sackDrop": 94,
+        "lootStart": 94,
+        "loot": 105,
+        "chatStart": 105,
+        "chatEnter": 111,
+        "end": 117
+      },
+      "floor": [
+        [
+          "SACK",
+          1,
+          true
+        ]
+      ],
+      "contents": [],
+      "billCount": 1,
+      "credit": 0,
+      "quoteExpected": true,
+      "chatTurnDelta": 1,
+      "C": {
+        "requiredPhrases": [
+          "empty",
+          "bag, no charge!"
+        ],
+        "producerPhrases": [
+          "Sell it?",
+          "bag is empty."
+        ],
+        "quoteExcludes": [
+          "The contents of "
+        ],
+        "ownerRNG": "Sober contents-only/free/menu branch has no quote-owner core RNG; normal turn calls remain separate.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    },
+    {
+      "name": "leading-coins",
+      "kind": "leading",
+      "negative": false,
+      "phases": {
+        "setup": 31,
+        "goldWishStart": 33,
+        "goldWish": 54,
+        "goldDropStart": 54,
+        "goldDrop": 60,
+        "chatStart": 60,
+        "chatEnter": 66,
+        "end": 72
+      },
+      "floor": [
+        [
+          "GOLD_PIECE",
+          100,
+          false
+        ],
+        [
+          "PICK_AXE",
+          1,
+          false
+        ]
+      ],
+      "contents": [],
+      "billCount": 0,
+      "credit": 100,
+      "quoteExpected": true,
+      "chatTurnDelta": 1,
+      "C": {
+        "requiredPhrases": [
+          "A pick-axe, price 67 zorkmids"
+        ],
+        "producerPhrases": [
+          "You have established 100 zorkmids credit."
+        ],
+        "quoteExcludes": [],
+        "ownerRNG": "One embellishment rn2(3), then optional rn2(5), before normal turn calls.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    },
+    {
+      "name": "interleaved-coins",
+      "kind": "interleaved",
+      "negative": false,
+      "phases": {
+        "setup": 31,
+        "goldWishStart": 33,
+        "goldWish": 54,
+        "goldDropStart": 54,
+        "goldDrop": 60,
+        "appleWishStart": 60,
+        "appleWish": 83,
+        "appleDropStart": 83,
+        "appleDrop": 91,
+        "chatStart": 91,
+        "chatEnter": 97,
+        "end": 103
+      },
+      "floor": [
+        [
+          "APPLE",
+          2,
+          true
+        ],
+        [
+          "GOLD_PIECE",
+          100,
+          false
+        ],
+        [
+          "PICK_AXE",
+          1,
+          false
+        ]
+      ],
+      "contents": [],
+      "billCount": 0,
+      "credit": 100,
+      "quoteExpected": true,
+      "chatTurnDelta": 1,
+      "C": {
+        "requiredPhrases": [
+          "Fine goods for sale:",
+          "2 apples, no charge",
+          "a pick-axe, 67 zorkmids"
+        ],
+        "producerPhrases": [
+          "You have established 100 zorkmids credit.",
+          "Sell them?"
+        ],
+        "quoteExcludes": [],
+        "ownerRNG": "Sober contents-only/free/menu branch has no quote-owner core RNG; normal turn calls remain separate.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    },
+    {
+      "name": "coins-only-control",
+      "kind": "coins-only",
+      "negative": true,
+      "phases": {
+        "setup": 31,
+        "pickupStart": 33,
+        "pickup": 38,
+        "goldWishStart": 38,
+        "goldWish": 59,
+        "goldDropStart": 59,
+        "goldDrop": 65,
+        "chatStart": 65,
+        "chatEnter": 71,
+        "end": 77
+      },
+      "floor": [
+        [
+          "GOLD_PIECE",
+          100,
+          false
+        ]
+      ],
+      "contents": [],
+      "billCount": 1,
+      "credit": 100,
+      "quoteExpected": false,
+      "chatTurnDelta": 0,
+      "C": {
+        "requiredPhrases": [
+          "Talk to whom? (in what direction)"
+        ],
+        "producerPhrases": [
+          "You have established 100 zorkmids credit."
+        ],
+        "quoteExcludes": [],
+        "ownerRNG": "No quote, cancelled direction; no chat core calls.",
+        "source": "shk.c:2995-3042,3927-4194,5386-5503;pickup.c:2558-2725,2972-3227;sounds.c:1257-1298",
+        "nativeStatus": "Predictions only; no original C recording for this family."
+      }
+    }
+  ]
+}

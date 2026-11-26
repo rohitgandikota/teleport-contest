@@ -1,0 +1,330 @@
+[
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 5386,
+    "end": 5503,
+    "review": "complete quote owners",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "fe238e1c0c3d61454270190096a21c7c0fcda355352513bf0966edc138d0d77f"
+  },
+  {
+    "path": "nethack-c/upstream/src/sounds.c",
+    "start": 1257,
+    "end": 1409,
+    "review": "complete dochat",
+    "fileSHA256": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+    "rangeSHA256": "bc1b1e7b1e00789a28c4aed223af8ef8dd02cc6ec371c2549efe7ed352a69b2c"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 2845,
+    "end": 3042,
+    "review": "complete pricing units/oid adjustment/get_cost/contained_cost",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "30a4e7ff75b79b8a79f0364a176b1b21990a389b53f8a4d3ff3ebf780b549acc"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3148,
+    "end": 3193,
+    "review": "complete set_cost",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "f0027bda44c4d3e9725d39860a5fe3ecda4a483f654e0dcdb00376cabd743373"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3913,
+    "end": 4194,
+    "review": "complete sellobj_state/sellobj",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "65fac3ce4aa870cd3cb2624e3528657d42e5a2941e5343ec8934f871cb08f21a"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 4319,
+    "end": 4358,
+    "review": "complete getprice",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "49a6a1d44628e62a3e3f3defd67eff2e02776426aab8b62ab39e662e7d242bed"
+  },
+  {
+    "path": "nethack-c/upstream/src/shknam.c",
+    "start": 805,
+    "end": 824,
+    "review": "complete saleable",
+    "fileSHA256": "1c49ed68820d82671d74e3dc70c45cc7d312c7f449985a715ce74c86dd4c2717",
+    "rangeSHA256": "c7e831e406812f4c8f43cb0c45d1cfbcc1505e39a65823904211516f947c54da"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 1521,
+    "end": 1554,
+    "review": "complete currencies/currency",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "27027e746432d526eed04eae88b4e0e79158f696d4e8fe97faf8f415dd186a20"
+  },
+  {
+    "path": "nethack-c/upstream/src/do.c",
+    "start": 29,
+    "end": 43,
+    "review": "complete dodrop",
+    "fileSHA256": "e2fe19b83f22dcf496d2ced54f8d727433ef29aa4c3a3151a64e66350cae985f",
+    "rangeSHA256": "8ce75c6d87faedd65f8452552fd63f477f4ca643b6eb67603618b00868e1f8f4"
+  },
+  {
+    "path": "nethack-c/upstream/src/do.c",
+    "start": 714,
+    "end": 843,
+    "review": "complete drop/dropx/dropy/dropz",
+    "fileSHA256": "e2fe19b83f22dcf496d2ced54f8d727433ef29aa4c3a3151a64e66350cae985f",
+    "rangeSHA256": "e1eee7f4f79117b95dfda571ad55f6f4324c62273c7b98417c061e4e566237b1"
+  },
+  {
+    "path": "nethack-c/upstream/src/mkobj.c",
+    "start": 2305,
+    "end": 2366,
+    "review": "complete place_object",
+    "fileSHA256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488",
+    "rangeSHA256": "930f1d279f6ad04e051ac9c676c1d1aa840ceab757788cf912a6653d6a700103"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 4366,
+    "end": 4394,
+    "review": "complete stackobj and selected merge type exclusion",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "b4a3563d85300377b2499781325124c8b10d59541b6ceeabc1e51d9c209308bd"
+  },
+  {
+    "path": "nethack-c/upstream/src/wizcmds.c",
+    "start": 32,
+    "end": 44,
+    "review": "complete wiz_wish",
+    "fileSHA256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "rangeSHA256": "959afa113faf0f19311ef5516316a3ad2d014f97ad3e33007cbfe086b494d857"
+  },
+  {
+    "path": "nethack-c/upstream/src/zap.c",
+    "start": 6314,
+    "end": 6422,
+    "review": "complete makewish",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "f0168a900c280b3d97916f2de4076239c19bbcd95d6e9a0bfc47f13b67346bb8"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 1208,
+    "end": 1306,
+    "review": "complete hold_another_object",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "2a7950f0cbfc738155bb9e63fca43b04e07cc99c0aed01b8a9ef9f184eac1544"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 3966,
+    "end": 4006,
+    "review": "selected wish count/BUC parse",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "e62d88df98bc29b8ea3ec787116c5f97e250eeb9ad738471690544dbcc91f55a"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 5069,
+    "end": 5084,
+    "review": "selected wish quantity application",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "1902f41778d0b29fa515258a97bf2e590fbc732c33e184474544df53e97701c6"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 5255,
+    "end": 5269,
+    "review": "selected wish BUC application",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "daa1f00ae7160e7c1c21165268acb5c7a14223fafea5cc50c458339a54689498"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 1223,
+    "end": 1300,
+    "review": "selected name flags/quantity prefix",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "b736ee97de811929f2453948e5f0cb7640b786df83da55acb191576360371dd4"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 1645,
+    "end": 1688,
+    "review": "selected name currency guards",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "ab390403d706b7e22c6dfbba74fbdfcceb4ec64dfa4d5605d662d8949239de7f"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 936,
+    "end": 960,
+    "review": "selected xname pluralization",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "bcfce579073ee116017d78cea365bbd9e7f87ac6c89f4b367e91a5ba7fc503f6"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 4876,
+    "end": 4972,
+    "review": "complete quote owners",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "84b4595cd06558caf17fbcb59de8986bff32a30a5ea720f1da2d9da1e2129a4b"
+  },
+  {
+    "path": "baseline/js/sounds.js",
+    "start": 202,
+    "end": 311,
+    "review": "complete dochat",
+    "fileSHA256": "88485c4893c7b76565faed412dfece30a7f3b2eb058eb230f296ea262c8b2e9f",
+    "rangeSHA256": "3d5bab8c86e6f4282c5dc75cda73115f5d8f2bd69e2049c430a0ede25ff35311"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 1318,
+    "end": 1446,
+    "review": "complete getprice/oid/get_cost",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "e865397a77315682dda5b9f08270d148179d284228ac3192995d0d84db971677"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 1771,
+    "end": 1844,
+    "review": "complete sellobj_state/saleable/set_cost",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "ebef219904519d08aa5e28eefcf7b312dc239a1637572c4dee6eb6d22d09e4db"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 2222,
+    "end": 2376,
+    "review": "complete sellobj",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "3b280daafec6e7ce63c31978de5888ded721b131ad2806b88dda5222ad50a03b"
+  },
+  {
+    "path": "baseline/js/do.js",
+    "start": 1791,
+    "end": 1830,
+    "review": "complete dropz/dropy",
+    "fileSHA256": "3b2d86a06a769c1eb3fc8d712a0c0fcb06f942b3f154e419431abe257b76c6f3",
+    "rangeSHA256": "be96fd610621e20c3375b09846a28d10bb04080ac68cebde6b754447b7852b25"
+  },
+  {
+    "path": "baseline/js/do.js",
+    "start": 2130,
+    "end": 2142,
+    "review": "complete dropx",
+    "fileSHA256": "3b2d86a06a769c1eb3fc8d712a0c0fcb06f942b3f154e419431abe257b76c6f3",
+    "rangeSHA256": "09d08baa356cc0a6e65bb2c628e5322a8d13c73027941fc99b98c8f9db761808"
+  },
+  {
+    "path": "baseline/js/do.js",
+    "start": 2170,
+    "end": 2246,
+    "review": "complete drop/dodrop",
+    "fileSHA256": "3b2d86a06a769c1eb3fc8d712a0c0fcb06f942b3f154e419431abe257b76c6f3",
+    "rangeSHA256": "49c226de3cfd90e88853507c3d5939449519e7cb48708879b6255e93aaa0d72b"
+  },
+  {
+    "path": "baseline/js/mkobj.js",
+    "start": 1504,
+    "end": 1540,
+    "review": "complete place_object",
+    "fileSHA256": "1329379d6e4c65d2b23206e26f37966d5d14b2ef4c0d6bae384fb9e2caccaf58",
+    "rangeSHA256": "f25ee0b54314493280374304491b47b0a3c04ca630a5b5061471a25b360b945c"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 2016,
+    "end": 2021,
+    "review": "complete stackobj",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "557cf1f022a9a0027b486c39c5339b0a037922e9fa6f68f4a31449ae48e997c2"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 2728,
+    "end": 2817,
+    "review": "complete hold_another_object",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "f78f2cd5dc27c7d9d8631077fe42185344a9dbaf11c7f4f8d7295e309b0085fb"
+  },
+  {
+    "path": "baseline/js/wizcmds.js",
+    "start": 98,
+    "end": 109,
+    "review": "complete wiz_wish",
+    "fileSHA256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+    "rangeSHA256": "567bce4f51c026833ca0b7df0701a6ce4efac36545cce29d576583bee230ec31"
+  },
+  {
+    "path": "baseline/js/zap.js",
+    "start": 1969,
+    "end": 2082,
+    "review": "complete makewish",
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "6c75e4d647e79c8b58b3147132b7dee1a78a6d7381648a5cf9d0372ce194d321"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 3388,
+    "end": 3401,
+    "review": "selected wish quantity application",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "fbad42fb1e427fb5444fd3fa9ffe6d7b0edbedca66c0d38ac141d20ca9776327"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 3585,
+    "end": 3602,
+    "review": "selected wish BUC application",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "45db488d8dc399681d3e462da82de7c1dd1be77cdf8ee11137ff15775736a8ae"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 86,
+    "end": 95,
+    "review": "complete OBJ_NAME/OBJ_DESCR",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "fd8f9cdd90a40413273dbb7e09e86fad93bad4a188a431f165b2c3e9e9b0c023"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 1483,
+    "end": 1532,
+    "review": "selected doname currency guard",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "0fd20a1e401f9732a1f9e08640fe0ca9fd2ca8e67e0d5dda2bd4a168fea4484b"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 3150,
+    "end": 3184,
+    "review": "complete currencies/currency",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "df7393c3d8d5b287727ff6cc8e05d6947f2f0ee0a6e7fdc754b0c12d684252e7"
+  },
+  {
+    "path": "nethack-c/upstream/win/tty/topl.c",
+    "start": 365,
+    "end": 474,
+    "review": "selected full-prompt preparation/default-answer contract",
+    "fileSHA256": "7abe4855c351b90048261752bab6bcc329f6fa236da1cca0cc48e362b6ff5d6d",
+    "rangeSHA256": "d88da5d8d6b7180d7972ef1394485638f0cd974fd1424afe11926a320308bdc3"
+  },
+  {
+    "path": "baseline/js/tty/topl.js",
+    "start": 375,
+    "end": 468,
+    "review": "selected pending-message acknowledgement before prompt",
+    "fileSHA256": "a49c7dc1eee29a55486bc270a19ff62d78bce729629b0a29c9800008c85b6905",
+    "rangeSHA256": "aeb2c47c3f58faaf3fb949db3b8e0ec7bc998aad93585b2800bcb9aaf77b943f"
+  }
+]

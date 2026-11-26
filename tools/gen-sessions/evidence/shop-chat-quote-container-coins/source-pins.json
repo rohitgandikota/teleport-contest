@@ -1,0 +1,32 @@
+{
+  "runtimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "files": {
+    "OWNER-PLAN.md": "bb6f02a32faf1e82a6fa65311352fbf964bf142e8ac18508312472db1e2f4e49",
+    "SOURCE-REVIEW.md": "60d9f93c7199d12641b1a7bbc011aa3fa8aad6c802b6b7c877a92e8daac04353",
+    "runtime.json": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+    "source-ranges.json": "6cbcca98d56499f411c06e1a887964117dca5fcf05ba5032fdfc157bcb2c3598",
+    "prior-ranges-revalidated.json": "79d7be64c7f0cc225bf10fdac01c3ff96741e203a655f1c23eb59fc1fc7299ef",
+    "setup-provenance.json": "c2333f8e43df1e9f5104bf21159e704129976c0e324b379995de8dc76a9adbaf",
+    "proposals/proposal01.json": "fe11658e1b5d300ef53b8e9bc8bd0c22e23e7ff09c13d77faa5d65b9126e61f9",
+    "primary-recipe.json": "b081d06aa2772de90233b0e05d8da34acf33045008d64153c966504035dc383e",
+    "input-lock.json": "2e4cec08774865b0ce7b4eacfbc37f26ef990ce15b35c7933e1b3bca33b93027",
+    "tools/probe.mjs": "8c3f6fd88bb8d6ea70f5dc494f821416c99cb3df5a3c90031c4761415f2f8d09"
+  },
+  "priorSeals": {
+    "../shop-chat-quote-source-audit": "1265f944e536a71056de53f14e0f70c52267b8eab52f33f6c11a22e75171de75",
+    "../shop-chat-quote-candidate": "986139c60d246abf6b3d93c0755170a5f8660018d0b75a490ffa8e3238e169c5",
+    "../shop-chat-quote-promotion": "b8de5889c972154a2a352ccea4755cb853de00c7977dedac8dd6946e82a607da",
+    "prior-source": "d5116395c46abe24601fad30c36928502254fc370fdef1d79d035c999af67acb",
+    "prior-promotion": "711b87c7dcbac93becf99e162f00a265be48c7f278ba855e7dd841551945f623"
+  },
+  "lockedBeforeReplay": true,
+  "cases": 6,
+  "checksPerCase": 32,
+  "keys": 605,
+  "boundaries": 611,
+  "probeWorkerLimit": 1,
+  "maxOldSpaceMB": 512,
+  "timeoutSeconds": 50,
+  "nativeExecutions": 0,
+  "runtimeCandidate": false
+}

@@ -1,0 +1,48 @@
+{
+  "sourceSealSHA256": "4609d027ad71d9e24ccc7ce7d9ef3b0f283f116c90f55fa8d8accb27a297b672",
+  "sourceManifestSHA256": "3b35fcff66d89b7eb478ab8b435fda06db3eef1f68d9e586bf276fdaa6e091f1",
+  "sourceMembers": 24,
+  "candidateSealSHA256": "f0a954f74602a70d4f79a02f194dddcf0382f31a45d61a761650d4eeebfeebee",
+  "candidateManifestSHA256": "2c360b6390adb57d30ea3cab3bfd8923171a439a17899c5d41afc90466b483b8",
+  "candidateMembers": 313,
+  "sourceBaselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "candidateRuntimeSHA256": "88bedb3adb5649c891e7ca9a47bf27867edcd1113039abb91979fcc5782d3407",
+  "runtimePatchSHA256": "c58c3f39c5a999541935212d82074b5b02d8ee089f213f90f71a3c37bcf7a206",
+  "runtimeFile": "js/teleport.js",
+  "runtimeOwner": "scrolltele",
+  "CFile": "src/teleport.c",
+  "CRange": [
+    849,
+    919
+  ],
+  "change": "Eight added lines, only early noteleport_level && !wizard guard, awaited message, optional learnscroll and return; no imports changed.",
+  "baselineSnapshotRequired": false,
+  "historicalHashesOnly": true,
+  "rawFixtureCopied": false,
+  "sourceInputLockSHA256": "afa0134ea23ffa3c81aa90479b6aab147fe820bffd63b6f5ea378bfcd86826ce",
+  "sourceProbeSHA256": "b8cdb15d271c455ef2d435b4a35af14505510a48b456e6d152d109dc3df79656",
+  "recipeSHA256": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+  "rawSHA256": "acb416f39cf234e10fff73ad999f0bcff6ae6f41d2423cedfbe9db38af946809",
+  "ordinaryBaseline": "43/44",
+  "ordinaryCandidate": "44/44",
+  "nativeBaseline": "3/4",
+  "nativeCandidate": "4/4",
+  "nativeProof": "Inherited once-recorded original C and candidate313 comparison. Public gate performs fresh ordinary modes and mandatory raw preflight, not native replay.",
+  "unobservedLimits": [
+    "blindness refresh",
+    "mounted prompt",
+    "natural restrictions and demon court",
+    "amulet/tower and unconscious control",
+    "expired/repeated stasis and random placement"
+  ],
+  "publicPathsForOriginalLock": {
+    "recipe.json": "tools/gen-sessions/recipes/scrolltele-stasis.json",
+    "predictions.json": "tools/gen-sessions/evidence/scrolltele-stasis/predictions.json",
+    "source-pins.json": "tools/gen-sessions/evidence/scrolltele-stasis/source-pins.json",
+    "producer-origin.json": "tools/gen-sessions/evidence/scrolltele-stasis/producer-origin.json",
+    "SOURCE-REVIEW.md": "tools/gen-sessions/evidence/scrolltele-stasis/source-review.md"
+  },
+  "historicalLockOnlyFiles": {
+    "baseline-runtime.json": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30"
+  }
+}

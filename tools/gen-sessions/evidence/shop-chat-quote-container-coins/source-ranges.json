@@ -1,0 +1,450 @@
+[
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 2809,
+    "end": 3100,
+    "review": "price access, get_cost, contained_cost, gold and container ownership helpers",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "d06f243e5fd00041c8c28612a3d5a7a413db695513c4a1c3ef4ceffd9fbe4422"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3309,
+    "end": 3365,
+    "review": "add_one_tobill",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "9b6c4945f08f8adcbe392bd36803758176ba77410d81bb4902703b8434134922"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3451,
+    "end": 3620,
+    "review": "billable/addtobill/honorific ordering",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "c52159511585bfe8d9a9150b8ca8ac12d39ee3d13aa7b408b58685f61dd365a4"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3661,
+    "end": 3713,
+    "review": "remove full original item from bill; recursive subfrombill",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "f09cfb3336fc944d61f9907c7d1fdc8426575b2083a25f8a67be5f8d32c5436c"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 3877,
+    "end": 4194,
+    "review": "donate_gold, sellobj_state, complete sellobj",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "78ef78c696ad05f88d6cfc1d5e22950000eaa7912c265a2d218126bd39ab6d1e"
+  },
+  {
+    "path": "nethack-c/upstream/src/shk.c",
+    "start": 5386,
+    "end": 5503,
+    "review": "complete shop_object/price_quote/shk_embellish",
+    "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+    "rangeSHA256": "fe238e1c0c3d61454270190096a21c7c0fcda355352513bf0966edc138d0d77f"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 1318,
+    "end": 1513,
+    "review": "price/billing primitive/honorific",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "ad7226a8a2659a0f7de3c773b96ff01f28032c457c8499e20c847a76f19e43a6"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 1673,
+    "end": 1775,
+    "review": "complete addtobill/sellobj_state",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "f5b2d4bb47b47633ab0db9afc6bf2f4ab1237ff850b222b7bf292dddb924a2c4"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 1777,
+    "end": 1930,
+    "review": "saleable/set_cost/contained_sale_summary/dropped_container/sub_one_frombill",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "5a089e632bf28786abd49fe175e5afff7aa5096f835af05a746d595da1103a74"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 2197,
+    "end": 2376,
+    "review": "donate_gold/complete sellobj",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "20639bc6e9999b2862c20ff9d5965bfa71a58c89e8d48de848bee99d05615fd6"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 4358,
+    "end": 4431,
+    "review": "complete contained_cost/billable",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "cb5ce69c51b8060336113b4318b368cd91964fbcfcc02dbf7d9332742f28aa32"
+  },
+  {
+    "path": "baseline/js/shk.js",
+    "start": 4876,
+    "end": 4972,
+    "review": "complete quote owners",
+    "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+    "rangeSHA256": "84b4595cd06558caf17fbcb59de8986bff32a30a5ea720f1da2d9da1e2129a4b"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 672,
+    "end": 910,
+    "review": "complete pickup",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "da546d5e65591c25f52529f4653a1360ac67b3a3100bc7b7e7a7c01d5e77dee6"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 1025,
+    "end": 1082,
+    "review": "selected single-object auto-selection; not full menu owner",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "8d49f91598750499856b8ef9583ba93964f79005faa9ed1c5da8e19b1c76e044"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 1570,
+    "end": 1794,
+    "review": "carry_count/lift_object",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "4dc33841bc67937f8436c2596eb3eceed989c49c9917b261b7e10458580b5817"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 1803,
+    "end": 1973,
+    "review": "pickup_object/pick_obj/pickup_prinv",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "821aae9c996ebd879db8a25cf4896d41e4667ec4ecda97cfc7a305ae83121a9f"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 2024,
+    "end": 2070,
+    "review": "container_at/able_to_loot",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "62ee41eaef14e64d6cdae6ab596d22cd75fa23aa61be08f3360f7e10902f8b84"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 2088,
+    "end": 2346,
+    "review": "do_loot_cont/doloot/doloot_core",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "5a66ec6a0ffe4184c1caa8883036ddb6a90e2ac218ac9569f5df8dcd74592c44"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 2558,
+    "end": 2723,
+    "review": "complete in_container and ck_bag",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "4628851f7c057c985dbeb6f6c57e0156c4f437d158798e2c8a37fbe380ff0d40"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 2957,
+    "end": 3226,
+    "review": "stash filter and complete use_container",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "d4aa839498bd75bb9eee51ec77399da8ce885515446a4962b7168c45a5d6b659"
+  },
+  {
+    "path": "nethack-c/upstream/src/pickup.c",
+    "start": 3397,
+    "end": 3477,
+    "review": "complete in_or_out_menu",
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "d3eaf0294fd29372d01138cbdefc6d4e42399ce677943442af8604d589ffd754"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 449,
+    "end": 598,
+    "review": "complete pickup",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "c691bfd13538bef0417d9383ccedbf8e51dc429dc4546285db677f8255388b6c"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 704,
+    "end": 735,
+    "review": "selected single-object auto-selection",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "a5ea551522b78644638f5a0d6f75e1882420b7e6ebe9f2dce0f33e7b7c848ecb"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 828,
+    "end": 968,
+    "review": "carry_count/lift_object",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "e6b0253a1256442e8c892df49b221f44460ad56107127a737d4d0a5183bc3571"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 971,
+    "end": 1104,
+    "review": "pickup_object/pick_obj/pickup_prinv/able_to_loot",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "2ed1a70e91272f7de6966592fc4f266563d9e69ae0a10f9f20f02c0a1116da92"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 1107,
+    "end": 1293,
+    "review": "do_loot_cont/doloot/doloot_core",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "25ba9e19e48f7728779a9b1a9ffc0a88b0506bc97f8b248b4c3ca6f34e906113"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 1986,
+    "end": 2096,
+    "review": "complete in_container/ck_bag",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "a41f2054eb07ed83e0858dc8027ec8263cc5e34b05860c211a4411b8ea0e1471"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 2255,
+    "end": 2405,
+    "review": "stash filter and complete use_container",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "8e7f471849dc6c210f8a88970dbedb02fb32bd8b4c67fb485e7aa32d18b7f68e"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 2518,
+    "end": 2578,
+    "review": "complete in_or_out_menu",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "8495d833a069cb3a091bf6bee7e38df8eea1638b5216ebb9d4665262fb3a9a07"
+  },
+  {
+    "path": "baseline/js/pickup.js",
+    "start": 2612,
+    "end": 2625,
+    "review": "container_at",
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "9a0279eb02eda8e119e86388a3ed8f22e6bfe9d44506e33e3cebc1ab243df5cb"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 575,
+    "end": 1029,
+    "review": "complete xname/xname_flags",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "5d2ea6ec1db4b66cd79f950f00f69aec49aad249b2ab38c731d386119fdff243"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 1223,
+    "end": 1757,
+    "review": "complete doname_base/doname",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "68ef36339d27ba4a7680dd36b45afb7351bba615f81ee2eb0dd27aa11b7e84a0"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 4088,
+    "end": 4110,
+    "review": "selected empty qualifier",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "5dc668441faa34daa4e34e6cab630bbae2966f1c475c7ecc328e69be68caddd7"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 4528,
+    "end": 4546,
+    "review": "selected gold wish producer",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "b4c544c7c78295b64f8702e8af7664f2401b1a13846817c6de49768df0650dc2"
+  },
+  {
+    "path": "nethack-c/upstream/src/objnam.c",
+    "start": 5311,
+    "end": 5327,
+    "review": "selected empty-container wish cleanup",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "aedc350684c078cf21b2fa9c6c98d60cbb1e169b9c418dbeb0f699273081517a"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 354,
+    "end": 622,
+    "review": "complete xname/xname_flags",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "f1831be0bcd1ef7196ce728e6919d1617038d84159ee65db6ca4c98a3b58f643"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 1250,
+    "end": 1522,
+    "review": "complete doname",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "fc4ca93cd12ea33e0b6c69d7b3fd2df9abaad781de70096b2e5cb7166a0c74bd"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 2072,
+    "end": 2074,
+    "review": "selected empty qualifier",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "e217329aa004487c97a94695b3014a3d8d42a44512efd7f051ba5cdc9fa080f8"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 2492,
+    "end": 2506,
+    "review": "selected gold wish",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "c388c34b4946eedda37c382f8058613fe0678c9fe6bb61ce94fb86943ec60375"
+  },
+  {
+    "path": "baseline/js/objnam.js",
+    "start": 3649,
+    "end": 3664,
+    "review": "selected empty-container wish",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "6ca49a813618ce18bf3091544bf693282fc71f4b4222c0f46ac2662c48993aee"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 961,
+    "end": 1155,
+    "review": "complete addinv side effects and addinv_core0",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "d02c4a0ad11bdfa3c9eb6ce6fd3e61140467025a51ea56d29aee09718cf32a82"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 1356,
+    "end": 1409,
+    "review": "complete freeinv_core/freeinv",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "327f494d50de63e6236b0ba5e42f355af7fba6e259eb413ad15f745069d49037"
+  },
+  {
+    "path": "nethack-c/upstream/src/invent.c",
+    "start": 3620,
+    "end": 3651,
+    "review": "complete count_contents",
+    "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "rangeSHA256": "3ecd969c51100142ff08654c1ed83b36acd8009538f3c9b44491582280754f9e"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 489,
+    "end": 684,
+    "review": "complete inventory insertion path/side effects",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "95ce4fdba309019c7985e47c600f250e5aa03dd3820883b356185218f4da0339"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 741,
+    "end": 765,
+    "review": "count_contents",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "4137b6679f82a1161342713d037e61300987fa290f9ef441235fe067a6252eed"
+  },
+  {
+    "path": "baseline/js/invent.js",
+    "start": 2656,
+    "end": 2712,
+    "review": "complete freeinv_core/freeinv",
+    "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+    "rangeSHA256": "04ab89838b4255c3041cfbe7d6592191c0dc565fe95188c420f9c872d29172aa"
+  },
+  {
+    "path": "nethack-c/upstream/src/mkobj.c",
+    "start": 2305,
+    "end": 2366,
+    "review": "complete place_object",
+    "fileSHA256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488",
+    "rangeSHA256": "930f1d279f6ad04e051ac9c676c1d1aa840ceab757788cf912a6653d6a700103"
+  },
+  {
+    "path": "nethack-c/upstream/src/mkobj.c",
+    "start": 2676,
+    "end": 2695,
+    "review": "complete add_to_container",
+    "fileSHA256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488",
+    "rangeSHA256": "d8b56a90079fc633d78dbec4c0b627da9e68aee0400499cdac18ee670a53a784"
+  },
+  {
+    "path": "baseline/js/mkobj.js",
+    "start": 1504,
+    "end": 1540,
+    "review": "complete place_object",
+    "fileSHA256": "1329379d6e4c65d2b23206e26f37966d5d14b2ef4c0d6bae384fb9e2caccaf58",
+    "rangeSHA256": "f25ee0b54314493280374304491b47b0a3c04ca630a5b5061471a25b360b945c"
+  },
+  {
+    "path": "baseline/js/mkobj.js",
+    "start": 2167,
+    "end": 2187,
+    "review": "complete add_to_container",
+    "fileSHA256": "1329379d6e4c65d2b23206e26f37966d5d14b2ef4c0d6bae384fb9e2caccaf58",
+    "rangeSHA256": "12773838a2b6dff97bb7a98845499a5e6ff9c946f9ee9d5648573c1991d07c11"
+  },
+  {
+    "path": "nethack-c/upstream/src/zap.c",
+    "start": 654,
+    "end": 689,
+    "review": "complete get_obj_location",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "fdc9fa6b3f4da7819f7388897fe41e0cb9f7bdcb7b6f6503307c325205c8b881"
+  },
+  {
+    "path": "baseline/js/zap.js",
+    "start": 947,
+    "end": 978,
+    "review": "complete get_obj_location",
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "0f723a13748a99f6345eb487fc908b18ad1e988ba150f69e1341708028cfcc83"
+  },
+  {
+    "path": "nethack-c/upstream/src/hack.c",
+    "start": 4399,
+    "end": 4409,
+    "review": "check_capacity",
+    "fileSHA256": "547cab9e7aaa922aa5bb8b5ad38696f9f74e3e1e31c264509a9448a689cb4665",
+    "rangeSHA256": "add81cc40580b7d85afd13be0878ebd4e795c34d2c9922623a8f8f4b81e92ff5"
+  },
+  {
+    "path": "baseline/js/hack.js",
+    "start": 2477,
+    "end": 2486,
+    "review": "check_capacity",
+    "fileSHA256": "6e2c92c94c8e24e16da68d9bcbf595620f454476a5590294f2451208641675c5",
+    "rangeSHA256": "598d6476153c6f9876d4711a25b697beab1624cfa9720ac31b15cb48948a0213"
+  },
+  {
+    "path": "nethack-c/upstream/include/objects.h",
+    "start": 898,
+    "end": 914,
+    "review": "container types and sack description/cost",
+    "fileSHA256": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "rangeSHA256": "edb7fca9aa76458c92b31c9778c2d6e723d965ddb76740e61f17dee230b45e18"
+  },
+  {
+    "path": "nethack-c/upstream/include/objects.h",
+    "start": 1007,
+    "end": 1009,
+    "review": "pick-axe base cost50",
+    "fileSHA256": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "rangeSHA256": "4fb009e61b42fe44a7a1edd5a31473cc8e8c293ad8edc9a41041cf5d2fc54012"
+  }
+]

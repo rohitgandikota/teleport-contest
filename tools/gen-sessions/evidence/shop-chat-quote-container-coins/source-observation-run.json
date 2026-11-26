@@ -1,0 +1,21 @@
+{
+  "completedUTC": "2026-11-26T18:39:30.083963+00:00",
+  "exit": 0,
+  "timeout": false,
+  "seconds": 2.929,
+  "sourceAndInputPinsUnchanged": true,
+  "runtime280Unchanged": true,
+  "priorSealsUnchanged": true,
+  "workers": 1,
+  "maxOldSpaceMB": 512,
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/shop-chat-quote-container-coins-source-audit/tools/probe.mjs"
+  ],
+  "stdoutSHA256": "2906e135ce1afe8bb4388bc9a905e13e7b728106bd5ebd0eec04dd0b975e11be",
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "CExecutions": 0
+}

@@ -1,0 +1,99 @@
+{
+  "name": "scrolltele-stasis",
+  "description": "Real starting stasis wand and blessed scroll, with actual debug-to-explore transition and three bypass/no-activation controls. Source predictions locked before one JS batch; original C confirmation pending.",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "mode.explore",
+    "object.wands",
+    "object.scrolls",
+    "ui.getlin"
+  ],
+  "branches": [
+    "scrolltele-stasis.explore-stasis-blocked",
+    "scrolltele-stasis.wizard-stasis-bypass",
+    "scrolltele-stasis.explore-without-stasis",
+    "scrolltele-stasis.wizard-without-stasis"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "explore-stasis-blocked",
+      "moves": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001bzcro\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wizard-stasis-bypass",
+      "moves": " \u0017blessed scroll of teleportation\r\u001b\u001bzcro\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "explore-without-stasis",
+      "moves": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001b.ro\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wizard-without-stasis",
+      "moves": " \u0017blessed scroll of teleportation\r\u001b\u001b.ro\u001b\u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "scrolltele-stasis.explore-stasis-blocked",
+      "segment": 0,
+      "screenIncludes": [
+        "stasis",
+        "A mysterious force prevents you from teleporting!",
+        "now in non-scoring explore mode"
+      ],
+      "screenExcludes": [
+        "Where do you want to be teleported?"
+      ]
+    },
+    {
+      "branch": "scrolltele-stasis.wizard-stasis-bypass",
+      "segment": 1,
+      "screenIncludes": [
+        "stasis",
+        "Where do you want to be teleported?"
+      ],
+      "screenExcludes": [
+        "A mysterious force prevents you from teleporting!"
+      ]
+    },
+    {
+      "branch": "scrolltele-stasis.explore-without-stasis",
+      "segment": 2,
+      "screenIncludes": [
+        "stasis",
+        "Where do you want to be teleported?",
+        "now in non-scoring explore mode"
+      ],
+      "screenExcludes": [
+        "A mysterious force prevents you from teleporting!"
+      ]
+    },
+    {
+      "branch": "scrolltele-stasis.wizard-without-stasis",
+      "segment": 3,
+      "screenIncludes": [
+        "stasis",
+        "Where do you want to be teleported?"
+      ],
+      "screenExcludes": [
+        "A mysterious force prevents you from teleporting!"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,57 @@
 # STATUS — live handoff board
 
+## 2026-11-26: stasis checkpoint verified on full944
+
+Published main is bdc0a0f427297cebe24682806c4d31ea6017bef1. Chat changes
+are pushed, with all 1,233 full942 tested Git blobs verified. Publication
+receipt SHA256:
+360d422bf2be715b35ab8ee40f3123ca2d841ca392573c74563de2f2f1334b49.
+
+The current runtime change is the missing early scrolltele restriction guard
+in teleport.js. Four original C cases improve from 3/4 to 4/4; all 44 ordinary
+contracts, 15 negative hashes and observed/plain/deferred comparisons pass.
+Only explore-mode stasis changes. Wizard bypass and both unrestricted controls
+remain unchanged. The source24 and candidate313 seals remain fixed. Parent
+composition map:
+68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad.
+The main runtime and two new raw recordings are installed. Full944 passes
+on NFS at scrolltele-stasis-full944-js-20261126, PID 3568608 completed, with
+two CPU workers, default 45s limits and no retries. All 944 recordings pass:
+944,424 screens/cursors, 20,697,813 random calls and 33,188 frames. All 1,235
+tested files match the working tree. Verification SHA256:
+905309a2a227f5b0cda05937cce8a1b0dfad4aafa183755ba5c67e25c7d56250.
+Its fixed all-files manifest SHA256 is:
+7954c6df7b0136d20a9435ec848c3a0d8d8ef990c7f27f91b5ff47407b737496.
+Three focused teleport checks and 46 strict workers pass. The source audit is
+empty. Stasis promotion48 installs 22 payloads and four more branch rows,
+totaling 4,750. Its fresh 44/44 public gate preserves all ordinary rows and
+15 negative hashes. Complete report equality initially failed solely because
+the reported runtime hash correctly changed from isolated to composed. Every
+other field is identical; both original reports and attribution are preserved.
+
+Shop container/coin coverage needs no gameplay change. Its original C6 is exact
+on the baseline and parent composition. Promotion57 installs 20 payloads and
+six branch requirements, totaling 4,746. The fresh public gate passes all
+192 contracts, six native cases and 15 negative hashes; its full JSON equals
+the sealed portable report, SHA256:
+6d909299a745326aa3da62dce24b78c5e8ee7f8806b301ac125188c37faea073.
+An initial installer stopped before registry writes because it treated the
+requirements envelope as an array. All copied payloads were reverified, then
+the six requirements were appended without changing prior registry bytes.
+The combined parent proof records both families and their exact installation.
+Next: verify the index, commit and push immediately. Sartre now owns a separate
+source-only family for the missing mounted teleport prompt, on this fixed graph.
+
+Crowning's original closed-page recording remains a failed producer, unchanged.
+A separately locked paged family adds one space to each positive and keeps
+all three negative tuples. Its original C6 passes primary preflight; native
+baseline is 3/6 with only chronicle pages differing, all random streams exact.
+Euclid owns an isolated candidate for seven gcrownu log sites and the missing
+quest-grant log that original C shows on page one. The original 42-check body
+is fixed; three separately locked quest checks supplement it. No banishment
+or spoiler-filter changes are included. Leibniz owns source-only real-input
+coverage of polymorphed fire damage; no fire candidate or C recording yet.
+
 ## 2026-11-26: chat checkpoint verified on full942
 
 Published main is efe508f97c033c1ecd2b4d09d49fbb36a38c925e (altar and bones).

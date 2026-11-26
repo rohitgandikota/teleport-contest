@@ -1,0 +1,9 @@
+# Authorized scope and source proof
+
+Source24's complete-owner review and53 pinned ranges are inherited unchanged. This candidate re-read complete C teleport.c849-919 and fixed JS teleport.js1137-1192, the C restriction helper30-47, and existing module imports. Parent original C confirms all four locked predicates and integrity. Its fixed9d native report is3/4: only explore-stasis-blocked differs. The failure has46 glyph differences at57 and shifted RNG slices at57/58; the complete RNG call sequence already matches. All three native negatives are exact.
+
+C evaluates the existing noteleport_level helper before `!wizard`, then prints the mysterious-force message, learns a supplied scroll and returns. JS must await pline because it can acknowledge the preceding read message. Learnscroll is synchronous and already imported. The existing local noteleport_level reads natural restrictions, demon-court restrictions and the inclusive stasis timeout. The guard must precede disorientation draws, controlled selection and random placement, exactly as C does.
+
+The only runtime edit is that early branch, immediately after cc initialization. No import, helper, caller, property, input or oracle change is needed. Reverse removal must reproduce fixed9d teleport.js exactly. The source family's positive uses a real starting wand and real blessed scroll after an actual explore-mode transition. It cancels destination selection on the faulty baseline, so neither this family nor its C confirmation demonstrates movement through stasis; it demonstrates rejection and its input-boundary ordering.
+
+The preexisting `make_blinded(0,FALSE)` and steed-name omissions remain untouched by explicit parent scope. The broader amulet/tower, natural restriction, demon court, covetous, unconscious, repeated/expired stasis, random placement and destination-helper paths remain untested. No claim that the complete scrolltele owner is closed follows from this four-case repair.

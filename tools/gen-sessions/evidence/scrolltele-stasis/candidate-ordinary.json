@@ -1,0 +1,1038 @@
+{
+  "classification": "ordinary JS source-prediction controls, no native comparison",
+  "recipeSHA256": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+  "runtimeSHA256": "88bedb3adb5649c891e7ca9a47bf27867edcd1113039abb91979fcc5782d3407",
+  "cases": 4,
+  "checks": 44,
+  "failures": [],
+  "rows": [
+    {
+      "name": "explore-stasis-blocked",
+      "checks": [
+        {
+          "name": "maintained startup produces a charged stasis wand",
+          "pass": true
+        },
+        {
+          "name": "real blessed teleport scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual explore transition and wizard bypass flag",
+          "pass": true
+        },
+        {
+          "name": "real activation charge, timeout and restriction predicate",
+          "pass": true
+        },
+        {
+          "name": "ordinary perception and control prerequisites",
+          "pass": true
+        },
+        {
+          "name": "C scrolltele early restriction feedback",
+          "pass": true
+        },
+        {
+          "name": "real read consumes and discovers the scroll",
+          "pass": true
+        },
+        {
+          "name": "blocked or cancelled destination preserves location",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeAction": {
+        "step": 52,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeRead": {
+        "step": 54,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 29,
+        "restricted": true,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 2,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "last": {
+        "step": 61,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 29,
+        "restricted": true,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 2,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "step": 56,
+          "top": "As you read the scroll, it disappears.--More--\n"
+        },
+        {
+          "step": 57,
+          "top": "A mysterious force prevents you from teleporting!\n"
+        }
+      ],
+      "stateTraceSHA256": "97384aa4a5337a90b7eb238eb83ee9f2207df9065a68a5fcda00bdd679f6f0fc",
+      "hashes": {
+        "screens": "9d526a3a41cc6f7b8b0f2f0d97e771e8548b26775b807bb551b67fd7a4ca0af6",
+        "cursors": "9d6f54109d350aefdbcfd2fd250a1d7103d4364d2b931d4b365ce9e82a0226e9",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "1f11957c714b392b80d86b32996b4dcafdad4f17e2c8d82df031ea6023795252",
+        "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+      },
+      "plainHashes": {
+        "screens": "9d526a3a41cc6f7b8b0f2f0d97e771e8548b26775b807bb551b67fd7a4ca0af6",
+        "cursors": "9d6f54109d350aefdbcfd2fd250a1d7103d4364d2b931d4b365ce9e82a0226e9",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "1f11957c714b392b80d86b32996b4dcafdad4f17e2c8d82df031ea6023795252",
+        "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+      },
+      "deferredHashes": {
+        "screens": "9d526a3a41cc6f7b8b0f2f0d97e771e8548b26775b807bb551b67fd7a4ca0af6",
+        "cursors": "9d6f54109d350aefdbcfd2fd250a1d7103d4364d2b931d4b365ce9e82a0226e9",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "1f11957c714b392b80d86b32996b4dcafdad4f17e2c8d82df031ea6023795252",
+        "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+      },
+      "keys": 61,
+      "boundaries": 62,
+      "calls": 2682,
+      "frames": 0
+    },
+    {
+      "name": "wizard-stasis-bypass",
+      "checks": [
+        {
+          "name": "maintained startup produces a charged stasis wand",
+          "pass": true
+        },
+        {
+          "name": "real blessed teleport scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual explore transition and wizard bypass flag",
+          "pass": true
+        },
+        {
+          "name": "real activation charge, timeout and restriction predicate",
+          "pass": true
+        },
+        {
+          "name": "ordinary perception and control prerequisites",
+          "pass": true
+        },
+        {
+          "name": "C scrolltele early restriction feedback",
+          "pass": true
+        },
+        {
+          "name": "real read consumes and discovers the scroll",
+          "pass": true
+        },
+        {
+          "name": "blocked or cancelled destination preserves location",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeAction": {
+        "step": 36,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeRead": {
+        "step": 38,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 29,
+        "restricted": true,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 2,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "last": {
+        "step": 45,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 29,
+        "restricted": true,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 2,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "step": 40,
+          "top": "As you read the scroll, it disappears.--More--\n"
+        },
+        {
+          "step": 41,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "e6c9bef9b205a79fa9c266c1d3f0c39d40a80f57d3e260326a90512e8a2774b1",
+      "hashes": {
+        "screens": "355c568445cbe1211b42d9cffe7c587987f3be23bac94847b14200a43292178c",
+        "cursors": "6ade23cbf349cb4fab22bc5945561efbebb890b1ee610d1df529200390fe6289",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "ee089df4b650a72c11b3ea33c0cd6ed498b2e9d48a39868dbc3b96d424ba939b",
+        "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+      },
+      "plainHashes": {
+        "screens": "355c568445cbe1211b42d9cffe7c587987f3be23bac94847b14200a43292178c",
+        "cursors": "6ade23cbf349cb4fab22bc5945561efbebb890b1ee610d1df529200390fe6289",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "ee089df4b650a72c11b3ea33c0cd6ed498b2e9d48a39868dbc3b96d424ba939b",
+        "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+      },
+      "deferredHashes": {
+        "screens": "355c568445cbe1211b42d9cffe7c587987f3be23bac94847b14200a43292178c",
+        "cursors": "6ade23cbf349cb4fab22bc5945561efbebb890b1ee610d1df529200390fe6289",
+        "calls": "f6f3a56605ef71e09be3585e82733b80d821e6dadb7a71e5e8b86d3303aa3bbe",
+        "slices": "ee089df4b650a72c11b3ea33c0cd6ed498b2e9d48a39868dbc3b96d424ba939b",
+        "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+      },
+      "keys": 45,
+      "boundaries": 46,
+      "calls": 2682,
+      "frames": 0
+    },
+    {
+      "name": "explore-without-stasis",
+      "checks": [
+        {
+          "name": "maintained startup produces a charged stasis wand",
+          "pass": true
+        },
+        {
+          "name": "real blessed teleport scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual explore transition and wizard bypass flag",
+          "pass": true
+        },
+        {
+          "name": "real activation charge, timeout and restriction predicate",
+          "pass": true
+        },
+        {
+          "name": "ordinary perception and control prerequisites",
+          "pass": true
+        },
+        {
+          "name": "C scrolltele early restriction feedback",
+          "pass": true
+        },
+        {
+          "name": "real read consumes and discovers the scroll",
+          "pass": true
+        },
+        {
+          "name": "blocked or cancelled destination preserves location",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeAction": {
+        "step": 52,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeRead": {
+        "step": 53,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "last": {
+        "step": 60,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "step": 55,
+          "top": "As you read the scroll, it disappears.--More--\n"
+        },
+        {
+          "step": 56,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "437c68f7626ebf03672662ba1385d8678827fdb2a4d43030faeb2dbe735abcda",
+      "hashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "plainHashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "deferredHashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "keys": 60,
+      "boundaries": 61,
+      "calls": 2680,
+      "frames": 0
+    },
+    {
+      "name": "wizard-without-stasis",
+      "checks": [
+        {
+          "name": "maintained startup produces a charged stasis wand",
+          "pass": true
+        },
+        {
+          "name": "real blessed teleport scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual explore transition and wizard bypass flag",
+          "pass": true
+        },
+        {
+          "name": "real activation charge, timeout and restriction predicate",
+          "pass": true
+        },
+        {
+          "name": "ordinary perception and control prerequisites",
+          "pass": true
+        },
+        {
+          "name": "C scrolltele early restriction feedback",
+          "pass": true
+        },
+        {
+          "name": "real read consumes and discovers the scroll",
+          "pass": true
+        },
+        {
+          "name": "blocked or cancelled destination preserves location",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeAction": {
+        "step": 36,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "beforeRead": {
+        "step": 37,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          },
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "charges": 0,
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "last": {
+        "step": 44,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "inventory": [
+          {
+            "id": 36,
+            "type": 415,
+            "quantity": 1,
+            "letter": "c",
+            "charges": 3,
+            "blessed": false,
+            "cursed": false,
+            "seen": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "step": 39,
+          "top": "As you read the scroll, it disappears.--More--\n"
+        },
+        {
+          "step": 40,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "9e377a3b072c6187aa3d4753f768c4e196abd7a7f2426f6fe5adbd13656ed86f",
+      "hashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "plainHashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "deferredHashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "keys": 44,
+      "boundaries": 45,
+      "calls": 2680,
+      "frames": 0
+    }
+  ]
+}

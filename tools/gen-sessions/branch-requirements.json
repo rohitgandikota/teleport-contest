@@ -5283,6 +5283,84 @@
       "cFile": "src/sounds.c",
       "cFunction": "dochat",
       "description": "Deaf eating pet chat retains the deaf response without an invisible marker."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.contents-only",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "An owned floor sack holds returned natural shop stock: the unpaid item leaves the live bill and its chargeable contents receive a contents-only price quote."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.owned-contents-control",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Owned apples stashed in an owned floor sack stay no-charge; the quote omits the contents-only prefix while natural stock remains held and billed."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.empty-owned-control",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "An actual empty floor-sack loot attempt learns emptiness; the owned empty container receives a no-charge quote while natural stock remains held and billed."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.leading-coins",
+      "cFile": "src/shk.c",
+      "cFunction": "shop_object",
+      "description": "Dropped gold remains ahead of natural shop stock and establishes credit; shop_object skips the leading coins before the single-stock quote."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.interleaved-coins",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Owned apples, dropped gold and natural stock form a real interleaved floor chain; the waiting two-row menu skips gold and preserves per-object ownership pricing."
+    },
+    {
+      "group": "Shop container and coin quotes",
+      "id": "shop-quote-container-coins.coins-only-control",
+      "cFile": "src/shk.c",
+      "cFunction": "shop_object",
+      "description": "Picking up natural stock leaves a coins-only floor pile; chat has no shop object, asks for direction, and cancellation spends no time or RNG."
+    },
+    {
+      "group": "Teleport scroll restriction",
+      "id": "scrolltele-stasis.explore-stasis-blocked",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Reject an explore-mode blessed teleport scroll after real stasis-wand activation, before destination selection.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Teleport scroll restriction",
+      "id": "scrolltele-stasis.wizard-stasis-bypass",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Preserve wizard bypass of stasis for a real blessed teleport scroll.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Teleport scroll restriction",
+      "id": "scrolltele-stasis.explore-without-stasis",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Allow an explore-mode blessed teleport scroll when the starting stasis wand is not activated.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Teleport scroll restriction",
+      "id": "scrolltele-stasis.wizard-without-stasis",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Allow a wizard blessed teleport scroll when the starting stasis wand is not activated.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

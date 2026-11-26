@@ -1,0 +1,18 @@
+{
+  "sourceProbeSHA256": "b8cdb15d271c455ef2d435b4a35af14505510a48b456e6d152d109dc3df79656",
+  "candidateProbeSHA256": "36cfb50bd75dd585c46dc081edf1c77fb4d80543a63462c9d599a700ae8a3c58",
+  "assertionAndObserverBodySHA256": "3f904842c6857ba37045a9331f6f6a331112f45b547fa5a7a7b19602343bbec6",
+  "bodyBytes": 6966,
+  "checkGroups": 11,
+  "cases": 4,
+  "preservedChecks": 44,
+  "unchangedCompleteBody": true,
+  "changes": [
+    "Replace source-only preflight with original C/source/input/runtime preflight",
+    "Use candidate graph through the same relative import structure",
+    "Change report path and runtime map metadata only"
+  ],
+  "sourceRecipeSHA256": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+  "sourceInputLockSHA256": "afa0134ea23ffa3c81aa90479b6aab147fe820bffd63b6f5ea378bfcd86826ce",
+  "canonicalInputLockSHA256": "646cebf1b3be55119a50a87ccacb7321ceaff06afe96a7ea72847895606bd3d3"
+}

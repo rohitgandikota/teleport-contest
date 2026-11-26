@@ -1,0 +1,29 @@
+{
+  "startup": {
+    "recipe": "evidence/startup-recipe.json",
+    "native": "evidence/startup-native.session.json",
+    "segment": 0,
+    "seed": 7303,
+    "evidence": "original C inventory shows c - a wand of stasis (0:3); not prior activation coverage"
+  },
+  "explore": {
+    "recipe": "evidence/explore-recipe.json",
+    "segment": 0,
+    "sequence": "#exploremode\r\u001by"
+  },
+  "files": {
+    "startup-recipe.json": {
+      "path": "tools/gen-sessions/recipes/anti-magic-iron-shoes.json",
+      "sha256": "b278d7f920d005bf0da2ac36fcf289c482abc4385453fd9ccfad9b373309827e"
+    },
+    "startup-native.session.json": {
+      "path": "tools/gen-sessions/generated/anti-magic-iron-shoes.session.json",
+      "sha256": "b56fb686cb3b273a06f46c62cdd68d81f5866593e8e9df13c2752ce521e57746"
+    },
+    "explore-recipe.json": {
+      "path": "tools/gen-sessions/recipes/teleport-command-seen-traps.json",
+      "sha256": "c77e0c2d83369dafcc213354fded8b97c291e894cf54ae1b591a1ff51ea0cad6"
+    }
+  },
+  "newInput": "wish one blessed teleport scroll before transition; activate existing startup wand without a direction key; cancel controlled placement; no seed search"
+}

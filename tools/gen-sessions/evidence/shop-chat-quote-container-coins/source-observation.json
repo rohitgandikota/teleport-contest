@@ -1,0 +1,875 @@
+{
+  "reportSHA256": "852d6956e49709c83fe6d6ccec5d0ee4bc51c824ac0ec443350c6e78ae9d3aad",
+  "cases": 6,
+  "passed": 6,
+  "checks": 192,
+  "totalChecks": 192,
+  "neutrality": 6,
+  "derivation": "Only compact hashes/check vectors are extracted. The original report remains sealed in source31. No expectations are inferred or changed.",
+  "rows": [
+    {
+      "name": "contents-only",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "e6491b6f868c5d77f392fc5f99bb2d3b19e283396e6c8dd3ee154192b2096dd5",
+      "statesSHA256": "03c3b86a0202691ede77e351ce8938018b723e48ed84983854540dc0af76d1ad",
+      "stateCount": 115,
+      "outputHashes": {
+        "screens": "a8af9c3678b881278b49bd3d4c38007581947c73fa50838585594c407de6af05",
+        "cursors": "3d5bcae718deb8915550d33f466849c9d81048265c1e6e9c49e10d3996bc8e78",
+        "calls": "46fc73ba6703311770b89c5a4aaec409b0ab3d31f00e4d4eca160ad5a10a48bb",
+        "slices": "083b53938295491ac8a60baaabced35ba16993da2575a19d06264be47c564a96",
+        "frames": "cdcd253169fd9de5ba979845ae7daead78ecf58c5defc688d2d12fce6258b396"
+      },
+      "negative": false
+    },
+    {
+      "name": "owned-contents-control",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "67886b761f0a30db440297fedc3dd54bf5eec765a3f29fc0d70ec8716a5b8493",
+      "statesSHA256": "5628a8d8b7fa6eea8f4b30c9769d63e41cca553ab5eec8cda0fe176c6e0cb2ab",
+      "stateCount": 115,
+      "outputHashes": {
+        "screens": "1e8f39733ba9f338a1afb85da372ba172fbefcfae8067923403e7020e8f7a2a9",
+        "cursors": "3d5bcae718deb8915550d33f466849c9d81048265c1e6e9c49e10d3996bc8e78",
+        "calls": "6331536bdc667124ead0403933efab7bb4d0f55d50183003ec0882a3a73476aa",
+        "slices": "d8a1adeaca91e154c38eaf7dde572d8da59e18a7265323e8c6dce2d68e69e929",
+        "frames": "cdcd253169fd9de5ba979845ae7daead78ecf58c5defc688d2d12fce6258b396"
+      },
+      "negative": true
+    },
+    {
+      "name": "empty-owned-control",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "236c8b68b47a0a817459c15902c00eb0df69ae05e2f308a46da49bc171061cd8",
+      "statesSHA256": "32cec100453fb8f1769cf82a70dcbfa05d60cff6bf06c08607a6808812f7abb2",
+      "stateCount": 114,
+      "outputHashes": {
+        "screens": "72c51d762bc9c3106d1efdd65e0a4beaf342d8b63832f3155e44a0e30c2113ee",
+        "cursors": "e9f8b78ebd29dab83df9de149ddf19a530a16d3bf648454a3e71a05581ba6f21",
+        "calls": "6331536bdc667124ead0403933efab7bb4d0f55d50183003ec0882a3a73476aa",
+        "slices": "535c00be01f873455a98124ecbfabfc27dc9facb548c597d7d927c44be04e2e7",
+        "frames": "f5d71f4bea36a1c582fdbeb84bba7f0acc04e03fc1eedaae56817f8a7e389807"
+      },
+      "negative": true
+    },
+    {
+      "name": "leading-coins",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "b52b977cd5b1628de985a4c5594c85db918cf1431144e380218d72d1b9a1bb5c",
+      "statesSHA256": "259c8fd0db8f0b45832303d186ca7ba61fc714de83591357a669cd5a24554d92",
+      "stateCount": 69,
+      "outputHashes": {
+        "screens": "5cf0a6f68b9290feb64d8d9625d27aa5e9f8ecdd02e3780351756ec5d186c118",
+        "cursors": "e28fda56ece8437c9f779f64faadd881acc2955886591b299390fc81ae04f373",
+        "calls": "93a5b6d5d758e136777e2e74c555c7c6dab8e1de590aef8acc9a959fe5ec2d69",
+        "slices": "5650452abafe9c125f53113f4846a24334655895860b42ffc8775f6a48ffca3a",
+        "frames": "6ebaa05e83879cdab661dfc02e802b1708c8aaa63ce8aa180024b67c7c225e3b"
+      },
+      "negative": false
+    },
+    {
+      "name": "interleaved-coins",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "ad413794f7c3d1f0d108b123aa79d0110e58e6c9722b4446d8535e9d213b4077",
+      "statesSHA256": "67097987c1f7c5ef9f02ead2dcd426d092f3d7f63bad422b4e924fa13d1681f7",
+      "stateCount": 100,
+      "outputHashes": {
+        "screens": "44fd282bc73e2b5aa57a0f81a796321d1354a47785a4c42c53ffa921aa2f59cc",
+        "cursors": "054565a81c90734926b93e02c48c01523c94e4323de21294f0ebc4ef224d7f26",
+        "calls": "e298aed2f6f610402c4c475f9727525bc3f79bf89ac46b32ea5a5e8cbb75afff",
+        "slices": "78f1ebaa0e96f17a7eaef8819a359d70594a892f1606ab2f9777e1721e3b14b4",
+        "frames": "9563dee59b16a6072418273edb77b2f3f3d7f770aafd73feb95338d581909d4e"
+      },
+      "negative": false
+    },
+    {
+      "name": "coins-only-control",
+      "checks": [
+        {
+          "name": "maintained natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly spot",
+          "pass": true
+        },
+        {
+          "name": "normal speech and manipulation prerequisites",
+          "pass": true
+        },
+        {
+          "name": "known natural stock price prerequisites",
+          "pass": true
+        },
+        {
+          "name": "same actual natural stock survives setup",
+          "pass": true
+        },
+        {
+          "name": "exact floor chain order and ownership",
+          "pass": true
+        },
+        {
+          "name": "floor linked chain agrees with observed pile",
+          "pass": true
+        },
+        {
+          "name": "real empty sack wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "real natural pickup preserves bill and identity",
+          "pass": true
+        },
+        {
+          "name": "real two-apple wish in selected slot",
+          "pass": true
+        },
+        {
+          "name": "refused sack sale leaves owned empty floor container",
+          "pass": true
+        },
+        {
+          "name": "container remains owned with learned contents",
+          "pass": true
+        },
+        {
+          "name": "exact contents identity quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "contained objects have real parent and location",
+          "pass": true
+        },
+        {
+          "name": "stash uses the actual selected item",
+          "pass": true
+        },
+        {
+          "name": "returned stock no longer billed only in contents-only case",
+          "pass": true
+        },
+        {
+          "name": "real coin wish and drop preserve gold credit",
+          "pass": true
+        },
+        {
+          "name": "expected credit debit and loan before chat",
+          "pass": true
+        },
+        {
+          "name": "source quote eligibility matches actual floor",
+          "pass": true
+        },
+        {
+          "name": "survival through ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source predicted producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat feedback",
+          "pass": true
+        },
+        {
+          "name": "owned zero-cost contents omit contents-only prefix",
+          "pass": true
+        },
+        {
+          "name": "quote or direction branch chosen as predicted",
+          "pass": true
+        },
+        {
+          "name": "source predicted chat turn count",
+          "pass": true
+        },
+        {
+          "name": "interleaved coin skipped in waiting two-item menu",
+          "pass": true
+        },
+        {
+          "name": "leading coin leaves the single priced owner RNG prefix",
+          "pass": true
+        },
+        {
+          "name": "coins-only cancellation has no core calls",
+          "pass": true
+        },
+        {
+          "name": "quote preserves scoped objects and all billing state",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices equal full core log",
+          "pass": true
+        }
+      ],
+      "completeRowSHA256": "02407a62a7e8565e9e8e4b2c197713d12b62c31d2573ce3854779a274c72ce75",
+      "statesSHA256": "7e7e7ddd0c3b92f2aae1f32aa60ca037db68e6cf5cf557dcb8866cad603871d5",
+      "stateCount": 74,
+      "outputHashes": {
+        "screens": "de58f80ea87b370ef0fd8287bb9d485b1e9dec8fcda5108756eff465938cfdce",
+        "cursors": "338f89a066abcaadd1131ffe6f20844caee27e430ed68d1a239d314f4a86cd2e",
+        "calls": "676af0c50c789baf8174d91ae27950b3970faa89b5eec2826309b4c65a796e98",
+        "slices": "2d2532b239d5162c980b13447d283c7051b8d83383c09371ea619df56a17b1f8",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "negative": true
+    }
+  ]
+}

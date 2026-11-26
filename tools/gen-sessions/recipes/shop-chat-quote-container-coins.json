@@ -1,0 +1,119 @@
+{
+  "name": "shop-quote-container-coins",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "social.shops-billing"
+  ],
+  "branches": [
+    "shop-quote-container-coins.contents-only",
+    "shop-quote-container-coins.owned-contents-control",
+    "shop-quote-container-coins.empty-owned-control",
+    "shop-quote-container-coins.leading-coins",
+    "shop-quote-container-coins.interleaved-coins",
+    "shop-quote-container-coins.coins-only-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "shop-quote-container-coins.contents-only",
+      "segment": 0,
+      "screenIncludes": [
+        "Sell it?",
+        "You put a pick-axe into the bag.",
+        "The contents of ",
+        "bag containing 1 item, price 67 zorkmids."
+      ]
+    },
+    {
+      "branch": "shop-quote-container-coins.owned-contents-control",
+      "segment": 1,
+      "screenIncludes": [
+        "Sell it?",
+        "You put 2 apples into the bag.",
+        "bag containing 1 item, no charge!"
+      ]
+    },
+    {
+      "branch": "shop-quote-container-coins.empty-owned-control",
+      "segment": 2,
+      "screenIncludes": [
+        "Sell it?",
+        "bag is empty.",
+        "empty",
+        "bag, no charge!"
+      ]
+    },
+    {
+      "branch": "shop-quote-container-coins.leading-coins",
+      "segment": 3,
+      "screenIncludes": [
+        "You have established 100 zorkmids credit.",
+        "A pick-axe, price 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-quote-container-coins.interleaved-coins",
+      "segment": 4,
+      "screenIncludes": [
+        "You have established 100 zorkmids credit.",
+        "Sell them?",
+        "Fine goods for sale:",
+        "2 apples, no charge",
+        "a pick-axe, 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-quote-container-coins.coins-only-control",
+      "segment": 5,
+      "screenIncludes": [
+        "You have established 100 zorkmids credit.",
+        "Talk to whom? (in what direction)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "contents-only",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\rsp  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "owned-contents-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\rsq  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "empty-owned-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed empty sack\r  \u001b\u001b,  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#loot\ro  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "leading-coins",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "interleaved-coins",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "coins-only-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,  \u001b\u001b\u0017100 gold pieces\r  \u001b\u001bd$  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "files": {
+    "recipe.json": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+    "predictions.json": "82cbf3fb6a978648dfd7186c1af1f360db18b68d099583b2bb9c83ef69b2b597",
+    "baseline-runtime.json": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+    "source-pins.json": "9d9ad7ba81a84fc3548ce0ec2a87c093e342c23760dea881c0f6693aa9c4f0d2",
+    "producer-origin.json": "79ebf87251b260badddc55b6a44f9d1be9d270fd8914b69dc7c1473666de97ed",
+    "SOURCE-REVIEW.md": "d61726c12c6c9fbc5f81dfc8b2ba521f4c271b8b0222c87afa96977112855028"
+  },
+  "probeSHA256": "b8cdb15d271c455ef2d435b4a35af14505510a48b456e6d152d109dc3df79656",
+  "beforeGameplayCAndCandidate": true,
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "options",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000110090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "options": {
+        "present": false
+      },
+      "moves": {
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001bzcro\u001b\u001b\u001bi\u001b"
+      }
+    },
+    {
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000110090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "options": {
+        "present": false
+      },
+      "moves": {
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001bzcro\u001b\u001b\u001bi\u001b"
+      }
+    },
+    {
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000110090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "options": {
+        "present": false
+      },
+      "moves": {
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    },
+    {
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000110090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "options": {
+        "present": false
+      },
+      "moves": {
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    }
+  ],
+  "tupleSHA256": "7cc8db6f8747ab475feb560c5dbd9bcba942c2c44b8e2027f8de08b0d109f854",
+  "allKeysSHA256": "aa60a53c52d2eecb664cab7a215aa4a6a2566d7818965c099640447c2fc4abeb",
+  "cases": 4,
+  "keys": 210,
+  "boundaries": 214,
+  "negativeIndexes": [
+    1,
+    2,
+    3
+  ],
+  "expectedBaselineFailures": [
+    {
+      "index": 0,
+      "check": "C scrolltele early restriction feedback"
+    }
+  ],
+  "native": "Parent original C recording pending; source C predicates are predictions."
+}

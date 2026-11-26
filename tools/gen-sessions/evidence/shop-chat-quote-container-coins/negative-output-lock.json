@@ -1,0 +1,46 @@
+{
+  "runtimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "proposalSHA256": "fe11658e1b5d300ef53b8e9bc8bd0c22e23e7ff09c13d77faa5d65b9126e61f9",
+  "reportSHA256": "852d6956e49709c83fe6d6ccec5d0ee4bc51c824ac0ec443350c6e78ae9d3aad",
+  "rows": [
+    {
+      "name": "owned-contents-control",
+      "completeRowSHA256": "67886b761f0a30db440297fedc3dd54bf5eec765a3f29fc0d70ec8716a5b8493",
+      "outputHashes": {
+        "screens": "1e8f39733ba9f338a1afb85da372ba172fbefcfae8067923403e7020e8f7a2a9",
+        "cursors": "3d5bcae718deb8915550d33f466849c9d81048265c1e6e9c49e10d3996bc8e78",
+        "calls": "6331536bdc667124ead0403933efab7bb4d0f55d50183003ec0882a3a73476aa",
+        "slices": "d8a1adeaca91e154c38eaf7dde572d8da59e18a7265323e8c6dce2d68e69e929",
+        "frames": "cdcd253169fd9de5ba979845ae7daead78ecf58c5defc688d2d12fce6258b396"
+      },
+      "reached": true,
+      "neutrality": true
+    },
+    {
+      "name": "empty-owned-control",
+      "completeRowSHA256": "236c8b68b47a0a817459c15902c00eb0df69ae05e2f308a46da49bc171061cd8",
+      "outputHashes": {
+        "screens": "72c51d762bc9c3106d1efdd65e0a4beaf342d8b63832f3155e44a0e30c2113ee",
+        "cursors": "e9f8b78ebd29dab83df9de149ddf19a530a16d3bf648454a3e71a05581ba6f21",
+        "calls": "6331536bdc667124ead0403933efab7bb4d0f55d50183003ec0882a3a73476aa",
+        "slices": "535c00be01f873455a98124ecbfabfc27dc9facb548c597d7d927c44be04e2e7",
+        "frames": "f5d71f4bea36a1c582fdbeb84bba7f0acc04e03fc1eedaae56817f8a7e389807"
+      },
+      "reached": true,
+      "neutrality": true
+    },
+    {
+      "name": "coins-only-control",
+      "completeRowSHA256": "02407a62a7e8565e9e8e4b2c197713d12b62c31d2573ce3854779a274c72ce75",
+      "outputHashes": {
+        "screens": "de58f80ea87b370ef0fd8287bb9d485b1e9dec8fcda5108756eff465938cfdce",
+        "cursors": "338f89a066abcaadd1131ffe6f20844caee27e430ed68d1a239d314f4a86cd2e",
+        "calls": "676af0c50c789baf8174d91ae27950b3970faa89b5eec2826309b4c65a796e98",
+        "slices": "2d2532b239d5162c980b13447d283c7051b8d83383c09371ea619df56a17b1f8",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "reached": true,
+      "neutrality": true
+    }
+  ]
+}

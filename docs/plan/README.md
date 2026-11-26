@@ -12,12 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Altar and bones fixes are pushed as `efe508f9`, with all 1,232 full941 tested
-files verified against the publication. Chat direction and target fixes now
-pass all 942 recordings, 20 targeted native cases, the fresh 90-contract gate,
-five focused checks and 45 strict workers. The next step is the verified
-commit and immediate push. Stasis restrictions, shop container coverage and a
-corrected crowning chronicle producer are separate active investigations.
+Chat direction and target fixes are pushed as `bdc0a0f4`, with all 1,233
+full942 tested files verified against the publication. The stasis teleport
+restriction now passes four C cases, 44 source contracts and all 944 recordings.
+Three focused teleport checks and 46 timeout checks pass. Six shop container/coin
+cases pass without runtime changes. The next step is the verified commit and
+immediate push. Crowning and quest-grant logs are a separate isolated candidate;
+polymorphed fire damage and mounted teleport prompts are source investigations.
 See STATUS for exact evidence, preserved diagnostics and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.

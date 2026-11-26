@@ -1,0 +1,202 @@
+{
+  "verifiedAt": "2026-11-26T19:11:40.231702+00:00",
+  "baselineCommit": "bdc0a0f427297cebe24682806c4d31ea6017bef1",
+  "composition": {
+    "baselineCommit": "bdc0a0f427297cebe24682806c4d31ea6017bef1",
+    "baselineRuntimeSHA256": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+    "candidateRuntimeSHA256": "88bedb3adb5649c891e7ca9a47bf27867edcd1113039abb91979fcc5782d3407",
+    "candidateSealSHA256": "f0a954f74602a70d4f79a02f194dddcf0382f31a45d61a761650d4eeebfeebee",
+    "patchSHA256": "c58c3f39c5a999541935212d82074b5b02d8ee089f213f90f71a3c37bcf7a206",
+    "runtimeSHA256": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+    "runtimeChanged": [
+      "js/teleport.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "validation": {
+    "stasis": {
+      "sourceBefore": "43/44",
+      "sourceAfter": "44/44",
+      "nativeBefore": "3/4",
+      "nativeAfter": "4/4",
+      "negativeHashes": 15,
+      "completeNegativeOrdinaryAndNativeRows": 3,
+      "allObservedPlainDeferredEqual": true,
+      "boundaries": 214,
+      "rngCalls": 10724,
+      "animationFrames": 0,
+      "freshReportComparison": {
+        "initialParentAssertion": "Whole report byte equality failed after the fresh gate exited 0.",
+        "onlyDifference": {
+          "field": "runtimeSHA256",
+          "isolated": "88bedb3adb5649c891e7ca9a47bf27867edcd1113039abb91979fcc5782d3407",
+          "composed": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad"
+        },
+        "allOtherFieldsEqual": true,
+        "gameplayReplayedAgain": false,
+        "originalReportsUnchanged": true,
+        "freshReportSHA256": "589e335c3fa3c1b21f28ef95936f4a598eb65bf810b22d6299a95102ad719b31",
+        "isolatedReportSHA256": "298405cc1ce735ec72de17977896340d62bc5c40fddeb6f76a74ffc5150d28ad"
+      }
+    },
+    "shopContainerCoins": {
+      "source": "192/192",
+      "native": "6/6",
+      "negativeHashes": 15,
+      "completeNegativeRows": 3,
+      "allObservedPlainDeferredEqual": true,
+      "boundaries": 611,
+      "rngCalls": 32241,
+      "animationFrames": 0,
+      "freshCompleteReportEqualsPromotion": true,
+      "runtimeChanges": 0
+    },
+    "composedNativeCases": 10,
+    "completeComposedNativeReportsEqualIsolated": true
+  },
+  "install": {
+    "stasis": {
+      "promotionSealSHA256": "a15fe63359006348c74b2f3b8bed943693bab758c9adcc0d9923d78b03f03f7f",
+      "payloadManifestSHA256": "66da8b9bace18de546ded2cf87964afdb532fa5b2381ed088b513d04a01e9189",
+      "payloads": 22,
+      "rawUnchanged": true,
+      "branchesBefore": 4746,
+      "branchesAfter": 4750,
+      "registryBeforeSHA256": "a28756bc9f5ff4a647f60b1053aa94bfc0e56a2b2f5b7d923a5738e84801c332",
+      "registryAfterSHA256": "74fbf3bc0cfe5a06b25507b345e03041e249c638dd0aabf4ae914262d7b31957",
+      "priorRegistryBytesPreserved": true
+    },
+    "shopContainerCoins": {
+      "promotionSealSHA256": "8ad1f2bad3a31e0e71c017941040f869d0f13239c7da32f225040381c5640cf3",
+      "payloadManifestSHA256": "03a44c41f509f84ffe0074cf9f5491ff5a67e45e86fe822186df5d269f5af0b0",
+      "payloads": 20,
+      "rawUnchanged": true,
+      "branchesBefore": 4740,
+      "branchesAfter": 4746,
+      "registryBeforeSHA256": "c6e453154269369911adf68936171bc2e033944da4a6a03b91a4ae8a36ddb915",
+      "registryAfterSHA256": "a28756bc9f5ff4a647f60b1053aa94bfc0e56a2b2f5b7d923a5738e84801c332",
+      "priorRegistryBytesPreserved": true,
+      "firstInstallAttempt": "Payloads installed and verified; stopped before registry write because additions were a versioned requirements object, not a bare array. Resumed from verified files using its six requirements rows."
+    }
+  },
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T19:07:27.553817+00:00",
+    "sessions": 944,
+    "passed": 944,
+    "failures": [],
+    "totals": {
+      "screens": 944424,
+      "cursors": 944424,
+      "rngCalls": 20697813,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 944,
+    "allFilesFixed": 1235,
+    "allFilesSHA256": "7954c6df7b0136d20a9435ec848c3a0d8d8ef990c7f27f91b5ff47407b737496",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T18:57:04.089120+00:00",
+      "workers": 2,
+      "pid": 3568608,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.2158203125,
+        1.61767578125,
+        2.080078125
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "7954c6df7b0136d20a9435ec848c3a0d8d8ef990c7f27f91b5ff47407b737496"
+    },
+    "logs": {
+      "shard-0.log": "32202111a9a0ac7f5b7b19e99bd45fa998b0fd0ee38908e416ea21a6b4984659",
+      "shard-1.log": "e2abb8afc1292576e491f2c19262dff1a5aaf3e9d925236af44f1a6167e9fd6c"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "retainedChecks": [
+    {
+      "name": "teleport-property-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/teleport-property-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 6.502,
+      "log": ".cache/restart-20261122/scrolltele-stasis-retained-teleport-property-state-gate.log",
+      "sha256": "694bc632241982dc4b604ccf2d0786f12c4eb6118de37e74d0e5ca12f3d0c052"
+    },
+    {
+      "name": "teleport-menu-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/teleport-menu-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.501,
+      "log": ".cache/restart-20261122/scrolltele-stasis-retained-teleport-menu-state-gate.log",
+      "sha256": "a8535b42e0ee33bf0250309ab8c3b96ae0f9ad079076498c16254b2eb704cfb5"
+    },
+    {
+      "name": "punishment-teleport-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/punishment-teleport-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.875,
+      "log": ".cache/restart-20261122/scrolltele-stasis-retained-punishment-teleport-state-gate.log",
+      "sha256": "81b338bc314ae7f38e38ed69edb0b1dbefaedc70effb04abd52f3c2a3ac1ff5b"
+    }
+  ],
+  "strict": {
+    "exit": 0,
+    "seconds": 31.234,
+    "targets": 46,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/scrolltele-stasis-public46-strict.log",
+    "sha256": "be758e0e909692b09655b61c22e730e58a7a4b59c54e413e3f1f5f1203842a6a"
+  },
+  "scopeImportAudit": [],
+  "evidenceSHA256": {
+    "scrolltele-stasis-source-audit/SEAL.json": "4609d027ad71d9e24ccc7ce7d9ef3b0f283f116c90f55fa8d8accb27a297b672",
+    "scrolltele-stasis-candidate/SEAL.json": "f0a954f74602a70d4f79a02f194dddcf0382f31a45d61a761650d4eeebfeebee",
+    "scrolltele-stasis-promotion/SEAL.json": "a15fe63359006348c74b2f3b8bed943693bab758c9adcc0d9923d78b03f03f7f",
+    "scrolltele-stasis-promotion/promotion-manifest.json": "66da8b9bace18de546ded2cf87964afdb532fa5b2381ed088b513d04a01e9189",
+    "scrolltele-stasis-main-ordinary.json": "589e335c3fa3c1b21f28ef95936f4a598eb65bf810b22d6299a95102ad719b31",
+    "scrolltele-stasis-parent-composed/scrolltele-stasis-native.json": "9d1d50ec1dd991511c7062c3f424930efcb1d4cc961d4684e94c84645d0e402d",
+    "shop-chat-quote-container-coins-source-audit/SEAL.json": "1c088664d68120be7de45b90f08609f9935fbf497d2e31e7c7619ed1914cc8ce",
+    "shop-chat-quote-container-coins-promotion/SEAL.json": "8ad1f2bad3a31e0e71c017941040f869d0f13239c7da32f225040381c5640cf3",
+    "shop-chat-quote-container-coins-promotion/INSTALL-MANIFEST.json": "03a44c41f509f84ffe0074cf9f5491ff5a67e45e86fe822186df5d269f5af0b0",
+    "shop-chat-quote-container-coins-main-ordinary.json": "6d909299a745326aa3da62dce24b78c5e8ee7f8806b301ac125188c37faea073",
+    "scrolltele-stasis-parent-composed/shop-chat-quote-container-coins-native.json": "6e97f16c72cb37b07391ebfd19f7b606bdff4f2347663fa046223c434ecdd0cc",
+    "scrolltele-stasis-full944-remote/control/all-files.json": "7954c6df7b0136d20a9435ec848c3a0d8d8ef990c7f27f91b5ff47407b737496",
+    "scrolltele-stasis-full944-remote/verification.json": "905309a2a227f5b0cda05937cce8a1b0dfad4aafa183755ba5c67e25c7d56250"
+  },
+  "limits": [
+    "Recorded screen/style/cursor/random-stream parity does not prove literal serialized bytes or the entire port.",
+    "The stasis inputs prove blocked-attempt feedback and input ordering; the faulty baseline cancels placement.",
+    "Blindness refresh and mounted prompts remain separate source leads.",
+    "No new leaderboard or held-out result is inferred."
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "explore-stasis-blocked",
+    "wizard": false,
+    "stasis": true,
+    "blocked": true,
+    "beforeAction": 52,
+    "beforeRead": 54,
+    "last": 61
+  },
+  {
+    "name": "wizard-stasis-bypass",
+    "wizard": true,
+    "stasis": true,
+    "blocked": false,
+    "beforeAction": 36,
+    "beforeRead": 38,
+    "last": 45
+  },
+  {
+    "name": "explore-without-stasis",
+    "wizard": false,
+    "stasis": false,
+    "blocked": false,
+    "beforeAction": 52,
+    "beforeRead": 53,
+    "last": 60
+  },
+  {
+    "name": "wizard-without-stasis",
+    "wizard": true,
+    "stasis": false,
+    "blocked": false,
+    "beforeAction": 36,
+    "beforeRead": 37,
+    "last": 44
+  }
+]

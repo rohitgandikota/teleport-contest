@@ -1,0 +1,17 @@
+{
+  "originalSHA256": "8c3f6fd88bb8d6ea70f5dc494f821416c99cb3df5a3c90031c4761415f2f8d09",
+  "preservedBodySHA256": "333bde131c099ea24f5d29b792ed1d86b95a9f438d8a60be87699756ad18643b",
+  "preserved": "Exact imports, passive observer,32 checks per case, deferred replay, row construction and rows.push from original source31.",
+  "onlyRelocationChanges": [
+    "Replace packet pin/report prologue with mandatory canonical evidence/C/input preflight.",
+    "Remove packet progress/final writes; default writes no files and optional compact report is exclusive-new.",
+    "Add full C comparison after each original row using the already observed output. No extra gameplay pass.",
+    "Keep current repository imports unchanged; no fixed runtime hash restriction in installed gate."
+  ],
+  "assertionsPerCase": 32,
+  "cases": 6,
+  "assertions": 192,
+  "liveBinding": "Original source31 already uses the gstate namespace in deferred input. No live-binding or assertion change is made by promotion.",
+  "negativeOutputHashes": 15,
+  "runtimeChanges": 0
+}

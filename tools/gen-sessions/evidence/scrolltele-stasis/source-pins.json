@@ -1,0 +1,412 @@
+{
+  "baseline": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "scope": "Complete target and listed direct owners; supporting table/caller excerpts are not claims of entire file parity. No runtime patch.",
+  "files": [
+    {
+      "path": "../../../nethack-c/upstream/src/teleport.c",
+      "sha256": "e1d9d4255ac148caa4618dc4f275ddf5417d2a2830beca738c3821cf7678e5c8",
+      "ranges": [
+        [
+          20,
+          46
+        ],
+        [
+          420,
+          573
+        ],
+        [
+          713,
+          771
+        ],
+        [
+          842,
+          919
+        ],
+        [
+          1950,
+          1961
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/zap.c",
+      "sha256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+      "ranges": [
+        [
+          2510,
+          2603
+        ],
+        [
+          2620,
+          2701
+        ],
+        [
+          2705,
+          3019
+        ],
+        [
+          3430,
+          3476
+        ],
+        [
+          6314,
+          6421
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "sha256": "ec15ad773e50f5d466ddc20515b441c9ddb4e99449abd1f34fa43a14e6a8b2c4",
+      "ranges": [
+        [
+          55,
+          77
+        ],
+        [
+          330,
+          649
+        ],
+        [
+          2015,
+          2032
+        ],
+        [
+          2194,
+          2304
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/spell.c",
+      "sha256": "db3d0148ecfe49c89d56381b028606c02c65a7657489006efdc81f239f38181c",
+      "ranges": [
+        [
+          1385,
+          1605
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/potion.c",
+      "sha256": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+      "ranges": [
+        [
+          261,
+          367
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/cmd.c",
+      "sha256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "ranges": [
+        [
+          952,
+          982
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "sha256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+      "ranges": [
+        [
+          32,
+          45
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/trap.c",
+      "sha256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+      "ranges": [
+        [
+          6776,
+          6786
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/u_init.c",
+      "sha256": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71",
+      "ranges": [
+        [
+          167,
+          178
+        ],
+        [
+          1110,
+          1180
+        ],
+        [
+          1205,
+          1250
+        ],
+        [
+          1299,
+          1367
+        ]
+      ],
+      "role": "C owner and direct producer/caller source"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/youprop.h",
+      "sha256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+      "ranges": [
+        [
+          75,
+          105
+        ],
+        [
+          214,
+          232
+        ]
+      ],
+      "role": "C property and object definitions"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/objects.h",
+      "sha256": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+      "ranges": [
+        [
+          1456,
+          1463
+        ]
+      ],
+      "role": "C property and object definitions"
+    },
+    {
+      "path": "baseline/js/teleport.js",
+      "sha256": "c346e6433d5a179e16196e14a572d077ef0f4175ac20272b324c97e685c2196d",
+      "ranges": [
+        [
+          670,
+          703
+        ],
+        [
+          978,
+          1194
+        ],
+        [
+          1196,
+          1250
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/zap.js",
+      "sha256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+      "ranges": [
+        [
+          614,
+          628
+        ],
+        [
+          1471,
+          1785
+        ],
+        [
+          1837,
+          1907
+        ],
+        [
+          1968,
+          2081
+        ],
+        [
+          5532,
+          5583
+        ],
+        [
+          5656,
+          5715
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/read.js",
+      "sha256": "e13db8755e1f4c12705bb2d18a51627437ecf7383ee898b9adef822c03bde78f",
+      "ranges": [
+        [
+          311,
+          594
+        ],
+        [
+          1233,
+          1337
+        ],
+        [
+          2718,
+          2735
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/spell.js",
+      "sha256": "79f945ad789010cf354906c6b8829064e104944ec7b4d1ff6746a42d95ffcf97",
+      "ranges": [
+        [
+          1000,
+          1205
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/potion.js",
+      "sha256": "0a0d548bf771a84121427f9aa6b73b2efb3944e6f99e8ca20c21290f24fa4a1a",
+      "ranges": [
+        [
+          978,
+          1089
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/cmd.js",
+      "sha256": "bb486a6d082e5a7602923d97450b50ba24ecbe1aa0f0176a06666f14bde777f7",
+      "ranges": [
+        [
+          1158,
+          1181
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/wizcmds.js",
+      "sha256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+      "ranges": [
+        [
+          97,
+          109
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/trap.js",
+      "sha256": "4d5ab9d23eb8efa8682140b47797e30432a0fc419f213070194bdb4b9b729c68",
+      "ranges": [
+        [
+          1238,
+          1247
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/youprop.js",
+      "sha256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+      "ranges": [
+        [
+          49,
+          65
+        ],
+        [
+          185,
+          210
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/u_init.js",
+      "sha256": "25804ca237af985a116aa94932393029a12c2179d8c148dc7d579d25386b8625",
+      "ranges": [
+        [
+          85,
+          135
+        ],
+        [
+          143,
+          201
+        ],
+        [
+          343,
+          409
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/uinit_data.js",
+      "sha256": "c094d7e7ffe288386cb5519e0ee3a41359431b3fe61f21830507471cd21b5845",
+      "ranges": [
+        [
+          805,
+          881
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/objects_data.js",
+      "sha256": "2963fd31ec2299f3ec4dda6706c82c6024e193868f1c64305c4d23261d09632a",
+      "ranges": [
+        [
+          22404,
+          22412
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "baseline/js/jsmain.js",
+      "sha256": "dda1d824fbd7ea022418b8191aae9bee0adce9ef31b78c1e2a25bc89f2d19f59",
+      "ranges": [
+        [
+          306,
+          337
+        ],
+        [
+          377,
+          427
+        ]
+      ],
+      "role": "fixed9d JS owner and direct producer/caller source"
+    },
+    {
+      "path": "tools/half-damage-reader-observe.mjs",
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+      "role": "linked passive helper or module environment"
+    },
+    {
+      "path": "frozen/screen-decode.mjs",
+      "sha256": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe",
+      "role": "linked passive helper or module environment"
+    },
+    {
+      "path": "../../../package.json",
+      "sha256": "2cf11600dde45377115ca285655e2c049f8a4f1f126e5e0264df1419b094a6e4",
+      "role": "linked passive helper or module environment"
+    },
+    {
+      "path": "evidence/startup-recipe.json",
+      "sha256": "b278d7f920d005bf0da2ac36fcf289c482abc4385453fd9ccfad9b373309827e",
+      "role": "maintained producer reference"
+    },
+    {
+      "path": "evidence/startup-native.session.json",
+      "sha256": "b56fb686cb3b273a06f46c62cdd68d81f5866593e8e9df13c2752ce521e57746",
+      "role": "maintained producer reference"
+    },
+    {
+      "path": "evidence/explore-recipe.json",
+      "sha256": "c77e0c2d83369dafcc213354fded8b97c291e894cf54ae1b591a1ff51ea0cad6",
+      "role": "maintained producer reference"
+    }
+  ]
+}

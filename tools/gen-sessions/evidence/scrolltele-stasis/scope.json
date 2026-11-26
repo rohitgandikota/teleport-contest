@@ -1,0 +1,19 @@
+{
+  "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "candidateRuntimeSHA256": "88bedb3adb5649c891e7ca9a47bf27867edcd1113039abb91979fcc5782d3407",
+  "changedModules": [
+    "js/teleport.js"
+  ],
+  "baselineTeleportSHA256": "c346e6433d5a179e16196e14a572d077ef0f4175ac20272b324c97e685c2196d",
+  "candidateTeleportSHA256": "9d4ea996c0ba003c34cfdd9886a23aefb6fa490dc4f94b0039d80ac45faa8f85",
+  "patchSHA256": "c58c3f39c5a999541935212d82074b5b02d8ee089f213f90f71a3c37bcf7a206",
+  "addedLines": 8,
+  "removedLines": 0,
+  "reverseRestoresBaselineExactly": true,
+  "newImports": [],
+  "blindnessAndMountedOmissionsUntouched": true,
+  "CGuardRange": [
+    853,
+    859
+  ]
+}

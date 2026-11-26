@@ -1,0 +1,140 @@
+{
+  "candidateExisted": false,
+  "final": true,
+  "recipe": "promotion/tools/gen-sessions/recipes/invault-nonwall-entry.json",
+  "recipeSHA256": "b4e5ae370317b7f3752753e531e4505be1f9d44b50c066a4b4b4c48fd62037aa",
+  "sourceProposal": "ordinary/proposal-04.json",
+  "sourceProposalSHA256": "6819e59563abf6bb6d0b5b88fb048f8dcf3531bc6a68468abc0336f96cdd10f5",
+  "baselineMapSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "name": {
+        "present": true,
+        "value": "dig-entry-summon"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzolap  intruder\r    \u001b\u001bd$\u0014llllljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhhkkkkkkkkkkkkk.  \u001b\u001bll"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "intact-entry-summon-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$\u0014llllljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhhkkkkkkkkkkkkk.  \u001b\u001bll"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "dug-entry-before-summon-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzol"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "dug-entry-croesus-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzolap  Croesus\r    \u001b\u001b"
+      }
+    }
+  ],
+  "tupleSHA256": "03fb31911af491aae7d481203c40b110f6dec6dd63d0d7b2216f7a5971bae895",
+  "cases": 4,
+  "keys": 593,
+  "boundaries": 597,
+  "branches": [
+    "vault.invault.nonwall-entry",
+    "vault.invault.intact-entry-negative",
+    "vault.invault.before-summon-negative",
+    "vault.invault.croesus-negative"
+  ],
+  "negativeHashes": {
+    "intact-entry-summon-negative": {
+      "screens": "062c7b8ab21354a8617211853467df5e99b99afd4dcfe33a7e454489a919323a",
+      "cursors": "3a7028aec831f7401d6b66a70a19b9b2697987953e351b68edd4cc439b088806",
+      "calls": "0653f357f4192c399e1703084b0983cad42da48173378ea05b144d35facef85f",
+      "slices": "40fd1baf9ffcb3d6b816eeca321c44cf52d8f237216c222584945441fbdcff29",
+      "frames": "9f00f1c780e66365aa54773c2b1f0c95556ca8bc45d5923de1b68ad458f8d2d0"
+    },
+    "dug-entry-before-summon-negative": {
+      "screens": "8ff65687e7f48721d4ba9baa2e4b4ce50ffcb28db7ab2eaef21e0c7dcb2e2431",
+      "cursors": "3d5aa2efd36d260a534de1c74f1acd69e3bc1d54e578bbde0f9ff3531945ac15",
+      "calls": "37880767deea10bb1a5527060707c7d191babab77d9760feba2a09d399b20596",
+      "slices": "2bcf50778f234e3cf2fd918fa51a7f98a9406932bd7eb42322958c01c117b0b6",
+      "frames": "a34f0f08be8517cee72bd1f3e8b61522f67a4964fec22683d801a7a8f2f42798"
+    },
+    "dug-entry-croesus-negative": {
+      "screens": "84df82e523ebd2c228fe2b73d64393d5b85a2a34d766c061f6bcb0c4ec92a21e",
+      "cursors": "6e264a1db3eb88d97a6ffa064423807739efb10beb245b54458264a514d606e2",
+      "calls": "c5f22d38e1d38c51194765c0d22b7a4db89ccb867036fdac4fb40f7fb8aff343",
+      "slices": "7235d3aed22dc5243f2ec3e7030526431ff474b3bc70cd54e7b62954cd00624b",
+      "frames": "9b53697b3ae4507840f8452c178a89834aa7a84fbf92f646d6f73644889df0fa"
+    }
+  },
+  "native": "Not recorded by this worker; source predictions only."
+}

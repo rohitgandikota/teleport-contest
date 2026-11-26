@@ -1,0 +1,8 @@
+{
+  "classification": "Failed initial input reach, before candidate",
+  "proposal": "ordinary/proposal-02.json",
+  "report": "review/probe-02.json",
+  "error": "Ended at identification acknowledgement before fakecorr initialization. Additional ordinary acknowledgements in proposal03 reach the owner tail.",
+  "runtimeChanged": false,
+  "allKeysCaptured": true
+}

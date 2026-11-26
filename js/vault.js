@@ -10,7 +10,7 @@ import { PMNAMES } from './monst_data.js';
 import { g_at, hidden_gold, money_cnt, obj_extract_self, sobj_at,
          stackobj } from './invent.js';
 import { canspotmon, map_invisible, map_location, mon_visible,
-         newsym, pline, unset_seenv } from './display.js';
+         newsym, pline, unset_seenv, xy_set_wall_state } from './display.js';
 import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
 import { Monnam, Some_Monnam, noit_Monnam, noit_mon_nam, pmname,
@@ -503,21 +503,48 @@ function guard_entry(goal) {
     return { x, y };
 }
 
+// src/vault.c:584 invault(), initialize the guard's entry and saved wall.
 function finish_guard_corridor(guard, roomidx, goal, entry) {
     const egd = guard.mextra.egd;
     const loc = game.level.at(entry.x, entry.y);
     egd.gdx = goal.x;
     egd.gdy = goal.y;
     egd.fcbeg = 0;
+    let typ = loc.typ;
+    if (!IS_WALL(typ)) {
+        const room = game.level.rooms[roomidx];
+        const x = entry.x, y = entry.y;
+        const lowx = room.lx, hix = room.hx;
+        const lowy = room.ly, hiy = room.hy;
+
+        if (x === lowx - 1 && y === lowy - 1)
+            typ = TLCORNER;
+        else if (x === hix + 1 && y === lowy - 1)
+            typ = TRCORNER;
+        else if (x === lowx - 1 && y === hiy + 1)
+            typ = BLCORNER;
+        else if (x === hix + 1 && y === hiy + 1)
+            typ = BRCORNER;
+        else if (y === lowy - 1 || y === hiy + 1)
+            typ = HWALL;
+        else if (x === lowx - 1 || x === hix + 1)
+            typ = VWALL;
+
+        loc.typ = typ;
+        loc.wall_info = 0;
+        xy_set_wall_state(x, y);
+    }
+    // C flags aliases wall_info; the JS map retains a separate wall field.
     egd.fakecorr = [{ fx: entry.x, fy: entry.y,
-                      ftyp: loc.typ, flags: loc.flags || 0,
+                      ftyp: typ, flags: loc.wall_info || 0,
                       doormask: loc.doormask || 0 }];
-    egd.fcend = 1;
-    egd.warncnt = 1;
     egd.vroom = roomidx;
     loc.typ = DOOR;
+    loc.flags = 0;
     loc.doormask = D_NODOOR;
     unblock_point(entry.x, entry.y);
+    egd.fcend = 1;
+    egd.warncnt = 1;
 }
 
 /* src/vault.c:887 gd_move().  A peaceful guard cuts one temporary square at

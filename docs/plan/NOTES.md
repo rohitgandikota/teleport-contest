@@ -11,6 +11,15 @@ Newest first within each section.
 
 ---
 
+## Replay fixture links, November 26, 2026
+
+Link new runs directly to each fixture's resolved regular file on NFS. Linking
+each run through its predecessor eventually exceeds Linux's symlink limit.
+Full924 exposed this during setup, before any replay started. Resolve the prior
+path, verify its checksum, then create a relative link to that resolved path.
+Keep the failed setup log and a dependency manifest. No corpus copy is needed,
+and earlier runs or active dependencies must remain untouched.
+
 ## Observed scoring cadence, November 25, 2026
 
 Do not promise that a push will appear on the official table within two hours.

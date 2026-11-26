@@ -1,0 +1,93 @@
+{
+  "ordinary": {
+    "baseline": "25/28",
+    "candidate": "28/28",
+    "original28ResultNamesPreserved": true,
+    "originalBodiesByteIdentical": true,
+    "freshObservedPlainDeferredEqual": true,
+    "negativeRows": 3,
+    "negativeHashes": 15,
+    "reportClassificationNote": "The unmodified source control body keeps its original historical classification string; candidate runtime is established by command receipts and fixed map."
+  },
+  "native": {
+    "baseline": "3/4",
+    "candidate": "4/4",
+    "cases": 4,
+    "keys": 593,
+    "boundaries": 597,
+    "calls": 20703,
+    "frames": 21,
+    "completeNegativeRowsUnchanged": true,
+    "negativeRowHashes": [
+      "2719a601909390fc8dc2810a15cf074f485aaf8f2d489f79c413bb63dc46770f",
+      "811526b4837ad8e154e5504db0bd518ae7db03a9fe81c0089095f7458e5b4afe",
+      "85a5c66300abef22d92ee3f3e95ec5cf2e03661ae789a7e4fbdac749c217f8f1"
+    ],
+    "firstBaselineDifference": {
+      "step": 147,
+      "frozenEqual": false,
+      "fullStyleEqual": false,
+      "totalCells": 1920,
+      "matchingStyleCells": 1919,
+      "blankStyleMismatches": 0,
+      "nonblankStyleMismatches": 0,
+      "glyphMismatches": 1,
+      "firstFullStyleDifference": {
+        "x": 24,
+        "y": 6,
+        "c": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "firstFrozenDifference": {
+        "x": 24,
+        "y": 6,
+        "kind": "ch",
+        "c": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    "repairedStyledBoundaries": 37,
+    "repairedGlyphCells": 39,
+    "extraBaselineRngCalls": 27,
+    "baselineReportSHA256": "6fc13a3e9fdaf0d7fa077ecdd2195b897e5dda313760ff02c95978dbbcf7608f",
+    "candidateReportSHA256": "46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9",
+    "rawSHA256": "e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af",
+    "workerCRecording": false,
+    "comparison": "Unchanged maintained native gate, all styled cells including blanks, cursors, all core RNG calls and slices, animation styles/cursors. No masks or skipped cases."
+  },
+  "graphs": {
+    "changedRuntime": [
+      "js/vault.js"
+    ],
+    "unchangedRuntimeFiles": 279,
+    "baselineMapSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81",
+    "candidateMapSHA256": "7d2d12ebed31e9773f9f99604b23830bd1bc949153c30b0247d93bae51446cbe",
+    "candidateVaultSHA256": "31bd704737465704b311449853eba3f6545476b5fb1443165766d0d7a5e1f580",
+    "patchSHA256": "b927bafa2044a5f0b3610423d81c482c1008bd29cb40323e0408bd94acf79baf",
+    "hunks": 2,
+    "owner": "finish_guard_corridor, C invault entry tail",
+    "importAdded": "xy_set_wall_state from display.js",
+    "otherOwnersByteIdentical": true,
+    "reverseExact": true,
+    "both280AfterChecks": true,
+    "iceChanged": false,
+    "frozenChanged": false,
+    "mainChanged": false
+  }
+}

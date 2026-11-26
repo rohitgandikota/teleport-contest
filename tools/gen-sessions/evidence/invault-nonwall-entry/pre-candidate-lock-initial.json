@@ -1,0 +1,50 @@
+{
+  "candidateExisted": false,
+  "inputLockSHA256": "d3142defd0126fb9ac0c3b82927df444e3be96c8fd0d7e42ea4801d95228a74d",
+  "files": {
+    "tools/ordinary-controls.mjs": {
+      "sha256": "fb0b779ab19426055ccaac99ea6b511cf1e83951a88363fcef577dae8801da1c",
+      "bytes": 4417
+    },
+    "tools/observer.mjs": {
+      "sha256": "ad45fe74b6e05af85585ff16b411357b08f74e7e17df71005e0d01c798cc6b16",
+      "bytes": 2251
+    },
+    "tools/probe.mjs": {
+      "sha256": "a0d37ad128da7eab9483b3d1e3e6a397756ed02541ae6f258ae6d5bd7a7eb0be",
+      "bytes": 3383
+    },
+    "ordinary/proposal-01.json": {
+      "sha256": "504a8826c17241bb2d6f27edc213eddfa5249797614710099347a772f19cbf9c",
+      "bytes": 710
+    },
+    "ordinary/proposal-02.json": {
+      "sha256": "70f54ce753546cbf8b9747e47b40a0140cac0fdc5c5ffadc369caa37866890cf",
+      "bytes": 1127
+    },
+    "ordinary/proposal-03.json": {
+      "sha256": "38b74946a55fa678dae245856380b7350dff374007869c6c40edf0adb97e8272",
+      "bytes": 1247
+    },
+    "ordinary/proposal-04.json": {
+      "sha256": "6819e59563abf6bb6d0b5b88fb048f8dcf3531bc6a68468abc0336f96cdd10f5",
+      "bytes": 2507
+    },
+    "review/probe-01.json": {
+      "sha256": "01b74a38998fe16186c95a636fcc49af716f802fa8c534d388efc1587ca33d8d",
+      "bytes": 53436
+    },
+    "review/probe-02.json": {
+      "sha256": "648e8f980b4eb5e8395d96e541d3bd7f6671822dea1b3d15ad2f95b383a328ed",
+      "bytes": 134125
+    },
+    "review/probe-03.json": {
+      "sha256": "be98d39340e69de1d80b366f1361e324d5a661b33d430c51a13e830e157aef08",
+      "bytes": 186485
+    },
+    "review/probe-04.json": {
+      "sha256": "a81b48b8b0f17ab23170144bfd35700b2719b3aa3153b438ae9f576f78375ad8",
+      "bytes": 364507
+    }
+  }
+}

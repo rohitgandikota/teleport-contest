@@ -51,15 +51,20 @@ pass on NFS: 931,399 screens/cursors, 20,258,571 random calls and 33,131 frames.
 The six portable gates preserve 80 source assertions, 15 ordinary cases and
 45 negative hashes. All 1,213 tested Git files match the published tree.
 Wall redraw and entrance reconstruction each pass four C cases on their current
-compositions. Wall redraw is now installed, with four passing ordinary cases,
+compositions. Wall redraw is pushed as `cecda9a9`, with four passing ordinary cases,
 47 retained checks, 98 selected/public replays and 98 strict workers. Twenty-one
 retained native cases preserve their reports. All 923 recordings pass on NFS,
 covering 932,279 screens/cursors, 20,284,036 random calls and 33,131 frames,
-with default limits and no retries. Entrance reconstruction's
-portable gate is ready for the following checkpoint.
+with default limits and no retries. All 1,214 tested files match the published
+tree. Entrance reconstruction passes 28 ordinary controls, 48 retained checks,
+99 selected/public and 99 strict replays. Twenty-five retained native cases are
+unchanged. All 924 recordings pass on NFS, covering 932,876 screens/cursors,
+20,304,739 random calls and 33,152 frames, with default limits and no retries. The new
+run links directly to existing recordings after setup exposed the OS symlink
+limit; no corpus was duplicated and no test had started before that repair.
 See STATUS for the fixed runtime and exact next action.
 
-The last official recheck at 23:43 EST returned the 21:05 feed: agentic rank 7,
+The latest official recheck at 2026-11-26T05:18:51Z returned the 21:05 EST feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
 row predates these pushes and identifies no exact commit. The official site
 lists six-hour scoring cycles. Local tests establish no newer held-out result.

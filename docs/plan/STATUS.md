@@ -1,6 +1,6 @@
 # STATUS — live handoff board
 
-## 2026-11-26: vault redraw passes all 923 recordings
+## 2026-11-26: entrance restoration passes all 924 recordings
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -247,20 +247,60 @@ Totals: 932,279 screens/cursors, 20,284,036 random calls and 33,131 frames.
 Verification SHA256:
 907c6ea0331271f3458b94c97223a6fa6952393762af61f31472feca4fa44c4a.
 Original raw and all prior recordings remain unchanged. Do not rerun full923.
-Next: finish final parent proof, stage exact paths, then commit and push.
-Invault's 22 payloads and four
-requirements follow after wallify publication. Do not install that runtime yet.
+Published as cecda9a9c6c365cc18d6db40ee3c2fecb07fb8a4 and confirmed on
+origin/main. All 1,214 tested files match the public tree. Publication receipt
+SHA256: 6caea76e382ca91029111456d41d75a90fca8fd3e761b9e25522aca2e757ecba.
+Parent proof SHA256:
+11ec1cac1c75c5b8f1c7039be3613274b1febfc61d6275f9825c08c06ca6309b.
+
+Invault's 22 exact payloads, unchanged C raw and four requirements are installed,
+bringing the registry to 4,631 entries. Only vault.js changes, to composed19946.
+Fresh ordinary controls pass 28/28 with the complete promotion report unchanged,
+SHA256 4ab576963dadbb3739873e248e452d878288c2314c7d7ad43b21ad746df4e37d.
+All 48 retained commands, 99 selected/public recordings and 99 strict eight-second
+workers pass. Twenty-five retained native cases preserve all five complete
+reports. Full924 passes all 924 recordings on NFS, completed PID3395803,
+two CPU workers, default 45-second limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/invault-nonwall-entry-full924-js-20261126.
+All 1,215 files are pinned by SHA256
+8bdb9ad26e31cb5358d9ea3e9c6e821d2a456dcf94637f6623e9942ae8a02170.
+Initial setup reached the OS symlink-depth limit before any test started. Only
+this new run's 923 links were replaced with direct links to verified regular
+files. No prior run changed and no corpus copy was made. Original failed launch
+log and direct-link receipt are retained. Future run preparation must resolve
+fixture sources before linking. Do not rerun prepare or record C again.
+Totals: 932,876 screens/cursors, 20,304,739 random calls and 33,152 frames.
+Verification SHA256:
+e257a990ab69898a61402e55661228bc458ff042964f78e65e9d7dd6b7b2d3fe.
+Next: finish parent verification, stage exact paths, commit and push immediately.
+Do not repeat the completed local/native/full checks.
 
 Next source work remains isolated:
-- Euclid: config-menu-bindings-source-audit, using the published parser map9a92.
-  Read C's menu alias dispatch and TTY input owners before locking an ordinary
-  keyboard witness. No candidate or locked input exists yet.
-- Leibniz: wallify trap cleanup or pet yelp, using mapf5ba after the redraw fix.
-  Choose one reachable source gap and lock an ordinary witness plus negative
-  controls before proposing a candidate.
-- Sartre: fakecorr-saved-flags-source-audit, using composed map19946 after the
-  entrance fix. Trace C's aliased flags and JS's split fields through ordinary
-  producers and restoration. No runtime patch or input lock exists yet.
+- Euclid: config-menu-bindings-source-audit, fixed parser map9a92, 24 fixed
+  handoff members. Five locked inputs were recorded in C once. All fields/keys
+  and integrity pass, but two primary help-text predicates fail on the exact
+  literal "Select     ;". Preserve the original recipes, source assertions,
+  failed preflight and C raw. Review the C help layout before any corrected
+  companion or candidate. Character-selection and capacity diagnostics remain
+  named source/native prerequisites. Raw SHA256
+  403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554,
+  31 keys, 36 boundaries, 15,520 calls, zero frames. Prefix config-menu-bindings-parent.
+- Leibniz: sealed wallify-vault-occupant-source-audit, 36 members and 152 pinned
+  source ranges on f5ba. Original C confirms all three locked primary predicates.
+  Current19946 native passes 2/3, missing one positive yelp boundary; both negative
+  reports are exact. Raw SHA256
+  32e6861d010437146682a1fa6bbaaf4db4685b6a77f34e76ab5ec2a7efe7e553,
+  773 keys, 776 boundaries, 20,282 calls, zero frames. A separate minimal candidate
+  is authorized to await existing yelp before relocation. It is already imported.
+  Prefix wallify-vault-occupant-parent. Do not bundle trap or debris changes.
+- Sartre: sealed fakecorr-saved-flags-source-audit, 35 members and 57 ranges on
+  19946. A real debug terrain wish changes the saved entry's wall_info before
+  clear_fcorr. C confirms all four locked primary predicates; baseline native
+  passes 3/4 with three exact negatives. Raw SHA256
+  e2297e8ec282afb08f1d7391c178b8627dcd13ba866363d8e67063fe78bd7ca1,
+  759 keys, 763 boundaries, 21,254 calls and 27 frames. A separate minimal
+  clear_fcorr candidate is authorized; warning restoration and other typed fields
+  remain open. Prefix fakecorr-saved-flags-parent. No main changes are authorized.
 
 The invault source43/candidate323/promotion45 packets are already sealed and
 independently verified. The one original C raw has SHA256
@@ -274,14 +314,15 @@ config-binding-param-parent, wallify-vault-parent and invault-nonwall-entry-pare
 The earlier feel_cockatrice audit found no ordinary naming defect and made no
 runtime patch. Its29members/68source ranges verify.
 
-Storage was rechecked after the first two pushes: `du -sh .` reports 3.3G. Full replay
-runs remain on NFS; no complete result or fixture corpus was copied locally.
-The last official recheck, 23:43 EST, returned the 21:05 feed: agentic rank 7,
+Storage recheck reports 3.4G locally, including 1.5G cache, 304M Git data and 1.4G
+maintained generated recordings. The NFS 2026-11-22 artifact root reports 17G.
+Full replay runs remain on NFS; no complete result or fixture corpus was copied locally.
+The latest official recheck at 2026-11-26T05:18:51Z returned the 21:05 EST feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
-row predates all five latest pushes. The official site explicitly lists
+row predates all seven latest pushes. The official site explicitly lists
 six-hour scoring cycles; the feed does not identify the scored commit. Local
 parity establishes no newer held-out score. Receipt:
-leaderboard-current-recheck-20261126-044301.json.
+leaderboard-current-recheck-20261126-051851.json.
 
 ## 2026-11-25: guard prompt correction published as 80049d92
 

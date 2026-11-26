@@ -1,0 +1,170 @@
+{
+  "baselineCommit": "cecda9a9c6c365cc18d6db40ee3c2fecb07fb8a4",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34",
+  "source43SealSHA256": "c16345b25d85a478af70901f244c1b62c054ab37e07e01c81cd98357a7b37c75",
+  "candidate323SealSHA256": "2a8d6c49ec66183e7c95498aff88994566aaa3b90a3b9c111cada30be64daf05",
+  "promotion45SealSHA256": "8c87f6188fb7ae1cce36618170304c83f12814df6ae1f7d0119e676e37486d47",
+  "portablePayloads": 22,
+  "newRequirements": 4,
+  "ordinary": {
+    "sourceBaseline": 25,
+    "passed": 28,
+    "total": 28,
+    "negativeStreamHashesUnchanged": 15,
+    "check": {
+      "exit": 0,
+      "passed": 28,
+      "total": 28,
+      "completeReportUnchanged": true,
+      "report": ".cache/restart-20261122/invault-nonwall-entry-main-ordinary.json",
+      "priorReport": ".cache/restart-20261122/invault-nonwall-entry-promotion/review/composed-ordinary.json",
+      "reportSHA256": "4ab576963dadbb3739873e248e452d878288c2314c7d7ad43b21ad746df4e37d",
+      "log": ".cache/restart-20261122/invault-nonwall-entry-main-ordinary.log",
+      "logSHA256": "bdb881189d4274a92a1771a919e88699c81cec8027092ab5e3eb1bf197358304"
+    }
+  },
+  "native": {
+    "sourceBaseline": 3,
+    "candidate": 4,
+    "cases": 4,
+    "boundaries": 597,
+    "calls": 20703,
+    "frames": 21,
+    "repairedBoundaries": 37,
+    "repairedGlyphCells": 39,
+    "negativeCompleteReportsUnchanged": 3,
+    "check": {
+      "exit": 0,
+      "cases": 4,
+      "exact": 4,
+      "runtimeMapSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34",
+      "raw": ".cache/restart-20261122/invault-nonwall-entry-parent-native.session.json",
+      "rawSHA256": "e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af",
+      "recipeSHA256": "e377c1fe35cf14bf3f49481e3966ce002937810de42bf9f4b679f25c71834454",
+      "report": ".cache/restart-20261122/invault-nonwall-entry-parent-composed-native.json",
+      "reportSHA256": "46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9",
+      "priorReport": ".cache/restart-20261122/invault-nonwall-entry-candidate-audit/review/candidate-native.json",
+      "priorReportSHA256": "46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9",
+      "reportsUnchanged": true,
+      "log": ".cache/restart-20261122/invault-nonwall-entry-parent-composed-native.log",
+      "logSHA256": "51a7461c89aaf3ec6eb413c7480d95d8fa13e1f9bc368293a88516997d12fdde"
+    }
+  },
+  "retained": {
+    "passed": 48,
+    "total": 48,
+    "receiptSHA256": "ba64e39e306f2f4de2c9e2009e58aa9acd6661cd10499b3f4c322b1be5a96d71"
+  },
+  "retainedNative": {
+    "passed": 25,
+    "total": 25,
+    "completeReportsUnchanged": true,
+    "checks": [
+      {
+        "name": "guard-hallucinated-name",
+        "exit": 0,
+        "cases": 6,
+        "exact": 6,
+        "report": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-hallucinated-name-native.json",
+        "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "priorReport": ".cache/restart-20261122/wallify-vault-retained-guard-hallucinated-name-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-hallucinated-name-native.log",
+        "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e"
+      },
+      {
+        "name": "guard-cleanup-prompt",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-cleanup-prompt-native.json",
+        "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+        "priorReport": ".cache/restart-20261122/wallify-vault-retained-guard-cleanup-prompt-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-cleanup-prompt-native.log",
+        "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84"
+      },
+      {
+        "name": "guard-restored-entry",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-restored-entry-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "priorReport": ".cache/restart-20261122/wallify-vault-retained-guard-restored-entry-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-restored-entry-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      },
+      {
+        "name": "guard-door-engraving",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-door-engraving-native.json",
+        "reportSHA256": "7cdcd1cd464b467ce008fc8e380ab654477dedd38dc95c9de96a4d355a408854",
+        "priorReport": ".cache/restart-20261122/wallify-vault-retained-guard-door-engraving-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-door-engraving-native.log",
+        "logSHA256": "393029221a3f52922ec70b056b37adbbdd19c14cd00bf9229f70186283c862c9"
+      },
+      {
+        "name": "wallify-vault",
+        "exit": 0,
+        "cases": 4,
+        "exact": 4,
+        "report": ".cache/restart-20261122/invault-nonwall-entry-retained-wallify-vault-native.json",
+        "reportSHA256": "3d0a827996621a294578e8ee7db489383ad51c2225a8ef0bcac22a2f50bb38c9",
+        "priorReport": ".cache/restart-20261122/wallify-vault-redraw-parent-composed-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/invault-nonwall-entry-retained-wallify-vault-native.log",
+        "logSHA256": "fa35ed05c1fb3acdce06f1dd9ae2d189054ec5e93efeee6f4fc960d37144b112"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 99,
+    "total": 99
+  },
+  "strict8s": {
+    "passed": 99,
+    "total": 99
+  },
+  "full924": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/invault-nonwall-entry-full924-js-20261126",
+    "passed": 924,
+    "sessions": 924,
+    "totals": {
+      "screens": 932876,
+      "cursors": 932876,
+      "rngCalls": 20304739,
+      "animFrames": 33152
+    },
+    "files": 1215,
+    "allFilesSHA256": "8bdb9ad26e31cb5358d9ea3e9c6e821d2a456dcf94637f6623e9942ae8a02170",
+    "verificationSHA256": "e257a990ab69898a61402e55661228bc458ff042964f78e65e9d7dd6b7b2d3fe",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0,
+    "linkResolution": {
+      "linkedFixtures": 923,
+      "verifiedFiles": 1215,
+      "allFilesSHA256": "8bdb9ad26e31cb5358d9ea3e9c6e821d2a456dcf94637f6623e9942ae8a02170",
+      "resolvedTargetsSHA256": "28aac22d6dc2f3f293624d1836c4555b8d3a191bf394d85930e509cc03f3a095",
+      "newCorpusCopies": 0,
+      "testStartedBeforeRepair": false,
+      "priorRunsChanged": false
+    }
+  },
+  "limits": [
+    "Only the right vertical-wall reconstruction has new ordinary and native reach. Corner and horizontal arms were source-reviewed.",
+    "Ice timers, saved typed-field restoration and other vault owners remain separate.",
+    "Native comparison checks decoded styles, cursors, ordered normalized RNG and frames. No whole-port or literal serialized-byte proof.",
+    "Historical source metadata is unchanged. Local passing tests establish no newer held-out result."
+  ]
+}

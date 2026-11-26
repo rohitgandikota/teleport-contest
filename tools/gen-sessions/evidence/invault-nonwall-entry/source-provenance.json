@@ -1,0 +1,55 @@
+{
+  "sourceSealSHA256": "c16345b25d85a478af70901f244c1b62c054ab37e07e01c81cd98357a7b37c75",
+  "sourceMembers": 43,
+  "candidateSealSHA256": "2a8d6c49ec66183e7c95498aff88994566aaa3b90a3b9c111cada30be64daf05",
+  "candidateMembers": 323,
+  "candidateMapSHA256": "7d2d12ebed31e9773f9f99604b23830bd1bc949153c30b0247d93bae51446cbe",
+  "candidateVaultSHA256": "31bd704737465704b311449853eba3f6545476b5fb1443165766d0d7a5e1f580",
+  "patchSHA256": "b927bafa2044a5f0b3610423d81c482c1008bd29cb40323e0408bd94acf79baf",
+  "recipeSHA256": "e377c1fe35cf14bf3f49481e3966ce002937810de42bf9f4b679f25c71834454",
+  "inputLockSHA256": "19d6fc18f7f75c4d7c1ee7c48194e37f64cb7411273fd25d5475c881fec2234a",
+  "rawSHA256": "e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "historicalPathsProvenanceOnly": true,
+  "source43InitialFailuresPreserved": true,
+  "ordinaryReach": "Real digging, cursed-whistle arrival, leave/return and attempted movement. Right wall only; other corners/edges source-reviewed.",
+  "sourceLimits": "No ice, wallify, door-engraving, global map alias or other owner changes.",
+  "sourceFiles": {
+    "nethack-c/upstream/src/vault.c": {
+      "sha256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "bytes": 44702
+    },
+    "nethack-c/upstream/src/allmain.c": {
+      "sha256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+      "bytes": 33124
+    },
+    "nethack-c/upstream/src/apply.c": {
+      "sha256": "3599e3ce2ea7ce4dac10730dc1a5496114a363dc951d5c1f0289a8575b40e24b",
+      "bytes": 155854
+    },
+    "nethack-c/upstream/src/display.c": {
+      "sha256": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+      "bytes": 130123
+    },
+    "nethack-c/upstream/src/dig.c": {
+      "sha256": "d90579058c1ff69bcbc882601a433fb8d5e34fdad418aedb0cebefce9ac6cf97",
+      "bytes": 82294
+    },
+    "nethack-c/upstream/src/timeout.c": {
+      "sha256": "779540f647749e0da11109f18a90e11c9e7bc36af44ed6455440b40fc6910596",
+      "bytes": 94353
+    },
+    "nethack-c/upstream/include/mextra.h": {
+      "sha256": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229",
+      "bytes": 9207
+    },
+    "nethack-c/upstream/include/rm.h": {
+      "sha256": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+      "bytes": 20436
+    },
+    "tools/half-damage-reader-observe.mjs": {
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+      "bytes": 3796
+    }
+  }
+}

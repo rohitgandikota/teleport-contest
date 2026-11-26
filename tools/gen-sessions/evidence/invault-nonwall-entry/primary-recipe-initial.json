@@ -1,0 +1,131 @@
+{
+  "name": "invault-nonwall-entry",
+  "description": "Real wand digging plus cursed whistle at a naturally generated vault entry, then leave/return and attempted exit. C source predictions; no runtime candidate or native run.",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "dig-entry-summon",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzolap  intruder\r    \u001b\u001bd$\u0014llllljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhhkkkkkkkkkkkkk.  \u001b\u001bll"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "intact-entry-summon-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$\u0014llllljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhhkkkkkkkkkkkkk.  \u001b\u001bll"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "dug-entry-before-summon-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzol"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "dug-entry-croesus-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bzolap  Croesus\r    \u001b\u001b"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "terrain.digging"
+  ],
+  "branches": [
+    "vault.invault.nonwall-entry",
+    "vault.invault.intact-entry-negative",
+    "vault.invault.before-summon-negative",
+    "vault.invault.croesus-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.invault.nonwall-entry",
+      "segment": 0,
+      "source": "C vault.c590-618 and clear_fcorr48-119. Former right wall must be restored; final attempted east move is blocked. Source prediction, native pending parent.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "Well, begone."
+      ],
+      "screenCells": [
+        {
+          "step": 183,
+          "x": 23,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 183,
+          "x": 24,
+          "y": 5,
+          "equals": "│"
+        }
+      ]
+    },
+    {
+      "branch": "vault.invault.intact-entry-negative",
+      "segment": 1,
+      "source": "Original wall bypasses reconstruction; same clear_fcorr and movement block.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "Well, begone."
+      ],
+      "screenCells": [
+        {
+          "step": 180,
+          "x": 23,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 180,
+          "x": 24,
+          "y": 5,
+          "equals": "│"
+        }
+      ]
+    },
+    {
+      "branch": "vault.invault.before-summon-negative",
+      "segment": 2,
+      "source": "C dig.c1548-1753 opens the wall, but invault arrival has not run.",
+      "screenExcludes": [
+        "shrill whistling sound",
+        "Hello stranger",
+        "Please drop that gold and follow me."
+      ],
+      "screenCells": [
+        {
+          "step": 106,
+          "x": 22,
+          "y": 5,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "vault.invault.croesus-negative",
+      "segment": 3,
+      "source": "C vault.c521-557 Croesus early return occurs before fakecorr[0] initialization.",
+      "screenIncludes": [
+        "Sorry to have disturbed you."
+      ],
+      "screenExcludes": [
+        "Please drop that gold and follow me."
+      ],
+      "screenCells": [
+        {
+          "step": 124,
+          "x": 22,
+          "y": 5,
+          "equals": "@"
+        }
+      ]
+    }
+  ]
+}

@@ -4645,6 +4645,10 @@
     {"group":"Vault wall restoration","id":"vault.wallify.retained-food-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Restore a damaged vault wall while retaining the embedded food object glyph through the source visibility redraw."},
     {"group":"Vault wall restoration","id":"vault.wallify.empty-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Restore a damaged empty vault wall with the complete existing output unchanged."},
     {"group":"Vault wall restoration","id":"vault.wallify.rock-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Subsume a floor rock at a damaged vault wall and preserve the complete negative output; disposal semantics remain outside this coverage."},
-    {"group":"Vault wall restoration","id":"vault.wallify.intact-wall-food-negative","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An intact vault wall containing only food is ineligible for restoration and preserves the remembered object and complete output."}
+    {"group":"Vault wall restoration","id":"vault.wallify.intact-wall-food-negative","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An intact vault wall containing only food is ineligible for restoration and preserves the remembered object and complete output."},
+    {"group":"vault.invault","id":"vault.invault.nonwall-entry","cFile":"vault.c","cFunction":"invault","description":"C vault.c590-618 and clear_fcorr48-119. Former right wall must be restored; final attempted east move is blocked. Source prediction, native pending parent."},
+    {"group":"vault.invault","id":"vault.invault.intact-entry-negative","cFile":"vault.c","cFunction":"invault","description":"Original wall bypasses reconstruction; same clear_fcorr and movement block."},
+    {"group":"vault.invault","id":"vault.invault.before-summon-negative","cFile":"vault.c","cFunction":"invault","description":"C dig.c1548-1753 opens the wall, but invault arrival has not run."},
+    {"group":"vault.invault","id":"vault.invault.croesus-negative","cFile":"vault.c","cFunction":"invault","description":"C vault.c521-557 Croesus early return occurs before fakecorr[0] initialization."}
   ]
 }

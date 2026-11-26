@@ -1,0 +1,45 @@
+{
+  "reason": "C tty NHW_MAP offy=1 and fixed display.setCell(x-1,y+1); initial y=5 screen assertion was a metadata error, not a gameplay input change. Preserved initial primary/lock and source failures.",
+  "candidateExisted": false,
+  "initialRecipe": "review/primary-recipe-initial.json",
+  "initialRecipeSHA256": "b4e5ae370317b7f3752753e531e4505be1f9d44b50c066a4b4b4c48fd62037aa",
+  "finalRecipe": "promotion/tools/gen-sessions/recipes/invault-nonwall-entry.json",
+  "finalRecipeSHA256": "e377c1fe35cf14bf3f49481e3966ce002937810de42bf9f4b679f25c71834454",
+  "initialInputLockSHA256": "d3142defd0126fb9ac0c3b82927df444e3be96c8fd0d7e42ea4801d95228a74d",
+  "finalInputLockSHA256": "19d6fc18f7f75c4d7c1ee7c48194e37f64cb7411273fd25d5475c881fec2234a",
+  "changes": [
+    {
+      "path": "branchAssertions[0].screenCells[0].y",
+      "before": 5,
+      "after": 6
+    },
+    {
+      "path": "branchAssertions[0].screenCells[1].y",
+      "before": 5,
+      "after": 6
+    },
+    {
+      "path": "branchAssertions[1].screenCells[0].y",
+      "before": 5,
+      "after": 6
+    },
+    {
+      "path": "branchAssertions[1].screenCells[1].y",
+      "before": 5,
+      "after": 6
+    },
+    {
+      "path": "branchAssertions[2].screenCells[0].y",
+      "before": 5,
+      "after": 6
+    },
+    {
+      "path": "branchAssertions[3].screenCells[0].y",
+      "before": 5,
+      "after": 6
+    }
+  ],
+  "tupleSHA256": "03fb31911af491aae7d481203c40b110f6dec6dd63d0d7b2216f7a5971bae895",
+  "allFieldsAndKeysUnchanged": true,
+  "nativeRecordedByWorker": false
+}

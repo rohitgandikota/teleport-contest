@@ -12,6 +12,14 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
+Inventory action context is verified and ready to push. Identified oil now
+lights or snuffs through its inventory action, and the tin-opener phrase follows
+C order. Eight native cases pass versus five before the change. All 927
+maintained recordings, 75 selected/public replays, and 45 strict public/new
+workers pass. The expanded 75-case strict run retains one preexisting long
+fixture timeout. A source-backed billing-test correction passes on both
+runtimes. See STATUS and the itemactions-context evidence for the exact limits.
+
 Fruit and text bytes are pushed as `5569e6a4`. All 916 maintained recordings
 pass, covering 928,624 screens/cursors, 20,137,721 random calls and 33,131 frames.
 All 1,207 tested files match the published tree. The 18 new native cases improve
@@ -63,14 +71,14 @@ unchanged. All 924 recordings pass on NFS, covering 932,876 screens/cursors,
 All 1,215 tested files match the published tree. The run links directly to
 existing recordings after setup exposed the OS symlink
 limit; no corpus was duplicated and no test had started before that repair.
-The next checkpoint adds three vault lines for saved wall flags and pet yelps.
+Checkpoint `c6839cb3` adds three vault lines for saved wall flags and pet yelps.
 Its seven targeted C cases pass on the combined runtime, with five complete
 negative reports unchanged. All 926 recordings pass on NFS, covering 934,415
 screens/cursors, 20,346,275 random calls and 33,179 frames. All 49 retained
 checks, 101 selected/public and 101 strict replays pass. Twenty-nine retained
 native cases are unchanged. The portable gates and seven new requirements are
 installed. One unregistered coverage label was removed, preserving the exact
-input and assertion bytes. Final publication checks are in progress.
+input and assertion bytes. All 1,217 tested Git files match the published tree.
 See STATUS for the fixed runtime and exact next action.
 
 The latest official recheck at 2026-11-26T05:18:51Z returned the 21:05 EST feed: agentic rank 7,

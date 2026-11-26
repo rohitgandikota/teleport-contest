@@ -1,6 +1,54 @@
 # STATUS — live handoff board
 
-## 2026-11-26: saved wall flags and pet feedback verified for publication
+## 2026-11-26: inventory action checkpoint verified, publication next
+
+The current inventory checkpoint is ready to commit and push immediately.
+Parent is c6839cb352d66b3ef6737cb917a5b07708942c64. Only js/cmd.js changes:
+identified oil keeps the apply action selected by the menu, and tin labels
+place the wielded-opener phrase in C order. Fixed runtime map SHA256:
+c8859b169f89f2d3b5749442e6cf1e57d8a085f2a92349883d5b33473b6c5aec.
+Eight locked C cases improve from 5/8 to 8/8. All five negative native reports
+and 25 ordinary stream hashes are unchanged. The portable gate passes all
+eight cases with observer, ordinary and deferred keyboard input.
+
+Full927 passes all 927 recordings: 934,694 screens/cursors, 20,363,979 random
+calls and 33,179 frames. Two NFS CPU workers, default 45-second limits, no
+retries. Completed PID3414499; do not rerun it. NFS directory:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/itemactions-context-full927-js-20261126.
+All 1,218 files are fixed. Verification SHA256:
+1bc18b195dbe6a06412958c8a363e1b6aa7d1e5e4f0570fb8f7d6f5ea73732e4.
+All 75 selected/public replays pass. All 44 public sessions plus the new raw
+pass the strict eight-second gate. The expanded strict run remains 74/75:
+inventory-type-queries takes over ten seconds on both baseline and candidate,
+with all outputs matching. Keep that timing limit explicit. The original
+billing test also failed on both runtimes by treating the fixed 200-slot bill
+as its active prefix. Its C-backed correction passes eight scenarios and two
+price controls on both runtimes; effective retained checks are 16/16. Original
+failures, original test and correction receipts are retained in the public
+itemactions-context evidence. Eight requirements are appended, total 4,646.
+
+Next: commit, push, then verify-full-publication.py itemactions-context-full927
+NEW_COMMIT itemactions-context-candidate. Keep that runner fixed until done.
+The menu-binding candidate349 is sealed and verified, with 40 source controls,
+13 ordinary cases, 35 unchanged negative hashes, and native 5/5 plus 7/8.
+Its one remaining failure is the independently confirmed five-cursor capture
+defect on early alias-overflow output. Review all seven changed owners before
+composition and keep that entire eight-case diagnostic explicit. Status-menu
+source329 has a fresh four-case C raw; baseline is verified 3/4. A separate
+candidate is in progress. Wall-mode source322 has three locked inputs and
+needs parent C confirmation before any runtime candidate. No raw is rerun.
+
+The official feed checked at 06:14:34Z is unchanged: agentic rank 7, 812
+unmatched screens, and a lastScored timestamp of 01:32:14Z. That score predates
+the recent pushes. No newer held-out result is inferred from local tests.
+
+## 2026-11-26: saved wall flags and pet feedback pushed; menu bindings next
+
+Published as c6839cb352d66b3ef6737cb917a5b07708942c64 and confirmed on
+origin/main. All 1,217 tested Git blobs match. Publication receipt:
+vault-flags-feedback-full926-publication-verification.json, SHA256
+89ded1d7e9289b05e7169fabcb6078e9ba9440b59d7de92bce7ff2d278623666.
+Do not rerun completed full926 or its publication verifier.
 
 Current checkpoint: three added lines in js/vault.js, composed from independently
 verified fakecorr source35/candidate320 and occupant source36/candidate326.
@@ -32,8 +80,31 @@ Only that root label and the public gate's recipe pin were corrected. The gate
 reconstructs and verifies the exact original recipe bytes; all input, branch
 assertions, runtime and C recordings remain fixed. Original promotion evidence
 and the failed validation are retained in coverage-label-correction.json.
-Next: complete the final index check, commit and push, verify every tested Git
-blob against origin/main, then continue menu-binding and wall-mode audits.
+Parent final proof SHA256:
+62c655292266979cb259e2e8389157586b4518d97b33c76ff57fe3f5b803f959.
+Index check verified all 1,217 files and exactly 45 staged paths. Receipt SHA256:
+86bfca0d71f14d7fa972603a511080fc12b8140fac280394e161f630b41e0d5e.
+
+The next source audit covers menu bindings. The original five-case source24
+and new eight-case prerequisite36 packets verify unchanged. The corrected
+help predicate checks decoded cells, preserving the original two raw-substring
+failures and the exact original C recording. All five corrected C branches pass.
+Parent recorded prerequisite8 once: raw SHA256
+1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c,
+407,122 bytes, 28 keys, 36 boundaries, 9,312 random calls and zero frames.
+All eight C branch predictions pass. Baseline901 matches four of eight native
+cases, including every negative. Prefix: config-menu-bindings-prerequisite-parent.
+
+The capacity-33 case has a separate recorder defect: every captured cursor is
+(0,1), even after ordinary TTY startup and menu drawing. Parent checked the
+complete raw-mode owners and the installed binary disassembly. nomux_get_cursor
+reads the stale raw cursor while nomux_raw_active remains set; screen clearing
+does not reset that state. The canonical upstream patch has the same early-raw
+behavior. Preserve this raw and all cursor failures. Do not emulate the capture
+artifact in JS or report full native parity for this case. A precise runtime
+plan for shared menus, character selection and early diagnostic output is in
+progress; no menu candidate is installed. Separate wall-mode and status-menu
+source audits continue on fixed901.
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.

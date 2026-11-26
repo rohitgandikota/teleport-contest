@@ -4656,6 +4656,14 @@
     {"group":"vault.fakecorr","id":"vault.fakecorr.before-cleanup-negative","cFile":"vault.c","cFunction":"clear_fcorr","description":"The terrain wish occurs at25,5, but no cleanup or digging occurs yet. The guard still owns fakecorr and the hero stays on the bars."},
     {"group":"Vault wall restoration","id":"vault.wallify.audible-tame","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An awake tame dog eating a real corpse yelps before relocation and vault restoration feedback."},
     {"group":"Vault wall restoration","id":"vault.wallify.silent-tame","cFile":"src/vault.c","cFunction":"wallify_vault","description":"A silent tame blue jelly relocates during wall restoration without pet feedback, preserving all five output channels."},
-    {"group":"Vault wall restoration","id":"vault.wallify.empty","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An empty damaged vault boundary restores without pet feedback, preserving all five output channels."}
+    {"group":"Vault wall restoration","id":"vault.wallify.empty","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An empty damaged vault boundary restores without pet feedback, preserving all five output channels."},
+    {"group": "Inventory actions", "id": "itemactions.known-oil-light", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Light this oil; You light your potion."},
+    {"group": "Inventory actions", "id": "itemactions.known-oil-snuff", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Extinguish this oil; You snuff the lit potion."},
+    {"group": "Inventory actions", "id": "itemactions.unknown-oil-dip-negative", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Dip something into this potion; What do you want to dip into"},
+    {"group": "Inventory actions", "id": "itemactions.water-dip-negative", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Dip something into this potion; What do you want to dip into"},
+    {"group": "Inventory actions", "id": "itemactions.lamp-apply-negative", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Light this light source; Your lamp is now on."},
+    {"group": "Inventory actions", "id": "itemactions.tin-opener-text", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin with your tin opener and eat the contents"},
+    {"group": "Inventory actions", "id": "itemactions.tin-no-opener-negative", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin and eat the contents"},
+    {"group": "Inventory actions", "id": "itemactions.tin-opener-not-wielded-negative", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin and eat the contents"}
   ]
 }

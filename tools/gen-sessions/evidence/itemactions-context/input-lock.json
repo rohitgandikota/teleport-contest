@@ -1,0 +1,111 @@
+{
+  "phase": "Inputs and semantic predictions fixed before candidate or native recording. Baseline reach probe preserved.",
+  "recipeSHA256": "4af2c78c109ba0cd9218f37c4529213e52db5b49cbbab7f349868f4bb544d1ad",
+  "probeSHA256": "0fcd5cafb456affad17d703bd550bf777fa9eb4d23f6db0601539cecdefd8736",
+  "ordinarySHA256": "b48c467ad1a4888d0c57836fb6d7c8ec773c8ac9022c4ee0889746bb5f8c5508",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "name": "known-oil-light",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of oil\raaaaiaa"
+    },
+    {
+      "name": "known-oil-snuff",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of oil\raaiaa"
+    },
+    {
+      "name": "unknown-oil-dip-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of oil\riaa"
+    },
+    {
+      "name": "water-dip-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of water\riaa"
+    },
+    {
+      "name": "lamp-apply-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed oil lamp\riaa"
+    },
+    {
+      "name": "tin-opener-text",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin opener\r\u0017uncursed tin of spinach\rwaib"
+    },
+    {
+      "name": "tin-no-opener-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of spinach\ria"
+    },
+    {
+      "name": "tin-opener-not-wielded-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin opener\r\u0017uncursed tin of spinach\rib"
+    }
+  ],
+  "negativeHashes": {
+    "unknown-oil-dip-negative": {
+      "screens": "50acdaa3834d4ed18bcd7c84e05531a2c9a6579503fb5d8f9dd64a177efe17df",
+      "cursors": "e6b0e59328741bd871cdf3356083cf762642d7e18534eb07e9383f4eab4adf3d",
+      "calls": "a37c9fedbc14e74117fea41a428ec71d9b5cdad2390550f4a4c5b526475ea693",
+      "slices": "d35783074f5a642ec6e7e337c4552b74872810c8bbdfa4dcb0777a9da115344c",
+      "frames": "a192576ca9cc796f35fbdb87b401dac2e91bf67a1d38e0cbf04a1d322c1c4c34"
+    },
+    "water-dip-negative": {
+      "screens": "9c6706b6adaad4642c4459a6623d562434047277e4503e25ab0d35b4737634cf",
+      "cursors": "e83eb98f0e5c7aeb85fc17a61a96d92f5f8df4254d918a18af658255ae6bf91a",
+      "calls": "e073db6705a4ab18e36956588b95ee0b4c3acc62bcdc89226ccceb3719b831b3",
+      "slices": "adb08135e407ef7ee5e6a78941d78bf88347dfcf27f7620cba0ef8c6deb69073",
+      "frames": "9113a2925938649c2a20b8cf00787e43d1fb75661bdf726f2f470deb01297eb6"
+    },
+    "lamp-apply-negative": {
+      "screens": "4b357dd1022a371d0b1a78f39739d087dfa906b5eef8f472753d5c8e3ea447a6",
+      "cursors": "8ca0502dcd5c1ced8d40cbd1dc0158c559ed03662bdc2cf4542471a2af28bbed",
+      "calls": "614d7c4dbfae26dbfd48b06480a109583fb735afa0b132edf5fd67b5bd67fb53",
+      "slices": "f3a6693e8f16d0629fc22442fd210308965eb70387a888ebfe4fe75ec2657876",
+      "frames": "a8ffcd4744b915ab51a5b40e830154027144f4481f006efd994bbc5b02229528"
+    },
+    "tin-no-opener-negative": {
+      "screens": "2090140993d385983742b73af9299b67a9761f5e6e6d91aeea9ac2ece8585818",
+      "cursors": "fea0c2e50743ab7c54d97bad20c3d5dc562bd0dce32d801b5c216019134643b1",
+      "calls": "79504492075a9e22bd4c90ef3f600f3a2ffa8fa7e8b3cd18731c8ac0e638a7ac",
+      "slices": "2ac6f6454db7a5471b1e146d33db078bb5f2d8122bf3c5b3a1de6db6fc80845f",
+      "frames": "a192576ca9cc796f35fbdb87b401dac2e91bf67a1d38e0cbf04a1d322c1c4c34"
+    },
+    "tin-opener-not-wielded-negative": {
+      "screens": "b01afdf59251a9cbc9a785b498e470eb3c7e95a6e5836350a2c04fe9784d4391",
+      "cursors": "a7e1b33cefcce2dde4cc68cdbc244b36fb978512fc302781bea38ab6f1bd88cc",
+      "calls": "906ce17fda4d11fe5351e2fe8b5abc5ca47ff73ce285cd438e126e2424633e78",
+      "slices": "3b0b863885e29dfa70b677ebe3dbd140df25c3a975b340cc70d1448304dabc1c",
+      "frames": "ead94411bc034605bfb4d5be3b4e254292ddb7da918596c470c3bae6da3d6349"
+    }
+  },
+  "runtimeMapSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "candidateExisted": false,
+  "cExecuted": false
+}

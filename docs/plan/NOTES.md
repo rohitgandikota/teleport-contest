@@ -9812,3 +9812,18 @@ input slice to locate the first source divergence. The dismount gate retains
 that stricter check alongside the ordinary scorer. Raw intrinsic setters and
 extrinsic masks are intentional in many timeout/equipment paths; do not replace
 every property field access without checking the corresponding C expression.
+## Inventory billing storage and long replay timing, 2026-11-26
+
+The C shop bill has BILLSZ slots, with billct identifying the active prefix
+(include/mextra.h:114,138-140; src/shk.c:onbill). A retained inventory-merge
+test still expected bill_p.length to equal the active count. It failed with
+200 versus 1 on both the previous and candidate runtimes. The corrected test
+asserts fixed storage and inspects slice(0, billct), preserving every quantity,
+price and ownership assertion. Both versions and failures are retained in
+tools/gen-sessions/evidence/itemactions-context.
+
+inventory-type-queries contains 21,347 moves and 21,429 boundaries. It passes
+every scorer metric but takes over ten seconds on both tested runtimes, beyond
+the optional expanded eight-second run. The required 44 public fixtures plus
+the new inventory recording pass that strict limit. Preserve the expanded
+74/75 result; do not raise its budget or count it as 75/75.

@@ -9,7 +9,7 @@ import { runSegment } from '../js/jsmain.js';
 import { game } from '../js/gstate.js';
 import { InMemoryStorage } from '../js/storage.js';
 import { ONAMES } from '../js/objects_data.js';
-import { OBJ_DELETED } from '../js/const.js';
+import { OBJ_DELETED, BILLSZ } from '../js/const.js';
 import { merged, weight } from '../js/invent.js';
 import { mksobj, place_object, splitobj } from '../js/mkobj.js';
 import { get_cost } from '../js/shk.js';
@@ -22,7 +22,9 @@ for (const [i, segment] of recipe.segments.entries()) {
     await runSegment({ ...segment, storage: new InMemoryStorage() });
     const apples = game.invent.filter(o => o.otyp === ONAMES.APPLE);
     const shkp = game.level.monsters.find(m => m.isshk);
-    const bill = shkp.eshk.bill_p;
+    // include/mextra.h:139: fixed storage; only billct entries are active.
+    assert.equal(shkp.eshk.bill_p.length, BILLSZ);
+    const bill = shkp.eshk.bill_p.slice(0, shkp.eshk.billct);
     const paid = segment.name.endsWith('-pay');
     const expected = i === 6 ? [[6, 9]] : i === 7 ? [[3, 9], [3, 5]] : [[3, 9]];
     assert.deepEqual(apples.map(o => o.quan), expected.map(([quan]) => quan), segment.name);

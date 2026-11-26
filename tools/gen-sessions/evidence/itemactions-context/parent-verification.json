@@ -1,0 +1,264 @@
+{
+  "baselineCommit": "c6839cb352d66b3ef6737cb917a5b07708942c64",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/cmd.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "c8859b169f89f2d3b5749442e6cf1e57d8a085f2a92349883d5b33473b6c5aec",
+  "scopedPatchSHA256": "5fa7b4568bffe8e25b92653157ad33c9bb59e4aaf1fd0f9636d22e9d66eacfcf",
+  "payloads": {
+    "proposal-01.json": "4af2c78c109ba0cd9218f37c4529213e52db5b49cbbab7f349868f4bb544d1ad",
+    "reach-probe.json": "0fcd5cafb456affad17d703bd550bf777fa9eb4d23f6db0601539cecdefd8736",
+    "input-lock.json": "93af73f10a636d5359767a706523a4399ca1bb96e8040262ad8dbe08159b5fa6",
+    "source-triage.json": "f8a9c267f46ea42ff7a63724ed045dc31875f57cd82c8d2d7c375f087989c41a",
+    "ordinary-original.mjs": "b48c467ad1a4888d0c57836fb6d7c8ec773c8ac9022c4ee0889746bb5f8c5508",
+    "baseline-ordinary.json": "7cc25d0aa9c35e0647ae2f0fb65ab28cf18c4e12986a060b6cf3e0bd1fca15b2",
+    "candidate-ordinary.json": "931f4e40e324b6af1b9dd1596d28cee7c671a897087889816b190fbee61be11a",
+    "baseline-native.json": "4efa48cffad7ef65dd68e1af566c22f566fef90009d4342e855c6edb9d5df0a7",
+    "candidate-native.json": "d3b1e4e73cc247e74acf4cc26f8c708935d24f467f0e8d76984ef6ce301bc5c6",
+    "native-branch-checks.json": "e6441f60641507b65a73f652b3bc76ab66bab23d653730db81d561342b606660",
+    "recording-receipt.json": "10b9f63acc4665c4c73d8902748665b5a187be9b431c22e6f29facbd88ca239c"
+  },
+  "native": {
+    "before": 5,
+    "after": 8,
+    "total": 8,
+    "negativeCompleteReportsUnchanged": 5,
+    "boundaries": 279,
+    "calls": 17704,
+    "frames": 0,
+    "repairedBoundaries": 3
+  },
+  "raw": {
+    "path": "tools/gen-sessions/generated/itemactions-context.session.json",
+    "sha256": "9e9feb96ac64fb307e4a7e1ca859a477594ac2e04aea0ec403e8fb34c60a3349",
+    "bytes": 878319
+  },
+  "ordinaryCases": 8,
+  "negativeHashesUnchanged": 25,
+  "newRequirements": 8,
+  "retained": {
+    "initialPassed": 15,
+    "total": 16,
+    "correctedPassed": 16,
+    "correction": {
+      "reason": "C stores BILLSZ slots; billct counts the active prefix. The old assertion failed identically before the runtime change.",
+      "originalSHA256": "4a70238b0b2e59c0dcc3ffb2317467af53eedd26a9064b9275aea124a2a5602e",
+      "correctedSHA256": "b0732611addafbb0896e28a0af32d6e7ba691a10f67cef6b77d67da416930890",
+      "checks": [
+        {
+          "exit": 0,
+          "logSHA256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+        },
+        {
+          "command": [
+            "node",
+            "--max-old-space-size=512",
+            "tools/inventory-merge-state-gate.mjs"
+          ],
+          "exit": 0,
+          "seconds": 1.5,
+          "logSHA256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+        }
+      ],
+      "sourcePins": {
+        "nethack-c/upstream/include/mextra.h": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229",
+        "nethack-c/upstream/src/shk.c": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b"
+      },
+      "oldFailures": {
+        "itemactions-context-retained-baseline/inventory-merge-state.log": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 1\n\n    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-retained-baseline/tools/inventory-merge-state-gate.mjs:30:12 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 200,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n",
+        "itemactions-context-retained-inventory-merge-state.log": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 1\n\n    at file:///Users/rohit/research/code/contest/tools/inventory-merge-state-gate.mjs:30:12 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 200,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n"
+      }
+    }
+  },
+  "selectedPublic": {
+    "passed": 75,
+    "total": 75
+  },
+  "expandedStrict": {
+    "initialExpandedStrictPassed": 74,
+    "initialExpandedStrictTotal": 75,
+    "fixture": "inventory-type-queries.session.json",
+    "baselineRuntimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+    "baselineResult": {
+      "session": "inventory-type-queries.session.json",
+      "passed": true,
+      "metrics": {
+        "rngCalls": {
+          "matched": 228214,
+          "total": 228214
+        },
+        "screens": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "cellsOnly": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "cursors": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "animFrames": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "error": null,
+      "time": {
+        "ms": 10863.11,
+        "moves": 21347
+      }
+    },
+    "baselineLogSHA256": "1a0cea27400ec585505e4c319f95378875d285f57753324882f97314287ea936",
+    "currentResult": {
+      "session": "inventory-type-queries.session.json",
+      "passed": true,
+      "metrics": {
+        "rngCalls": {
+          "matched": 228214,
+          "total": 228214
+        },
+        "screens": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "cellsOnly": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "cursors": {
+          "matched": 21429,
+          "total": 21429
+        },
+        "animFrames": {
+          "matched": 0,
+          "total": 0
+        }
+      },
+      "error": null,
+      "time": {
+        "ms": 10060.75,
+        "moves": 21347
+      }
+    },
+    "limitation": "The prior strict process exit was not recovered after compaction; the retained normal scorer output independently establishes a passing replay longer than eight seconds."
+  },
+  "publicAndNewStrict": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/itemactions-context.session.json"
+    ],
+    "exit": 0,
+    "seconds": 31.93,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/itemactions-context-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9",
+    "runtimeSHA256": "c8859b169f89f2d3b5749442e6cf1e57d8a085f2a92349883d5b33473b6c5aec"
+  },
+  "full927": {
+    "verifiedAt": "2026-11-26T06:06:58.743904+00:00",
+    "sessions": 927,
+    "passed": 927,
+    "failures": [],
+    "totals": {
+      "screens": 934694,
+      "cursors": 934694,
+      "rngCalls": 20363979,
+      "animFrames": 33179
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 927,
+    "allFilesFixed": 1218,
+    "allFilesSHA256": "8d0b091d07bb4cd4f900eb8e6e3a0f3f0e7db4ed008b4e13754c6bc116f62faa",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T05:56:22.734215+00:00",
+      "workers": 2,
+      "pid": 3414499,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.15380859375,
+        1.1171875,
+        1.6650390625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "8d0b091d07bb4cd4f900eb8e6e3a0f3f0e7db4ed008b4e13754c6bc116f62faa"
+    },
+    "logs": {
+      "shard-1.log": "bd5d79741c614cbaa0780d9c2dc06457ef902d444ac4316f88e9747a38f7c9b2",
+      "shard-0.log": "85bb1cb6acd79ec9b9a5f83ebbe0b5117fb343bf18a8a7f1b3e522a60ceb9ce5"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "1bc18b195dbe6a06412958c8a363e1b6aa7d1e5e4f0570fb8f7d6f5ea73732e4",
+  "limits": [
+    "Inventory accessory command routing remains open.",
+    "No literal serialized-byte, complete inventory-action, or new held-out result is claimed."
+  ]
+}

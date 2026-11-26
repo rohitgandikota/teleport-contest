@@ -1,0 +1,29 @@
+{
+  "reason": "C stores BILLSZ slots; billct counts the active prefix. The old assertion failed identically before the runtime change.",
+  "originalSHA256": "4a70238b0b2e59c0dcc3ffb2317467af53eedd26a9064b9275aea124a2a5602e",
+  "correctedSHA256": "b0732611addafbb0896e28a0af32d6e7ba691a10f67cef6b77d67da416930890",
+  "checks": [
+    {
+      "exit": 0,
+      "logSHA256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+    },
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-merge-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.5,
+      "logSHA256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+    }
+  ],
+  "sourcePins": {
+    "nethack-c/upstream/include/mextra.h": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229",
+    "nethack-c/upstream/src/shk.c": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b"
+  },
+  "oldFailures": {
+    "itemactions-context-retained-baseline/inventory-merge-state.log": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 1\n\n    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-retained-baseline/tools/inventory-merge-state-gate.mjs:30:12 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 200,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n",
+    "itemactions-context-retained-inventory-merge-state.log": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 1\n\n    at file:///Users/rohit/research/code/contest/tools/inventory-merge-state-gate.mjs:30:12 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 200,\n  expected: 1,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n"
+  }
+}

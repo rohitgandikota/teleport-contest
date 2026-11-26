@@ -1,0 +1,69 @@
+{
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "baselineMapSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "readRanges": {
+    "nethack-c/upstream/src/iactions.c": [
+      [
+        46,
+        75
+      ],
+      [
+        86,
+        119
+      ],
+      [
+        124,
+        134
+      ],
+      [
+        140,
+        274
+      ],
+      [
+        278,
+        718
+      ]
+    ],
+    "js/cmd.js": [
+      [
+        3145,
+        3148
+      ],
+      [
+        3212,
+        3273
+      ],
+      [
+        3341,
+        3780
+      ]
+    ],
+    "nethack-c/upstream/src/apply.c": [
+      [
+        1703,
+        1770
+      ],
+      [
+        4270,
+        4360
+      ]
+    ],
+    "js/apply.js": [
+      [
+        1268,
+        1332
+      ],
+      [
+        3650,
+        3698
+      ]
+    ]
+  },
+  "predictions": [
+    "Identified oil uses IA_APPLY_OBJ and calls doapply -> light_cocktail; other potions use IA_DIP_OBJ -> dip_into. The JS key-only queue treats every potion as dip.",
+    "Tin opener clause precedes and eat the contents in C. JS appends it after contents."
+  ],
+  "otherOpenLead": "Accessory P queues dowear in C and doputon in JS; not yet proven to alter output.",
+  "inputsSHA256": "4af2c78c109ba0cd9218f37c4529213e52db5b49cbbab7f349868f4bb544d1ad",
+  "candidateExisted": false
+}

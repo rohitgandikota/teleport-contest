@@ -1,0 +1,17 @@
+{
+  "baselineCommit": "c6839cb352d66b3ef6737cb917a5b07708942c64",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "reviewedSources": {
+    "nethack-c/upstream/src/iactions.c": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+    "nethack-c/upstream/src/apply.c": "3599e3ce2ea7ce4dac10730dc1a5496114a363dc951d5c1f0289a8575b40e24b",
+    "nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5"
+  },
+  "baselineRuntimeMapSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "candidateRuntimeMapSHA256": "c8859b169f89f2d3b5749442e6cf1e57d8a085f2a92349883d5b33473b6c5aec",
+  "candidatePatchSHA256": "5fa7b4568bffe8e25b92653157ad33c9bb59e4aaf1fd0f9636d22e9d66eacfcf",
+  "rawSHA256": "9e9feb96ac64fb307e4a7e1ca859a477594ac2e04aea0ec403e8fb34c60a3349",
+  "freshMainOrdinarySHA256": "931f4e40e324b6af1b9dd1596d28cee7c671a897087889816b190fbee61be11a",
+  "ordinaryCompleteReportUnchanged": true,
+  "sourceReadScope": "Complete iactions owner functions and light_cocktail; reached action/producer edges in other files. Whole transitive files not claimed."
+}

@@ -3456,8 +3456,8 @@ export async function itemactions(obj) {
 
     /* e: eat item */
     if (obj.otyp === ONAMES.TIN) {
-        add_item_action(win, 'e', `Open ${plural ? 'one of these tins' : 'this tin'} and eat the contents${
-            (u.uwep && u.uwep.otyp === ONAMES.TIN_OPENER) ? ' with your tin opener' : ''}`);
+        add_item_action(win, 'e', `Open ${plural ? 'one of these tins' : 'this tin'}${
+            (u.uwep && u.uwep.otyp === ONAMES.TIN_OPENER) ? ' with your tin opener' : ''} and eat the contents`);
     } else if (is_edible(obj)) {
         add_item_action(win, 'e', `Eat ${plural ? 'one of these' : 'this'}`);
     }
@@ -3711,7 +3711,8 @@ function queue_item_action(action, obj) {
              HANDS_SYM);
         break;
     case 'a': /* IA_APPLY_OBJ / IA_DIP_OBJ */
-        if (obj.oclass === OCLASSES.POTION_CLASS)
+        if (obj.oclass === OCLASSES.POTION_CLASS
+            && (obj.otyp !== ONAMES.POT_OIL || !game.objects[obj.otyp].oc_name_known))
             /* #dip: first prompt is for the potion, second for the item
                to dip; using the inventory item first (the instigating
                potion) matches C's dip_into() */

@@ -1,0 +1,70 @@
+{
+  "initialExpandedStrictPassed": 74,
+  "initialExpandedStrictTotal": 75,
+  "fixture": "inventory-type-queries.session.json",
+  "baselineRuntimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "baselineResult": {
+    "session": "inventory-type-queries.session.json",
+    "passed": true,
+    "metrics": {
+      "rngCalls": {
+        "matched": 228214,
+        "total": 228214
+      },
+      "screens": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "cellsOnly": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "cursors": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "animFrames": {
+        "matched": 0,
+        "total": 0
+      }
+    },
+    "error": null,
+    "time": {
+      "ms": 10863.11,
+      "moves": 21347
+    }
+  },
+  "baselineLogSHA256": "1a0cea27400ec585505e4c319f95378875d285f57753324882f97314287ea936",
+  "currentResult": {
+    "session": "inventory-type-queries.session.json",
+    "passed": true,
+    "metrics": {
+      "rngCalls": {
+        "matched": 228214,
+        "total": 228214
+      },
+      "screens": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "cellsOnly": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "cursors": {
+        "matched": 21429,
+        "total": 21429
+      },
+      "animFrames": {
+        "matched": 0,
+        "total": 0
+      }
+    },
+    "error": null,
+    "time": {
+      "ms": 10060.75,
+      "moves": 21347
+    }
+  },
+  "limitation": "The prior strict process exit was not recovered after compaction; the retained normal scorer output independently establishes a passing replay longer than eight seconds."
+}

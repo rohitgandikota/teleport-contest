@@ -1,0 +1,224 @@
+[
+  {
+    "name": "known-oil-light",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "70db96cc5df4788331a67b58fb9a12ed42418dda1d47831db51f4fcc3a75b8c7",
+      "cursors": "6fcda92fab1e83a2ed8a38827d97caa534bfd06b2a9139c45bef9be87e19d7df",
+      "calls": "f361922dd90688839172f2ed452a42ff4325f390a6eebcddbc5213fa89a49602",
+      "slices": "45eb3780aade97247183dee1a8946eee6e67a0f11d1143f6463e88b994dac608",
+      "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+    },
+    "final": {
+      "step": 32,
+      "turn": 4,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 321,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 1,
+          "known": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "known-oil-snuff",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "db2a6b4302153eb9dea3f6e0a4a041d03aa786d8a9d021ed163b9d3d615ec932",
+      "cursors": "373382556d5b9354bf4a1f98d0d0df974be14b33da896bef9bef3bfaea86fc4e",
+      "calls": "295f90e54f0db050abed44885a9ac42fb4f19394bbc813ae12b82d353e7a7689",
+      "slices": "583086ed9f203b0354e64bdfcc0943d701aefafd55861b870ca2dd1f1d2902e5",
+      "frames": "9113a2925938649c2a20b8cf00787e43d1fb75661bdf726f2f470deb01297eb6"
+    },
+    "final": {
+      "step": 30,
+      "turn": 3,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 321,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown-oil-dip-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "50acdaa3834d4ed18bcd7c84e05531a2c9a6579503fb5d8f9dd64a177efe17df",
+      "cursors": "e6b0e59328741bd871cdf3356083cf762642d7e18534eb07e9383f4eab4adf3d",
+      "calls": "a37c9fedbc14e74117fea41a428ec71d9b5cdad2390550f4a4c5b526475ea693",
+      "slices": "d35783074f5a642ec6e7e337c4552b74872810c8bbdfa4dcb0777a9da115344c",
+      "frames": "a192576ca9cc796f35fbdb87b401dac2e91bf67a1d38e0cbf04a1d322c1c4c34"
+    },
+    "final": {
+      "step": 28,
+      "turn": 1,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 321,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "water-dip-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "9c6706b6adaad4642c4459a6623d562434047277e4503e25ab0d35b4737634cf",
+      "cursors": "e83eb98f0e5c7aeb85fc17a61a96d92f5f8df4254d918a18af658255ae6bf91a",
+      "calls": "e073db6705a4ab18e36956588b95ee0b4c3acc62bcdc89226ccceb3719b831b3",
+      "slices": "adb08135e407ef7ee5e6a78941d78bf88347dfcf27f7620cba0ef8c6deb69073",
+      "frames": "9113a2925938649c2a20b8cf00787e43d1fb75661bdf726f2f470deb01297eb6"
+    },
+    "final": {
+      "step": 30,
+      "turn": 1,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 322,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "lamp-apply-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "4b357dd1022a371d0b1a78f39739d087dfa906b5eef8f472753d5c8e3ea447a6",
+      "cursors": "8ca0502dcd5c1ced8d40cbd1dc0158c559ed03662bdc2cf4542471a2af28bbed",
+      "calls": "614d7c4dbfae26dbfd48b06480a109583fb735afa0b132edf5fd67b5bd67fb53",
+      "slices": "f3a6693e8f16d0629fc22442fd210308965eb70387a888ebfe4fe75ec2657876",
+      "frames": "a8ffcd4744b915ab51a5b40e830154027144f4481f006efd994bbc5b02229528"
+    },
+    "final": {
+      "step": 23,
+      "turn": 2,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 227,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 1,
+          "known": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "tin-opener-text",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "748f65584d10302743d822e3f3a0a8fbab34b8998b421d7d222672d35461f1bd",
+      "cursors": "b17e44efab3e55aa049626ab0c7bf47b31f8983b491b2080648351fa730593c9",
+      "calls": "bd74d4bb1b979eef040efb0d2c9ab6012f0a2ead92f56f864b8354ab3ac35972",
+      "slices": "12ab99c2840e98832f060a05a19a3df92bbded6ed6674b2eaa0c43e628bc46ee",
+      "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+    },
+    "final": {
+      "step": 51,
+      "turn": 2,
+      "weapon": 239,
+      "inventory": [
+        {
+          "otyp": 239,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        },
+        {
+          "otyp": 296,
+          "invlet": "b",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "tin-no-opener-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "2090140993d385983742b73af9299b67a9761f5e6e6d91aeea9ac2ece8585818",
+      "cursors": "fea0c2e50743ab7c54d97bad20c3d5dc562bd0dce32d801b5c216019134643b1",
+      "calls": "79504492075a9e22bd4c90ef3f600f3a2ffa8fa7e8b3cd18731c8ac0e638a7ac",
+      "slices": "2ac6f6454db7a5471b1e146d33db078bb5f2d8122bf3c5b3a1de6db6fc80845f",
+      "frames": "a192576ca9cc796f35fbdb87b401dac2e91bf67a1d38e0cbf04a1d322c1c4c34"
+    },
+    "final": {
+      "step": 28,
+      "turn": 1,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 296,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "tin-opener-not-wielded-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "b01afdf59251a9cbc9a785b498e470eb3c7e95a6e5836350a2c04fe9784d4391",
+      "cursors": "a7e1b33cefcce2dde4cc68cdbc244b36fb978512fc302781bea38ab6f1bd88cc",
+      "calls": "906ce17fda4d11fe5351e2fe8b5abc5ca47ff73ce285cd438e126e2424633e78",
+      "slices": "3b0b863885e29dfa70b677ebe3dbd140df25c3a975b340cc70d1448304dabc1c",
+      "frames": "ead94411bc034605bfb4d5be3b4e254292ddb7da918596c470c3bae6da3d6349"
+    },
+    "final": {
+      "step": 49,
+      "turn": 1,
+      "weapon": null,
+      "inventory": [
+        {
+          "otyp": 239,
+          "invlet": "a",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        },
+        {
+          "otyp": 296,
+          "invlet": "b",
+          "quan": 1,
+          "lamplit": 0,
+          "known": 1
+        }
+      ]
+    }
+  }
+]

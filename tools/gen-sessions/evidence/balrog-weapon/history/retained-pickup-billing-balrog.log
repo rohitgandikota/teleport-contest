@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+200 !== 0
+
+    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/pickup-deallocation-observer-review/balrog/tools/monster-pickup-state-gate.mjs:189:16 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 200,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

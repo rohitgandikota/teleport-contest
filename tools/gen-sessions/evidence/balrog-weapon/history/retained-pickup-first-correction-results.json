@@ -1,0 +1,30 @@
+[
+  {
+    "runtime": "autoquiver-equipment-parent-composed",
+    "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "--max-old-space-size=512",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/pickup-deallocation-observer-review/baseline/tools/monster-pickup-state-gate.mjs"
+    ],
+    "exit": 1,
+    "seconds": 3.915,
+    "logSHA256": "b375c0532f19972ac9b261cfdd862e24d89ec31580a89654743eb0791b184295"
+  },
+  {
+    "runtime": "balrog-weapon-valid-parent-composed",
+    "runtimeSHA256": "697d501632cff9fa3fb61fbfa1f972012af6e5eaf03b406004e781f643d87bd1",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "--max-old-space-size=512",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/pickup-deallocation-observer-review/balrog/tools/monster-pickup-state-gate.mjs"
+    ],
+    "exit": 1,
+    "seconds": 3.906,
+    "logSHA256": "43c4ad5c996fccd147f73f1262b1306ae1ec4b91f096db8ec44f4146e2509f1c"
+  }
+]

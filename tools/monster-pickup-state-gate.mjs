@@ -59,9 +59,16 @@ for (const file of ['monster-pickup-light', 'monster-pickup-currents',
             assert.equal(lights(original).length, +fire);
             assert.equal(burns(original).length, +fire);
         } else if (segment.name === 'worm-cockatrice') {
-            assert.equal(original.where, OBJ_DELETED);
+            // C mkobj.c:2831 dobjsfree has released this corpse by this turn.
+            // Check the surviving object lists and timers, not freed fields.
+            assert.ok(!game.invent.includes(original), label + ': corpse left inventory');
+            assert.ok(!game.level.objects.includes(original), label + ': corpse left floor');
+            assert.ok(game.level.monsters.every(m => !m.minvent?.includes(original)),
+                label + ': corpse left monster inventories');
+            assert.ok(!game.objs_deleted?.includes(original), label + ': deletion queue drained');
+            assert.ok((game.timer_base || []).every(t => t.arg !== original),
+                label + ': corpse timers removed');
             assert.equal(game.u.uswallow, 0);
-            assert.equal(original.timed | 0, 0);
             const statue = game.level.objects.find(o => o.otyp === ONAMES.STATUE
                 && o.corpsenm === PMNAMES.PM_PURPLE_WORM);
             assert.ok(statue, label + ': engulfer became a statue');
@@ -178,8 +185,8 @@ try {
         obj.oy = game.u.uy;
         assert.equal(await mpickobj(mon, obj), 0);
         assert.equal(apples.unpaid, 0);
+        // C mextra.h:138: billct counts active entries in fixed bill storage.
         assert.equal(shop.eshk.billct, 0);
-        assert.equal(shop.eshk.bill_p.length, 0);
         assert.equal(obj.where, OBJ_MINVENT);
         assert.equal(apples.where, nested ? OBJ_CONTAINED : OBJ_MINVENT);
     }

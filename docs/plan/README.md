@@ -12,13 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Balrog weapon selection is pushed as `c4b08f7d`, with all 1,240 tested Git blobs
-verified. Fire-trap slime cleanup now passes all six C cases, 54 ordinary
-checks, seven retained gates, 45 strict workers and 950 maintained recordings.
-The installed checks exactly reproduce the isolated results; publication is
-next. Two source-backed pickup-test corrections pass on both fixed runtimes
-and will be published separately. Startup gender normalization has a verified
-candidate and portable gate. Original C recordings confirm both gremlin light
+Fire-trap slime cleanup is pushed as `b15a043c`, with all 1,241 tested Git blobs
+verified. All six C cases, 54 ordinary checks, seven retained gates, 45 strict
+workers and 950 maintained recordings pass. Two source-backed pickup-test
+corrections pass all 17 replays and source controls on both fixed runtimes;
+their separate test-only commit is ready. Startup gender normalization passes
+all four C cases on the combined code and is running the full951 regression.
+Its isolated candidate and portable gate are verified. C confirms both gremlin light
 failures, with all three controls exact; its candidate is in progress.
 The latest official result remains agentic rank7 with659 unmatched
 screens; its timestamp predates the newest gameplay pushes.

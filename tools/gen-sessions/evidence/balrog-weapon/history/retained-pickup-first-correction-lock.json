@@ -1,0 +1,21 @@
+{
+  "createdAt": "2026-11-26T20:57:15.272894+00:00",
+  "originalSHA256": "76ed07e805859fc83847edd66453f65d8b0033a8b08e38e4b13abd266d610d1a",
+  "correctedSHA256": "3704583714eacaa65b4e1f8d692b9f15b91882c81c7d8751ed61e52e89a528fa",
+  "source": [
+    {
+      "path": "nethack-c/upstream/src/mkobj.c",
+      "sha256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488"
+    },
+    {
+      "path": "nethack-c/upstream/src/allmain.c",
+      "sha256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4"
+    },
+    {
+      "path": "nethack-c/upstream/src/mon.c",
+      "sha256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01"
+    }
+  ],
+  "scope": "Only the ordinary worm-cockatrice post-free assertion; all inputs and source controls unchanged.",
+  "prediction": "Corpse absent from inventory, floor, monster inventories, deletion queue, timers and engulfer statue; hero no longer swallowed."
+}

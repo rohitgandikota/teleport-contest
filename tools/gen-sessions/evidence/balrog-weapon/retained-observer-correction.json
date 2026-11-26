@@ -1,0 +1,100 @@
+{
+  "verifiedAt": "2026-11-26T21:13:02.474657+00:00",
+  "correctionLock": {
+    "createdAt": "2026-11-26T21:09:16.197994+00:00",
+    "originalSHA256": "76ed07e805859fc83847edd66453f65d8b0033a8b08e38e4b13abd266d610d1a",
+    "firstCorrectionSHA256": "3704583714eacaa65b4e1f8d692b9f15b91882c81c7d8751ed61e52e89a528fa",
+    "firstResultsSHA256": "88decf6d17e4b2c4b9081937bab822b88cb9c2f39ccf0d18ec15cf1dcf46b163",
+    "correctedSHA256": "1b04f2bb8aa0eae5c16a37ab19fcded7367cedaf42c41aa6bee3d36ee6e47c3d",
+    "scope": "Keep the source-backed post-free predicates; remove only the invalid bill backing-length assertion. The existing billct==0 check proves empty occupancy; immediate merged-object OBJ_DELETED stays unchanged.",
+    "source": [
+      {
+        "path": "nethack-c/upstream/src/mkobj.c",
+        "sha256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488"
+      },
+      {
+        "path": "nethack-c/upstream/src/allmain.c",
+        "sha256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4"
+      },
+      {
+        "path": "nethack-c/upstream/include/mextra.h",
+        "sha256": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229"
+      },
+      {
+        "path": "nethack-c/upstream/src/shk.c",
+        "sha256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b"
+      }
+    ]
+  },
+  "results": [
+    {
+      "runtime": "autoquiver-equipment-parent-composed",
+      "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/pickup-lifetime-billing-observer-correction/baseline/tools/monster-pickup-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.754,
+      "logSHA256": "2b86ae29eee9e064a0bd846172d8d0b0ee4efc4f3d382e1e47282b5a288c18b7"
+    },
+    {
+      "runtime": "balrog-weapon-valid-parent-composed",
+      "runtimeSHA256": "697d501632cff9fa3fb61fbfa1f972012af6e5eaf03b406004e781f643d87bd1",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/pickup-lifetime-billing-observer-correction/balrog/tools/monster-pickup-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.748,
+      "logSHA256": "2b86ae29eee9e064a0bd846172d8d0b0ee4efc4f3d382e1e47282b5a288c18b7"
+    }
+  ],
+  "history": [
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-billing-baseline.log",
+      "sha256": "b375c0532f19972ac9b261cfdd862e24d89ec31580a89654743eb0791b184295"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-billing-balrog.log",
+      "sha256": "43c4ad5c996fccd147f73f1262b1306ae1ec4b91f096db8ec44f4146e2509f1c"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-first-correction-results.json",
+      "sha256": "88decf6d17e4b2c4b9081937bab822b88cb9c2f39ccf0d18ec15cf1dcf46b163"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-first-correction-lock.json",
+      "sha256": "0ada8026ecfd1a7e13fe9beccf700da7dce9bff0d2ddf8620e7b5daa1ee86d4e"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-corrected-baseline.log",
+      "sha256": "2b86ae29eee9e064a0bd846172d8d0b0ee4efc4f3d382e1e47282b5a288c18b7"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/balrog-weapon/history/retained-pickup-corrected-balrog.log",
+      "sha256": "2b86ae29eee9e064a0bd846172d8d0b0ee4efc4f3d382e1e47282b5a288c18b7"
+    }
+  ],
+  "ordinaryReplayCases": 17,
+  "sourceControlsAlsoPassed": true,
+  "runtimeChanged": false,
+  "nativeCoverageAdded": false,
+  "originalFailure": "Freed corpse .where was undefined rather than OBJ_DELETED9.",
+  "firstCorrectionFailure": "The later shop control expected bill_p.length0 although fixed backing capacity is200; both original logs retained.",
+  "sourceContracts": [
+    "C mkobj.c2745-2843 stages OBJ_DELETED until dobjsfree then clears and frees the record. Check surviving lists/timers after the turn.",
+    "C mextra.h138-140 and shk.c3661-3708 use billct as active occupancy of fixed bill storage; removal need not shrink the backing array."
+  ],
+  "retainedAssertions": "All inputs, state producers, gameplay calls and other predicates remain unchanged. Keep the immediate merged-object OBJ_DELETED assertion. The existing billct==0 assertion remains; remove the redundant invalid backing-capacity expectation rather than replacing it with an equivalent slice-length assertion.",
+  "limits": [
+    "The original Balrog verification had three of four retained passes; this later test-only correction does not rewrite that result.",
+    "These are retained ordinary replay observations and constructed source controls, not a new C recording or whole-owner proof."
+  ]
+}

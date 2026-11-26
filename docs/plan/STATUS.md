@@ -1,5 +1,31 @@
 # STATUS — live handoff board
 
+## 2026-11-26: fire-trap slime published; pickup test corrected
+
+Published main is b15a043c8dd76a074d9ea845b2863ebebff2d04a. All1,241
+full950 tested Git blobs match publication. Publication receipt SHA256:
+f908cc50966ccefa679e77f6f39d723801b042e98bf2e1de18b76a8760e75f99.
+
+The pickup test correction is installed and ready for its separate commit.
+All17 ordinary replays and source controls pass on fixed496 and697. Original
+post-free and later bill-capacity failures remain preserved. Runtime behavior
+does not change. The complete reasoning and results are public at
+tools/gen-sessions/evidence/balrog-weapon/retained-observer-correction.json,
+SHAf09bf996403a01c25c4dffba5f4f571a92f6979b8136cc80b6def38995720c76.
+Stage only pickup-observer-stage-paths.json, leaving the next runtime candidate
+unstaged, then commit and push. There is no need to repeat the broad regression
+for this test-only correction.
+
+Role-init-gender parent composition passes4/4 with the complete native report
+equal to candidate321. Only role.js changes; the raw4 recording is installed
+unchanged. Runtime-map SHA256:
+52e5aa78874a514e096278b92453620b953bd2709726c63d67dc73979229eea8.
+Full951 is launched at the standard NFS artifact root under
+role-init-gender-full951-js-20261126. Its fixed composition and prepared scripts
+are in the matching cache paths. Retained startup checks are running. Portable
+promotion48 is sealed but not installed yet. Do not publish the runtime change
+until full951, retained checks and fresh installed gate verification pass.
+
 ## 2026-11-26: Balrog published; fire-trap slime verified on full950
 
 Published main is c4b08f7dafcd7769f1b70c1ecb9d9cbab11deb0a. All 1,240

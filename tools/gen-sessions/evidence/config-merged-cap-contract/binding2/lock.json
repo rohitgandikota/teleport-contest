@@ -1,0 +1,23 @@
+{
+  "recipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "c1706f2154d4bab7d740fc3536d88adb8c7c97778423106de51227508df0b3a1",
+  "segments": [
+    {
+      "name": "config-cap-binding-byte-param-negative",
+      "inputSHA256": "422e7e887ff3b1d411a54c7b32553c2da7e12383d8ba27c9637856db58522999",
+      "keys": 8
+    },
+    {
+      "name": "config-cap-binding-ASCII-param-negative",
+      "inputSHA256": "ab9936094b84c55b5c3422678565faa01cf195beb9f20f34b5a7e5b64a7bb5bb",
+      "keys": 8
+    }
+  ]
+}

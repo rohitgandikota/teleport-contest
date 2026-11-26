@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T04:24:54.452441+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/config-binding-param-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/config-binding-param-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/config-binding-param-parent-minimal.session.json",
+  "inputSHA256": "dd15c2e98fc2f64a815cf12fa0b8680d92fffe4ce600dec98e171ce4c7d978e0",
+  "primaryRecipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/config-binding-param-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T04:24:54.674036+00:00",
+  "log": ".cache/restart-20261122/config-binding-param-parent-native-recording.log",
+  "logSHA256": "f28215aa6efd0094bee1662ee2e21a85a93224a5308e6cffa8ed6721ffd390f7",
+  "rawSha256": "b81f77beac4f7e70192e4b2e10f69fe3b4199620e39cdd151c51d5e10d747793",
+  "bytes": 276680,
+  "segments": 2,
+  "boundaries": 18,
+  "keys": 16,
+  "calls": 6058,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

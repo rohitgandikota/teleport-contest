@@ -1,0 +1,12 @@
+{
+  "originalGateSHA256": "ac7a54517ecb6bfb9bda7d12a0a094f146fecc689a9662e2c8615bc29f4c0764",
+  "originalFailureLog": "reports/raw-byte-source-baseline.log",
+  "replacement": [
+    "Array.from(part.moves, c => c.charCodeAt(0))",
+    "Array.from(part.moves)"
+  ],
+  "correctedGateSHA256": "6923ebede6cdbc4bc85e589990038b75720fdb856de3a7a3225c4ec4e77ca25f",
+  "reason": "C5 step.key is a one-character string, not numeric code; raw and input fields unchanged",
+  "assertionBodiesUnchanged": true,
+  "runtimeCandidateExisted": false
+}

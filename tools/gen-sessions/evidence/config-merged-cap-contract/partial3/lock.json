@@ -1,0 +1,28 @@
+{
+  "recipeSHA256": "ce51f43c9fa948482830926260a72e6f4e7a489702523b524990713c59eee93b",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "e506616c23934e31766097b9e2a0fc98fd2c76f1e7de212cd7e045a02fdd023e",
+  "segments": [
+    {
+      "name": "config-merged-quoted-partial-positive",
+      "inputSHA256": "291e4582220f6fcb95abd2d48321c4df2d8ecadd49490e40b354bb68665a7b69",
+      "keys": 3
+    },
+    {
+      "name": "config-merged-literal-partial-negative",
+      "inputSHA256": "cfc830c1c8f594c80e17cabf21465b98690b51a502610f9459baf92be269b388",
+      "keys": 3
+    },
+    {
+      "name": "config-merged-quoted-fit-negative",
+      "inputSHA256": "bba1b98bde9b6f117e02e56174ae602fd3ba3dca4c639cf960024aa4917d93f1",
+      "keys": 3
+    }
+  ]
+}

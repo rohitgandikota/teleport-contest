@@ -1,0 +1,258 @@
+{
+  "ownerSHA256": {
+    "options.js": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+    "jsmain.js": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b",
+    "symbols.js": "c7a9ee77357db45f8285153f1cc4e835ea8111b4b31b6e995003dee67aa3015a",
+    "cfgfiles.js": "9da2951882fc4be0782ed09b043902574ee7576938152639dda35f7140c3a5cb"
+  },
+  "total": 61,
+  "passed": 60,
+  "scope": "Real parser and handlers; source-only malformed edges do not assert diagnostic rendering",
+  "cases": [
+    {
+      "name": "OPTIONS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/selected-and-invalid-inactive-body",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/skipped-handler-has-no-effect",
+      "pass": true
+    },
+    {
+      "name": "choice/two-left",
+      "pass": true
+    },
+    {
+      "name": "choice/two-right",
+      "pass": true
+    },
+    {
+      "name": "choice/leading-comma-walk",
+      "pass": true
+    },
+    {
+      "name": "choice/trailing-comma-first",
+      "pass": true
+    },
+    {
+      "name": "choice/literal-leading-space",
+      "pass": true
+    },
+    {
+      "name": "choice/literal-space-before-comma",
+      "pass": true
+    },
+    {
+      "name": "choice/literal-case",
+      "pass": true
+    },
+    {
+      "name": "choice/literal-internal-spaces",
+      "pass": true
+    },
+    {
+      "name": "choice/literal-hash",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/empty",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/leading-comma-second",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/trailing-comma-second",
+      "pass": true
+    },
+    {
+      "name": "keyword/ascii-case",
+      "pass": true
+    },
+    {
+      "name": "keyword/space-before-delimiter",
+      "pass": true
+    },
+    {
+      "name": "keyword/colon-before-equals",
+      "pass": true
+    },
+    {
+      "name": "keyword/equals-before-colon",
+      "pass": true
+    },
+    {
+      "name": "keyword/reject-CHOOS",
+      "pass": true
+    },
+    {
+      "name": "keyword/reject-CHOOSES",
+      "pass": true
+    },
+    {
+      "name": "keyword/reject-CHOOſE",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'CHOOÅ¿E=keep'\n-   'CHOOſE=keep'\n  ]\n"
+    },
+    {
+      "name": "source-only-error/missing-delimiter-does-not-draw",
+      "pass": true
+    },
+    {
+      "name": "inactive-choose-and-invalid-line-do-not-run",
+      "pass": true
+    },
+    {
+      "name": "active-rechoose-retains-current-until-new-header",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/empty-rechoose-skips-until-header-clears-current",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/missing-delimiter-retains-prior-choice",
+      "pass": true
+    },
+    {
+      "name": "unsectioned-body-after-choose-is-active",
+      "pass": true
+    },
+    {
+      "name": "empty-header-in-ignored-section-restores-unsectioned-body",
+      "pass": true
+    },
+    {
+      "name": "empty-header-clears-chosen-as-well-as-current",
+      "pass": true
+    },
+    {
+      "name": "empty-header-without-choose-is-recognized-error",
+      "pass": true
+    },
+    {
+      "name": "header/valid-[keep]",
+      "pass": true
+    },
+    {
+      "name": "header/valid-[ keep \t]",
+      "pass": true
+    },
+    {
+      "name": "header/valid-[keep]#comment",
+      "pass": true
+    },
+    {
+      "name": "header/valid-[keep]  #comment",
+      "pass": true
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep",
+      "pass": true
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]tail",
+      "pass": true
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]\t#comment",
+      "pass": true
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]]",
+      "pass": true
+    },
+    {
+      "name": "nested-read/symset-clears-both-shared-fields",
+      "pass": true
+    },
+    {
+      "name": "nested-read/roguesymset-clears-both-shared-fields",
+      "pass": true
+    },
+    {
+      "name": "parse-return-clears-state-before-next-nonempty-or-empty-call",
+      "pass": true
+    },
+    {
+      "name": "comments-do-not-select-or-draw-negative",
+      "pass": true
+    }
+  ]
+}

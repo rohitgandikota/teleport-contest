@@ -1,0 +1,14 @@
+{
+  "baselineRuntimeSHA256": "3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a",
+  "sourceCandidateRuntimeSHA256": "4c3230b57abfc037d69423469160674a7478adaa47394e6cb1765af65a78f728",
+  "composedRuntimeSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4",
+  "changedFiles": [
+    "js/cmd.js",
+    "js/coloratt.js",
+    "js/options.js",
+    "js/symbols.js"
+  ],
+  "allBaselineOwnerHashesMatched": true,
+  "runtimeFiles": 280,
+  "mainChanged": false
+}

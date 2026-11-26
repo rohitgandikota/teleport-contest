@@ -1,0 +1,24 @@
+{
+  "controls": [
+    {
+      "name": "config-byte-utf8-cut-header-inequality",
+      "hashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "config-byte-utf8-fit-header-equality",
+      "hashes": {
+        "screens": "7995de5fb1b0fd280bff153b2dc3327f16150d248adc9a622fad5bad8d50509e",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    }
+  ]
+}

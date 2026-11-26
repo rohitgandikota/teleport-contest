@@ -38,15 +38,23 @@ two positive random streams. All 28 ordinary controls, 36 retained checks,
 92 selected/public recordings and 92 strict workers pass. Full918 passes all
 918 recordings with default limits and no retries: 930,434 screens/cursors,
 20,194,075 random calls and 33,131 frames. All 1,209 tested files match the
-published tree. The doorway-engraving fix now passes five native cases versus three, all 25
+published tree. The doorway-engraving fix is pushed as `5345c4d3`. It passes five native cases versus three, all 25
 ordinary controls, 38 retained checks, 93 selected/public and 93 strict replays.
 Full919 passes all 919 recordings on NFS: 931,345 screens/cursors, 20,225,162
-random calls and 33,131 frames, with default limits and no retries. Exact
-Git-index checks and publication follow. Wall redraw, entrance reconstruction and configuration
+random calls and 33,131 frames, with default limits and no retries. All 1,210
+tested Git files match the published tree. Wall redraw, entrance reconstruction and configuration
 byte limits remain isolated follow-up work.
+The parser byte-limit correction passes all 15 C cases on current main. All
+148 selected/public recordings and 148 strict workers pass. Retained checks pass
+with one documented Unicode-to-byte expectation correction. All 922 recordings
+pass on NFS: 931,399 screens/cursors, 20,258,571 random calls and 33,131 frames.
+The six portable gates preserve 80 source assertions, 15 ordinary cases and
+45 negative hashes. Publication follows exact staging checks. Wall redraw and
+entrance reconstruction each pass four C cases on their current compositions;
+their portable gates are ready for the next two checkpoints.
 See STATUS for the fixed runtime and exact next action.
 
-The last official recheck at 23:13 EST returned the 21:05 feed: agentic rank 7,
+The last official recheck at 23:43 EST returned the 21:05 feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
 row predates these pushes and identifies no exact commit. The official site
 lists six-hour scoring cycles. Local tests establish no newer held-out result.

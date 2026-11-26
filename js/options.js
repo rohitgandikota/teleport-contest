@@ -182,6 +182,9 @@ export function fruitadd(str, replace_fruit) {
 // `opts` is one line's worth of option text with the OPTIONS= prefix removed.
 export function parseoptions(opts, tinitial, tfrom_file, result) {
     let retval = true;
+    const fromBytes = opts instanceof Uint8Array;
+    if (fromBytes)
+        opts = String.fromCharCode(...opts).split('\0', 1)[0];
 
     /* Process elements of comma-separated list in right to left order. */
     if (tinitial) {
@@ -189,7 +192,8 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         if (comma >= 0) {
             const rest = opts.slice(comma + 1);
             opts = opts.slice(0, comma);
-            if (!parseoptions(rest, tinitial, tfrom_file, result))
+            if (!parseoptions(fromBytes ? Uint8Array.from(rest, c => c.charCodeAt(0)) : rest,
+                              tinitial, tfrom_file, result))
                 retval = false;
         }
     }
@@ -230,7 +234,8 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
     if (!opt) {
         /* src/options.c:663 — Is it a symbol? */
-        if (opts.startsWith('S_') && parsesymbols(opts, PRIMARYSET)) {
+        if (opts.startsWith('S_') && parsesymbols(fromBytes
+                ? Uint8Array.from(opts, c => c.charCodeAt(0)) : opts, PRIMARYSET)) {
             switch_symbols(true);
             check_gold_symbol();
             return true;
@@ -280,14 +285,15 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             config_error_add('The fruit option may not both have a value and be negated.');
             return false;
         }
-        const bytes = tinitial
+        const bytes = tinitial && !fromBytes
             ? Array.from(new TextEncoder().encode(op), c => String.fromCharCode(c)).join('')
             : op; // getlin already supplies C bytes.
         result.opts.fruit = set_fruit_name(negated ? '' : bytes, tinitial);
     } else if (opt.name === 'name' && tinitial) {
         // src/options.c:2549 optfn_name(), RC text reaches C as UTF8 bytes.
-        const bytes = Array.from(new TextEncoder().encode(opts.slice(sep + 1)),
-                                 c => String.fromCharCode(c)).join('');
+        const bytes = fromBytes ? opts.slice(sep + 1)
+            : Array.from(new TextEncoder().encode(opts.slice(sep + 1)),
+                         c => String.fromCharCode(c)).join('');
         result.opts.name = nmcpy(bytes, PL_NSIZ);
     } else if (opt.type === 'BoolOpt') {
         // src/options.c optfn_boolean(): ignore unavailable storage, then
@@ -929,7 +935,10 @@ export function parseNethackrc(rc) {
     config_error_data = result; /* src/cfgfiles.c config_error_init() */
 
     // src/cfgfiles.c:1844 parse_conf_file(): EOF is not an extra empty line.
-    const lines = rc.split('\n');
+    // The recorder writes UTF8. Use C byte units before joining fragments,
+    // retaining incomplete sequences at the merged buffer's byte limit.
+    const lines = Array.from(new TextEncoder().encode(rc),
+                             c => String.fromCharCode(c)).join('').split('\n');
     if (lines.at(-1) === '') lines.pop();
     let buf = null;
     for (let inbuf of lines) {
@@ -944,8 +953,10 @@ export function parseNethackrc(rc) {
         inbuf = inbuf.replace(/^[ \t]+/, '');
         const ignoreline = !inbuf || inbuf[0] === '#';
         const oldline = buf !== null;
-        if (!ignoreline)
-            buf = oldline ? `${buf} ${inbuf}` : inbuf;
+        if (!ignoreline) {
+            // src/cfgfiles.c:1759 parse_conf_buf(), cap after every append.
+            buf = (oldline ? `${buf} ${inbuf}` : inbuf).slice(0, 4 * BUFSZ - 1);
+        }
         if (morelines || (ignoreline && !oldline)) continue;
 
         // is_config_section() trims space/tab even for a non-section line.
@@ -983,38 +994,40 @@ export function parseNethackrc(rc) {
         // OPTIONS uses origbuf; the other C handlers receive mungspaces(buf).
         const rest = directive?.origbuf ? line.slice(eq + 1)
             : mungspaces(line.slice(eq + 1));
+        // These owners also have Unicode callers. Mark the file bytes at
+        // their existing argument boundary so they are not encoded twice.
+        const bytes = Uint8Array.from(rest, c => c.charCodeAt(0));
 
         switch (directive?.name) {
         case 'OPTIONS':
-            parseoptions(rest, true, true, result);
+            parseoptions(bytes, true, true, result);
             break;
         case 'SYMBOLS':
             /* src/cfgfiles.c:1202 cnf_line_SYMBOLS() */
             result.symbols.push(rest);
-            if (!parsesymbols(rest, PRIMARYSET))
+            if (!parsesymbols(bytes, PRIMARYSET))
                 config_error_add(`Error in SYMBOLS definition '${rest}'`);
             break;
         case 'ROGUESYMBOLS':
             /* src/cfgfiles.c:1191 cnf_line_ROGUESYMBOLS() */
             result.symbols.push(rest);
-            if (!parsesymbols(rest, ROGUESET))
+            if (!parsesymbols(bytes, ROGUESET))
                 config_error_add(`Error in ROGUESYMBOLS definition '${rest}'`);
             break;
         case 'MENUCOLOR':
             /* src/cfgfiles.c:1164 cnf_line_MENUCOLOR(); parse_config_line()
                has mungspaces()d the line and stepped past '=' */
-            add_menu_coloring(rest);
+            add_menu_coloring(bytes);
             break;
         case 'MSGTYPE':
-            msgtype_parse_add(rest);
+            msgtype_parse_add(bytes);
             break;
         case 'AUTOPICKUP_EXCEPTION':
-            add_autopickup_exception(Array.from(new TextEncoder().encode(rest),
-                                               c => String.fromCharCode(c)).join(''));
+            add_autopickup_exception(rest);
             break;
         case 'BINDINGS':
             result.bindings.push(rest);
-            parsebindings(rest);
+            parsebindings(bytes);
             break;
         default:
             result.unhandled.push(line);
@@ -1029,7 +1042,8 @@ export function parseNethackrc(rc) {
 // src/options.c:6971 txt2key(), decode a one-byte key from binding text.
 export function txt2key(txt) {
     /* Config text reaches C as UTF-8 bytes, even for a non-ASCII key. */
-    txt = String.fromCharCode(...new TextEncoder().encode(txt));
+    txt = String.fromCharCode(...(txt instanceof Uint8Array
+        ? txt : new TextEncoder().encode(txt))).split('\0', 1)[0];
     txt = trimspaces(txt);
     let makemeta = false;
     if (!txt)
@@ -1080,6 +1094,9 @@ export function txt2key(txt) {
 // src/options.c:7596 parsebindings(), command-key bindings.
 // Special, mouse and menu bindings still need their separate consumers.
 export function parsebindings(bindings) {
+    const fromBytes = bindings instanceof Uint8Array;
+    if (fromBytes)
+        bindings = String.fromCharCode(...bindings).split('\0', 1)[0];
     let ret = true;
     let comma = bindings.indexOf(',');
     if (comma === 0)
@@ -1088,7 +1105,8 @@ export function parsebindings(bindings) {
              || (bindings[comma - 1] === "'" && bindings[comma + 1] === "'")))
         comma = bindings.indexOf(',', comma + 2);
     if (comma >= 0) {
-        ret = parsebindings(bindings.slice(comma + 1));
+        const rest = bindings.slice(comma + 1);
+        ret = parsebindings(fromBytes ? Uint8Array.from(rest, c => c.charCodeAt(0)) : rest);
         bindings = bindings.slice(0, comma);
     }
 
@@ -1097,12 +1115,12 @@ export function parsebindings(bindings) {
         return false;
     const keytxt = bindings.slice(0, colon);
     const command = trimspaces(bindings.slice(colon + 1));
-    const key = txt2key(keytxt);
+    const key = txt2key(fromBytes ? Uint8Array.from(keytxt, c => c.charCodeAt(0)) : keytxt);
     if (!key) {
         config_error_add(`Unknown key binding key '${keytxt}'`);
         return false;
     }
-    if (!bind_key(key, command)) {
+    if (!bind_key(key, fromBytes ? Uint8Array.from(command, c => c.charCodeAt(0)) : command)) {
         config_error_add(`Unknown key binding command '${command}'`);
         return false;
     }
@@ -3136,7 +3154,8 @@ function msgtype_count() {
 // src/options.c:7844 msgtype_parse_add(). A closing quote is optional in
 // sscanf's result: assigning the pattern already supplies the second field.
 export function msgtype_parse_add(str) {
-    const bytes = String.fromCharCode(...new TextEncoder().encode(str))
+    const bytes = String.fromCharCode(...(str instanceof Uint8Array
+        ? str : new TextEncoder().encode(str)))
         .split('\0', 1)[0];
     const typeField = bytes.match(/^[ \t\r\n\f\v]*([^ \t\r\n\f\v]{1,10})/);
     const patternField = typeField && bytes.slice(typeField[0].length)

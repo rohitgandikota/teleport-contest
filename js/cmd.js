@@ -4040,8 +4040,11 @@ export function count_bind_keys() {
     return count;
 }
 
-// src/cmd.c bind_key(), the command and optional parameter for one key.
+// src/cmd.c:2662 bind_key(), the command and optional parameter for one key.
 export function bind_key(key, command, user = true) {
+    const fromBytes = command instanceof Uint8Array;
+    if (fromBytes)
+        command = String.fromCharCode(...command).split('\0', 1)[0];
     if (!strcmpi(command, 'nothing')) {
         cmdbind_remove(key);
         return true;
@@ -4063,7 +4066,7 @@ export function bind_key(key, command, user = true) {
             else if (!param)
                 config_error_add('Required parameter cannot be empty');
             else
-                cmdbind_get(key).param = String.fromCharCode(
+                cmdbind_get(key).param = fromBytes ? param.slice(0, 30) : String.fromCharCode(
                     ...new TextEncoder().encode(param).slice(0, 30));
         } else if (param)
             config_error_add(`'${buf}' does not take a parameter`);

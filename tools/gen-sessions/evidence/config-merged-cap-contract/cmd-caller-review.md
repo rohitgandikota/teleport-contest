@@ -1,0 +1,15 @@
+# Required bind_key byte consumer
+
+The reviewed upstream is 16ff59115315917b93185d026aeefea06db9b0f4. The C file hashes and complete earlier review remain in source-contract.json and history/source-review.md. This supplement explains the fourth owner in the fixed source568 patch. It changes no runtime or earlier evidence.
+
+The actual file path is parseNethackrc -> parsebindings -> bind_key. C options.c7596-7674 recursively processes the right-hand bindings, splits the current binding at its colon, trims the command and calls cmd.c2662 bind_key. The parameter is already part of the same C byte buffer. bind_key copies that command, splits its parenthesized parameter and stores at most30 bytes, followed by NUL. It does not decode or encode the parameter.
+
+The JS config reader now encodes the incoming RC string once and caps each merged append at1023 bytes. It passes an explicit Uint8Array through parsebindings to bind_key. Without the cmd.js hunk, the existing TextEncoder would encode those bytes a second time. For example, e2 82 ac would become c3 a2 c2 82 c2 ac. The added branch copies raw parameter bytes directly and keeps the existing encoder for Unicode callers. It uses the same30-byte bound and changes no dispatch, return, error or rendering behavior.
+
+The complete C and JS bind_key, binding stores, default initialization, keylist_putcmds and dokeylist were reviewed, together with the actual callers. JS commands_init is the other direct caller and supplies ASCII command names. The ordinary ?j path reaches dokeylist, whose keylist_putcmds reads the stored parameter and prints it in quotes. C cmd.c2802-2862 uses the parameter directly in that line. The other reader is dotoggleoption, cmd.c1376-1384, which passes the stored bytes to options.c9278-9297 toggle_bool_option. The C interactive binding producer and changed-binding serializer were also inspected. This is not a claim that all special, mouse, menu or interactive binding paths are complete.
+
+The two ordinary controls were locked before runtime edits. Both use actual BIND=A:toggle(...) input, then ?j to consume the stored value. The UTF8 control stores e282ac; the ASCII control stores74696d65. Both reach the parameter line at step5. They are unaffected negatives, not newly fixed native cases. The source28 controls separately exercise raw byte arguments, RC parameter ingress, right-to-left parsing and the30-byte bound.
+
+Parent recorded the two original tuples once. The raw SHA is b81f77beac4f7e70192e4b2e10f69fe3b4199620e39cdd151c51d5e10d747793. Fixed baseline and candidate both match all18 boundaries,6058 calls and zero frames. Their native reports are byte-identical, SHA92406bc35d9e3a8d9b2e8fa44304b3a883593f43aeba75862a7e047a135d2b56. The observer, plain and deferred runs also retain all ten original negative hashes. The parent composition gives the same report.
+
+The isolated four-file candidate and every source568 member remain unchanged. This promotion adds portable checks and evidence only. Parent owns the independent retained section-gate premise investigation; this packet does not modify that gate or presume its outcome.

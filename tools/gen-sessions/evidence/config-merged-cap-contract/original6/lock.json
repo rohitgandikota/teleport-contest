@@ -1,0 +1,43 @@
+{
+  "recipeSHA256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "3fac835c273ca23a76e56308fd6c11e3dd7cc4d56f84a749d36bac8b0afb06d9",
+  "segments": [
+    {
+      "name": "config-bytes-merged-ascii-cap",
+      "keys": 3,
+      "inputSHA256": "2bb62c77e656d7eebb8e2ec79fc05d979feaaa8a820939008a4ba388d693ccd3"
+    },
+    {
+      "name": "config-bytes-merged-utf8-cap",
+      "keys": 3,
+      "inputSHA256": "745a86901c55bfada667c48c2d3f790f842af4843816fb8be93e693521b49c24"
+    },
+    {
+      "name": "config-bytes-nul-hidden-continuation",
+      "keys": 3,
+      "inputSHA256": "c092cf0e2cec5c1704c04ccf89395cdae0ad0b3b0af861c89e5f3cec57ec9a47"
+    },
+    {
+      "name": "config-bytes-under-cap-negative",
+      "keys": 3,
+      "inputSHA256": "a3e57aa22abc23f34da387898d6dde2880011bcce1fcc82cbb47af978e84ae0d"
+    },
+    {
+      "name": "config-bytes-nul-inert-negative",
+      "keys": 3,
+      "inputSHA256": "f39e2a1ef5a0dfca9adcb249b6f03fb959a92085646da7d49cfd4c11855d8989"
+    },
+    {
+      "name": "config-bytes-canonical-negative",
+      "keys": 3,
+      "inputSHA256": "ae4e6b7ec8e768c233b212567f9c26596a54a97969b017f57cb7e586955d21d0"
+    }
+  ]
+}

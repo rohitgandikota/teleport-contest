@@ -113,7 +113,9 @@ try {
     for (const keyword of ['CHOOS', 'CHOOSES', 'CHOOſE'])
         check(`keyword/reject-${keyword}`, () => {
             const line = `${keyword}=keep`, got = parse(`${line}\nOPTIONS=!accessiblemsg`);
-            assert.deepEqual(got.calls, []); assert.deepEqual(got.unhandled, [line]);
+            assert.deepEqual(got.calls, []);
+            // src/cfgfiles.c:1844 reads file bytes before keyword matching.
+            assert.deepEqual(got.unhandled, [Buffer.from(line, 'utf8').toString('latin1')]);
             assert.deepEqual(got.effects.opts, {accessiblemsg: false});
         });
     check('source-only-error/missing-delimiter-does-not-draw', () => {

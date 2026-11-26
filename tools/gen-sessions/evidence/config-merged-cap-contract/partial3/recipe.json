@@ -1,0 +1,140 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "config-merged-cap-partial-contract",
+  "classification": "Three separately named ordinary proposals; C outcomes pending. Source409/76/126 and all old recipes remain unchanged.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nSYMBOLS=S_room:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             \\\n'é'\n",
+      "moves": " V\f",
+      "name": "config-merged-quoted-partial-positive"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nSYMBOLS=S_room:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \\\né\n",
+      "moves": " V\f",
+      "name": "config-merged-literal-partial-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nSYMBOLS=S_room:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\\n'é'\n",
+      "moves": " V\f",
+      "name": "config-merged-quoted-fit-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "config-merged-quoted-partial-positive",
+      "positive": true,
+      "roomOverride": 0,
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "step": 0,
+        "ch": "."
+      },
+      "noDiagnostics": true
+    },
+    {
+      "name": "config-merged-literal-partial-negative",
+      "positive": false,
+      "roomOverride": 195,
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "step": 0,
+        "ch": "C"
+      },
+      "noDiagnostics": true
+    },
+    {
+      "name": "config-merged-quoted-fit-negative",
+      "positive": false,
+      "roomOverride": 195,
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "step": 0,
+        "ch": "C"
+      },
+      "noDiagnostics": true
+    }
+  ],
+  "derivations": [
+    {
+      "name": "config-merged-quoted-partial-positive",
+      "firstPhysicalBytesIncludingLF": 1022,
+      "logicalBytesBeforeCap": 1025,
+      "logicalBytesAfterCap": 1023,
+      "CValueHex": "27c3",
+      "predictedSymVal": 0,
+      "reason": "sym_val quoted arm has no closing quote after partial-byte truncation"
+    },
+    {
+      "name": "config-merged-literal-partial-negative",
+      "firstPhysicalBytesIncludingLF": 1023,
+      "logicalBytesBeforeCap": 1024,
+      "logicalBytesAfterCap": 1023,
+      "CValueHex": "c3",
+      "predictedSymVal": -61,
+      "reason": "sym_val retains first raw UTF8 byte; complete five-stream negative expected"
+    },
+    {
+      "name": "config-merged-quoted-fit-negative",
+      "firstPhysicalBytesIncludingLF": 1020,
+      "logicalBytesBeforeCap": 1023,
+      "logicalBytesAfterCap": 1023,
+      "CValueHex": "27c3a927",
+      "predictedSymVal": -61,
+      "reason": "sym_val retains first raw UTF8 byte; complete five-stream negative expected"
+    }
+  ],
+  "branches": [
+    "config-merged-quoted-partial-positive",
+    "config-merged-literal-partial-negative",
+    "config-merged-quoted-fit-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "config-merged-quoted-partial-positive",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 8,
+          "y": 12,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "config-merged-literal-partial-negative",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 8,
+          "y": 12,
+          "equals": "C"
+        }
+      ]
+    },
+    {
+      "branch": "config-merged-quoted-fit-negative",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 8,
+          "y": 12,
+          "equals": "C"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "originalRecipeSHA256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90",
+  "inputLockSHA256": "2034168e898833c602d8613ac9bbadf802343b6cdbfed431bb26a56780ae9d16",
+  "primaryRecipeSHA256": "3888be017ec52cb8537047e3b2415d4212a3edc9638cad9db873106c73e454f8",
+  "preservedKeys": [
+    "name",
+    "classification",
+    "segments",
+    "expectations",
+    "derivations"
+  ],
+  "addedMetadata": {
+    "branches": [
+      "config-merged-cap-contract.config-bytes-merged-ascii-cap",
+      "config-merged-cap-contract.config-bytes-merged-utf8-cap",
+      "config-merged-cap-contract.config-bytes-nul-hidden-continuation",
+      "config-merged-cap-contract.config-bytes-under-cap-negative",
+      "config-merged-cap-contract.config-bytes-nul-inert-negative",
+      "config-merged-cap-contract.config-bytes-canonical-negative"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+      {
+        "branch": "config-merged-cap-contract.config-bytes-merged-ascii-cap",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "."
+          }
+        ]
+      },
+      {
+        "branch": "config-merged-cap-contract.config-bytes-merged-utf8-cap",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "."
+          }
+        ]
+      },
+      {
+        "branch": "config-merged-cap-contract.config-bytes-nul-hidden-continuation",
+        "segment": 2,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      },
+      {
+        "branch": "config-merged-cap-contract.config-bytes-under-cap-negative",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      },
+      {
+        "branch": "config-merged-cap-contract.config-bytes-nul-inert-negative",
+        "segment": 4,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "."
+          }
+        ]
+      },
+      {
+        "branch": "config-merged-cap-contract.config-bytes-canonical-negative",
+        "segment": 5,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "."
+          }
+        ]
+      }
+    ]
+  },
+  "allOriginalFieldsAndAssertionsUnchanged": true
+}

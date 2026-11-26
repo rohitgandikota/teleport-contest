@@ -1,0 +1,18 @@
+{
+  "originalRecipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+  "inputLockSHA256": "2a76bb425087839872232a4976cce12ac5c846960a6a20e951755055bff4fe2a",
+  "primaryRecipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+  "preservedKeys": [
+    "version",
+    "source",
+    "name",
+    "classification",
+    "segments",
+    "expectations",
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "addedMetadata": {},
+  "allOriginalFieldsAndAssertionsUnchanged": true
+}

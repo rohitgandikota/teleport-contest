@@ -1,0 +1,25 @@
+{
+  "recipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+  "controls": [
+    {
+      "name": "config-cap-binding-byte-param-negative",
+      "hashes": {
+        "screens": "392c128b5d67d4b4529d807433bc03a68f90abce3b11b40bffc741cbf9153ac0",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    {
+      "name": "config-cap-binding-ASCII-param-negative",
+      "hashes": {
+        "screens": "b0fa287f5b7cff42d14ce098072dfdb0a5ae8174c7e3cf4d8ac4773b524fc4cf",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    }
+  ]
+}

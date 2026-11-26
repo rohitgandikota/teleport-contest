@@ -338,8 +338,10 @@ export function add_menu_coloring_parsed(str, c, a) {
 // and add it to menucoloring
 export function add_menu_coloring(tmpstr) {
     let c = NO_COLOR, a = ATR_NONE;
-    // RC text is UTF8; the parsed and interactive pattern owner uses C bytes.
-    const str = Array.from(new TextEncoder().encode(String(tmpstr ?? '')),
+    // File parsing supplies bytes; retain Unicode for direct callers.
+    const bytes = tmpstr instanceof Uint8Array ? tmpstr
+        : new TextEncoder().encode(String(tmpstr ?? ''));
+    const str = Array.from(bytes,
                            c => String.fromCharCode(c)).join('')
         .split('\0', 1)[0].slice(0, BUFSZ - 1);
 

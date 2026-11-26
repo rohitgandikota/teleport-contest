@@ -1,0 +1,16 @@
+{
+  "plain": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+    "moves": " V\f",
+    "name": "sections-canonical-map-negative"
+  },
+  "room": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nSYMBOLS=S_room:Z\n",
+    "moves": " V\f",
+    "name": "byte-canonical-room-reference"
+  }
+}

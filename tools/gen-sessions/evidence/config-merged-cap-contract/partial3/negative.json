@@ -1,0 +1,25 @@
+{
+  "recipeSHA256": "ce51f43c9fa948482830926260a72e6f4e7a489702523b524990713c59eee93b",
+  "controls": [
+    {
+      "name": "config-merged-literal-partial-negative",
+      "hashes": {
+        "screens": "fbf576b1c6ae5d78f027a81cfac7e0832c7b0c1977fa39e2bc499e169cbfc515",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "config-merged-quoted-fit-negative",
+      "hashes": {
+        "screens": "fbf576b1c6ae5d78f027a81cfac7e0832c7b0c1977fa39e2bc499e169cbfc515",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    }
+  ]
+}

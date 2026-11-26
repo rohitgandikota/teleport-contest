@@ -1,0 +1,60 @@
+{
+  "classification": "Merged logical-buffer cap closure on the fixed candidate and parent composition, not full config owner closure.",
+  "original6": {
+    "recipe": "original6/recipe.json",
+    "recipeSHA256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90",
+    "rawSHA256": "03999566888cd7958db091e323a8a827c3cc099100aba96ad1dc7664af29cbfb",
+    "baselineNative": {
+      "passed": 4,
+      "total": 6,
+      "report": "original6/native-baseline.json"
+    },
+    "candidateNative": {
+      "passed": 6,
+      "total": 6,
+      "report": "original6/fixed-native-comparison.json"
+    },
+    "repaired": [
+      "config-bytes-merged-ascii-cap",
+      "config-bytes-merged-utf8-cap"
+    ],
+    "unchangedNegativeHashes": 15
+  },
+  "partial3": {
+    "baselineNative": 2,
+    "candidateNative": 3,
+    "total": 3,
+    "unchangedNegativeHashes": 10
+  },
+  "additional4": {
+    "candidateNative": 4,
+    "total": 4,
+    "unchangedNegativeHashes": 10
+  },
+  "binding2": {
+    "baselineNative": 2,
+    "candidateNative": 2,
+    "total": 2,
+    "unchangedNegativeHashes": 10,
+    "classification": "Unaffected ordinary controls for required raw-byte consumer"
+  },
+  "allOriginalAssertionsAndInputsPreserved": true,
+  "nativeSegmentsAssembledOrReserialized": false,
+  "negativeControls": 9,
+  "negativeStreamHashes": 45,
+  "historicalOpenGapManifest": "history/prior-open-byte-gaps.json",
+  "historicalFailures": [
+    "Original6 source and native4/6",
+    "Partial3 source and native2/3",
+    "Source28 stale-binding9/28 and corrected-baseline12/28",
+    "Source28 numeric-key preflight failure",
+    "Promotion native-prefix preflight failure"
+  ],
+  "remainingOutsideScope": [
+    "Overlong physical fgets lines and external-filename diagnostics",
+    "Duplicate-config warning filename contract",
+    "Unreached parse_conf_str integration",
+    "Enhanced-glyph/status and special/menu/mouse binding completeness",
+    "DEBUG CapitalMon listing and byte handling"
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "note": "Only portable preflight, imports, optional report output and removal of baseline hash capture. Assertions, ordinary inputs and candidate negative checks are retained.",
+  "gates": [
+    {
+      "source": "source/source28.mjs",
+      "target": "tools/config-merged-cap-source-gate.mjs",
+      "sourceSHA256": "891833f0d902133c149a42c517cd46bf3e8928b8e62af97af914bd3a1499c724",
+      "targetSHA256": "becc348f779e29b96deb5ffebcd05cf0ed5c42cf7a7397d77d0ed9ec899ce220",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\n\nconst root = new URL('../', import.meta.url), variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst sha = b => createHash('sha256').update(b).digest('hex');\nconst read = name => readFileSync(new URL(name, root));\nconst pins = JSON.parse(read('source/parent-native-pins.json'));\nfor (const [name, digest] of Object.entries(pins.files)) assert.equal(sha(read(name)), digest, name);\nassert.equal(pins.rawSHA256, '384cd13b3cc862459640cebe944e6c704c623fee3a60abe154b218e23f0b6cf2');\nconst recipeBytes = read('recipes/partial-symbol-proposals.json');\nassert.equal(sha(recipeBytes), 'ce51f43c9fa948482830926260a72e6f4e7a489702523b524990713c59eee93b');\nconst recipe = JSON.parse(recipeBytes), native = JSON.parse(read('source/partial-symbol-native.session.json'));\nassert.equal(native.version, 5); assert.equal(native.source, 'c'); assert.equal(native.jsGroundTruth, undefined);\nassert.equal(native.segments.length, 3);\nfor (const [i, part] of recipe.segments.entries()) {\n    for (const field of ['seed', 'datetime', 'nethackrc', 'moves', 'name']) {\n        assert.ok(Object.hasOwn(native.segments[i], field));\n        assert.deepEqual(native.segments[i][field], part[field]);\n    }\n    assert.deepEqual(native.segments[i].steps.slice(1).map(s => s.key), Array.from(part.moves));\n}\nconst {recordingIntegrityErrors, branchAssertionErrors} = await import(new URL('source/assertions.mjs', root));\nassert.deepEqual(recordingIntegrityErrors(native), []);\nassert.deepEqual(branchAssertionErrors(recipe, native), []);\nconst mapBytes = read(`source/${variant}-runtime.json`), map = JSON.parse(mapBytes);\nif (variant === 'baseline') assert.equal(sha(mapBytes), '227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a');\nassert.equal(Object.keys(map).length, 280);\nfor (const [name, digest] of Object.entries(map)) assert.equal(sha(read(`${variant}/${name}`)), digest, name);\nconst canonical = JSON.parse(read('source/original6/canonical-inputs.json')).plain;\nconst js = new URL(`${variant}/js/`, root);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {js, reportPath, sourcePreflight, nativePreflight, root, sha, families} from './config-merged-cap-preflight.mjs';\n\nconst canonical = families.original6.canonical.plain;\n"
+        },
+        {
+          "before": "        variant, total:",
+          "after": "        runtime: 'installed', total:"
+        },
+        {
+          "before": "writeFileSync(new URL(`reports/raw-byte-source-${variant}-v3.json`, root), JSON.stringify(report, null, 2) + '\\n', {flag: 'wx'});",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "import {readFileSync, writeFileSync} from 'node:fs';",
+          "after": "import {writeFileSync} from 'node:fs';"
+        },
+        {
+          "before": "nativePreflight, root, sha, families",
+          "after": "nativePreflight, families"
+        }
+      ]
+    },
+    {
+      "source": "source/symbol52.mjs",
+      "target": "tools/config-merged-cap-symbol-source-gate.mjs",
+      "sourceSHA256": "80a5ce5870569adc93782a41d9be02b2043c9bce33b334ca6c8f789df429988b",
+      "targetSHA256": "8f933659c61c6a424523e803bff06632d3ebbd646c422bc9839972d7da873f3c",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\n\nconst variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst root = new URL('../', import.meta.url), js = new URL(`${variant}/js/`, root);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {js, reportPath, sourcePreflight, nativePreflight} from './config-merged-cap-preflight.mjs';\n\n"
+        },
+        {
+          "before": "        variant, total:",
+          "after": "        runtime: 'installed', total:"
+        },
+        {
+          "before": "writeFileSync(new URL(`reports/symbol-source-${variant}.json`, root), JSON.stringify(report, null, 2) + '\\n', {flag: 'wx'});",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "console.log(JSON.stringify({variant, passed:",
+          "after": "console.log(JSON.stringify({runtime: 'installed', passed:"
+        }
+      ]
+    },
+    {
+      "source": "source/original6.mjs",
+      "target": "tools/config-merged-cap-input-gate.mjs",
+      "sourceSHA256": "4f652150b7226b4160b3dd5282e050f9d3f1c99f581ad19c979ab1a25821b284",
+      "targetSHA256": "55e36daaa7a058e2097311e400a406dcfb48948afa6abf80747698c401cb1153",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync, existsSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\n\nconst variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst root = new URL('../', import.meta.url), js = new URL(`${variant}/js/`, root);\nconst sha = value => createHash('sha256').update(value).digest('hex');\nconst bytes = readFileSync(new URL('recipes/initial-byte-probes.json', root));\nassert.equal(sha(bytes), 'f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90');\nconst recipe = JSON.parse(bytes);\nconst lockBytes = readFileSync(new URL('recipes/initial-byte-input-lock.json', root));\nassert.equal(sha(lockBytes), '2034168e898833c602d8613ac9bbadf802343b6cdbfed431bb26a56780ae9d16');\nconst lock = JSON.parse(lockBytes);\nassert.deepEqual(lock.fields, ['seed', 'datetime', 'nethackrc', 'moves', 'name']);\nconst tuples = recipe.segments.map((part, i) => {\n    const tuple = lock.fields.map(field => { assert.ok(Object.hasOwn(part, field)); return [field, part[field]]; });\n    assert.equal(sha(JSON.stringify(tuple)), lock.segments[i].inputSHA256);\n    assert.equal(part.moves.length, lock.segments[i].keys);\n    return tuple;\n});\nassert.equal(sha(JSON.stringify(tuples)), lock.inputFieldsSHA256);\nconst canonicalBytes = readFileSync(new URL('recipes/byte-canonical-inputs.json', root));\nassert.equal(sha(canonicalBytes), '7d6206b8cc4cc7876903276266d4099faacac9994cb8c7bf7d3cfe3c9f587b4b');\nconst canonical = JSON.parse(canonicalBytes);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {js, reportPath, sourcePreflight, nativePreflight, root, sha, families} from './config-merged-cap-preflight.mjs';\n\nconst {recipe, recipeBytes: bytes, canonical} = families.original6;\n"
+        },
+        {
+          "before": "new URL(`${variant}/tools/half-damage-reader-observe.mjs`, root)",
+          "after": "new URL('tools/half-damage-reader-observe.mjs', root)"
+        },
+        {
+          "before": "', variant,\n        recipeSHA256:",
+          "after": "', runtime: 'installed',\n        recipeSHA256:"
+        },
+        {
+          "before": "const reportPath = new URL(`reports/byte-${variant}.json`, root);\n    assert.equal(existsSync(reportPath), false, 'preserve original byte evidence');\n    writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\\n');",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "JSON.parse(readFileSync(new URL('reports/byte-negative-hashes.json', root))).controls",
+          "after": "families.original6.negative.controls"
+        },
+        {
+          "before": "import {readFileSync, writeFileSync} from 'node:fs';",
+          "after": "import {writeFileSync} from 'node:fs';"
+        }
+      ]
+    },
+    {
+      "source": "source/additional4.mjs",
+      "target": "tools/config-merged-cap-nul-input-gate.mjs",
+      "sourceSHA256": "59a0975587dd65b7df44953d9239acd7d0d0cd672e2ac19f40ef4147ffa6abab",
+      "targetSHA256": "6bb8227d148d514394ba36dbe726a1b07039ee6e4b317008311fe01d2d63874b",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync, existsSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\n\nconst variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst root = new URL('../', import.meta.url), js = new URL(`${variant}/js/`, root);\nconst sha = value => createHash('sha256').update(value).digest('hex');\nconst bytes = readFileSync(new URL('recipes/nul-utf8-additional-probes.json', root));\nassert.equal(sha(bytes), '2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775');\nconst recipe = JSON.parse(bytes);\nconst lockBytes = readFileSync(new URL('recipes/nul-utf8-additional-input-lock.json', root));\nassert.equal(sha(lockBytes), 'd0e9a81fac019ca0d0ce5cb10f4d5114ffd40a65150927dd59201d4eb2549205');\nconst lock = JSON.parse(lockBytes);\nassert.deepEqual(lock.fields, ['seed', 'datetime', 'nethackrc', 'moves', 'name']);\nconst tuples = recipe.segments.map((part, i) => {\n    const tuple = lock.fields.map(field => { assert.ok(Object.hasOwn(part, field)); return [field, part[field]]; });\n    assert.equal(sha(JSON.stringify(tuple)), lock.segments[i].inputSHA256);\n    assert.equal(part.moves.length, lock.segments[i].keys);\n    return tuple;\n});\nassert.equal(sha(JSON.stringify(tuples)), lock.inputFieldsSHA256);\nconst canonicalBytes = readFileSync(new URL('recipes/nul-utf8-canonical-inputs.json', root));\nassert.equal(sha(canonicalBytes), '6f0d1cc12129d288bfaafbdb64c96b5a4441c9077f78e33dad90b273adbd21fd');\nconst canonical = JSON.parse(canonicalBytes);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {js, reportPath, sourcePreflight, nativePreflight, root, sha, families} from './config-merged-cap-preflight.mjs';\n\nconst {recipe, recipeBytes: bytes, canonical} = families.additional4;\n"
+        },
+        {
+          "before": "new URL(`${variant}/tools/half-damage-reader-observe.mjs`, root)",
+          "after": "new URL('tools/half-damage-reader-observe.mjs', root)"
+        },
+        {
+          "before": "', variant,\n        recipeSHA256:",
+          "after": "', runtime: 'installed',\n        recipeSHA256:"
+        },
+        {
+          "before": "const reportPath = new URL(`reports/nul-utf8-${variant}.json`, root);\n    assert.equal(existsSync(reportPath), false, 'preserve original byte evidence');\n    writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\\n');",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "    const path = new URL('reports/nul-utf8-negative-hashes.json', root);\n    if (variant === 'baseline') {\n        assert.equal(existsSync(path), false);\n        writeFileSync(path, JSON.stringify({controls: controls.map(row => ({name: row.name, hashes: row.hashes}))}, null, 2) + '\\n');\n    } else {\n        const negatives = JSON.parse(readFileSync(path)).controls;\n",
+          "after": "    {\n        const negatives = families.additional4.negative.controls;\n"
+        },
+        {
+          "before": "import {readFileSync, writeFileSync} from 'node:fs';",
+          "after": "import {writeFileSync} from 'node:fs';"
+        }
+      ]
+    },
+    {
+      "source": "source/partial3.mjs",
+      "target": "tools/config-merged-cap-partial-input-gate.mjs",
+      "sourceSHA256": "4ac8f3fea7abdb6ded7707b9d32e6f2e1c5c0cbb55bb1e70598ee5ebe816da3a",
+      "targetSHA256": "3fb7d7e614babf928d82172257711a313c4f5646063b8e251fa722ed747ed140",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync, existsSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\n\nconst root = new URL('../', import.meta.url);\nconst variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst sha = value => createHash('sha256').update(value).digest('hex');\nconst recipeBytes = readFileSync(new URL('recipes/partial-symbol-proposals.json', root));\nassert.equal(sha(recipeBytes), 'ce51f43c9fa948482830926260a72e6f4e7a489702523b524990713c59eee93b');\nconst recipe = JSON.parse(recipeBytes);\nconst lockBytes = readFileSync(new URL('recipes/partial-symbol-input-lock.json', root));\nassert.equal(sha(lockBytes), '840b566686f9eb91aa526bbc926446d6d32bd82a19275453322794e32641f9d2');\nconst lock = JSON.parse(lockBytes);\nassert.deepEqual(lock.fields, ['seed', 'datetime', 'nethackrc', 'moves', 'name']);\nconst tuples = recipe.segments.map((part, i) => {\n    const tuple = lock.fields.map(field => {\n        assert.ok(Object.hasOwn(part, field));\n        return [field, part[field]];\n    });\n    assert.equal(sha(JSON.stringify(tuple)), lock.segments[i].inputSHA256);\n    assert.equal(part.moves.length, lock.segments[i].keys);\n    return tuple;\n});\nassert.equal(sha(JSON.stringify(tuples)), lock.inputFieldsSHA256);\nconst mapBytes = readFileSync(new URL(`source/${variant}-runtime.json`, root));\nif (variant === 'baseline')\n    assert.equal(sha(mapBytes), '227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a');\nconst runtime = JSON.parse(mapBytes);\nassert.equal(Object.keys(runtime).length, 280);\nfor (const [file, expected] of Object.entries(runtime))\n    assert.equal(sha(readFileSync(new URL(`${variant}/${file}`, root))), expected, file);\n\nconst js = new URL(`${variant}/js/`, root);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {js, reportPath, sourcePreflight, nativePreflight, root, sha, families} from './config-merged-cap-preflight.mjs';\n\nconst {recipe, recipeBytes} = families.partial3;\n"
+        },
+        {
+          "before": "new URL(`${variant}/tools/half-damage-reader-observe.mjs`, root)",
+          "after": "new URL('tools/half-damage-reader-observe.mjs', root)"
+        },
+        {
+          "before": "new URL(`${variant}/frozen/screen-decode.mjs`, root)",
+          "after": "new URL('frozen/screen-decode.mjs', root)"
+        },
+        {
+          "before": "Locked ordinary proposals; source predictions, new C recording pending",
+          "after": "Locked ordinary controls; original C recording and all primary branches verified"
+        },
+        {
+          "before": "variant, recipeSHA256: sha(recipeBytes), runtimeMapSHA256: sha(mapBytes),",
+          "after": "runtime: 'installed', recipeSHA256: sha(recipeBytes),"
+        },
+        {
+          "before": "const reportPath = new URL(`reports/partial-symbol-${variant}.json`, root);\n    assert.equal(existsSync(reportPath), false, 'preserve previous evidence');\n    writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\\n');",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "    const negativePath = new URL('reports/partial-symbol-negative-hashes.json', root);\n    if (variant === 'baseline') {\n        assert.equal(existsSync(negativePath), false, 'capture baseline controls once');\n        const controls = rows.filter(row => !row.positive).map(({name, hashes}) => ({name, hashes}));\n        writeFileSync(negativePath, JSON.stringify({recipeSHA256: sha(recipeBytes), controls}, null, 2) + '\\n');\n    } else {\n        const negatives = JSON.parse(readFileSync(negativePath));\n",
+          "after": "    {\n        const negatives = families.partial3.negative;\n"
+        },
+        {
+          "before": "import {readFileSync, writeFileSync} from 'node:fs';",
+          "after": "import {writeFileSync} from 'node:fs';"
+        }
+      ]
+    },
+    {
+      "source": "source/binding2.mjs",
+      "target": "tools/config-binding-param-input-gate.mjs",
+      "sourceSHA256": "d438c644bf96f44cdc9d1b0e3d795db168c6aefb364f525b54df68e40d20ccae",
+      "targetSHA256": "35bb3b05811fd623c80b2950045da7320317eb4b0228e709db0506688bb10c51",
+      "replacements": [
+        {
+          "before": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nconst root = new URL('../', import.meta.url), variant = process.argv[2];\nassert.ok(['baseline', 'candidate'].includes(variant));\nconst sha = b => createHash('sha256').update(b).digest('hex');\nconst recipeBytes = readFileSync(new URL('recipes/binding-param-proposals.json', root));\nconst recipe = JSON.parse(recipeBytes);\nconst lock = JSON.parse(readFileSync(new URL('recipes/binding-param-input-lock.json', root)));\nassert.equal(sha(recipeBytes), lock.recipeSHA256);\nconst tuples = recipe.segments.map((part, i) => {\n    const tuple = lock.fields.map(field => { assert.ok(Object.hasOwn(part, field)); return [field, part[field]]; });\n    assert.equal(sha(JSON.stringify(tuple)), lock.segments[i].inputSHA256);\n    assert.equal(part.moves.length, lock.segments[i].keys);\n    return tuple;\n});\nassert.equal(sha(JSON.stringify(tuples)), lock.inputFieldsSHA256);\nconst mapBytes = readFileSync(new URL(`source/${variant}-runtime.json`, root));\nif (variant === 'baseline') assert.equal(sha(mapBytes), '227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a');\nconst map = JSON.parse(mapBytes); assert.equal(Object.keys(map).length, 280);\nfor (const [name, digest] of Object.entries(map))\n    assert.equal(sha(readFileSync(new URL(`${variant}/${name}`, root))), digest, name);\nconst js = new URL(`${variant}/js/`, root);\n",
+          "after": "import assert from 'node:assert/strict';\nimport {readFileSync, writeFileSync} from 'node:fs';\nimport {js, reportPath, sourcePreflight, nativePreflight, root, sha, families} from './config-merged-cap-preflight.mjs';\n\nconst {recipe, recipeBytes} = families.binding2;\n"
+        },
+        {
+          "before": "new URL(`${variant}/tools/half-damage-reader-observe.mjs`, root)",
+          "after": "new URL('tools/half-damage-reader-observe.mjs', root)"
+        },
+        {
+          "before": "new URL(`${variant}/frozen/screen-decode.mjs`, root)",
+          "after": "new URL('frozen/screen-decode.mjs', root)"
+        },
+        {
+          "before": "Ordinary controls locked before runtime edits; no new C recording claimed",
+          "after": "Ordinary controls locked before runtime edits; original C recording verified"
+        },
+        {
+          "before": "        variant, total:",
+          "after": "        runtime: 'installed', total:"
+        },
+        {
+          "before": "writeFileSync(new URL(`reports/binding-param-${variant}.json`, root), JSON.stringify(report, null, 2) + '\\n', {flag: 'wx'});",
+          "after": "if (reportPath) writeFileSync(reportPath, JSON.stringify({...report, sourcePreflight, nativePreflight}, null, 2) + '\\n', {flag: 'wx'});"
+        },
+        {
+          "before": "    const path = new URL('reports/binding-param-negative-hashes.json', root);\n    if (variant === 'baseline') writeFileSync(path, JSON.stringify({recipeSHA256: sha(recipeBytes),\n        controls: rows.map(({name, hashes}) => ({name, hashes}))}, null, 2) + '\\n', {flag: 'wx'});\n    else {\n        const negative = JSON.parse(readFileSync(path));\n",
+          "after": "    {\n        const negative = families.binding2.negative;\n"
+        },
+        {
+          "before": "import {readFileSync, writeFileSync} from 'node:fs';",
+          "after": "import {writeFileSync} from 'node:fs';"
+        }
+      ]
+    }
+  ]
+}

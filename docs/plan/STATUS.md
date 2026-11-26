@@ -1,6 +1,6 @@
 # STATUS — live handoff board
 
-## 2026-11-25: guard918 pushed, doorway engraving919 verified
+## 2026-11-25: doorway engraving919 pushed, parser composition in verification
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -125,8 +125,9 @@ the public tree. Publication receipt SHA256:
 45fb2277eb9203fa93e2b628890d96e013c583c39a79336e9ae2d8a377ad5095.
 No full replay, recorder or publication rerun is needed.
 
-The current uncommitted change adds gd_move's two missing del_engr_at(ex,ey)
-calls when opening a doorway. Main changes only js/vault.js from published918.
+The doorway engraving fix is published as 5345c4d3d58b938268c4d6ea56c0f1d33660ba9d,
+confirmed on origin/main. It adds gd_move's two missing del_engr_at(ex,ey)
+calls when opening a doorway. Only js/vault.js changes from published918.
 Fixed280 map: guard-door-engraving-parent-composed-runtime.json, SHA256
 3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a.
 Five locked keyboard cases total 906 keys and 911 boundaries. Both source positives fail
@@ -160,9 +161,67 @@ are pinned by SHA256 59950cddb5e347c35e2f93d6a2f82654f943c813012c9254eed74824912
 Totals: 931,345 screens/cursors, 20,225,162 random calls and 33,131 frames.
 Verification SHA256:
 4dca5e0b6aa583a3dce09c1255969f7410580c4ed21cdbca06374e929e2f2eca.
-Do not rerun this completed replay. Final parent verification and exact Git-index
-verification precede the immediate commit and push. Those scripts are prepared
-under .cache/restart-20261122/.
+All 1,210 tested Git blobs match the published tree. Publication verification
+completed at 23:34 EST. Receipt SHA256:
+994b3a9bacdbfb683710692f3e0cb14a4f064e227f1b6565420141f78bbc0116.
+Parent proof SHA256: 4b949fd7df7b35875057b6fb246de571021a67636a758c08f45557bb846798f8.
+Do not rerun the completed replay or publication check.
+
+The parser composition changes only cmd.js, coloratt.js, options.js
+and symbols.js from this published runtime. All four baseline owner hashes
+match the sealed candidate's baseline. Map:
+config-merged-cap-parent-composed-runtime.json, SHA256
+9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4.
+The four runtime files are now installed on main. Fresh parent native checks
+pass all 15 cases; all four complete reports match the sealed candidate reports.
+The exact three new C raws are installed without reserialization. The existing
+config-nul-contract raw is unchanged. No original recording was rerun.
+
+Retained checks pass 74/75 initially. The sole failure is the unknown CHOOſE
+keyword's bookkeeping string in config-sections-source-gate: the old test
+expected Unicode where the file parser now correctly retains UTF-8 bytes.
+The source-backed expectation correction passes 61/61, preserves all other
+60 controls and leaves runtime/input unchanged. Original test and failure are
+retained under config-merged-cap-contract/retained-config-sections. The public
+correction files and their hashes are in config-merged-cap-retained-correction.json.
+All 148 selected/public recordings and 148 strict eight-second workers pass.
+All 28 retained mixed-glyph cases preserve five complete output streams; their
+1,182 older blank-style differences remain explicit.
+
+Full922 passes all 922 recordings on NFS, completed PID3377407, using two CPU workers and default
+45-second limits with no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/config-merged-cap-full922-js-20261125.
+It links 919 prior fixtures and uploads 294 source/new-raw files. All 1,213 files
+are pinned by SHA256 4ca1d1ec139878b7470c553bce4fbb21c962958541f76f6a51e56651b911945c.
+Totals: 931,399 screens/cursors, 20,258,571 random calls and 33,131 frames.
+Verification SHA256:
+d8869403c817b34e5b69f7a0071e3b976d6aac89a8d0552f166c175c8b358e10.
+Do not rerun this completed replay. Source568 and promotion120 verify. All 71
+portable payloads and 11 requirements are installed, bringing the registry to
+4,623 entries. All six installed gates pass, preserving 28+52 source assertions,
+15 ordinary cases and 45 negative hashes. The only report difference is the
+final pinned evidence count, 55 versus 50 before five provenance files were
+added. All other fields and assertion rows match. The final clean-root checks
+also use 55. Original reports and the first parent comparison failure remain.
+Next: final parent proof, exact 86-path staging, commit and immediate push.
+
+Both following vault candidates are independently source-reviewed and verified:
+wallify source38/candidate318 and invault source43/candidate323. Isolated current
+compositions preserve the parser and all published vault changes. Wallify map:
+f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5.
+Invault after wallify map:
+19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34.
+Both change only vault.js from their immediate base. Their portable companions
+verify at 41 and 45 members, respectively. Parent fresh composed comparisons
+pass 4/4 for both, with complete reports identical to their sealed candidates.
+Wallify report SHA256:
+3d0a827996621a294578e8ee7db489383ad51c2225a8ef0bcac22a2f50bb38c9.
+Invault report SHA256:
+46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9.
+Main vault stayed at the published engraving version throughout full922.
+After parser publication, install wallify's exact 11 payloads and original raw,
+append its four requirements, apply its composed vault file and verify broadly.
+Invault's 22 payloads and four requirements follow after wallify publication.
 
 Next source work remains isolated:
 - Euclid: sealed568 config merged-byte-cap candidate, four owners including
@@ -192,12 +251,12 @@ runtime patch. Its29members/68source ranges verify.
 
 Storage was rechecked after the first two pushes: `du -sh .` reports 3.3G. Full replay
 runs remain on NFS; no complete result or fixture corpus was copied locally.
-The last official recheck, 23:13 EST, returned the 21:05 feed: agentic rank 7,
+The last official recheck, 23:43 EST, returned the 21:05 feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
-row predates all four latest pushes. The official site explicitly lists
+row predates all five latest pushes. The official site explicitly lists
 six-hour scoring cycles; the feed does not identify the scored commit. Local
 parity establishes no newer held-out score. Receipt:
-leaderboard-current-recheck-20261126-041347.json.
+leaderboard-current-recheck-20261126-044301.json.
 
 ## 2026-11-25: guard prompt correction published as 80049d92
 

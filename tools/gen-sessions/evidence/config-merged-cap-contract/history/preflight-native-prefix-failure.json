@@ -1,0 +1,42 @@
+[
+  {
+    "file": "config-binding-param-input-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-input-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-nul-input-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-partial-input-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-source-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-symbol-source-gate.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "config-merged-cap-preflight.mjs",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "file": "preflight-execution",
+    "exit": 1,
+    "output": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1 @ choose_random_part(cfgfiles.c:480)'\n-   'rn2(2)=1'\n  ]\n\n    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-merged-cap-promotion/tools/config-merged-cap-preflight.mjs:92:20 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: [ 'rn2(2)=1 @ choose_random_part(cfgfiles.c:480)' ],\n  expected: [ 'rn2(2)=1' ],\n  operator: 'deepStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n"
+  }
+]

@@ -4630,6 +4630,17 @@
     {"group":"Vault doorway engraving","id":"vault.door-current-room-engraving","cFile":"src/vault.c","cFunction":"gd_move","description":"Opening a doorway on room terrain deletes the engraving beyond it even when that square is a wall."},
     {"group":"Vault doorway engraving","id":"vault.stone-beyond-engraving-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"Carving stone into a corridor preserves the engraving beyond it."},
     {"group":"Vault doorway engraving","id":"vault.door-before-carving-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"Dropping gold before the carving move preserves the engraving."},
-    {"group":"Vault doorway engraving","id":"vault.door-unengraved-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"The existing unengraved wall path keeps its complete output."}
+    {"group":"Vault doorway engraving","id":"vault.door-unengraved-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"The existing unengraved wall path keeps its complete output."},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-merged-ascii-cap","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes merged ascii cap"},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-merged-utf8-cap","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes merged utf8 cap"},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-nul-hidden-continuation","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes nul hidden continuation"},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-under-cap-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes under cap negative"},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-nul-inert-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes nul inert negative"},
+    {"group":"config-merged-cap-contract","id":"config-merged-cap-contract.config-bytes-canonical-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config bytes canonical negative"},
+    {"group":"config-merged-cap-partial-contract","id":"config-merged-quoted-partial-positive","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config merged quoted partial positive"},
+    {"group":"config-merged-cap-partial-contract","id":"config-merged-literal-partial-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config merged literal partial negative"},
+    {"group":"config-merged-cap-partial-contract","id":"config-merged-quoted-fit-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config merged quoted fit negative"},
+    {"group":"config-binding-param-contract","id":"config-cap-binding-byte-param-negative","cFile":"src/cmd.c","cFunction":"bind_key","description":"config cap binding byte param negative"},
+    {"group":"config-binding-param-contract","id":"config-cap-binding-ASCII-param-negative","cFile":"src/cmd.c","cFunction":"bind_key","description":"config cap binding ASCII param negative"}
   ]
 }

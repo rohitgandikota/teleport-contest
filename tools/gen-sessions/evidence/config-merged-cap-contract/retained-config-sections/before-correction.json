@@ -1,0 +1,26 @@
+[
+  {
+    "label": "published-original",
+    "exit": 0,
+    "passed": 61,
+    "total": 61,
+    "reportSHA256": "62c9792b9fcd2d4bae08387bd707cf3384ed797a7b7e63d18d84d862e294c65e",
+    "logSHA256": "1824467f797205bcd7ad8020474c6780724a9b3d6ce4d11e3f27a0b0745cd580",
+    "failed": []
+  },
+  {
+    "label": "candidate-original",
+    "exit": 1,
+    "passed": 60,
+    "total": 61,
+    "reportSHA256": "13b5b3f7e0b0e71eb6dbd996cd7de85f526549710b36e44459d459cd5c03100a",
+    "logSHA256": "cdf0048cd9683b736f2de8d614cd8e3f9e985c6d29db0d2ddcd5cd86a1248a00",
+    "failed": [
+      {
+        "name": "keyword/reject-CHOO\u017fE",
+        "pass": false,
+        "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'CHOO\u00c5\u00bfE=keep'\n-   'CHOO\u017fE=keep'\n  ]\n"
+      }
+    ]
+  }
+]

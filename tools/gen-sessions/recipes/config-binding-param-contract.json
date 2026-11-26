@@ -1,0 +1,63 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "config-cap-binding-param-negatives",
+  "classification": "Separately locked ordinary negative controls for the required bind_key parameter consumer; original3 unchanged",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nBIND=A:toggle(€)\n",
+      "moves": " ?j    \u001b",
+      "name": "config-cap-binding-byte-param-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nBIND=A:toggle(time)\n",
+      "moves": " ?j    \u001b",
+      "name": "config-cap-binding-ASCII-param-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "config-cap-binding-byte-param-negative",
+      "paramHex": "e282ac",
+      "command": "toggle",
+      "key": 65,
+      "source": "C cmd.c2662 bind_key copies min(30,strlen(param)) bytes; keylist_putcmds prints that stored parameter",
+      "positive": false
+    },
+    {
+      "name": "config-cap-binding-ASCII-param-negative",
+      "paramHex": "74696d65",
+      "command": "toggle",
+      "key": 65,
+      "source": "C cmd.c2662 bind_key copies min(30,strlen(param)) bytes; keylist_putcmds prints that stored parameter",
+      "positive": false
+    }
+  ],
+  "branches": [
+    "config-cap-binding-byte-param-negative",
+    "config-cap-binding-ASCII-param-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "config-cap-binding-byte-param-negative",
+      "segment": 0,
+      "screenIncludes": [
+        "Full Current Key Bindings List",
+        "toggle boolean option"
+      ]
+    },
+    {
+      "branch": "config-cap-binding-ASCII-param-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "Full Current Key Bindings List",
+        "toggle boolean option"
+      ]
+    }
+  ]
+}

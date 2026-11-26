@@ -1,0 +1,217 @@
+{
+  "classification": "Constructed source controls, not ordinary reach. No mocks or new runtime exports.",
+  "variant": "baseline",
+  "total": 52,
+  "passed": 52,
+  "rows": [
+    {
+      "name": "sym_val/empty",
+      "pass": true
+    },
+    {
+      "name": "sym_val/space",
+      "pass": true
+    },
+    {
+      "name": "sym_val/tab",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-single",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-multiple",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-first",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-after-space",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-after-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-after-ASCII",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-two-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-three-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-four-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/non-ASCII-space-is-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/single-quote-character",
+      "pass": true
+    },
+    {
+      "name": "sym_val/simple-quoted-ASCII",
+      "pass": true
+    },
+    {
+      "name": "sym_val/triple-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/simple-quoted-backslash",
+      "pass": true
+    },
+    {
+      "name": "sym_val/escaped-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/escaped-double-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/quoted-UTF8",
+      "pass": true
+    },
+    {
+      "name": "sym_val/unclosed-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-closing-quote-fits127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-closing-quote-beyond127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-closing-quote-fits127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-closing-quote-beyond127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/decimal-127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/decimal-128",
+      "pass": true
+    },
+    {
+      "name": "sym_val/decimal-195",
+      "pass": true
+    },
+    {
+      "name": "sym_val/decimal-255",
+      "pass": true
+    },
+    {
+      "name": "sym_val/hex-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/octal-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/meta-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/control-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/C-newline-escape",
+      "pass": true
+    },
+    {
+      "name": "sym_val/trailing-backslash",
+      "pass": true
+    },
+    {
+      "name": "update_ov_primary_symset/signed-byte",
+      "pass": true
+    },
+    {
+      "name": "update_ov_primary_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_ov_rogue_symset/signed-byte",
+      "pass": true
+    },
+    {
+      "name": "update_ov_rogue_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_primary_symset/signed-byte",
+      "pass": true
+    },
+    {
+      "name": "update_primary_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_rogue_symset/signed-byte",
+      "pass": true
+    },
+    {
+      "name": "update_rogue_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "parsesymbols/0/literal-byte",
+      "pass": true
+    },
+    {
+      "name": "parsesymbols/0/decimal-negative",
+      "pass": true
+    },
+    {
+      "name": "parse_sym_line/0/real-start-and-value",
+      "pass": true
+    },
+    {
+      "name": "parsesymbols/1/literal-byte",
+      "pass": true
+    },
+    {
+      "name": "parsesymbols/1/decimal-negative",
+      "pass": true
+    },
+    {
+      "name": "parse_sym_line/1/real-start-and-value",
+      "pass": true
+    },
+    {
+      "name": "existing-txt2key/\"M-Ā\"",
+      "pass": true
+    },
+    {
+      "name": "existing-txt2key/\"\\\\195\"",
+      "pass": true
+    },
+    {
+      "name": "existing-txt2key/\"~\"",
+      "pass": true
+    }
+  ],
+  "symbolsSHA256": "fd9461c94c9563973b6d20b78041ea3c4fdc8933cd5939e5b06c5406b15cf69d"
+}

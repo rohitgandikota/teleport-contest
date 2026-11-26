@@ -1,0 +1,136 @@
+{
+  "classification": "Constructed raw-byte API/limit controls plus actual RC producer controls; ordinary3 is separately recorded",
+  "variant": "baseline",
+  "total": 28,
+  "passed": 12,
+  "rows": [
+    {
+      "name": "raw-sym_val/e2-partial",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n50 !== -30\n"
+    },
+    {
+      "name": "raw-sym_val/f0-partial",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n50 !== -16\n"
+    },
+    {
+      "name": "raw-sym_val/c4-partial",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n49 !== -60\n"
+    },
+    {
+      "name": "raw-sym_val/quoted-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n51 !== -30\n"
+    },
+    {
+      "name": "raw-sym_val/unclosed-quote",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n51 !== 0\n"
+    },
+    {
+      "name": "raw-sym_val/NUL",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n48 !== 0\n"
+    },
+    {
+      "name": "raw-sym_val/ASCII-negative",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n54 !== 65\n"
+    },
+    {
+      "name": "raw-sym_val/escape-negative",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n57 !== -30\n"
+    },
+    {
+      "name": "raw-txt2key/meta-c4",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 68\n"
+    },
+    {
+      "name": "raw-txt2key/single-e2",
+      "pass": true
+    },
+    {
+      "name": "raw-txt2key/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "raw-txt2key/escape-negative",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 226\n"
+    },
+    {
+      "name": "raw-parsesymbols/0/e2",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "raw-parsesymbols/1/e2",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "raw-parseoptions/name-recursion",
+      "pass": false,
+      "error": "opts.replace is not a function"
+    },
+    {
+      "name": "raw-parseoptions/fruit-recursion-and-sanitizer",
+      "pass": false,
+      "error": "opts.replace is not a function"
+    },
+    {
+      "name": "raw-parsebindings/right-to-left",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+    },
+    {
+      "name": "rc/patterns-and-binding-param/three-byte",
+      "pass": true
+    },
+    {
+      "name": "rc/patterns-and-binding-param/four-byte",
+      "pass": true
+    },
+    {
+      "name": "rc/patterns-and-binding-param/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "rc/binding-param-30-byte-truncation",
+      "pass": true
+    },
+    {
+      "name": "rc/merged-cap/quoted-partial",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n195 !== 0\n"
+    },
+    {
+      "name": "rc/merged-cap/literal-partial",
+      "pass": true
+    },
+    {
+      "name": "rc/merged-cap/quoted-fit",
+      "pass": true
+    },
+    {
+      "name": "rc/merged-cap/e2-partial",
+      "pass": true
+    },
+    {
+      "name": "rc/merged-cap/f0-partial",
+      "pass": true
+    },
+    {
+      "name": "rc/merged-cap/ASCII-fit-negative",
+      "pass": true
+    },
+    {
+      "name": "rc/symbol-and-key-Unicode-entry-negatives",
+      "pass": true
+    }
+  ]
+}

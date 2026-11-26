@@ -1,0 +1,6 @@
+{
+  "classification": "Pre-import promotion setup failure; native source annotations were incorrectly compared to bare JS call labels. No raw, recipe, original gate body or output is changed.",
+  "before": "            assert.deepEqual(part.steps[0].rng.slice(0, prefix.length), prefix);\n            assert.deepEqual(part.steps.flatMap(step => step.rng).slice(0, prefix.length), prefix);",
+  "after": "            // Native calls carry source annotations. Check the ordered call prefix\n            // without changing or reserializing any recorded value.\n            for (const [position, call] of prefix.entries()) {\n                const actual = part.steps[0].rng[position];\n                assert.ok(actual === call || actual?.startsWith(call + ' @ '));\n                assert.equal(part.steps.flatMap(step => step.rng)[position], actual);\n            }",
+  "originalSourceSHA256": "f95451f7aa0b77eb88c9791a89d1189069d5246a02c94aca6b16042711020e99"
+}

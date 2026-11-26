@@ -1,0 +1,292 @@
+{
+  "baselineCommit": "5345c4d3d58b938268c4d6ea56c0f1d33660ba9d",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/cmd.js",
+    "js/coloratt.js",
+    "js/options.js",
+    "js/symbols.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4",
+  "sourceManifestSHA256": "aa3141a8f628192579276f930e8a2322b816de9eb23780de345c372d4a5f7970",
+  "promotionManifestSHA256": "dbe59213da107e360465f7c97fd3b760665e9057e07142bad9ec64eac5ac0d3e",
+  "portablePayloads": 71,
+  "newRequirements": 11,
+  "sourceControls": {
+    "passed": 80,
+    "total": 80
+  },
+  "ordinaryCases": {
+    "passed": 15,
+    "total": 15,
+    "negativeStreamHashesUnchanged": 45
+  },
+  "native": {
+    "passed": 15,
+    "total": 15,
+    "boundaries": 70,
+    "calls": 45177,
+    "frames": 0,
+    "completeComposedReportsUnchanged": true,
+    "checks": [
+      {
+        "family": "original6",
+        "exit": 0,
+        "exact": 6,
+        "cases": 6,
+        "raw": ".cache/restart-20261122/config-merged-cap-source-audit/source/original6/raw.session.json",
+        "rawSHA256": "03999566888cd7958db091e323a8a827c3cc099100aba96ad1dc7664af29cbfb",
+        "recipeSHA256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90",
+        "report": ".cache/restart-20261122/config-merged-cap-parent-composed-original6-native.json",
+        "reportSHA256": "2c6ed74b607715100754f0d02da45e482e691ca9ce4dc8bbaba81b8df7aefe1b",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-source-audit/reports/original6-candidate-native.json",
+        "priorReportSHA256": "2c6ed74b607715100754f0d02da45e482e691ca9ce4dc8bbaba81b8df7aefe1b",
+        "reportsUnchanged": true,
+        "log": ".cache/restart-20261122/config-merged-cap-parent-composed-original6-native.log",
+        "logSHA256": "c20e691a49f30f1d202e2de0243ca5f30272e6b44cd7183b4c350c4cc2eb6566",
+        "runtimeMapSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4"
+      },
+      {
+        "family": "additional4",
+        "exit": 0,
+        "exact": 4,
+        "cases": 4,
+        "raw": ".cache/restart-20261122/config-merged-cap-source-audit/source/additional4/raw.session.json",
+        "rawSHA256": "de9db54ca299824437f0ffe66a24b99418bf68fedb980714c37a62ddf9c0a17e",
+        "recipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+        "report": ".cache/restart-20261122/config-merged-cap-parent-composed-additional4-native.json",
+        "reportSHA256": "f1c8d38dab800ceaa9eb64d4ca15a327bd17056e58a7879058140bad729e5112",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-source-audit/reports/additional4-candidate-native.json",
+        "priorReportSHA256": "f1c8d38dab800ceaa9eb64d4ca15a327bd17056e58a7879058140bad729e5112",
+        "reportsUnchanged": true,
+        "log": ".cache/restart-20261122/config-merged-cap-parent-composed-additional4-native.log",
+        "logSHA256": "72249df6a499e11e773c545ec06b3f402afc4686c19efd4ea3df22dc09a05f34",
+        "runtimeMapSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4"
+      },
+      {
+        "family": "partial3",
+        "exit": 0,
+        "exact": 3,
+        "cases": 3,
+        "raw": ".cache/restart-20261122/config-merged-cap-parent-native.session.json",
+        "rawSHA256": "384cd13b3cc862459640cebe944e6c704c623fee3a60abe154b218e23f0b6cf2",
+        "recipeSHA256": "ce51f43c9fa948482830926260a72e6f4e7a489702523b524990713c59eee93b",
+        "report": ".cache/restart-20261122/config-merged-cap-parent-composed-partial3-native.json",
+        "reportSHA256": "36bb6bfeb189465bf4582fd47502b153bde21b246c5bc01f5ba38e591f326599",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-source-audit/reports/partial3-candidate-native.json",
+        "priorReportSHA256": "36bb6bfeb189465bf4582fd47502b153bde21b246c5bc01f5ba38e591f326599",
+        "reportsUnchanged": true,
+        "log": ".cache/restart-20261122/config-merged-cap-parent-composed-partial3-native.log",
+        "logSHA256": "2da426c016912405b46f91472db50fdcbc3d7430a74fecad27221c489dd60a66",
+        "runtimeMapSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4"
+      },
+      {
+        "family": "binding2",
+        "exit": 0,
+        "exact": 2,
+        "cases": 2,
+        "raw": ".cache/restart-20261122/config-binding-param-parent-native.session.json",
+        "rawSHA256": "b81f77beac4f7e70192e4b2e10f69fe3b4199620e39cdd151c51d5e10d747793",
+        "recipeSHA256": "2cc01a3a5cbd6de5459011bf674e175ee1606db88ab142ec7f96137a51f186b4",
+        "report": ".cache/restart-20261122/config-merged-cap-parent-composed-binding2-native.json",
+        "reportSHA256": "92406bc35d9e3a8d9b2e8fa44304b3a883593f43aeba75862a7e047a135d2b56",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/binding-candidate-native.json",
+        "priorReportSHA256": "92406bc35d9e3a8d9b2e8fa44304b3a883593f43aeba75862a7e047a135d2b56",
+        "reportsUnchanged": true,
+        "log": ".cache/restart-20261122/config-merged-cap-parent-composed-binding2-native.log",
+        "logSHA256": "593f9c351201706ad854830cf827f7911338a89011290806f3eff5e6f0676ed2",
+        "runtimeMapSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4"
+      }
+    ]
+  },
+  "portable": {
+    "passed": 6,
+    "total": 6,
+    "checks": [
+      {
+        "family": "source28",
+        "gate": "tools/config-merged-cap-source-gate.mjs",
+        "exit": 0,
+        "passed": 28,
+        "total": 28,
+        "report": ".cache/restart-20261122/config-merged-cap-main-source28.json",
+        "reportSHA256": "87a1912500fc927286b714da4fc975b3614d975be2436095c0cb2a0c4a039d73",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-source28.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-source28.log",
+        "logSHA256": "bdb881189d4274a92a1771a919e88699c81cec8027092ab5e3eb1bf197358304"
+      },
+      {
+        "family": "symbol52",
+        "gate": "tools/config-merged-cap-symbol-source-gate.mjs",
+        "exit": 0,
+        "passed": 52,
+        "total": 52,
+        "report": ".cache/restart-20261122/config-merged-cap-main-symbol52.json",
+        "reportSHA256": "29450b016873bda4b581a196176f3323be555fc7f9b6836972331dea35b22ced",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-symbol52.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-symbol52.log",
+        "logSHA256": "77b28e165dab3e3d5d946214352bf4cb6754770842e6d56a7d1b9ce63d4775eb"
+      },
+      {
+        "family": "original6",
+        "gate": "tools/config-merged-cap-input-gate.mjs",
+        "exit": 0,
+        "passed": 6,
+        "total": 6,
+        "report": ".cache/restart-20261122/config-merged-cap-main-original6.json",
+        "reportSHA256": "2f31e60ab0dcc09c352d71d3d261b3937d15b7733dd7ea1652fb7e43cecbce34",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-original6.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-original6.log",
+        "logSHA256": "60488f143d00fd90f770223e13f425cac23b4d0666463f200c35755fa105d2ae"
+      },
+      {
+        "family": "additional4",
+        "gate": "tools/config-merged-cap-nul-input-gate.mjs",
+        "exit": 0,
+        "passed": 4,
+        "total": 4,
+        "report": ".cache/restart-20261122/config-merged-cap-main-additional4.json",
+        "reportSHA256": "d9be019990bf1958eb74d19eb9de8c1b0efae17c61709bf27b446e25cc8c759a",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-additional4.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-additional4.log",
+        "logSHA256": "1748c2f9f3dc5717b699e2ebdfebd9b0242591fe31442ee9bb59c9b5e4a09bb3"
+      },
+      {
+        "family": "partial3",
+        "gate": "tools/config-merged-cap-partial-input-gate.mjs",
+        "exit": 0,
+        "passed": 3,
+        "total": 3,
+        "report": ".cache/restart-20261122/config-merged-cap-main-partial3.json",
+        "reportSHA256": "85fd10069f2be1ce80b82ac510a658af31fd356514ce0fa3ac6af85a3c240311",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-partial3.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-partial3.log",
+        "logSHA256": "1ca1d3e02f97b101b47911911df1d3e271cb9bd6efb2ecc7da5446bf4e19ada4"
+      },
+      {
+        "family": "binding2",
+        "gate": "tools/config-binding-param-input-gate.mjs",
+        "exit": 0,
+        "passed": 2,
+        "total": 2,
+        "report": ".cache/restart-20261122/config-merged-cap-main-binding2.json",
+        "reportSHA256": "5de56e12da397e6f88ba12be25bcce3af1ada535a25b2cdcc7732b7f9a236b49",
+        "priorReport": ".cache/restart-20261122/config-merged-cap-promotion/reports/portable-composed-binding2.json",
+        "assertionRowsAndAllOtherFieldsIdentical": true,
+        "onlyMetadataDifference": {
+          "sourcePreflight.immutableEvidence": [
+            50,
+            55
+          ]
+        },
+        "log": ".cache/restart-20261122/config-merged-cap-main-binding2.log",
+        "logSHA256": "7ba096b6b40311c5707c8a16ca2aaf0617e4384095b12012f8d899b133d526d8"
+      }
+    ],
+    "metadataDifference": "Final sourcePreflight.immutableEvidence count55 versus50 in earlier recorded reports. Every other field and assertion row is identical."
+  },
+  "retained": {
+    "initialPassed": 74,
+    "total": 75,
+    "correctedPassed": 75,
+    "correction": {
+      "name": "retained-config-sections-source",
+      "initialExit": 1,
+      "initialPassed": 60,
+      "total": 61,
+      "correctedExit": 0,
+      "correctedPassed": 61,
+      "evidence": "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections",
+      "files": {
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/README.md": "a78d970803a7bdd9614f8c591ff6f1e8c2043b50862530be9953e3839a2407c2",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/before-correction.json": "d6fdcf64d192ea121fc659c85033d4eb9bf507064efd0f50077252c1c0adeb39",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/candidate-corrected.json": "63e724336d9c2aa84026a84340faac67a3838d58ddbc1b01a66f2528d433a637",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/candidate-original.json": "13b5b3f7e0b0e71eb6dbd996cd7de85f526549710b36e44459d459cd5c03100a",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/correction.json": "ef839337549a5eb9f60dba329c899daddad2facac16ccd98415dc10c41617622",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/original-gate.mjs": "21e7eba5a05457cb19264de9cc35940766a5d4858d0164913af0b3b67580a650",
+        "tools/gen-sessions/evidence/config-merged-cap-contract/retained-config-sections/published-original.json": "62c9792b9fcd2d4bae08387bd707cf3384ed797a7b7e63d18d84d862e294c65e"
+      },
+      "gateSHA256": "7056889237f75b8b3d29c781bf68b2578a88a54c90dc5f0e78455081c97b900b"
+    },
+    "receiptSHA256": "ab25cd646d1de3999ba76b3898ea868b5698a01cf8b04e1026378b0d659da686"
+  },
+  "mixedGlyph": {
+    "cases": 28,
+    "allFiveStreamsUnchanged": true,
+    "priorBlankStyleDifferencesUnchanged": 1182,
+    "check": {
+      "exit": 0,
+      "seconds": 7.06,
+      "report": ".cache/restart-20261122/config-merged-cap-retained-mixed-glyph-streams.json",
+      "reportSHA256": "705b1a8e82ba9fdc1c80b06f16e7d508bf275add6c8ee0f215ed940d9880932c",
+      "log": ".cache/restart-20261122/config-merged-cap-retained-mixed-glyph-streams.log",
+      "logSHA256": "9e578127e64dfd260e9f89ee605c78e17dae58b38e814dfac46debc86d5fa4dc"
+    }
+  },
+  "selectedPublic": {
+    "passed": 148,
+    "total": 148
+  },
+  "strict8s": {
+    "passed": 148,
+    "total": 148
+  },
+  "full922": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/config-merged-cap-full922-js-20261125",
+    "passed": 922,
+    "sessions": 922,
+    "totals": {
+      "screens": 931399,
+      "cursors": 931399,
+      "rngCalls": 20258571,
+      "animFrames": 33131
+    },
+    "files": 1213,
+    "allFilesSHA256": "4ca1d1ec139878b7470c553bce4fbb21c962958541f76f6a51e56651b911945c",
+    "verificationSHA256": "d8869403c817b34e5b69f7a0071e3b976d6aac89a8d0552f166c175c8b358e10",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Merged append cap and raw-byte consumers are covered; physical overlong-line recovery, diagnostics, duplicate warnings, independent option bounds and other binding paths remain separate.",
+    "Three older mixed-glyph fixtures retain1182 blank-style differences. No literal serialized-byte or whole-port completion claim.",
+    "Local results do not establish a newer held-out score."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "originalGateSHA256": "6923ebede6cdbc4bc85e589990038b75720fdb856de3a7a3225c4ec4e77ca25f",
+  "originalReport": "reports/raw-byte-source-baseline.json",
+  "originalPassed": 9,
+  "total": 28,
+  "replacements": [
+    [
+      "const {game} = await import(new URL('gstate.js', js));",
+      "const state = await import(new URL('gstate.js', js));"
+    ],
+    [
+      "game.",
+      "state.game."
+    ],
+    [
+      "reports/raw-byte-source-${variant}.json",
+      "reports/raw-byte-source-${variant}-v3.json"
+    ]
+  ],
+  "correctedGateSHA256": "891833f0d902133c149a42c517cd46bf3e8928b8e62af97af914bd3a1499c724",
+  "reason": "resetGame replaces exported game; observations must read module live binding after warm startup",
+  "namesAndExpectedValuesUnchanged": true,
+  "runtimeCandidateExisted": false
+}

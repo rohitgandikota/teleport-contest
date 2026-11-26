@@ -1,0 +1,47 @@
+{
+  "originalGateSHA256": "21e7eba5a05457cb19264de9cc35940766a5d4858d0164913af0b3b67580a650",
+  "correctedGateSHA256": "7056889237f75b8b3d29c781bf68b2578a88a54c90dc5f0e78455081c97b900b",
+  "replacement": {
+    "before": "            assert.deepEqual(got.calls, []); assert.deepEqual(got.unhandled, [line]);",
+    "after": "            assert.deepEqual(got.calls, []);\n            // src/cfgfiles.c:1844 reads file bytes before keyword matching.\n            assert.deepEqual(got.unhandled, [Buffer.from(line, 'utf8').toString('latin1')]);"
+  },
+  "inputChanged": false,
+  "runtimeChangedForCorrection": false,
+  "removedAssertions": 0,
+  "other60ControlsUnchanged": true,
+  "initialCandidate": "60/61",
+  "correctedCandidate": "61/61",
+  "exit": 0,
+  "reportSHA256": "63e724336d9c2aa84026a84340faac67a3838d58ddbc1b01a66f2528d433a637",
+  "logSHA256": "1824467f797205bcd7ad8020474c6780724a9b3d6ce4d11e3f27a0b0745cd580",
+  "sourcePins": {
+    "nethack-c/upstream/src/cfgfiles.c": "02b8a704da0e0fa86fd085ef0ce81bd7c60edde0d70ae937a9411de07e95ab47",
+    "nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "scripts/record-session.mjs": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648"
+  },
+  "sourceRanges": {
+    "nethack-c/upstream/src/cfgfiles.c": [
+      [
+        1389,
+        1440
+      ],
+      [
+        1649,
+        1860
+      ]
+    ],
+    "nethack-c/upstream/src/options.c": [
+      [
+        6760,
+        6770
+      ]
+    ],
+    "scripts/record-session.mjs": [
+      [
+        422,
+        424
+      ]
+    ]
+  },
+  "limit": "Source contract for JS parser bookkeeping only; malformed diagnostic rendering and unknown directive handling are not closed."
+}

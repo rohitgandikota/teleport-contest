@@ -1,0 +1,106 @@
+{
+  "originalRecipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+  "inputLockSHA256": "d0e9a81fac019ca0d0ce5cb10f4d5114ffd40a65150927dd59201d4eb2549205",
+  "primaryRecipeSHA256": "fb29aa4a94ab7ed6e57a43aa49d174a25ccf2860b3fd7560a8b465637f4ef07c",
+  "preservedKeys": [
+    "name",
+    "classification",
+    "segments",
+    "expectations"
+  ],
+  "addedMetadata": {
+    "requireBranchAssertions": true,
+    "branches": [
+      "config-nul-contract.config-byte-utf8-cut-header-inequality",
+      "config-nul-contract.config-byte-utf8-fit-header-equality",
+      "config-nul-contract.config-nul-visible-continuation",
+      "config-nul-contract.config-nul-empty-fragment-terminates"
+    ],
+    "branchAssertions": [
+      {
+        "branch": "config-nul-contract.config-byte-utf8-cut-header-inequality",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 3,
+            "y": 4,
+            "equals": "."
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=1"
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-byte-utf8-fit-header-equality",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 3,
+            "y": 4,
+            "equals": "Z"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=1"
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-nul-visible-continuation",
+        "segment": 2,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-nul-empty-fragment-terminates",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      }
+    ],
+    "provenance": {
+      "originalRecipe": "tools/gen-sessions/evidence/config-nul-contract/original-recipe.json",
+      "originalRecipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+      "derivation": "Only new primary metadata. Every original key/value, input, expectation, name and historical classification remains unchanged."
+    }
+  },
+  "allOriginalFieldsAndAssertionsUnchanged": true
+}

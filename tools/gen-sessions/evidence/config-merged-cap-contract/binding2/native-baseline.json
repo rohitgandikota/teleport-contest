@@ -1,0 +1,152 @@
+[
+  {
+    "segment": 0,
+    "name": "config-cap-binding-byte-param-negative",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3029,
+      "rawActual": 3029,
+      "discardedEntries": 0,
+      "expected": 3029,
+      "actual": 3029,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "5199e766c018524db60e8dcf7e26a0a622c83f948f343c000915f95859afe0c8",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "4c01c45ad34fd57ba9304501893b6c25abb46832c41b2edbc5440c751c6766f4",
+        "slices": "044aed681297a8f7cdc8a59490b8dbdfaa4cb7d0ec54219efe89e0e851508282",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "392c128b5d67d4b4529d807433bc03a68f90abce3b11b40bffc741cbf9153ac0",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672"
+      },
+      "js": {
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "config-cap-binding-ASCII-param-negative",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3029,
+      "rawActual": 3029,
+      "discardedEntries": 0,
+      "expected": 3029,
+      "actual": 3029,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "85715b0e651548d1d984f292ed5f96f3576d12bf48f4fdeeeb85d5beb7b6ff19",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "4c01c45ad34fd57ba9304501893b6c25abb46832c41b2edbc5440c751c6766f4",
+        "slices": "044aed681297a8f7cdc8a59490b8dbdfaa4cb7d0ec54219efe89e0e851508282",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "b0fa287f5b7cff42d14ce098072dfdb0a5ae8174c7e3cf4d8ac4773b524fc4cf",
+        "cursors": "8baa3a2d5003f9b8e0841f572a2a45e8ccb51e83ed58fbfcab10b303cdd8757a",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672"
+      },
+      "js": {
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "8f1c2e3fbc09f7ad331573f9dbe8746d927577b06cfb68f0ea443bf811a7e672"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

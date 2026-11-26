@@ -1,0 +1,451 @@
+{
+  "verifiedAt": "2026-11-26T21:42:42.434792+00:00",
+  "composition": {
+    "baselineCommit": "8b226bc804967ed37db2e643c50863bc38e8de9a",
+    "baselineRuntimeSHA256": "6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8",
+    "candidateRuntimeSHA256": "afd0199f3623ac9c3c7137d555879a0272c9765f0b1183b50088d2b4cf9ae9a9",
+    "candidateSealSHA256": "2f334c58d869f1e7533879c8668de9a078ce9107809b4cdc5ae9c3c371470134",
+    "patchSHA256": "6125eb3988166d188c3e423d88376d55d57b7182696183d3364432418cd4b33b",
+    "runtimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+    "runtimeChanged": [
+      "js/monmove.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 5,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "aa60e7aba744a3dc97fc187001c7248dd31a92b0406e5ca36d739ab54516505c",
+    "mainReportSHA256": "e2109d568cd579d1c61b07ca8211f83722c1d6b13acc07f768a37f913e16c3f1",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/gremlin-light-gate.mjs",
+      ".cache/restart-20261122/gremlin-light-main-ordinary.json"
+    ],
+    "seconds": 2.347,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "aa60e7aba744a3dc97fc187001c7248dd31a92b0406e5ca36d739ab54516505c",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "e2109d568cd579d1c61b07ca8211f83722c1d6b13acc07f768a37f913e16c3f1"
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T21:34:11.557574+00:00",
+    "payloads": [
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/README.md",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/README.md",
+        "bytes": 1746,
+        "sha256": "a533b2a11d119d9f58a89989be82f3d5634ed3f0d3f0c102ca31f922d54b1e24"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/SETVOICE-REVIEW.md",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/SETVOICE-REVIEW.md",
+        "bytes": 2665,
+        "sha256": "5f3971695849b11206d6476f86d61fd707a15b5ed2eed8e0ea879ffa00ff9cd5"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/baseline-accounting.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/baseline-accounting.json",
+        "bytes": 397,
+        "sha256": "90daa6e8bd9949b0608cc9422d374fe81a9c5bb900f1bcc7bf1a7c0524578d46"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/baseline-command.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/baseline-command.json",
+        "bytes": 346,
+        "sha256": "522776d5809cafb69725cb8329f7374d23dc1f80adcb7acf4c4dbfd491b8b6ce"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/baseline-native.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/baseline-native.json",
+        "bytes": 69930,
+        "sha256": "13c6a28e0c01f4fb5d5b3ccdd01fe07adb82477b0985cc0b8ea846523dba06ee"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/baseline-observation.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/baseline-observation.json",
+        "bytes": 53216,
+        "sha256": "4290f1b41a1b9c77315db24ce7c8cdc5f5434a3206b7bbe9ab52e1aa053c135b"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/baseline.log",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/baseline.log",
+        "bytes": 4948,
+        "sha256": "44e475a46e8fae45d80caa2b397fab8d3e921b31eb2c343100891ee7a67ec731"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-checks.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-checks.json",
+        "bytes": 874,
+        "sha256": "2fecb87962a0b06b400e64560bae2c3d20e302d14113f675dcaae2ad749c483d"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-native.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-native.json",
+        "bytes": 12230,
+        "sha256": "74606ba99fd3b1e2b2ad54996095c5844d930c5a3d7ba3dfcdc581175885a268"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-observation.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-observation.json",
+        "bytes": 53669,
+        "sha256": "44ed0c25c04fb9a0245281b5c8cfaef6f30f0bf0f9956acf0c035bcd4ac70f74"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-preflight.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-preflight.json",
+        "bytes": 974,
+        "sha256": "13e9c7c166dc138caeb1ebbd950b843c9dd8e04baf086f4ffa835d8aac4eb8f7"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-review.md",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-review.md",
+        "bytes": 2894,
+        "sha256": "7811c82e9547fe1eab615b72631eef5fb27a2e04915751ef937db6c3095169a6"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/candidate-seal.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/candidate-seal.json",
+        "bytes": 1239,
+        "sha256": "2f334c58d869f1e7533879c8668de9a078ce9107809b4cdc5ae9c3c371470134"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/derivation.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/derivation.json",
+        "bytes": 839,
+        "sha256": "749fb48e967e28a7aef3ae336cf1045418a9d1895090f11c62d0938889c060fd"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/input-lock.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/input-lock.json",
+        "bytes": 16299,
+        "sha256": "270bd442da012af85006629c3643d52c6682881fc7bf68b8517a50aa4d1e848d"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/native-supplement.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/native-supplement.json",
+        "bytes": 1594,
+        "sha256": "9334a7f17a56ff31a1a0a92c2c7066a191f2a4ed305c0a517f28d8ee5a08d316"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/negative-hashes.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/negative-hashes.json",
+        "bytes": 1404,
+        "sha256": "00de2a54d91ca6b127167df3dab605669b79116fa8f069d112466f42fd2b6b31"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/ordinary-original.mjs",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/ordinary-original.mjs",
+        "bytes": 13713,
+        "sha256": "5932b26fe5f7bc7f9256d44aa6cf9fee51c3cc50f0d73d8badb596d0f7a42819"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/parent-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/parent-input-lock.json",
+        "bytes": 451,
+        "sha256": "f10ab9d242955e6125129259ffbc5085cfe109de07c9e5b756f04449394ec453"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/parent-supplemental-preflight.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/parent-supplemental-preflight.json",
+        "bytes": 609,
+        "sha256": "afaae0ae852fec4d2f27ede4a1223179f5e3d154a1787e5ad09ede0324d0e591"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/predictions.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/predictions.json",
+        "bytes": 1946,
+        "sha256": "35830b0c4130f582947177dd635b16a9ae493ff9755887ace116da4bca04f788"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/provenance.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/provenance.json",
+        "bytes": 1388,
+        "sha256": "057d4132f04b3ef65e320d78347a6c22d68b23f4b68d808dba50fc2425bb4dc6"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/recording-receipt.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/recording-receipt.json",
+        "bytes": 1590,
+        "sha256": "1cad51cd20d9e60ff680049ae44601d063b2c38c72330672722ef60a5b5b0cca"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/recording.log",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/recording.log",
+        "bytes": 271,
+        "sha256": "62957afb40e1d3a34304ae5a1fc63ee6c355191a55d15a16b732c567a850e861"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/setvoice-source.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/setvoice-source.json",
+        "bytes": 13255,
+        "sha256": "1c10ed1f2e84431179e6435b6cb75cbdc63c55df75c5c1557692e42a5783718a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/sound-build-evidence.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/sound-build-evidence.json",
+        "bytes": 5154,
+        "sha256": "80f023166aba72089d37399ae62f0e21147ff8128d977af43478741ea85528ee"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/source-checks.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/source-checks.json",
+        "bytes": 1080,
+        "sha256": "8928eb23c3d50bc5efd7d7cb2383bdccb0fcab2665ef7e53b36e7bc40f886961"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/source-ranges.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/source-ranges.json",
+        "bytes": 20410,
+        "sha256": "dea91e267396bdab0818ff2a1404c75558e34461c6fe87a20b0a9d83425f2361"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/source-review.md",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/source-review.md",
+        "bytes": 4385,
+        "sha256": "761a647ba55a251aeea296e53b4425c404f0bfb29b274414af4a91ea214670b2"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/gremlin-light/source-seal.json",
+        "destination": "tools/gen-sessions/evidence/gremlin-light/source-seal.json",
+        "bytes": 1041,
+        "sha256": "610345bc6dfc8a470c9629d52bff306aeed62907b58b6bf24a2fc3776106b5f4"
+      },
+      {
+        "source": "tools/gen-sessions/recipes/gremlin-light.json",
+        "destination": "tools/gen-sessions/recipes/gremlin-light.json",
+        "bytes": 6509,
+        "sha256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed"
+      },
+      {
+        "source": "tools/gremlin-light-gate.mjs",
+        "destination": "tools/gremlin-light-gate.mjs",
+        "bytes": 24645,
+        "sha256": "9c273e0fbb27491202c72176d272b93636e64fa849a5247468abf35d557de2f5"
+      }
+    ],
+    "raw": {
+      "source": "tools/gen-sessions/generated/gremlin-light.session.json",
+      "destination": "tools/gen-sessions/generated/gremlin-light.session.json",
+      "bytes": 975494,
+      "sha256": "2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452",
+      "policy": "Copy exact linked bytes only if absent; accept an existing canonical file only with this exact SHA256. Never reserialize or rewrite metadata."
+    },
+    "promotionSealSHA256": "a3c6d5e6f5ce063e56a30533464b5d5049084aaa71abce00c4d1b000906eba29",
+    "branchRowsBefore": 4792,
+    "branchRowsAfter": 4797,
+    "coverageRows": 111,
+    "coverageSHA256Unchanged": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197"
+  },
+  "originalRetained": [
+    {
+      "name": "were-scary-flee-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/were-scary-flee-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.679,
+      "log": ".cache/restart-20261122/gremlin-light-retained-were-scary-flee-state-gate.log",
+      "sha256": "6b39f9bb95389f2a78417c368378efcf6bcf99ba7b548ce9ee24fe8fa18f2d9f"
+    },
+    {
+      "name": "beatitude-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/beatitude-state-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 3.363,
+      "log": ".cache/restart-20261122/gremlin-light-retained-beatitude-state-gate.log",
+      "sha256": "fdb8fcec5611a0bfd871f09b33a082a011b1eed2ffd6f535e8529d156effa41f"
+    },
+    {
+      "name": "fire-light-source-ignition-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-light-source-ignition-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.7,
+      "log": ".cache/restart-20261122/gremlin-light-retained-fire-light-source-ignition-state-gate.log",
+      "sha256": "d233e04a410a7a7a4ed6d91ce678695d2bcbf58c1632b94088a3a4b0abcdba11"
+    },
+    {
+      "name": "monster-wield-location-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-wield-location-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.115,
+      "log": ".cache/restart-20261122/gremlin-light-retained-monster-wield-location-input-gate.log",
+      "sha256": "9febd2cd0dc9654b5ffcbf00808070486395b7280cc32f898c070c0e55cc606c"
+    }
+  ],
+  "retainedObserverCorrection": {
+    "path": "tools/gen-sessions/evidence/gremlin-light/retained-observer-correction.json",
+    "sha256": "ad0ea99529671f01a4f21f4315930a663a34c76c78a761aec8c03d2c250265d0",
+    "publishedCommit": "1d6eaf448cc87e5c2609b33f55c4db9168e39f37",
+    "results": [
+      {
+        "runtime": "uhitm-comment-parent-composed",
+        "runtimeSHA256": "6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8",
+        "command": [
+          "node",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "--max-old-space-size=512",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/figurine-timer-observer-correction/baseline/tools/beatitude-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 4.773,
+        "logSHA256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+      },
+      {
+        "runtime": "gremlin-light-parent-composed",
+        "runtimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+        "command": [
+          "node",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "--max-old-space-size=512",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/figurine-timer-observer-correction/gremlin/tools/beatitude-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 4.681,
+        "logSHA256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+      }
+    ],
+    "originalFailurePreserved": true
+  },
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/gremlin-light.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.421,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/gremlin-light-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T21:39:16.979333+00:00",
+    "sessions": 952,
+    "passed": 952,
+    "failures": [],
+    "totals": {
+      "screens": 949568,
+      "cursors": 949568,
+      "rngCalls": 20830617,
+      "animFrames": 33260
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 952,
+    "allFilesFixed": 1243,
+    "allFilesSHA256": "2858f0ef482ba11ec8d2857062b42ff6d043277e74797d398d32bdac2a9601ce",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T21:28:58.185932+00:00",
+      "workers": 2,
+      "pid": 3641220,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.2177734375,
+        1.83935546875,
+        2.5244140625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "2858f0ef482ba11ec8d2857062b42ff6d043277e74797d398d32bdac2a9601ce"
+    },
+    "logs": {
+      "shard-0.log": "6123e2f61c21705419e6e00ca8d8fec7f7db5160835d01de79af27e2f40c7559",
+      "shard-1.log": "2d72ae0b1c9190bc311b6eb492fc6c69594193373c9de3feda61f2961fa1c9b4"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "684cc293a0ac625d0ed2983510efcdd91ae1e0d104b82a1e836e95a02c57c676",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/gremlin-light-full952-js-20261126",
+  "limits": [
+    "952 recordings establish corpus parity, not whole-port completion or a held-out result.",
+    "The native positive cases take the painful-light branch; Unaware, Deaf, and Bright light alternatives have source review but no native reach claim.",
+    "The pinned tty binary has no active SetVoice backend. Speech-enabled C metadata effects remain outside this terminal proof.",
+    "Original retained results are three passes and a post-free observer failure reproduced on baseline. The separate source-backed timer correction passes on both fixed runtimes."
+  ]
+}

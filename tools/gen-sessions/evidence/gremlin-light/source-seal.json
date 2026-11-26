@@ -1,0 +1,30 @@
+{
+  "members": 30,
+  "manifestSHA256": "cc61cf6264f6502a14ed2c1d5813548a609865bf4cd611e356788538d1c7258c",
+  "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+  "runtimeMembers": 280,
+  "sourceRanges": 60,
+  "recipeSHA256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed",
+  "inputLockSHA256": "270bd442da012af85006629c3643d52c6682881fc7bf68b8517a50aa4d1e848d",
+  "probeSHA256": "5932b26fe5f7bc7f9256d44aa6cf9fee51c3cc50f0d73d8badb596d0f7a42819",
+  "reportSHA256": "4290f1b41a1b9c77315db24ce7c8cdc5f5434a3206b7bbe9ab52e1aa053c135b",
+  "negativeHashesSHA256": "00de2a54d91ca6b127167df3dab605669b79116fa8f069d112466f42fd2b6b31",
+  "producers": "5/5",
+  "producerChecks": "50/50",
+  "sourceChecks": "11/15",
+  "neutrality": "10/10",
+  "sourceFailures": 4,
+  "negativeIndexes": [
+    2,
+    3,
+    4
+  ],
+  "negativeHashes": 15,
+  "keys": 755,
+  "boundaries": 760,
+  "CExecutions": 0,
+  "nativeComparisons": 0,
+  "runtimeEdits": 0,
+  "sourceOnly": true,
+  "nativeSupplementRequired": true
+}

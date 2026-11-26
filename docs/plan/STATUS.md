@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-11-26: gremlin light fear verified on full952
+
+The figurine timer observer correction is pushed as1d6eaf44. Its original
+baseline and candidate failures remain preserved. All33 corrected replays and
+source controls pass on both fixed runtimes.
+
+Gremlin light fear is ready to publish. Only monmove.js changes: actual hero
+equipment slots and the missing source light-fear feedback branch. Parent and
+isolated native reports are identical, passing5/5 versus3/5 on baseline.
+The installed gate matches its complete portable report, passing65 source and
+producer checks plus10 neutrality comparisons. All15 negative hashes and three
+complete ordinary/native negative rows are unchanged. Registry rows total4,797;
+aggregate coverage remains111. Runtime SHA256:
+60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18.
+
+Full952 passes with two CPU workers, default45s limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/gremlin-light-full952-js-20261126.
+All952 recordings pass, covering949,568 screens/cursors,20,830,617 random calls
+and33,260 animation frames. All1,243 tested files are fixed.
+All-files SHA256:2858f0ef482ba11ec8d2857062b42ff6d043277e74797d398d32bdac2a9601ce.
+Verification SHA256:684cc293a0ac625d0ed2983510efcdd91ae1e0d104b82a1e836e95a02c57c676.
+All45 strict workers pass; source audit is empty. Initial retained3/4 and the
+separate corrected figurine result remain distinguished in public parent proof.
+Only the painful-light alternative has native reach; Unaware, Deaf, Bright light
+and speech-enabled C metadata remain explicit limits. Stage the exact paths in
+gremlin-light-stage-paths.json, verify tested Git blobs, commit and push, then
+write the full952 publication receipt.
+
+Next: underwater source33 is sealed, with original88/102 preserved. Parent read
+complete C/JS look_here and dolook: blind empty-floor look consumes time. Two
+old negative4 timing assumptions need a separate correction before the original
+six inputs are recorded in C. No inputs or primary predicates change. Twelve
+wet-trigger failures remain the real missing early-return lead. Four negative
+rows and20 hashes stay fixed. Euclid owns this candidate after parent C approval.
+Sartre owns human HP-floor source review; Leibniz owns giant club preference.
+Neither has native recordings or a runtime candidate authorized.
+
 ## 2026-11-26: comment cleanup published; gremlin regression running
 
 Published main is8b226bc804967ed37db2e643c50863bc38e8de9a. All280 runtime

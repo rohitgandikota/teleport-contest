@@ -1,0 +1,30 @@
+{
+  "source": "c",
+  "version": 5,
+  "cases": 5,
+  "fieldsAndPresence": true,
+  "keysExact": true,
+  "basePrimaryAssertions": 5,
+  "supplementalPositiveOR": 2,
+  "supplementalNegatives": 3,
+  "integrityErrors": [],
+  "alternatives": [
+    {
+      "segment": 0,
+      "matched": [
+        true,
+        false
+      ]
+    },
+    {
+      "segment": 1,
+      "matched": [
+        true,
+        false
+      ]
+    }
+  ],
+  "rawSHA256": "2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452",
+  "recipeSHA256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed",
+  "gameplayImports": 0
+}

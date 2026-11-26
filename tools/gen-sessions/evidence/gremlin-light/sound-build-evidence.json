@@ -1,0 +1,140 @@
+{
+  "inspectedAt": "2026-11-26T21:18:04.591663+00:00",
+  "recordingBinarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "binaryPath": "/Users/rohit/research/code/contest/nethack-c/recorder/install/games/lib/nethackdir/nethack",
+  "binaryBytes": 5865176,
+  "sourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "CExecutions": 0,
+  "CBuilds": 0,
+  "inspectionOnly": true,
+  "files": {
+    "nethack-c/build-recorder.sh": {
+      "bytes": 7637,
+      "sha256": "6e9eff3612bc7369ae417a41ce25a747b811bf19e24bb4d0ff862432a86722b5"
+    },
+    "nethack-c/macosx-minimal": {
+      "bytes": 1086,
+      "sha256": "8b562cf16b8fc2afec6dac1ab629d927ee74af7b4b3e78274f10e0ed2b107603"
+    },
+    "nethack-c/recorder/sys/unix/hints/macosx-minimal": {
+      "bytes": 1129,
+      "sha256": "7d0267c13065df85c9ebcd0da56a277b4e8de3d81b8f97f33399e18522f6e57d"
+    },
+    "nethack-c/recorder/src/Makefile": {
+      "bytes": 57821,
+      "sha256": "1134f60dfba922f2d81826fc59437b0f238f7d2c7f6c152aa8fd01dbce0ae4ac"
+    },
+    "nethack-c/recorder/include/config.h": {
+      "bytes": 26328,
+      "sha256": "5585d9c88d7ea21a9a78b45616cc31ae4ea680cb7b34026f70f92b91288a499f"
+    },
+    "nethack-c/recorder/include/unixconf.h": {
+      "bytes": 14558,
+      "sha256": "973b9535176ad7aa181b8e5f3d1037d6451c64b8e1dc36ce8d6d69c5ba245c26"
+    },
+    "nethack-c/recorder/include/sndprocs.h": {
+      "bytes": 11111,
+      "sha256": "4d105334e499c3fb4af00fcd1acf48802a8db5ccf799bd31bfafc2afaa286654"
+    },
+    "nethack-c/recorder/src/sounds.c": {
+      "bytes": 72733,
+      "sha256": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8"
+    },
+    "nethack-c/recorder/src/monmove.c": {
+      "bytes": 86176,
+      "sha256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613"
+    },
+    "nethack-c/recorder/src/monmove.o": {
+      "bytes": 140568,
+      "sha256": "b546fe7aeeb556331d4c101766e36bcf70dbdeaf64d85dec904c7d70e1960666"
+    },
+    "nethack-c/recorder/src/sounds.o": {
+      "bytes": 133704,
+      "sha256": "b318c7423dbb9abf2900ac44390d31c5607f804ef8e61c31affd021d291714f0"
+    }
+  },
+  "disassembly": {
+    "_set_voice": {
+      "command": [
+        "otool",
+        "-tvV",
+        "-p",
+        "_set_voice",
+        "/Users/rohit/research/code/contest/nethack-c/recorder/install/games/lib/nethackdir/nethack"
+      ],
+      "exit": 0,
+      "instructions": [
+        "_set_voice:",
+        "00000001002bbfc8\tsub\tsp, sp, #0x20",
+        "00000001002bbfcc\tstr\tx0, [sp, #0x18]",
+        "00000001002bbfd0\tstr\tw1, [sp, #0x14]",
+        "00000001002bbfd4\tstr\tw2, [sp, #0x10]",
+        "00000001002bbfd8\tstr\tw3, [sp, #0xc]",
+        "00000001002bbfdc\tadd\tsp, sp, #0x20",
+        "00000001002bbfe0\tret"
+      ],
+      "branchAndCallLines": null
+    },
+    "_sound_speak": {
+      "command": [
+        "otool",
+        "-tvV",
+        "-p",
+        "_sound_speak",
+        "/Users/rohit/research/code/contest/nethack-c/recorder/install/games/lib/nethackdir/nethack"
+      ],
+      "exit": 0,
+      "instructions": [
+        "_sound_speak:",
+        "00000001002ba23c\tsub\tsp, sp, #0x10",
+        "00000001002ba240\tstr\tx0, [sp, #0x8]",
+        "00000001002ba244\tadd\tsp, sp, #0x10",
+        "00000001002ba248\tret"
+      ],
+      "branchAndCallLines": null
+    },
+    "_monflee": {
+      "command": [
+        "otool",
+        "-tvV",
+        "-p",
+        "_monflee",
+        "/Users/rohit/research/code/contest/nethack-c/recorder/install/games/lib/nethackdir/nethack"
+      ],
+      "exit": 0,
+      "instructions": null,
+      "branchAndCallLines": [
+        "00000001001b517c\tbl\t_release_hero",
+        "00000001001b52bc\tbl\t_canseemon",
+        "00000001001b5338\tbl\t_Adjmonnam",
+        "00000001001b5354\tbl\t_pline_mon",
+        "00000001001b53bc\tbl\t_artifact_light",
+        "00000001001b5408\tbl\t_artifact_light",
+        "00000001001b546c\tbl\t_unconscious",
+        "00000001001b5478\tbl\t_is_fainted",
+        "00000001001b5490\tbl\t_Monnam",
+        "00000001001b54ac\tbl\t_pline_mon",
+        "00000001001b54b4\tbl\t_rng_log_enabled",
+        "00000001001b54d4\tbl\t_rng_log_set_caller",
+        "00000001001b54dc\tbl\t_rn2",
+        "00000001001b54ec\tbl\t_rn2",
+        "00000001001b5554\tbl\t_artifact_light",
+        "00000001001b556c\tbl\t_bare_artifactname",
+        "00000001001b5598\tbl\t_artifact_light",
+        "00000001001b55b0\tbl\t_yname",
+        "00000001001b55ec\tbl\t_Monnam",
+        "00000001001b5610\tbl\t_pline_mon",
+        "00000001001b5620\tbl\t_verbalize",
+        "00000001001b563c\tbl\t_Monnam",
+        "00000001001b5658\tbl\t_pline_mon",
+        "00000001001b569c\tbl\t_rng_log_enabled",
+        "00000001001b56bc\tbl\t_rng_log_set_caller",
+        "00000001001b56c4\tbl\t_rn2",
+        "00000001001b56d4\tbl\t_rn2",
+        "00000001001b5708\tbl\t_create_gas_cloud",
+        "00000001001b572c\tbl\t_mon_track_clear"
+      ]
+    }
+  },
+  "compiledBehavior": "set_voice and sound_speak have only argument-stack stores and return; no calls or global accesses. monflee has no call to set_voice. Minimal tty build has no integrated sound backend."
+}

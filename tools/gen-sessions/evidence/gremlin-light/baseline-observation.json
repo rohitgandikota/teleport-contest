@@ -1,0 +1,2330 @@
+[
+  {
+    "index": 0,
+    "name": "sunsword-gremlin",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "all input consumed with slice consistency and no runtime error",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual valid female level30 hero remains alive",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "exactly one new live hostile awake target after creation acknowledgments",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "wished equipment type artifact and inventory really exist",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual primary and suit slots and worn masks match the keyboard proposal",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual light flag predicate radius and registration match equipment",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "visible sighted mobile target reaches adjacent apparent hero",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "no competing scary square or sanctuary at the encounter",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "hero is aware hearing sighted and not displaced invisible or hallucinating",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real turns advance and the same target survives without extra spawned targets",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C light eligibility matches the preselected positive or negative branch",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C positive eventually flees while matched negatives do not",
+        "pass": false,
+        "error": "requires original-C confirmation if absent in baseline JS"
+      },
+      {
+        "kind": "source",
+        "name": "C painful-light OR Bright-light feedback, with neither in negatives",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five output streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": false,
+    "firstUnmetProducer": null,
+    "before": {
+      "step": 85,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        12,
+        6
+      ],
+      "monsters": []
+    },
+    "created": {
+      "step": 108,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 32,
+          "hpmax": 32,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": true
+        }
+      ]
+    },
+    "encounter": {
+      "step": 108,
+      "turn": 2,
+      "hp": 124,
+      "hero": [
+        52,
+        13
+      ],
+      "activeLight": true,
+      "mon": {
+        "id": 52,
+        "species": 40,
+        "xy": [
+          53,
+          12
+        ],
+        "apparent": [
+          52,
+          13
+        ],
+        "hp": 32,
+        "hpmax": 32,
+        "movement": 0,
+        "peaceful": false,
+        "tame": false,
+        "sleeping": false,
+        "canmove": true,
+        "speed": 12,
+        "cansee": true,
+        "couldsee": true,
+        "visible": true,
+        "adjacent": true,
+        "nearbyImage": true,
+        "scaredSquare": false,
+        "sanctuary": false,
+        "flee": false,
+        "fleetim": 0,
+        "lightEligible": true
+      }
+    },
+    "firstFlee": null,
+    "final": {
+      "step": 150,
+      "turn": 6,
+      "hp": 102,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        53,
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 32,
+          "hpmax": 32,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": true
+        }
+      ]
+    },
+    "observedSteps": 151,
+    "statesSHA256": "74c37cfb25516fb2e16a735492f9c93de593579ceaf4804ed396a9ecc3014184",
+    "hashes": {
+      "screens": "fd3f7c28da3ff9e218317bd7b1603b627e0539176cc586af14d5dc5ffb536fe8",
+      "cursors": "4df6d03d6ebeef6a33167ff5102af34b92eb5df5c9e31b0d101e384f83f80a7b",
+      "calls": "c84550bd7e2ed14a59b4733a36d6d33b420cb0b59ec83d80f63df6a0955715d6",
+      "slices": "91b11a169eaec6906f62a41d6856a11e47ff55b29296d3c6f03d4f7ce1f1ace2",
+      "frames": "22ea103a2b4941f256c4408a463b64736f310af061623675bf433cdfa40d4cf8"
+    },
+    "boundaries": 151,
+    "calls": 2953,
+    "frames": 0,
+    "feedback": false,
+    "messages": [
+      {
+        "step": 116,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 117,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 123,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 124,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 137,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 138,
+        "top": "The gremlin hits!"
+      }
+    ],
+    "postCreationRngPrefix": [
+      "rn2(5)=3",
+      "rn2(5)=2",
+      "rn2(5)=2",
+      "rn2(5)=2",
+      "rn2(12)=0",
+      "rn2(12)=7",
+      "rn2(12)=5",
+      "rn2(70)=68",
+      "rn2(3)=2",
+      "rn2(20)=15",
+      "rn2(82)=68",
+      "rn2(5)=4",
+      "rnd(20)=10",
+      "d(1,6)=2",
+      "rn2(3)=2",
+      "rn2(6)=1",
+      "rnd(21)=16",
+      "d(1,6)=3",
+      "rn2(3)=2",
+      "rn2(6)=0",
+      "rnd(22)=11",
+      "d(1,4)=1",
+      "rn2(3)=0",
+      "rn2(6)=1",
+      "rnd(23)=14",
+      "d(0,0)=0",
+      "rn2(3)=1",
+      "rn2(6)=4",
+      "rn2(5)=4",
+      "rn2(12)=8",
+      "rn2(5)=2",
+      "rn2(12)=4",
+      "rn2(12)=11",
+      "rn2(12)=7",
+      "rn2(70)=34",
+      "rn2(3)=0",
+      "rn2(100)=46",
+      "rn2(20)=4",
+      "rn2(82)=15",
+      "rn2(5)=1",
+      "rnd(20)=6",
+      "d(1,6)=2",
+      "rn2(3)=0",
+      "rn2(6)=5",
+      "rnd(21)=16"
+    ],
+    "nativeParityClaimed": false
+  },
+  {
+    "index": 1,
+    "name": "gold-mail-gremlin",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "all input consumed with slice consistency and no runtime error",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual valid female level30 hero remains alive",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "exactly one new live hostile awake target after creation acknowledgments",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "wished equipment type artifact and inventory really exist",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual primary and suit slots and worn masks match the keyboard proposal",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual light flag predicate radius and registration match equipment",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "visible sighted mobile target reaches adjacent apparent hero",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "no competing scary square or sanctuary at the encounter",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "hero is aware hearing sighted and not displaced invisible or hallucinating",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real turns advance and the same target survives without extra spawned targets",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C light eligibility matches the preselected positive or negative branch",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C positive eventually flees while matched negatives do not",
+        "pass": false,
+        "error": "requires original-C confirmation if absent in baseline JS"
+      },
+      {
+        "kind": "source",
+        "name": "C painful-light OR Bright-light feedback, with neither in negatives",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five output streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": false,
+    "firstUnmetProducer": null,
+    "before": {
+      "step": 99,
+      "turn": 6,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": {
+        "id": 50,
+        "type": 102,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 1,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 3,
+        "blessed": false,
+        "cursed": false
+      },
+      "inventory": [
+        {
+          "id": 50,
+          "type": 102,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 1,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 3,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 3
+        }
+      ],
+      "liveIds": [
+        12,
+        6
+      ],
+      "monsters": []
+    },
+    "created": {
+      "step": 122,
+      "turn": 6,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": {
+        "id": 50,
+        "type": 102,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 1,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 3,
+        "blessed": false,
+        "cursed": false
+      },
+      "inventory": [
+        {
+          "id": 50,
+          "type": 102,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 1,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 3,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 3
+        }
+      ],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            52,
+            14
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 36,
+          "hpmax": 36,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": true
+        }
+      ]
+    },
+    "encounter": {
+      "step": 122,
+      "turn": 6,
+      "hp": 124,
+      "hero": [
+        52,
+        13
+      ],
+      "activeLight": true,
+      "mon": {
+        "id": 52,
+        "species": 40,
+        "xy": [
+          52,
+          14
+        ],
+        "apparent": [
+          52,
+          13
+        ],
+        "hp": 36,
+        "hpmax": 36,
+        "movement": 0,
+        "peaceful": false,
+        "tame": false,
+        "sleeping": false,
+        "canmove": true,
+        "speed": 12,
+        "cansee": true,
+        "couldsee": true,
+        "visible": true,
+        "adjacent": true,
+        "nearbyImage": true,
+        "scaredSquare": false,
+        "sanctuary": false,
+        "flee": false,
+        "fleetim": 0,
+        "lightEligible": true
+      }
+    },
+    "firstFlee": null,
+    "final": {
+      "step": 164,
+      "turn": 11,
+      "hp": 98,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": {
+        "id": 50,
+        "type": 102,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 1,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 3,
+        "blessed": false,
+        "cursed": false
+      },
+      "inventory": [
+        {
+          "id": 50,
+          "type": 102,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 1,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 3,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 3
+        }
+      ],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            52,
+            14
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 36,
+          "hpmax": 36,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": true
+        }
+      ]
+    },
+    "observedSteps": 165,
+    "statesSHA256": "634fe0febbaa2cac6f6a7d3fe783fe82dae68a466d2f40d2f29935ec39bdb76b",
+    "hashes": {
+      "screens": "7a02eebb0128f9bdefffb8d61022d26469267ae23534b3bf0f7ca61678c86c13",
+      "cursors": "3901a4c6c80b1ae8a519ec40dd30e17d30d7783767138b85e720fb2f94b3df52",
+      "calls": "ea6dccb9f13570fe0c731c15f6d2014f545aefa8da23ef4a695c3fe22cd11bc8",
+      "slices": "54a17acea1fdea7ef109d0df5424c4efa708deea685390ff289216a3495392da",
+      "frames": "b8bc21b310f1865c65f531c491b0a8cce61cd1b3425a8d09ed8046a7b8749668"
+    },
+    "boundaries": 165,
+    "calls": 2770,
+    "frames": 0,
+    "feedback": false,
+    "messages": [
+      {
+        "step": 130,
+        "top": "The gremlin misses!  The gremlin misses!  The gremlin bites!--More--"
+      },
+      {
+        "step": 131,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 137,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 138,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 144,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 145,
+        "top": "The gremlin misses!"
+      },
+      {
+        "step": 151,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 152,
+        "top": "The gremlin hits!"
+      }
+    ],
+    "postCreationRngPrefix": [
+      "rn2(5)=1",
+      "rn2(12)=9",
+      "rn2(5)=2",
+      "rn2(12)=6",
+      "rn2(12)=11",
+      "rn2(12)=3",
+      "rn2(70)=36",
+      "rn2(3)=2",
+      "rn2(20)=16",
+      "rn2(82)=33",
+      "rn2(5)=0",
+      "rnd(20)=20",
+      "rnd(21)=19",
+      "rnd(22)=3",
+      "d(1,4)=3",
+      "rn2(3)=1",
+      "rn2(6)=3",
+      "rnd(23)=4",
+      "d(0,0)=0",
+      "rn2(3)=1",
+      "rn2(6)=0",
+      "rn2(5)=2",
+      "rn2(8)=4",
+      "rn2(5)=0",
+      "rn2(12)=1",
+      "rn2(12)=9",
+      "rn2(12)=11",
+      "rn2(70)=52",
+      "rn2(3)=2",
+      "rn2(100)=63",
+      "rn2(20)=7",
+      "rn2(82)=18",
+      "rn2(5)=4",
+      "rnd(20)=8",
+      "d(1,6)=2",
+      "rn2(3)=0",
+      "rn2(6)=2",
+      "rnd(21)=17",
+      "d(1,6)=6",
+      "rn2(3)=2",
+      "rn2(6)=3",
+      "rnd(22)=1",
+      "d(1,4)=4",
+      "rn2(3)=2",
+      "rn2(6)=4"
+    ],
+    "nativeParityClaimed": false
+  },
+  {
+    "index": 2,
+    "name": "carried-sunsword-gremlin",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "all input consumed with slice consistency and no runtime error",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual valid female level30 hero remains alive",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "exactly one new live hostile awake target after creation acknowledgments",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "wished equipment type artifact and inventory really exist",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual primary and suit slots and worn masks match the keyboard proposal",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual light flag predicate radius and registration match equipment",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "visible sighted mobile target reaches adjacent apparent hero",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "no competing scary square or sanctuary at the encounter",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "hero is aware hearing sighted and not displaced invisible or hallucinating",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real turns advance and the same target survives without extra spawned targets",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C light eligibility matches the preselected positive or negative branch",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C positive eventually flees while matched negatives do not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C painful-light OR Bright-light feedback, with neither in negatives",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five output streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "firstUnmetProducer": null,
+    "before": {
+      "step": 77,
+      "turn": 1,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 0,
+          "lamplit": false,
+          "artifactLight": true,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        12,
+        6
+      ],
+      "monsters": []
+    },
+    "created": {
+      "step": 100,
+      "turn": 1,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 0,
+          "lamplit": false,
+          "artifactLight": true,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            14
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 39,
+          "hpmax": 39,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "encounter": {
+      "step": 100,
+      "turn": 1,
+      "hp": 124,
+      "hero": [
+        52,
+        13
+      ],
+      "activeLight": false,
+      "mon": {
+        "id": 52,
+        "species": 40,
+        "xy": [
+          53,
+          14
+        ],
+        "apparent": [
+          52,
+          13
+        ],
+        "hp": 39,
+        "hpmax": 39,
+        "movement": 0,
+        "peaceful": false,
+        "tame": false,
+        "sleeping": false,
+        "canmove": true,
+        "speed": 12,
+        "cansee": true,
+        "couldsee": true,
+        "visible": true,
+        "adjacent": true,
+        "nearbyImage": true,
+        "scaredSquare": false,
+        "sanctuary": false,
+        "flee": false,
+        "fleetim": 0,
+        "lightEligible": false
+      }
+    },
+    "firstFlee": null,
+    "final": {
+      "step": 142,
+      "turn": 6,
+      "hp": 89,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": null,
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 0,
+          "lamplit": false,
+          "artifactLight": true,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            14
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 39,
+          "hpmax": 39,
+          "movement": 24,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "observedSteps": 143,
+    "statesSHA256": "9e7939721c187e552af018d7fc16c87bdb2ae12df6cbb56483c8d3f4aeb6b352",
+    "hashes": {
+      "screens": "47074255d6b0aae801997e52fad54ee578a1cb663ddfdd2045a3350110920e8d",
+      "cursors": "0c97ee09166d1019c437c7822983179fbed1e14a839db029014fdb646edafa14",
+      "calls": "45756f056a1bb9593944825abdf0d77dbc6da797c9425b70c294a9c404def89a",
+      "slices": "9b2564a9f7f33b9322c4c529f9ab800e706fe34320f0ab4fa17c6211b4835bb0",
+      "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+    },
+    "boundaries": 143,
+    "calls": 2726,
+    "frames": 0,
+    "feedback": false,
+    "messages": [
+      {
+        "step": 108,
+        "top": "The gremlin drinks a fizzy potion!--More--"
+      },
+      {
+        "step": 109,
+        "top": "The gremlin is suddenly moving faster."
+      },
+      {
+        "step": 115,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 116,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 129,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 130,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 136,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 137,
+        "top": "The gremlin hits!"
+      }
+    ],
+    "postCreationRngPrefix": [
+      "rn2(12)=2",
+      "rn2(12)=2",
+      "rn2(12)=5",
+      "rn2(70)=7",
+      "rn2(3)=1",
+      "rn2(20)=4",
+      "rn2(82)=61",
+      "rn2(5)=4",
+      "rn2(19)=2",
+      "rn2(5)=3",
+      "rn2(5)=0",
+      "rn2(5)=0",
+      "rn2(5)=4",
+      "rn2(12)=5",
+      "rn2(12)=7",
+      "rn2(12)=2",
+      "rn2(70)=33",
+      "rn2(3)=0",
+      "rn2(20)=14",
+      "rn2(82)=2",
+      "rn2(5)=3",
+      "rnd(20)=13",
+      "d(1,6)=5",
+      "rn2(3)=0",
+      "rn2(6)=1",
+      "rnd(21)=5",
+      "d(1,6)=2",
+      "rn2(3)=1",
+      "rn2(6)=5",
+      "rnd(22)=15",
+      "d(1,4)=1",
+      "rn2(3)=1",
+      "rn2(6)=5",
+      "rnd(23)=1",
+      "d(0,0)=0",
+      "rn2(3)=1",
+      "rn2(6)=0",
+      "rn2(5)=1",
+      "rn2(12)=4",
+      "rn2(5)=2",
+      "rn2(12)=6",
+      "rn2(12)=9",
+      "rn2(12)=7",
+      "rn2(70)=50",
+      "rn2(3)=2"
+    ],
+    "nativeParityClaimed": false
+  },
+  {
+    "index": 3,
+    "name": "ordinary-sword-gremlin",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "all input consumed with slice consistency and no runtime error",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual valid female level30 hero remains alive",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "exactly one new live hostile awake target after creation acknowledgments",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "wished equipment type artifact and inventory really exist",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual primary and suit slots and worn masks match the keyboard proposal",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual light flag predicate radius and registration match equipment",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "visible sighted mobile target reaches adjacent apparent hero",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "no competing scary square or sanctuary at the encounter",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "hero is aware hearing sighted and not displaced invisible or hallucinating",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real turns advance and the same target survives without extra spawned targets",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C light eligibility matches the preselected positive or negative branch",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C positive eventually flees while matched negatives do not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C painful-light OR Bright-light feedback, with neither in negatives",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five output streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "firstUnmetProducer": null,
+    "before": {
+      "step": 87,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "lamplit": false,
+        "artifactLight": false,
+        "radius": 0,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "lamplit": false,
+          "artifactLight": false,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        12,
+        6
+      ],
+      "monsters": []
+    },
+    "created": {
+      "step": 110,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "lamplit": false,
+        "artifactLight": false,
+        "radius": 0,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "lamplit": false,
+          "artifactLight": false,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 32,
+          "hpmax": 32,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "encounter": {
+      "step": 110,
+      "turn": 2,
+      "hp": 124,
+      "hero": [
+        52,
+        13
+      ],
+      "activeLight": false,
+      "mon": {
+        "id": 52,
+        "species": 40,
+        "xy": [
+          53,
+          12
+        ],
+        "apparent": [
+          52,
+          13
+        ],
+        "hp": 32,
+        "hpmax": 32,
+        "movement": 0,
+        "peaceful": false,
+        "tame": false,
+        "sleeping": false,
+        "canmove": true,
+        "speed": 12,
+        "cansee": true,
+        "couldsee": true,
+        "visible": true,
+        "adjacent": true,
+        "nearbyImage": true,
+        "scaredSquare": false,
+        "sanctuary": false,
+        "flee": false,
+        "fleetim": 0,
+        "lightEligible": false
+      }
+    },
+    "firstFlee": null,
+    "final": {
+      "step": 152,
+      "turn": 6,
+      "hp": 102,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "lamplit": false,
+        "artifactLight": false,
+        "radius": 0,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "lamplit": false,
+          "artifactLight": false,
+          "radius": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": false,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [],
+      "liveIds": [
+        53,
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 40,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 32,
+          "hpmax": 32,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 12,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "observedSteps": 153,
+    "statesSHA256": "089fd5ac0df9a43d14e1363969f517e49cb8471dde5e2901e7fecf2655a4d29f",
+    "hashes": {
+      "screens": "e56d730f58848a674d82a566c08964f5dc5c51699523767248b0ff36d47723eb",
+      "cursors": "cc85d17dd5adc975b4e51e9339e425aedb67476406ba39542004e5d7f55cf1fa",
+      "calls": "cc7f189d8702b10ebb866d44693b07980eff618ff76a722aa68dea0e3102521a",
+      "slices": "576b9e50989b7971e0f8d2cb95a42d5ed21509514d15903f6947454a9e881cae",
+      "frames": "f64e5a9a7839e91b65c9a2b7a071f1d9dfe91025de9c63a3973c06dafa62e40e"
+    },
+    "boundaries": 153,
+    "calls": 2953,
+    "frames": 0,
+    "feedback": false,
+    "messages": [
+      {
+        "step": 118,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 119,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 125,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 126,
+        "top": "The gremlin hits!"
+      },
+      {
+        "step": 139,
+        "top": "The gremlin hits!  The gremlin hits again!  The gremlin bites!--More--"
+      },
+      {
+        "step": 140,
+        "top": "The gremlin hits!"
+      }
+    ],
+    "postCreationRngPrefix": [
+      "rn2(5)=3",
+      "rn2(5)=2",
+      "rn2(5)=2",
+      "rn2(5)=2",
+      "rn2(12)=0",
+      "rn2(12)=7",
+      "rn2(12)=5",
+      "rn2(70)=68",
+      "rn2(3)=2",
+      "rn2(20)=15",
+      "rn2(82)=68",
+      "rn2(5)=4",
+      "rnd(20)=10",
+      "d(1,6)=2",
+      "rn2(3)=2",
+      "rn2(6)=1",
+      "rnd(21)=16",
+      "d(1,6)=3",
+      "rn2(3)=2",
+      "rn2(6)=0",
+      "rnd(22)=11",
+      "d(1,4)=1",
+      "rn2(3)=0",
+      "rn2(6)=1",
+      "rnd(23)=14",
+      "d(0,0)=0",
+      "rn2(3)=1",
+      "rn2(6)=4",
+      "rn2(5)=4",
+      "rn2(12)=8",
+      "rn2(5)=2",
+      "rn2(12)=4",
+      "rn2(12)=11",
+      "rn2(12)=7",
+      "rn2(70)=34",
+      "rn2(3)=0",
+      "rn2(100)=46",
+      "rn2(20)=4",
+      "rn2(82)=15",
+      "rn2(5)=1",
+      "rnd(20)=6",
+      "d(1,6)=2",
+      "rn2(3)=0",
+      "rn2(6)=5",
+      "rnd(21)=16"
+    ],
+    "nativeParityClaimed": false
+  },
+  {
+    "index": 4,
+    "name": "sunsword-newt",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "all input consumed with slice consistency and no runtime error",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual valid female level30 hero remains alive",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "exactly one new live hostile awake target after creation acknowledgments",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "wished equipment type artifact and inventory really exist",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual primary and suit slots and worn masks match the keyboard proposal",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual light flag predicate radius and registration match equipment",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "visible sighted mobile target reaches adjacent apparent hero",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "no competing scary square or sanctuary at the encounter",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "hero is aware hearing sighted and not displaced invisible or hallucinating",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real turns advance and the same target survives without extra spawned targets",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C light eligibility matches the preselected positive or negative branch",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C positive eventually flees while matched negatives do not",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "C painful-light OR Bright-light feedback, with neither in negatives",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five output streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "firstUnmetProducer": null,
+    "before": {
+      "step": 85,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 12,
+          "species": 322,
+          "xy": [
+            54,
+            14
+          ],
+          "apparent": [
+            0,
+            0
+          ],
+          "hp": 2,
+          "hpmax": 2,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 6,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": false,
+          "nearbyImage": false,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "created": {
+      "step": 105,
+      "turn": 2,
+      "hp": 124,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 322,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 3,
+          "hpmax": 3,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 6,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        },
+        {
+          "id": 12,
+          "species": 322,
+          "xy": [
+            54,
+            14
+          ],
+          "apparent": [
+            0,
+            0
+          ],
+          "hp": 2,
+          "hpmax": 2,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 6,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": false,
+          "nearbyImage": false,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "encounter": {
+      "step": 105,
+      "turn": 2,
+      "hp": 124,
+      "hero": [
+        52,
+        13
+      ],
+      "activeLight": true,
+      "mon": {
+        "id": 52,
+        "species": 322,
+        "xy": [
+          53,
+          12
+        ],
+        "apparent": [
+          52,
+          13
+        ],
+        "hp": 3,
+        "hpmax": 3,
+        "movement": 0,
+        "peaceful": false,
+        "tame": false,
+        "sleeping": false,
+        "canmove": true,
+        "speed": 6,
+        "cansee": true,
+        "couldsee": true,
+        "visible": true,
+        "adjacent": true,
+        "nearbyImage": true,
+        "scaredSquare": false,
+        "sanctuary": false,
+        "flee": false,
+        "fleetim": 0,
+        "lightEligible": false
+      }
+    },
+    "firstFlee": null,
+    "final": {
+      "step": 147,
+      "turn": 6,
+      "hp": 122,
+      "hpmax": 124,
+      "mortality": 0,
+      "level": 30,
+      "female": true,
+      "hero": [
+        52,
+        13
+      ],
+      "primary": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 20,
+        "worn": 256,
+        "lamplit": true,
+        "artifactLight": true,
+        "radius": 2,
+        "blessed": false,
+        "cursed": false
+      },
+      "armor": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 20,
+          "worn": 256,
+          "lamplit": true,
+          "artifactLight": true,
+          "radius": 2,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "activeLight": true,
+      "legacyPrimary": false,
+      "legacyArmor": false,
+      "blind": false,
+      "deaf": false,
+      "unaware": false,
+      "invisible": false,
+      "displaced": false,
+      "hallucinating": false,
+      "lightSources": [
+        {
+          "id": 50,
+          "type": 1,
+          "range": 2
+        }
+      ],
+      "liveIds": [
+        52,
+        12,
+        6
+      ],
+      "monsters": [
+        {
+          "id": 52,
+          "species": 322,
+          "xy": [
+            53,
+            12
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 3,
+          "hpmax": 3,
+          "movement": 0,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 6,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        },
+        {
+          "id": 12,
+          "species": 322,
+          "xy": [
+            53,
+            13
+          ],
+          "apparent": [
+            52,
+            13
+          ],
+          "hp": 2,
+          "hpmax": 2,
+          "movement": 12,
+          "peaceful": false,
+          "tame": false,
+          "sleeping": false,
+          "canmove": true,
+          "speed": 6,
+          "cansee": true,
+          "couldsee": true,
+          "visible": true,
+          "adjacent": true,
+          "nearbyImage": true,
+          "scaredSquare": false,
+          "sanctuary": false,
+          "flee": false,
+          "fleetim": 0,
+          "lightEligible": false
+        }
+      ]
+    },
+    "observedSteps": 148,
+    "statesSHA256": "28201b9a56f407e398a149adc5d2e53fde71d0d010f0b69bb83826dbf3dac686",
+    "hashes": {
+      "screens": "6879b43c783d55c491b8e649ab9d59d9127f142adf53a59c89e0b4c71b1a5cfb",
+      "cursors": "fbd829477f687ee15034a9c69b2675ff3dc22f069bee20edf1d638bd6e47f7d0",
+      "calls": "026989a1ea37344e1a1cc7de303991a135d8ede49f2d1eaf8e602ad08eb59f02",
+      "slices": "701acb95de94650cd93aaa7b951a7b21c0dbe86d030d3ede805d0bd020269e20",
+      "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+    },
+    "boundaries": 148,
+    "calls": 2674,
+    "frames": 0,
+    "feedback": false,
+    "messages": [
+      {
+        "step": 113,
+        "top": "The newt bites!  The newt bites!"
+      },
+      {
+        "step": 120,
+        "top": "The newt just misses!"
+      }
+    ],
+    "postCreationRngPrefix": [
+      "rn2(5)=3",
+      "rn2(5)=1",
+      "rn2(5)=0",
+      "rn2(5)=3",
+      "rn2(12)=2",
+      "rn2(12)=2",
+      "rn2(12)=2",
+      "rn2(70)=27",
+      "rn2(3)=1",
+      "rn2(20)=17",
+      "rn2(82)=58",
+      "rn2(5)=3",
+      "rnd(20)=10",
+      "d(1,2)=1",
+      "rn2(3)=2",
+      "rn2(6)=1",
+      "rn2(5)=0",
+      "rnd(20)=15",
+      "d(1,2)=2",
+      "rn2(3)=1",
+      "rn2(6)=2",
+      "rn2(5)=3",
+      "rn2(12)=3",
+      "rn2(5)=4",
+      "rn2(12)=2",
+      "rn2(12)=6",
+      "rn2(12)=8",
+      "rn2(70)=60",
+      "rn2(3)=0",
+      "rn2(100)=53",
+      "rn2(20)=2",
+      "rn2(82)=11",
+      "rn2(5)=0",
+      "rnd(20)=20",
+      "rn2(5)=3",
+      "rn2(12)=0",
+      "rn2(5)=4",
+      "rn2(12)=11",
+      "rn2(12)=7",
+      "rn2(12)=4",
+      "rn2(70)=68",
+      "rn2(3)=0",
+      "rn2(100)=24",
+      "rn2(20)=7",
+      "rn2(82)=28"
+    ],
+    "nativeParityClaimed": false
+  }
+]

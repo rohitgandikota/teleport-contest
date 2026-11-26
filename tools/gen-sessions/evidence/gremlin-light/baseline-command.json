@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/gremlin-light-parent-review/native.mjs"
+  ],
+  "exit": 1,
+  "seconds": 1.341,
+  "logSHA256": "44e475a46e8fae45d80caa2b397fab8d3e921b31eb2c343100891ee7a67ec731"
+}

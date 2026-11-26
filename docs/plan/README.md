@@ -12,20 +12,16 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Fire-trap slime cleanup is pushed as `b15a043c`; the pickup-test correction is
-pushed as `8c3b7e1f`. Startup gender normalization is pushed as `3453b003`.
-It passes all four C cases,
-44 ordinary checks, both retained startup gates, 45 strict workers and all
-951 maintained recordings. The installed behavior report matches the isolated
-report; only the measured runtime hash differs. The comment-only combat cleanup
-is pushed as `8b226bc8`. Gremlin light fear passes all five C cases on the
-combined code and the installed checks match its isolated results. Full952 is
-running. A separate figurine-test lifetime correction passes33 replays and
-source controls on both fixed runtimes and is ready to publish.
-Separate fire-trap source reviews cover underwater return and the human HP floor.
-The latest official result remains agentic rank7 with659 unmatched
-screens; its timestamp predates the newest gameplay pushes.
-See STATUS for exact evidence, preserved diagnostics and limits.
+Fire-trap slime cleanup, startup gender validation, and their test corrections
+are pushed. The latest test-only checkpoint is `1d6eaf44`, which checks surviving
+timers after a figurine is consumed. Gremlin light fear is ready to publish: all
+five native cases,65 source/producer checks,10 neutrality comparisons,45 strict
+workers and952 maintained recordings pass. Its complete installed report equals
+the isolated result. Original observer failures remain preserved separately.
+Underwater fire return, human HP-floor handling and giant weapon preference are
+the next source reviews. The latest official result remains agentic rank7 with
+659 unmatched screens; its timestamp predates these newest gameplay pushes.
+See STATUS for exact evidence and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

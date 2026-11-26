@@ -1,0 +1,62 @@
+{
+  "requiredAlongsideBaseAssertions": true,
+  "chosenBeforeGameplay": true,
+  "reason": "Base primary engine supports conjunctions only. Hearing-enabled C monflee has two source-predicted light-feedback alternatives. No alternative is chosen from observed RNG.",
+  "positiveAnyOf": [
+    {
+      "segment": 0,
+      "anyOf": [
+        {
+          "screenIncludes": [
+            "painful light",
+            "Sunsword"
+          ]
+        },
+        {
+          "screenIncludes": [
+            "\"Bright light!\""
+          ]
+        }
+      ]
+    },
+    {
+      "segment": 1,
+      "anyOf": [
+        {
+          "screenIncludes": [
+            "painful light",
+            "gold dragon scale mail"
+          ]
+        },
+        {
+          "screenIncludes": [
+            "\"Bright light!\""
+          ]
+        }
+      ]
+    }
+  ],
+  "negativeIndexes": [
+    2,
+    3,
+    4
+  ],
+  "negativeScreenExcludes": [
+    "painful light",
+    "Bright light!"
+  ],
+  "unobservedBranches": [
+    "Unaware frightened feedback",
+    "Deaf painful feedback",
+    "blind or blocked line of sight",
+    "the verbal branch unless original C reaches it"
+  ],
+  "sourceRngOrder": [
+    "Every distfleeck draws rn2(5) before distance tests.",
+    "An adjacent nonbrave eligible gremlin calls monflee with rnd(rn2(7) ? 10 : 100).",
+    "On first visible mobile flee and aware hero, rn2(10) is drawn before the Deaf fallback.",
+    "Painful source naming prefers artifact-light uwep before uarm.",
+    "First-only fleeing does not repeat the message; mon_track_clear still runs."
+  ],
+  "nativeClaim": false
+}

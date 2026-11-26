@@ -1,0 +1,32 @@
+{
+  "originalProbeSHA256": "5932b26fe5f7bc7f9256d44aa6cf9fee51c3cc50f0d73d8badb596d0f7a42819",
+  "start": "const {runSegment} = await import('./js/jsmain.js');",
+  "end": "\nverifyRuntime();\nwriteFileSync",
+  "originalBodySHA256": "656fbddf6ed5771ae0c482d40289d9cc9f844d029b0db0f840fd38e5b1a29914",
+  "portableBodySHA256": "221b1459e287f4f6bf3ce2481b5f4249be38eea15d4c8878d4184b7f61e26fda",
+  "importRelocations": [
+    [
+      "./js/",
+      "../js/"
+    ],
+    [
+      "./frozen/",
+      "../frozen/"
+    ],
+    [
+      "./tools/half-damage-reader-observe.mjs",
+      "./half-damage-reader-observe.mjs"
+    ]
+  ],
+  "assertionEdits": 0,
+  "observerEdits": 0,
+  "liveBindingFix": false,
+  "allKeyStateHashField": "statesSHA256",
+  "retainedStateFields": [
+    "before",
+    "created",
+    "encounter",
+    "firstFlee",
+    "final"
+  ]
+}

@@ -1,0 +1,482 @@
+[
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 448,
+    "last": 571,
+    "contract": "complete flees_light monflee distfleeck",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "ffd2e86bfda34b5e127c5a8b9115b7ce5874e08fdc1463a2c217a0c1f1742572"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 241,
+    "last": 304,
+    "contract": "complete onscary",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "3b418187bca78191d69d54e853cef84d7c95649d8195b7bfad81bd4461c6e303"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 89,
+    "last": 92,
+    "contract": "complete mon_track_clear",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "1385351131ce422c2a05144627ba8e21886882341bf195ec8f083d7d7342fa4a"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 362,
+    "last": 373,
+    "contract": "complete release_hero",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "6309cd647d8ae11bc7870b6cb8715a7ea33e6eecc5479450283845b53afdc0b2"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 771,
+    "last": 838,
+    "contract": "selected dochug call ordering",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "50aaaf0ac18cd7832b31f814b658a6b41aa4d27c3ec7f661c9efdc9cb6f96cd2"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/monmove.c",
+    "first": 901,
+    "last": 924,
+    "contract": "selected post-move check",
+    "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+    "rangeSHA256": "fbe38a82596072d3e97a1c445649b1ad7b7fcdcd1b5ba457aedea8a0aaa1b554"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/artifact.c",
+    "first": 2264,
+    "last": 2276,
+    "contract": "complete artifact_light",
+    "fileSHA256": "f0cf8f78bb68f305394e3cd9ccb8080cb15c147582b7f5f55888f4acdfe10141",
+    "rangeSHA256": "952fc92529101198e4a107e0a176503ab78a0bf4d95ba8d2650d0f819ca4c2fc"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/wield.c",
+    "first": 169,
+    "last": 273,
+    "contract": "complete ready_weapon",
+    "fileSHA256": "dccf8af84cf299ac659ab07ee6c106d9c8f9726d1fca1360a4df81d576adbd4c",
+    "rangeSHA256": "7234c9db5eab345329c35a632376c935419b1d12004369870f6569e312f1bf2a"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/do_wear.c",
+    "first": 798,
+    "last": 907,
+    "contract": "complete dragon_armor_handling and Armor_on",
+    "fileSHA256": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "rangeSHA256": "d588c5cf878d0c0cfba9fff668b244231871950ad3317ebb6d99a462bb0e4165"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/timeout.c",
+    "first": 1712,
+    "last": 1800,
+    "contract": "complete begin_burn",
+    "fileSHA256": "779540f647749e0da11109f18a90e11c9e7bc36af44ed6455440b40fc6910596",
+    "rangeSHA256": "10bd3c9708334b007574a04a62852d2e2fcdc96d6e772db1548a2b8b9c971c3c"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/light.c",
+    "first": 62,
+    "last": 95,
+    "contract": "light registration",
+    "fileSHA256": "d1d81c386a3ad2005f09c64425f584ba444fdb4c13df23ef81db35c4aa3328d1",
+    "rangeSHA256": "e2024c8af78e877764953132150ea6311d70c9580b428a56225598f296ee1a41"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/light.c",
+    "first": 881,
+    "last": 933,
+    "contract": "light radius and description",
+    "fileSHA256": "d1d81c386a3ad2005f09c64425f584ba444fdb4c13df23ef81db35c4aa3328d1",
+    "rangeSHA256": "6611552bf5a674a547be0647ef71ebff1e810f362ffe64e8426fa08fe49c86ca"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/read.c",
+    "first": 3137,
+    "last": 3408,
+    "contract": "complete particular parse creation and entry",
+    "fileSHA256": "ec15ad773e50f5d466ddc20515b441c9ddb4e99449abd1f34fa43a14e6a8b2c4",
+    "rangeSHA256": "f059d412df36bb3248730b0068768326150f6f4c8ae45006d696c8b30dcb5ebd"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/wizcmds.c",
+    "first": 32,
+    "last": 45,
+    "contract": "complete wiz_wish",
+    "fileSHA256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "rangeSHA256": "39435671e2102e26b7e97b389bce696e33d22e02940030d0ecbb6a3af36abc1c"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/wizcmds.c",
+    "first": 203,
+    "last": 214,
+    "contract": "complete wiz_genesis",
+    "fileSHA256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "rangeSHA256": "0505ff793c9bf7c69948f29019d0ddebeabc044c331280a661d1535cae3b25be"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/zap.c",
+    "first": 6314,
+    "last": 6418,
+    "contract": "complete makewish",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "e1dd509ab699daeddcfa8ea9c400b363256090f4fcbbac0b43743bb3b91c8339"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/makemon.c",
+    "first": 1270,
+    "last": 1315,
+    "contract": "selected initial sight movement and disposition",
+    "fileSHA256": "04bb46b793cb7a724544ed5860f57116e4661ce5d052a1321d90dc0167d3ffc3",
+    "rangeSHA256": "70c11762b0f684726ca84cee912cf3e04b858f8fcd4525346a2342046a2add90"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/mon.c",
+    "first": 2476,
+    "last": 2483,
+    "contract": "complete monnear",
+    "fileSHA256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+    "rangeSHA256": "780ad8af5ffc5eafdc85cfe47af2fb331b7e054606cfe44301c36201c7289fd6"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/objnam.c",
+    "first": 2359,
+    "last": 2374,
+    "contract": "complete yname",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "3aa9a2f7feecec12f89c122bc9c15120fa2ff81e894af1fb7a54e1ced91ef34b"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/objnam.c",
+    "first": 2502,
+    "last": 2517,
+    "contract": "complete bare_artifactname",
+    "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+    "rangeSHA256": "a5858893b94f33496ab6111eef079a2efe0959ce9b18e5f99d0fe5c3a77883aa"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/pline.c",
+    "first": 476,
+    "last": 490,
+    "contract": "complete verbalize",
+    "fileSHA256": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+    "rangeSHA256": "53af18df8fc7cbfa9b55629aaa4d12bad1fcf0f214c46c0513d8c9f89cabc21c"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/sndprocs.h",
+    "first": 238,
+    "last": 280,
+    "contract": "voice macros and non-sound build",
+    "fileSHA256": "4d105334e499c3fb4af00fcd1acf48802a8db5ccf799bd31bfafc2afaa286654",
+    "rangeSHA256": "85125360faf728c4be13271feb23651e7037ba10c10709e8baa64d1b26bc5a86"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/vision.h",
+    "first": 25,
+    "last": 29,
+    "contract": "couldsee macro",
+    "fileSHA256": "415b7e5751194cb7de57c192103d396a2971400e603fd62bf56330304014ac13",
+    "rangeSHA256": "c9e05475c7a4c9261754d08c1c817e5bc82989f47b90dde94833ec95b0dfc2c5"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/display.h",
+    "first": 100,
+    "last": 124,
+    "contract": "canseemon predicates",
+    "fileSHA256": "36e9f838d3298d047e0605abcf2deb627eb79c18aa72f770d5289c34f3692b4c",
+    "rangeSHA256": "b5656297729bdcdf1d082c2788686a90165206ae3ee44ca34b6f4c9e24ce407f"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/youprop.h",
+    "first": 123,
+    "last": 125,
+    "contract": "Deaf",
+    "fileSHA256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "rangeSHA256": "23b97fcaf77456b2e2156eb4dfe9060aa0a5819015f7e740125bfb27916d70b9"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/youprop.h",
+    "first": 399,
+    "last": 399,
+    "contract": "Unaware",
+    "fileSHA256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "rangeSHA256": "4fa692bf6e8722b39c660556d1aec4017ee590349cdf3ed85951beafe05278be"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/artilist.h",
+    "first": 203,
+    "last": 214,
+    "contract": "Sunsword identity alignment and artifact",
+    "fileSHA256": "5375cf830dac26aefd5dbefe1ab5bd79a1f1988b770e7a4dee61b6453c1dd3d3",
+    "rangeSHA256": "669632ce2481efc909305702125b125ecc6d7e5b287e3a72172e764fd47d885a"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/objects.h",
+    "first": 496,
+    "last": 510,
+    "contract": "gold dragon scale mail producer data",
+    "fileSHA256": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "rangeSHA256": "f9b2eb7d1baf7815bc4d1b43521bdab15bafd14635e1592f147931bb7d27b012"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/monsters.h",
+    "first": 448,
+    "last": 458,
+    "contract": "gremlin species",
+    "fileSHA256": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+    "rangeSHA256": "1f814ea92b208179bb76416b2bdd908e04fa2ac64afe18538c32a92f6eead6a7"
+  },
+  {
+    "path": "../../../nethack-c/upstream/include/monsters.h",
+    "first": 3260,
+    "last": 3269,
+    "contract": "newt species",
+    "fileSHA256": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+    "rangeSHA256": "5ed0c00ace684bb4d83c871293f655d2114995ba91c5acfe3e54a5fb3b8decae"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 227,
+    "last": 236,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "fa24dbc5b2ebf6272cbb31ff9e9e1fd64bb0e8693d7d6cd60fee43a1f572d084"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 1003,
+    "last": 1041,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "d7147a27208f7e37f8b45f35e84896655027931a5db47925a1550eddae71ba45"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 1157,
+    "last": 1188,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "d28194189536127fccbf4e07bfb7d95f665bd277a4d9bb7fcca43035651502e0"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 696,
+    "last": 713,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "256328d8e2ea41dbb9457069a9a1cdd54821694166a4c856c113249c656212ce"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 919,
+    "last": 1002,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "180803e52af2763d2063ec6872951da1e5e9c6412688c815f069cd7a88062d49"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 238,
+    "last": 268,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "9ecaff611fa8ecf569298ccacd932ef139774234fe558e917b6f0f1ebb66c9d5"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 1049,
+    "last": 1120,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "313cc75e86bd4005c1f28f82fad4eece2d3c3c747baeaff810fc62c5ab647631"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 1393,
+    "last": 1444,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "349735e197561abbc8084bbdf7fb6f97db34c569ffc1f5400db13287964c2a34"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/monmove.js",
+    "first": 1510,
+    "last": 1532,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+    "rangeSHA256": "31d383851c8e92f5a8236cb0ee02b974c8f5aa3f57d6e880e7fe458b75bc3d55"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/artifact.js",
+    "first": 721,
+    "last": 731,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "fab41ccba2f545b6eba689acf93283960eb71efbfe4011515bf766f2fe4a32e7",
+    "rangeSHA256": "9f92f929f6bcd8b18c6bd84a6aebc2c6c2ea94a310ada0819afced3694241316"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/wield.js",
+    "first": 322,
+    "last": 388,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "4f656732aee680462c5322b416c874bcee986ae7bfa61e9ebdfad000ec62a867",
+    "rangeSHA256": "580618dced68dff7f092138b70b91f518fbb872b7350c72cc0a82e343ce6cbd1"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/wield.js",
+    "first": 414,
+    "last": 503,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "4f656732aee680462c5322b416c874bcee986ae7bfa61e9ebdfad000ec62a867",
+    "rangeSHA256": "9a2893ee3219a45b40684411cc8af68a2e2292b89dee075c3bdd9610eb083e6e"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/worn.js",
+    "first": 128,
+    "last": 215,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "7a3a33f1e0ee834a6688055a8665168aeff05c783791b84d84f0a1e45516caef",
+    "rangeSHA256": "f824efb3cf232f4fab853f5b929ddfb5ebac997c66ccaa5f160a5db716bc6657"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/do_wear.js",
+    "first": 299,
+    "last": 416,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "8dac16ef66901568c041b75b1daa23242ee8d32004f860f1f8a37aa5d2f1ef63",
+    "rangeSHA256": "241570aab13e8bae225483c09fdc7ee985315c1deffcc19c813f012bd926bfc6"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/timeout.js",
+    "first": 851,
+    "last": 940,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "17be97f28596702f4e8fca01397ec2483f46f61e8da635ea02114d779d9f5f46",
+    "rangeSHA256": "1ca00d22ae827e831deef90d967413aa494343c925825665a49e9aba1b3b8fa2"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/light.js",
+    "first": 45,
+    "last": 52,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "f3d8612b2e633200faa0dd65dc56e97d8f21865d6f8ea0e560c794b5a7febd86",
+    "rangeSHA256": "bddf6e9f1571c270736e1ea8e822b6b42745380f5e1c4523e27fcf6877a222f3"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/light.js",
+    "first": 101,
+    "last": 117,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "f3d8612b2e633200faa0dd65dc56e97d8f21865d6f8ea0e560c794b5a7febd86",
+    "rangeSHA256": "57fb34474d0063fce9c64731502bb3bfb4ad57c48b04344a05894ef0c9dcd890"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/light.js",
+    "first": 146,
+    "last": 186,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "f3d8612b2e633200faa0dd65dc56e97d8f21865d6f8ea0e560c794b5a7febd86",
+    "rangeSHA256": "10af23c09741af733668e2a81f15fc5f52a06a85c52158de6048ae6d10fd0b5c"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/read.js",
+    "first": 2864,
+    "last": 3101,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "e13db8755e1f4c12705bb2d18a51627437ecf7383ee898b9adef822c03bde78f",
+    "rangeSHA256": "834eb2f90d8d66142e36c10abda7b56e88fd090cb13d1a4b66645d3e0495239d"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/zap.js",
+    "first": 1969,
+    "last": 2083,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "99128d5ae7f8afd83dce904539b47002bc40161c22fee726d685845ee6684a79"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/wizcmds.js",
+    "first": 98,
+    "last": 110,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+    "rangeSHA256": "4dce5631b021bf4976e3d9842b550ce75df1b7263eec494e268f545dae35c368"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/makemon.js",
+    "first": 2331,
+    "last": 2372,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "7c70082fb1e1f53adfae8f0f285b4db3905d521f3eb058f35436ae1d37c70379",
+    "rangeSHA256": "954e2dc50cf87d7228a42141cc103644a00b15ef02660e68decec97c4ae59baa"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/vision.js",
+    "first": 976,
+    "last": 988,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "a59fe58aea3d944d62128891b0b63f60f5abfc753e88f33fabb8ce46e400ccbd",
+    "rangeSHA256": "d56e49a0329e4fc779827344226f0a01d2569060e52207552f7e645b1c6211ba"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/display.js",
+    "first": 2856,
+    "last": 2863,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "73e729a52bcf54094f1b0bf74da9abcb102239f4908bd6771ead2b61371bb6e8",
+    "rangeSHA256": "2ebd130131e27f80e72734decf2dcd2d6d017a0282cf5521295a03771382f689"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/display.js",
+    "first": 2902,
+    "last": 2917,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "73e729a52bcf54094f1b0bf74da9abcb102239f4908bd6771ead2b61371bb6e8",
+    "rangeSHA256": "468e1fbf7aa3d2fe26c1d9fd467d11b0f878703ef034e7507fafca6c21487e13"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/engrave.js",
+    "first": 434,
+    "last": 445,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "9874f8dfa78d3ce28df1e0724b3d05f9b474ffbafe2bc6fec74d2cc8d8a73016",
+    "rangeSHA256": "0596237e95a9a34e97cb806b2377caf17a0dc9aec14f40a8c3ab1475267b94a5"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/objnam.js",
+    "first": 899,
+    "last": 913,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "fef75c0345682c982b8a6dd5b78770b80dfdc38bcc8c8df1f4fdb6be0f1badd5"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/objnam.js",
+    "first": 4226,
+    "last": 4239,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+    "rangeSHA256": "5957ef5244328406a2cf72aee71c94ee373193c4eb2f99b0b86d5656f6e80ced"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/youprop.js",
+    "first": 39,
+    "last": 49,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+    "rangeSHA256": "68a520e4ba499cdf2511e46a32d85167028755b9f94f65d8fcca0181b6b0b9f2"
+  },
+  {
+    "path": "../autoquiver-equipment-parent-composed/js/youprop.js",
+    "first": 88,
+    "last": 97,
+    "contract": "read JS owner/helper or explicitly selected caller context",
+    "fileSHA256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+    "rangeSHA256": "903f1220bffbeca79ead2a1639e152eee07ed7cfb02fac77ceefe043391cb186"
+  }
+]

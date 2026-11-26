@@ -1,0 +1,46 @@
+{
+  "sourcePacket": ".cache/restart-20261122/gremlin-light-source-audit",
+  "sourceSealSHA256": "610345bc6dfc8a470c9629d52bff306aeed62907b58b6bf24a2fc3776106b5f4",
+  "candidatePacket": ".cache/restart-20261122/gremlin-light-candidate",
+  "candidateSealSHA256": "2f334c58d869f1e7533879c8668de9a078ce9107809b4cdc5ae9c3c371470134",
+  "originalRecipeSHA256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed",
+  "rawSHA256": "2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452",
+  "sourceInitial": {
+    "checks": "71/75",
+    "sourceAndProducer": "61/65",
+    "neutrality": "10/10",
+    "preservedFailures": 4
+  },
+  "candidate": {
+    "sourceAndProducer": "65/65",
+    "neutrality": "10/10"
+  },
+  "archivedNative": {
+    "baseline": "3/5",
+    "candidate": "5/5",
+    "freshPromotionNativeReplays": 0
+  },
+  "negativeIndexes": [
+    2,
+    3,
+    4
+  ],
+  "negativeHashes": 15,
+  "supplementalORRequired": true,
+  "nativeAlternatives": [
+    [
+      true,
+      false
+    ],
+    [
+      true,
+      false
+    ]
+  ],
+  "limits": [
+    "Unaware/Deaf/verbal paths implemented but unobserved.",
+    "Generic and immobile location feedback remains separate.",
+    "No integrated sound/voice context coverage."
+  ],
+  "parentWrapperDiagnostic": "Recorder exit0; baseline gate correctly exit1 for two mismatches; expected0 wrapper assertion retained separately."
+}

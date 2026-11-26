@@ -5679,6 +5679,41 @@
       "description": "Preserve valid female Wizard startup and its intermediate and final ranks.",
       "minimumSessions": 1,
       "normalModeRequired": false
+    },
+    {
+      "group": "Gremlin light fear",
+      "id": "gremlin-light.sunsword-gremlin",
+      "cFile": "src/monmove.c",
+      "cFunction": "monflee",
+      "description": "A sighted adjacent hostile gremlin flees the real wielded lit Sunsword and emits painful-light feedback in the recorded inputs; retain the source OR for verbal feedback."
+    },
+    {
+      "group": "Gremlin light fear",
+      "id": "gremlin-light.gold-mail-gremlin",
+      "cFile": "src/monmove.c",
+      "cFunction": "monflee",
+      "description": "A sighted adjacent hostile gremlin flees real worn lit gold dragon scale mail and emits painful-light feedback in the recorded inputs; retain the source OR for verbal feedback."
+    },
+    {
+      "group": "Gremlin light fear",
+      "id": "gremlin-light.carried-sunsword-gremlin",
+      "cFile": "src/monmove.c",
+      "cFunction": "distfleeck",
+      "description": "Carried unwielded Sunsword does not trigger light fear; all five output hashes remain unchanged."
+    },
+    {
+      "group": "Gremlin light fear",
+      "id": "gremlin-light.ordinary-sword-gremlin",
+      "cFile": "src/monmove.c",
+      "cFunction": "distfleeck",
+      "description": "An ordinary wielded long sword does not trigger gremlin light fear; all five output hashes remain unchanged."
+    },
+    {
+      "group": "Gremlin light fear",
+      "id": "gremlin-light.sunsword-newt",
+      "cFile": "src/monmove.c",
+      "cFunction": "distfleeck",
+      "description": "A newt next to a real wielded lit Sunsword does not use gremlin light fear; all five output hashes remain unchanged."
     }
   ]
 }

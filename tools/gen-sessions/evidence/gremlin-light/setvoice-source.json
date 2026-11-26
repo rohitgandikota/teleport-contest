@@ -1,0 +1,77 @@
+{
+  "ranges": [
+    {
+      "path": "nethack-c/upstream/include/sndprocs.h",
+      "first": 44,
+      "last": 68,
+      "fileSHA256": "4d105334e499c3fb4af00fcd1acf48802a8db5ccf799bd31bfafc2afaa286654",
+      "rangeSHA256": "3d05ff45f1f62cf5712138a0311289be201f3068c7821528ddb603b75e0de7d7",
+      "source": "    const char *soundname;\n    enum soundlib_ids soundlib_id;\n    unsigned long sound_triggers; /* capabilities in the port */\n    void (*sound_init_nhsound)(void);\n    void (*sound_exit_nhsound)(const char *);\n    void (*sound_achievement)(schar, schar, int32_t);\n    void (*sound_soundeffect)(char *desc, int32_t, int32_t volume);\n    void (*sound_hero_playnotes)(int32_t instrument, const char *str,\n                                 int32_t volume);\n    void (*sound_play_usersound)(char *filename, int32_t volume, int32_t idx);\n    void (*sound_ambience)(int32_t ambience_action, int32_t ambienceid,\n                           int32_t proximity);\n    void (*sound_verbal)(char *text, int32_t gender, int32_t tone,\n                         int32_t vol, int32_t moreinfo);\n};\n\nstruct sound_voice {\n    int32_t serialno;\n    int32_t gender;\n    int32_t tone;\n    int32_t volume;\n    int32_t moreinfo;\n    struct monst *mon;\n    const char *nameid;\n};\n"
+    },
+    {
+      "path": "nethack-c/upstream/include/sndprocs.h",
+      "first": 193,
+      "last": 285,
+      "fileSHA256": "4d105334e499c3fb4af00fcd1acf48802a8db5ccf799bd31bfafc2afaa286654",
+      "rangeSHA256": "2e268fc8e25d8ed11be75848ab5ea20bd7117def0e3e20ed9989bd6d421e9a05",
+      "source": "#if defined(SND_LIB_QTSOUND) || defined(SND_LIB_PORTAUDIO) \\\n        || defined(SND_LIB_OPENAL) || defined(SND_LIB_SDL_MIXER) \\\n        || defined(SND_LIB_MINIAUDIO) || defined(SND_LIB_FMOD) \\\n        || defined(SND_LIB_SOUND_ESCCODES) || defined(SND_LIB_VISSOUND) \\\n        || defined(SND_LIB_WINDSOUND) || defined(SND_LIB_MACSOUND)\n\n/* shortcut for conditional code in other files */\n#define SND_LIB_INTEGRATED\n\n#define Play_usersound(filename, vol, idx) \\\n    do {                                                                      \\\n        if (iflags.sounds && !Deaf && soundprocs.sound_play_usersound         \\\n            && ((soundprocs.sound_triggers & SOUND_TRIGGER_USERSOUNDS) != 0)) \\\n            (*soundprocs.sound_play_usersound)((filename), (vol), (idx));     \\\n    } while(0)\n\n#define Soundeffect(seid, vol) \\\n    do {                                                                      \\\n        if (iflags.sounds && !Deaf && soundprocs.sound_soundeffect            \\\n          && ((soundprocs.sound_triggers & SOUND_TRIGGER_SOUNDEFFECTS) != 0)) \\\n            (*soundprocs.sound_soundeffect)(emptystr, (seid), (vol));         \\\n    } while(0)\n\n/* Player's perspective, not the hero's; no Deaf suppression */\n#define SoundeffectEvenIfDeaf(seid, vol) \\\n    do {                                                                      \\\n        if (iflags.sounds && !soundprocs.sound_soundeffect                    \\\n          && ((soundprocs.sound_triggers & SOUND_TRIGGER_SOUNDEFFECTS) != 0)) \\\n            (*soundprocs.sound_soundeffect)(emptystr, (seid), (vol));         \\\n    } while(0)\n\n#define Hero_playnotes(instrument, str, vol) \\\n    do {                                                                     \\\n        if (iflags.sounds && !Deaf && soundprocs.sound_hero_playnotes        \\\n            && ((soundprocs.sound_triggers & SOUND_TRIGGER_HEROMUSIC) != 0)) \\\n            (*soundprocs.sound_hero_playnotes)((instrument), (str), (vol));  \\\n    } while(0)\n\n/* Player's perspective, not the hero's; no Deaf suppression */\n#define SoundAchievement(arg1, arg2, avals) \\\n    do {                                                                      \\\n        if (iflags.sounds && soundprocs.sound_achievement                     \\\n          && ((soundprocs.sound_triggers & SOUND_TRIGGER_ACHIEVEMENTS) != 0)) \\\n            (*soundprocs.sound_achievement)((arg1), (arg2), (avals));         \\\n    } while(0)\n\n/* sound_speak is in sound.c */\n#define SoundSpeak(text) \\\n    do {                                                                     \\\n        if ((gp.pline_flags & (PLINE_VERBALIZE | PLINE_SPEECH)) != 0         \\\n            && soundprocs.sound_verbal && iflags.voices                      \\\n            && ((soundprocs.sound_triggers & SOUND_TRIGGER_VERBAL) != 0))    \\\n            sound_speak(text);                                               \\\n    } while(0)\n\n/* set_voice is in sound.c */\n#define SetVoice(mon, tone, vol, moreinfo) \\\n    do {                                                                     \\\n        set_voice(mon, tone, vol, moreinfo);                                 \\\n    } while(0)\n\n/*  void (*sound_achievement)(schar, schar, int32_t); */\n\n#ifdef SOUNDLIBONLY\n#undef SOUNDLIBONLY\n#endif\n#define SOUNDLIBONLY\n#ifdef SND_SPEECH\n#define VOICEONLY\n#else\n#define VOICEONLY UNUSED\n#endif\n\n#else  /*  NO SOUNDLIB IS INTEGRATED AFTER THIS */\n\n#ifdef SND_LIB_INTEGRATED\n#undef SND_LIB_INTEGRATED\n#endif\n#define Play_usersound(filename, vol, idx)\n#define Soundeffect(seid, vol)\n#define Hero_playnotes(instrument, str, vol)\n#define SoundAchievement(arg1, arg2, avals)\n#define SoundSpeak(text)\n#define SetVoice(mon, tone, vol, moreinfo)\n#ifdef SOUNDLIBONLY\n#undef SOUNDLIBONLY\n#endif\n#define SOUNDLIBONLY UNUSED\n#ifdef SND_SPEECH\n#undef SND_SPEECH\n#endif\n#ifdef VOICEONLY\n#undef VOICEONLY\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/sounds.c",
+      "first": 1727,
+      "last": 1795,
+      "fileSHA256": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+      "rangeSHA256": "e8b52da74a6b40b89134f337d356127e309dee7e2d86ebdb386bed28b1986834",
+      "source": "    SOUNDID(nosound),\n    0L,\n    (void (*)(void)) 0,                           /* init_nhsound   */\n    (void (*)(const char *)) 0,                   /* exit_nhsound   */\n    (void (*)(schar, schar, int32_t)) 0,          /* achievement    */\n    (void (*)(char *, int32_t, int32_t)) 0,       /* sound effect   */\n    (void (*)(int32_t, const char *, int32_t)) 0, /* hero_playnotes */\n    (void (*)(char *, int32_t, int32_t)) 0,       /* play_usersound */\n    (void (*)(int32_t, int32_t, int32_t)) 0,      /* ambience       */\n    (void (*)(char *, int32_t, int32_t, int32_t, int32_t)) 0, /* verbal */\n};\n\n/* The order of these array entries must match the\n   order of the enum soundlib_ids in sndprocs.h */\n\nstatic struct sound_choices {\n    struct sound_procs *sndprocs;\n} soundlib_choices[] = {\n    { &nosound_procs },     /* default, built-in */\n#ifdef SND_LIB_PORTAUDIO\n    { &portaudio_procs },\n#endif\n#ifdef SND_LIB_OPENAL\n    { &openal_procs },\n#endif\n#ifdef SND_LIB_SDL_MIXER\n    { &sdl_mixer_procs },\n#endif\n#ifdef SND_LIB_MINIAUDIO\n    { &miniaudio_procs },\n#endif\n#ifdef SND_LIB_FMOD\n    { &fmod_procs },\n#endif\n#ifdef SND_LIB_SOUND_ESCCODES\n    { &esccodes_procs },\n#endif\n#ifdef SND_LIB_VISSOUND\n    { &vissound_procs },\n#endif\n#ifdef SND_LIB_WINDSOUND\n    { &windsound_procs },\n#endif\n#ifdef SND_LIB_MACSOUND\n    { &macsound_procs },\n#endif\n#ifdef SND_LIB_QTSOUND\n    { &qtsound_procs },\n#endif\n};\n\nvoid\nactivate_chosen_soundlib(void)\n{\n    int idx = gc.chosen_soundlib;\n\n    if (!IndexOk(idx, soundlib_choices))\n        panic(\"activate_chosen_soundlib: invalid soundlib (%d)\", idx);\n\n    if (ga.active_soundlib != soundlib_nosound || idx != soundlib_nosound) {\n        if (soundprocs.sound_exit_nhsound)\n            (*soundprocs.sound_exit_nhsound)(\"assigning a new sound library\");\n    }\n    soundprocs = *soundlib_choices[idx].sndprocs;\n    if (soundprocs.sound_init_nhsound)\n        (*soundprocs.sound_init_nhsound)();\n    ga.active_soundlib = soundprocs.soundlib_id;\n    gc.chosen_soundlib = ga.active_soundlib;\n}\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/sounds.c",
+      "first": 2154,
+      "last": 2220,
+      "fileSHA256": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+      "rangeSHA256": "4b048cb965aa6b3392b1e3ba41770dd07a768b618c0fd6b5800b9c14f740c476",
+      "source": "#ifdef SND_SPEECH\n#define SPEECHONLY\n#else\n#define SPEECHONLY UNUSED\n#endif\n\nvoid\nset_voice(\n    struct monst *mtmp SPEECHONLY,\n    int32_t tone SPEECHONLY,\n    int32_t volume SPEECHONLY,\n    int32_t moreinfo SPEECHONLY)\n{\n#ifdef SND_SPEECH\n    int32_t gender = (mtmp && mtmp->female) ? FEMALE : MALE;\n\n    if (gv.voice.nameid)\n        free((genericptr_t) gv.voice.nameid);\n    gv.voice.gender = gender;\n    gv.voice.serialno = mtmp ? mtmp->m_id\n                             : ((moreinfo & voice_talking_artifact) != 0)  ? 3\n                                 : ((moreinfo & voice_deity) != 0) ? 4 : 2;\n    gv.voice.tone = tone;\n    gv.voice.volume = volume;\n    gv.voice.moreinfo = moreinfo;\n    gv.voice.nameid = (const char *) 0;\n    gp.pline_flags |= PLINE_SPEECH;\n#endif\n}\n\nvoid\nsound_speak(const char *text SPEECHONLY)\n{\n#ifdef SND_SPEECH\n    const char *cp1, *cp2;\n    char *cpdst;\n    char buf[BUFSZ + BUFSZ];\n\n    if (!text || (text && *text == '\\0'))\n        return;\n    if (iflags.voices && soundprocs.sound_verbal\n        && (soundprocs.sound_triggers & SOUND_TRIGGER_VERBAL)) {\n        cp1 = text;\n        cpdst = buf;\n        cp2 = c_eos(cp1);\n        cp2--;  /* last non-NUL */\n        *cpdst = '\\0';\n        if ((gp.pline_flags & PLINE_VERBALIZE) != 0) {\n            if (*cp1 == '\"')\n                cp1++;\n            if (*cp2 == '\"')\n                cp2--;\n        }\n        /* cp1 -> 1st, cp2 -> last non-nul) */\n        if ((unsigned)(cp2 - cp1) < (sizeof buf - 1U)) {\n            while (cp1 <= cp2) {\n                *cpdst = *cp1;\n                cp1++;\n                cpdst++;\n            }\n            *cpdst = '\\0';\n        }\n        (*soundprocs.sound_verbal)(buf, gv.voice.gender, gv.voice.tone,\n                                   gv.voice.volume, gv.voice.moreinfo);\n    }\n#endif\n}\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/pline.c",
+      "first": 64,
+      "last": 80,
+      "fileSHA256": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+      "rangeSHA256": "66cefe14c72412448a0c0f27e0d9b606c88ca2a3500f24675b6365fa39caed02",
+      "source": "staticfn void\nputmesg(const char *line)\n{\n    int attr = ATR_NONE;\n\n    if (iflags.debug_prevent_pline)\n        return;\n\n    if ((gp.pline_flags & URGENT_MESSAGE) != 0\n        && (windowprocs.wincap2 & WC2_URGENT_MESG) != 0)\n        attr |= ATR_URGENT;\n    if ((gp.pline_flags & SUPPRESS_HISTORY) != 0\n        && (windowprocs.wincap2 & WC2_SUPPRESS_HIST) != 0)\n        attr |= ATR_NOHISTORY;\n    putstr(WIN_MESSAGE, attr, line);\n    SoundSpeak(line);\n}\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/pline.c",
+      "first": 284,
+      "last": 292,
+      "fileSHA256": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+      "rangeSHA256": "beabf18c6cb2e888adbc3ae62a5830fa2f9ef049328dc9ff368acea0822867a5",
+      "source": "        display_nhwindow(WIN_MESSAGE, TRUE); /* --more-- */\n pline_done:\n#ifdef SND_SPEECH\n    /* clear the SPEECH flag so caller never has to */\n    gp.pline_flags &= ~PLINE_SPEECH;\n#endif\n    --in_pline;\n}\n\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/pline.c",
+      "first": 476,
+      "last": 490,
+      "fileSHA256": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+      "rangeSHA256": "53af18df8fc7cbfa9b55629aaa4d12bad1fcf0f214c46c0513d8c9f89cabc21c",
+      "source": "verbalize(const char *line, ...)\n{\n    va_list the_args;\n    char *tmp;\n\n    va_start(the_args, line);\n    gp.pline_flags |= PLINE_VERBALIZE;\n    tmp = You_buf((int) strlen(line) + sizeof \"\\\"\\\"\");\n    Strcpy(tmp, \"\\\"\");\n    Strcat(tmp, line);\n    Strcat(tmp, \"\\\"\");\n    vpline(tmp, the_args);\n    gp.pline_flags &= ~PLINE_VERBALIZE;\n    va_end(the_args);\n}\n"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "first": 5532,
+      "last": 5538,
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "d8646bddaad93b3e3b3ea0b7a9bd5292f0f1b08929eb447af98cd044d3e8676b",
+      "source": "#ifdef SND_SPEECH\n        if ((gp.pline_flags & PLINE_SPEECH) != 0) {\n            sound_speak(query);\n            gp.pline_flags &= ~PLINE_SPEECH;\n        }\n#endif\n        if (!yn_function_menu(query, resp, def, &res)) {\n"
+    },
+    {
+      "path": "nethack-c/upstream/include/decl.h",
+      "first": 1018,
+      "last": 1026,
+      "fileSHA256": "4782c5f522f6de63503cda131c0e2485aef31506d83dcfb32defeebf984fb470",
+      "rangeSHA256": "1e70fd4e45e9c134b14df860f42a4319c1521893bcaf5c28cd1ec171bdb6c2f7",
+      "source": "    coordxy *viz_rmax;   /* max could see indices */\n    boolean vision_full_recalc;\n\n    /* new stuff */\n    struct sound_voice voice;\n\n    boolean havestate;\n};\n\n"
+    }
+  ],
+  "noRuntimeDependency": "These are review evidence. The portable gate never reads C source, build files, object files or binary."
+}

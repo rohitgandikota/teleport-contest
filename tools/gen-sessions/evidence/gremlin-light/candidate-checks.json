@@ -1,0 +1,23 @@
+{
+  "producerChecks": "50/50",
+  "sourceChecks": "15/15",
+  "combined": "65/65",
+  "neutrality": "10/10",
+  "totalChecks": "75/75",
+  "native": "5/5",
+  "baselineNative": "3/5",
+  "preservedBaselineSourceFailures": 4,
+  "negativeHashes": 15,
+  "completeOrdinaryNegativeRows": 3,
+  "completeNativeNegativeRows": 3,
+  "boundaries": 760,
+  "calls": 13811,
+  "frames": 0,
+  "reportHashes": {
+    "candidate-observation.json": "44ed0c25c04fb9a0245281b5c8cfaef6f30f0bf0f9956acf0c035bcd4ac70f74",
+    "native.json": "74606ba99fd3b1e2b2ad54996095c5844d930c5a3d7ba3dfcdc581175885a268",
+    "candidate-negative-hashes.json": "00de2a54d91ca6b127167df3dab605669b79116fa8f069d112466f42fd2b6b31",
+    "ordinary-checks.json": "2f73de7ce91a31403c4a319941c46e7599a0e6311cf7e624ee8bb5dc0a131847",
+    "preflight.json": "13e9c7c166dc138caeb1ebbd950b843c9dd8e04baf086f4ffa835d8aac4eb8f7"
+  }
+}

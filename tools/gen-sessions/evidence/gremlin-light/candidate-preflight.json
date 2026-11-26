@@ -1,0 +1,37 @@
+{
+  "beforeGameplayImports": true,
+  "source": "c",
+  "version": 5,
+  "cases": 5,
+  "keys": 755,
+  "boundaries": 760,
+  "rawSHA256": "2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452",
+  "recipeSHA256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed",
+  "sourceSealSHA256": "610345bc6dfc8a470c9629d52bff306aeed62907b58b6bf24a2fc3776106b5f4",
+  "runtimeSHA256": "afd0199f3623ac9c3c7137d555879a0272c9765f0b1183b50088d2b4cf9ae9a9",
+  "originalBodySHA256": "656fbddf6ed5771ae0c482d40289d9cc9f844d029b0db0f840fd38e5b1a29914",
+  "fieldsAndPresence": true,
+  "keysExact": true,
+  "metadataPreserved": true,
+  "basePrimaryAssertions": 5,
+  "supplementalPositiveOR": 2,
+  "supplementalNegatives": 3,
+  "alternatives": [
+    {
+      "segment": 0,
+      "matched": [
+        true,
+        false
+      ]
+    },
+    {
+      "segment": 1,
+      "matched": [
+        true,
+        false
+      ]
+    }
+  ],
+  "integrityErrors": [],
+  "branchErrors": []
+}

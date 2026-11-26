@@ -1,0 +1,48 @@
+{
+  "cases": 5,
+  "producers": 5,
+  "producerChecks": 50,
+  "producerTotal": 50,
+  "sourceCases": 3,
+  "sourceChecks": 11,
+  "sourceTotal": 15,
+  "neutrality": 10,
+  "neutralityTotal": 10,
+  "checks": 71,
+  "totalChecks": 75,
+  "negativeHashes": 15,
+  "firstFailures": [
+    {
+      "name": "sunsword-gremlin",
+      "producer": null,
+      "source": [
+        "C positive eventually flees while matched negatives do not",
+        "C painful-light OR Bright-light feedback, with neither in negatives"
+      ]
+    },
+    {
+      "name": "gold-mail-gremlin",
+      "producer": null,
+      "source": [
+        "C positive eventually flees while matched negatives do not",
+        "C painful-light OR Bright-light feedback, with neither in negatives"
+      ]
+    },
+    {
+      "name": "carried-sunsword-gremlin",
+      "producer": null,
+      "source": []
+    },
+    {
+      "name": "ordinary-sword-gremlin",
+      "producer": null,
+      "source": []
+    },
+    {
+      "name": "sunsword-newt",
+      "producer": null,
+      "source": []
+    }
+  ],
+  "nativeParityClaimed": false
+}

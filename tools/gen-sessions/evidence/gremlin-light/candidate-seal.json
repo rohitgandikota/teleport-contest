@@ -1,0 +1,33 @@
+{
+  "members": 329,
+  "manifestSHA256": "468f11c7c210ef73d964da86961cc13b7e3ebbd1639e26600a8e59746c090af1",
+  "runtimeSHA256": "afd0199f3623ac9c3c7137d555879a0272c9765f0b1183b50088d2b4cf9ae9a9",
+  "patchSHA256": "6125eb3988166d188c3e423d88376d55d57b7182696183d3364432418cd4b33b",
+  "originalSourceSealSHA256": "610345bc6dfc8a470c9629d52bff306aeed62907b58b6bf24a2fc3776106b5f4",
+  "rawSHA256": "2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452",
+  "nativeReportSHA256": "74606ba99fd3b1e2b2ad54996095c5844d930c5a3d7ba3dfcdc581175885a268",
+  "recipeSHA256": "b0a1ba4e870c0f688a611c8ba792f97e596444fe7d77acca35fde8599b594fed",
+  "unchangedBodySHA256": "656fbddf6ed5771ae0c482d40289d9cc9f844d029b0db0f840fd38e5b1a29914",
+  "sourceAndProducer": "65/65",
+  "neutrality": "10/10",
+  "native": "5/5",
+  "baselineNative": "3/5",
+  "negativeHashes": 15,
+  "completeOrdinaryNegativeRows": 3,
+  "completeNativeNegativeRows": 3,
+  "keys": 755,
+  "boundaries": 760,
+  "calls": 13811,
+  "frames": 0,
+  "oneSequentialBatchSeconds": 3.145,
+  "newCExecutions": 0,
+  "promotionCreated": false,
+  "changedRuntimePaths": [
+    "js/monmove.js"
+  ],
+  "unobservedLightMessageBranches": [
+    "Unaware",
+    "Deaf",
+    "verbal Bright light"
+  ]
+}

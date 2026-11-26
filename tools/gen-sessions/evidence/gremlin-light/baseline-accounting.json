@@ -1,0 +1,15 @@
+{
+  "passed": [
+    2,
+    3,
+    4
+  ],
+  "failed": [
+    0,
+    1
+  ],
+  "nativePasses": 3,
+  "nativeCases": 5,
+  "originalReportSHA256": "13c6a28e0c01f4fb5d5b3ccdd01fe07adb82477b0985cc0b8ea846523dba06ee",
+  "wrapperAssertion": "The generic parent wrapper expected exit0; native gate correctly returns exit1 for two measured baseline mismatches. Original receipt and log retained; no replay."
+}

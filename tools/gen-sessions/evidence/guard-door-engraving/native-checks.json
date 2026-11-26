@@ -1,0 +1,42 @@
+[
+  {
+    "runtime": "baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "total": 5,
+    "exact": 3,
+    "report": ".cache/restart-20261122/guard-door-engraving-parent-baseline-native.json",
+    "reportSHA256": "9f910042b87244a4bf109dfba70f2cbd87e219381ed0c6907572cfe71497b4f8",
+    "log": ".cache/restart-20261122/guard-door-engraving-parent-baseline-native.log",
+    "logSHA256": "0a54a0ae57911e15a30f1450c12f27c74fb36faae72ef2f4fc933c1e91a1bdf5",
+    "runtimeMapSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81"
+  },
+  {
+    "runtime": "candidate",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-candidate-native.json"
+    ],
+    "exit": 0,
+    "total": 5,
+    "exact": 5,
+    "report": ".cache/restart-20261122/guard-door-engraving-parent-candidate-native.json",
+    "reportSHA256": "7cdcd1cd464b467ce008fc8e380ab654477dedd38dc95c9de96a4d355a408854",
+    "log": ".cache/restart-20261122/guard-door-engraving-parent-candidate-native.log",
+    "logSHA256": "393029221a3f52922ec70b056b37adbbdd19c14cd00bf9229f70186283c862c9",
+    "runtimeMapSHA256": "3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a"
+  }
+]

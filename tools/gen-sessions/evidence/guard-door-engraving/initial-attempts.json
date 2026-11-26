@@ -1,0 +1,25 @@
+{
+  "firstInspection": {
+    "error": "Used nonexistent display.steps; corrected to maintained outputs(run).screens without changing gameplay",
+    "originalScriptSHA256": "ad05274f013fe84d3d9b0af1a902e4c103b0fe2c9c3096eb171029943f08f3be",
+    "originalLogSHA256": "51b71c152d97d63918557fc007946fb129e44ac7df07a069163ca34f74974b8d"
+  },
+  "proposals01": {
+    "limitation": "The first engraving input omitted the message acknowledgement, so its text keys were consumed by the prompt and no engraving was made.",
+    "recipeSHA256": "4e5eda9a2ee0de9070825964008d3e58dbff8f6a45d00e6ea55859818f93bf56",
+    "reportSHA256": "17a0d725ed88518a7506f22ebd46255cc062f3b87c4960b2942742cd8868cf2a"
+  },
+  "proposals02": {
+    "limitation": "The engraving was made, but the original suffix ended at the guard gold request before carving.",
+    "recipeSHA256": "861a67eed636f77f6277c7cc8deaf7f195000bb40bc930c6d45e98f154e46e6b",
+    "reportSHA256": "1d0384b78913da071aa2be2d8677efaa88e56a4ea6fd8d020a69d9302e370d4a"
+  },
+  "proposals03": {
+    "result": "Both carving arms reached through real commands. The later proposal adds readout after the wall case and three controls.",
+    "recipeSHA256": "500370bdbf70e6a8102db848a9d01a1082fa50e937e773b1ab26c2aaf33f043b",
+    "reportSHA256": "cba23f71e0f923a15de589a44910b3f84142bc2b9fce2d8436a1d27c018e081c"
+  },
+  "finalRecipeSHA256": "8f9de99d934faecec60333c148cda720ce654d6176108b5b6755f57b7c1c66df",
+  "candidateWasAbsentThroughProposal04": true,
+  "initialFailuresWereRecorderOrRuntimeChanges": false
+}

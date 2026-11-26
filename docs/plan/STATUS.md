@@ -1,6 +1,6 @@
 # STATUS — live handoff board
 
-## 2026-11-25: restored-entry guard918 passed, publication next
+## 2026-11-25: guard918 pushed, doorway engraving919 verified
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -91,7 +91,9 @@ Do not relaunch it or remove a linked ancestor.
 Full917 and publication verification are complete. Do not rerun them. Scripts
 and receipts are under .cache/restart-20261122/.
 
-The current uncommitted fix adds C vault.c1009-1016 to gd_move. If the hero has
+The restored-entry fix is published as a5109213fa8f3e6f67e9f234a69dc13cbce27fb9,
+pushed at 23:09 EST and confirmed on origin/main. It adds C vault.c1009-1016
+to gd_move. If the hero has
 left the temporary corridor and its entrance is restored, the guard announces
 confusion and cleans up. The change is nine lines in js/vault.js, with existing
 helpers and no new imports. Source335 verifies; its original ordinary assertions
@@ -118,29 +120,84 @@ passes 918/918 on NFS, completed PID3359044, using links to full917. Totals:
 SHA256: 86a621c7d69ee4c608480877a8b6a8b8f37b14fa3b28e4b9d642666e61cbdcce.
 Both two-CPU shards pass with default 45-second limits and no retries. All 1,209 files
 are pinned by SHA256 9a311216f9fd2d9ee6b5954efe8a5f6e0e2e68637723aa3feff38ae689d980d8.
-Full918 is complete. Run verify-guard-restored-entry-parent.py, then
-stage-guard-restored-entry.py, commit and
-push immediately, then verify-full-publication.py guard-restored-entry-full918
-COMMIT guard-restored-entry-parent-composed-native-runner.
+Full918 and publication checks are complete. All 1,209 tested Git blobs match
+the public tree. Publication receipt SHA256:
+45fb2277eb9203fa93e2b628890d96e013c583c39a79336e9ae2d8a377ad5095.
+No full replay, recorder or publication rerun is needed.
 
-Leibniz's feel_cockatrice audit found no qualifying ordinary naming difference:
-8/8 controls and all negative hashes pass, with no runtime patch. Its 29-member
-packet and 68 source ranges verify. He is auditing vault wall restoration next.
-Euclid has locked three ordinary merged-config-byte-limit inputs before any
-candidate edit. Parent recorded them once; all three predicted native branches
-pass. The fixed baseline is 2/3, with the quoted partial-byte case failing.
-Raw SHA256: 384cd13b3cc862459640cebe944e6c704c623fee3a60abe154b218e23f0b6cf2.
-Euclid is preparing the isolated three-file candidate. Sartre is auditing
-invault nonwall entry reconstruction. Neither audit changes main.
+The current uncommitted change adds gd_move's two missing del_engr_at(ex,ey)
+calls when opening a doorway. Main changes only js/vault.js from published918.
+Fixed280 map: guard-door-engraving-parent-composed-runtime.json, SHA256
+3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a.
+Five locked keyboard cases total 906 keys and 911 boundaries. Both source positives fail
+on baseline 23/25 and pass on candidate 25/25. Three negative rows and 15 hashes
+remain exact, including passive/plain/deferred streams. Initial observer and
+prompt-proposal failures remain in guard-door-engraving-source-audit.
+
+Original C ran once. All five predicted primary branches pass, with unchanged
+inputs. Native comparison improves 3/5 to 5/5, repairing six screen boundaries
+and both positive random streams. Three complete negative reports stay equal.
+Raw SHA256: b8a1373f43c614f3614ce34b6231ea9eac4a623d2d728d706ac646ee90d3be50.
+It has 31,087 calls and zero frames. Reports and receipts use prefix
+guard-door-engraving-parent. The public gate keeps the original 25-assertion body,
+checks C metadata before game imports and verifies all 15 negative hashes.
+Its final main report SHA256 is
+03c0661795a7c41b8800c5cbe12d221618d10f08585c82a78034aec996ade1fa.
+
+All 38 retained commands, 93 selected/public recordings and 93 strict workers pass.
+Sixteen retained native cases preserve their complete reports. Main has 14 exact
+payloads plus the raw and five new requirements, now 4,612 entries. The canonical
+recipe corrects only an unknown coverage label to terrain.engraving-elbereth;
+the original recipe is retained and every other field/primary assertion is
+identical. Its final gate SHA256 is
+5d67a9155d023ff7918989fd41c3c194a1a0eed068b054db38286bd0328a4ba2.
+
+Full919 passes all 919 recordings on NFS, completed PID3368138, with two CPU
+workers, default 45-second limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-door-engraving-full919-js-20261125.
+It links 918 prior fixtures and uploads only 292 source/new-raw files. All 1,210 files
+are pinned by SHA256 59950cddb5e347c35e2f93d6a2f82654f943c813012c9254eed748249122ce14.
+Totals: 931,345 screens/cursors, 20,225,162 random calls and 33,131 frames.
+Verification SHA256:
+4dca5e0b6aa583a3dce09c1255969f7410580c4ed21cdbca06374e929e2f2eca.
+Do not rerun this completed replay. Final parent verification and exact Git-index
+verification precede the immediate commit and push. Those scripts are prepared
+under .cache/restart-20261122/.
+
+Next source work remains isolated:
+- Euclid: sealed568 config merged-byte-cap candidate, four owners including
+  cmd.bind_key raw parameter copying. Source28+symbol52 and13native cases pass;
+  all45negative hashes and retainedfruit/glyph gates stay fixed. Parent recorded
+  the two additional binding controls once; primary2/2pass. RawSHA
+  b81f77beac4f7e70192e4b2e10f69fe3b4199620e39cdd151c51d5e10d747793,
+  16keys/18bounds/6,058calls. He is preparing a separate native2/promotion packet.
+- Leibniz: sealed38 wallify retained-object redraw audit,96ranges verified.
+  Baseline source predicates3/4, neutral ordinary reach4/4,15negative hashes.
+  Parent recorded four cases once; primary4/4pass. RawSHA
+  a6950b5b46dbf3331891d441bc6c9388bc4ae7bef1fde855b05fa4e7c66b4915,
+  876keys/880bounds/25,465calls. Candidate scope is temporary visibility/newsym
+  order; disposal, yelp, trap and wall-mode gaps remain separate.
+- Sartre: sealed43 invault nonwall-entry reconstruction audit,40ranges verified.
+  Baseline25/28 has three source failures with all15negative hashes retained.
+  Parent recorded four cases once; primary4/4pass. RawSHA
+  e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af,
+  593keys/597bounds/20,703calls/21frames. A separate candidate must reconstruct
+  the wall before saving fakecorr, preserving the split flags/wall_info contract.
+  Its six row-metadata corrections preceded recording; originals remain intact.
+
+Do not rerecord these originals or alter the sealed source packets. Prefixes are
+config-binding-param-parent, wallify-vault-parent and invault-nonwall-entry-parent.
+The earlier feel_cockatrice audit found no ordinary naming defect and made no
+runtime patch. Its29members/68source ranges verify.
 
 Storage was rechecked after the first two pushes: `du -sh .` reports 3.3G. Full replay
 runs remain on NFS; no complete result or fixture corpus was copied locally.
-The last official recheck, 22:47 EST, returned the 21:05 feed: agentic rank 7,
+The last official recheck, 23:13 EST, returned the 21:05 feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
-row predates all three latest pushes. The official site explicitly lists
+row predates all four latest pushes. The official site explicitly lists
 six-hour scoring cycles; the feed does not identify the scored commit. Local
 parity establishes no newer held-out score. Receipt:
-leaderboard-current-recheck-20261126-034737.json.
+leaderboard-current-recheck-20261126-041347.json.
 
 ## 2026-11-25: guard prompt correction published as 80049d92
 

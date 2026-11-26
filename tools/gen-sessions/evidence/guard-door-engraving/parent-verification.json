@@ -1,0 +1,184 @@
+{
+  "baselineCommit": "a5109213fa8f3e6f67e9f234a69dc13cbce27fb9",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a",
+  "ordinary": {
+    "baseline": 23,
+    "candidate": 25,
+    "total": 25,
+    "mainReportSHA256": "03c0661795a7c41b8800c5cbe12d221618d10f08585c82a78034aec996ade1fa"
+  },
+  "native": {
+    "baseline": 3,
+    "candidate": 5,
+    "cases": 5,
+    "boundaries": 911,
+    "calls": 31087,
+    "frames": 0,
+    "repairedBoundaries": 6,
+    "negativeCompleteReportsUnchanged": 3,
+    "negativeOutputHashesUnchanged": 15,
+    "checks": [
+      {
+        "runtime": "baseline",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-baseline-native.json"
+        ],
+        "exit": 1,
+        "total": 5,
+        "exact": 3,
+        "report": ".cache/restart-20261122/guard-door-engraving-parent-baseline-native.json",
+        "reportSHA256": "9f910042b87244a4bf109dfba70f2cbd87e219381ed0c6907572cfe71497b4f8",
+        "log": ".cache/restart-20261122/guard-door-engraving-parent-baseline-native.log",
+        "logSHA256": "0a54a0ae57911e15a30f1450c12f27c74fb36faae72ef2f4fc933c1e91a1bdf5",
+        "runtimeMapSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81"
+      },
+      {
+        "runtime": "candidate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-door-engraving-parent-candidate-native.json"
+        ],
+        "exit": 0,
+        "total": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/guard-door-engraving-parent-candidate-native.json",
+        "reportSHA256": "7cdcd1cd464b467ce008fc8e380ab654477dedd38dc95c9de96a4d355a408854",
+        "log": ".cache/restart-20261122/guard-door-engraving-parent-candidate-native.log",
+        "logSHA256": "393029221a3f52922ec70b056b37adbbdd19c14cd00bf9229f70186283c862c9",
+        "runtimeMapSHA256": "3e7f95abaecedbc68f9f85acb007be9a9370cc18efcce895a6fa03484c2f5f2a"
+      }
+    ]
+  },
+  "retained": {
+    "passed": 38,
+    "total": 38,
+    "receiptSHA256": "60633ec9db0cd33aa7cdc8606bb3efd41d38cab7edac8c8c225ba6d6c4fe9a2f"
+  },
+  "retainedNative": {
+    "passed": 16,
+    "total": 16,
+    "reportsUnchanged": true,
+    "checks": [
+      {
+        "name": "guard-hallucinated-name",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          "tools/gen-sessions/generated/guard-hallucinated-name.session.json",
+          ".cache/restart-20261122/guard-door-engraving-retained-guard-hallucinated-name-native.json"
+        ],
+        "exit": 0,
+        "cases": 6,
+        "report": ".cache/restart-20261122/guard-door-engraving-retained-guard-hallucinated-name-native.json",
+        "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "priorReport": ".cache/restart-20261122/guard-hallucinated-name-parent-candidate-native.json",
+        "log": ".cache/restart-20261122/guard-door-engraving-retained-guard-hallucinated-name-native.log",
+        "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e"
+      },
+      {
+        "name": "guard-cleanup-prompt",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          "tools/gen-sessions/generated/guard-cleanup-prompt.session.json",
+          ".cache/restart-20261122/guard-door-engraving-retained-guard-cleanup-prompt-native.json"
+        ],
+        "exit": 0,
+        "cases": 5,
+        "report": ".cache/restart-20261122/guard-door-engraving-retained-guard-cleanup-prompt-native.json",
+        "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+        "priorReport": ".cache/restart-20261122/guard-cleanup-policy-parent-composed-native.json",
+        "log": ".cache/restart-20261122/guard-door-engraving-retained-guard-cleanup-prompt-native.log",
+        "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84"
+      },
+      {
+        "name": "guard-restored-entry",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          "tools/gen-sessions/generated/guard-restored-entry.session.json",
+          ".cache/restart-20261122/guard-door-engraving-retained-guard-restored-entry-native.json"
+        ],
+        "exit": 0,
+        "cases": 5,
+        "report": ".cache/restart-20261122/guard-door-engraving-retained-guard-restored-entry-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "priorReport": ".cache/restart-20261122/guard-restored-entry-parent-composed-native.json",
+        "log": ".cache/restart-20261122/guard-door-engraving-retained-guard-restored-entry-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 93,
+    "total": 93
+  },
+  "strict8s": {
+    "passed": 93,
+    "total": 93
+  },
+  "full919": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-door-engraving-full919-js-20261125",
+    "passed": 919,
+    "sessions": 919,
+    "totals": {
+      "screens": 931345,
+      "cursors": 931345,
+      "rngCalls": 20225162,
+      "animFrames": 33131
+    },
+    "files": 1210,
+    "allFilesSHA256": "59950cddb5e347c35e2f93d6a2f82654f943c813012c9254eed748249122ce14",
+    "verificationSHA256": "4dca5e0b6aa583a3dce09c1255969f7410580c4ed21cdbca06374e929e2f2eca",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "inputLockSHA256": "55506284b04df383553ad4b892e71087ac7e1488b8b502f8749f065919a0a8af",
+  "preCandidateLockSHA256": "05c0e52ea64adaca29c2e79f99671c09a81cfab625ec9664f349775e2da6a90f",
+  "canonicalMetadataReview": {
+    "originalRecipeSHA256": "8f9de99d934faecec60333c148cda720ce654d6176108b5b6755f57b7c1c66df",
+    "canonicalRecipeSHA256": "950270550d480d0fa94672c66c0ccaa6414af9171c17b7fc945145f38ce78ec6",
+    "changedFields": [
+      "coverage"
+    ],
+    "oldCoverage": [
+      "social.vault-guard",
+      "terrain.doors-locks",
+      "object.engravings"
+    ],
+    "newCoverage": [
+      "social.vault-guard",
+      "terrain.doors-locks",
+      "terrain.engraving-elbereth"
+    ],
+    "allOtherFieldsExact": true,
+    "CInputAndAssertionsUnchanged": true
+  },
+  "portablePayloads": 14,
+  "newRequirements": 5,
+  "limits": [
+    "This checkpoint ports the two doorway engraving deletions, not the whole gd_move or vault owner. Wall restoration, nonwall entrance reconstruction and later destination naming remain separate.",
+    "The native comparator checks decoded styled cells, cursors, ordered core RNG and frames. Full corpus uses the contest comparator; literal serialized-byte and whole-port completion are not established.",
+    "No held-out score change is inferred from local tests."
+  ]
+}

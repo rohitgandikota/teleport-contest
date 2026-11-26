@@ -1,0 +1,33 @@
+{
+  "candidateExisted": false,
+  "runtimeMapSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81",
+  "files": {
+    "recipe.json": "8f9de99d934faecec60333c148cda720ce654d6176108b5b6755f57b7c1c66df",
+    "input-lock.json": "55506284b04df383553ad4b892e71087ac7e1488b8b502f8749f065919a0a8af",
+    "source-controls.mjs": "dc7ef8da884e659206cd2c191ebc43835fba0ffdd08cec7b451cb2b9c42404ba",
+    "baseline-controls.json": "4b14fb0e4a6d05b72cbb36e82b704338efadcbfdeff588d1ea18785016356aeb"
+  },
+  "negativeHashes": {
+    "stone-carving-keeps-beyond-engraving": {
+      "screens": "2bc331a33e66884252e218fb02c977274f8a809e50ac12f590400e1f42bdd2e1",
+      "cursors": "62493fee8c0d07bb89eb71a427e64dfecd613701cd56d2226c1a120d2db71ca4",
+      "calls": "390b77e18090ae1f840d9eaab5db9ef2ba1e801d227b6d85437571cbaffd2991",
+      "slices": "057e20e5a1b0d70fb6d8f931c4e8130630ae8a9076a48e5341ce3b341dce08ec",
+      "frames": "2de5f186e4250bf67ea7f51cd021113a7dfeebde15df166b48cd22617f91ba2f"
+    },
+    "before-door-carving-negative": {
+      "screens": "921b93d82b9f6e5140da8fb34c5a3b5e5aaa577634c236970125acf60d1d594f",
+      "cursors": "0cbce8c15eac4112fa873388544f5cedb37cc64465528e5de798814d701e7d31",
+      "calls": "3150a47bfa723b8ff57ede19257bcd0a4c91a266504636410b400adbd514893c",
+      "slices": "99c9d1a08cec33cfcee286cab75de5f52e5e54a7de67a4a9623cea05ea29f252",
+      "frames": "d3dbc610253111fd566aa585d85f68eeea0f9026dc6f0ff091da810ac05f84dd"
+    },
+    "ordinary-unengraved-wall-negative": {
+      "screens": "ed0dff3d08a8685a1a545298ad4eb93d6fff68e855673133279e0cd53986cf0f",
+      "cursors": "841f623af883d90ff31f540bfb63fd5cb5c97bea26a9276b46a4ebfddb8dd54b",
+      "calls": "9397255bac50d7fe7cc158b6ed2a6c5e20a4e831cdf1865b99b0ab495478b103",
+      "slices": "00dc29f5144c03e22ca7a38543048736ed78b0a3912b4da148d32552523bf63c",
+      "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+    }
+  }
+}

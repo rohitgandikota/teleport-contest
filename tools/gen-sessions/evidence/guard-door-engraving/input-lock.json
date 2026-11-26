@@ -1,0 +1,126 @@
+{
+  "candidateExisted": false,
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "name": {
+        "present": true,
+        "value": "door-beyond-room-deletes-engraving"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$lllll  \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "door-current-room-deletes-engraving"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017throne\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001b\u0017wall\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$l#wizintrinsic\r>30f\r  \u001b\u001blll\u0017throne\r  \u001b\u001b:  \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "stone-carving-keeps-beyond-engraving"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$lllll  \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "before-door-carving-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "ordinary-unengraved-wall-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b"
+      }
+    }
+  ],
+  "tupleSHA256": "68f45dd50c907b5428bdbf8719eb0dc7a9b51fa81a7ef019555b8adfad9bb58e",
+  "recipeSHA256": "8f9de99d934faecec60333c148cda720ce654d6176108b5b6755f57b7c1c66df",
+  "keys": 906,
+  "boundaries": 911
+}

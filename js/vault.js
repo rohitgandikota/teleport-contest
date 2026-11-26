@@ -728,6 +728,7 @@ export async function gd_move(guard) {
                 if (isok(ex, ey) && IS_ROOM(game.level.at(ex, ey).typ)) {
                     loc.typ = DOOR;
                     loc.doormask = D_NODOOR;
+                    del_engr_at(ex, ey);
                     openedDoor = true;
                     break;
                 }
@@ -745,6 +746,7 @@ export async function gd_move(guard) {
                 if (IS_ROOM(typ)) {
                     loc.typ = DOOR;
                     loc.doormask = D_NODOOR;
+                    del_engr_at(ex, ey);
                     openedDoor = true;
                 }
                 break;

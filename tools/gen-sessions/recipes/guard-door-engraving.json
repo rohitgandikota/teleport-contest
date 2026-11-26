@@ -1,0 +1,102 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "guard-door-engraving",
+  "description": "Both gd_move doorway branches delete the engraving beyond the opened door; stone, pre-carving and unengraved paths are controls.",
+  "coverage": [
+    "social.vault-guard",
+    "terrain.doors-locks",
+    "terrain.engraving-elbereth"
+  ],
+  "branches": [
+    "vault.door-beyond-room-engraving",
+    "vault.door-current-room-engraving",
+    "vault.stone-beyond-engraving-negative",
+    "vault.door-before-carving-negative",
+    "vault.door-unengraved-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.door-beyond-room-engraving",
+      "segment": 0,
+      "screenIncludes": [
+        "You write in the dust with your fingertip.",
+        "Please drop that gold and follow me."
+      ],
+      "screenExcludes": [
+        "Something is written here in the dust."
+      ]
+    },
+    {
+      "branch": "vault.door-current-room-engraving",
+      "segment": 1,
+      "screenIncludes": [
+        "You write in the dust with your fingertip.",
+        "Please drop that gold and follow me."
+      ],
+      "screenExcludes": [
+        "Something is written here in the dust."
+      ]
+    },
+    {
+      "branch": "vault.stone-beyond-engraving-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Something is written here in the dust."
+      ]
+    },
+    {
+      "branch": "vault.door-before-carving-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop 500 gold pieces."
+      ]
+    },
+    {
+      "branch": "vault.door-unengraved-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "A wall.",
+        "Please drop that gold and follow me."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "door-beyond-room-deletes-engraving",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$lllll  \u001b\u001b"
+    },
+    {
+      "name": "door-current-room-deletes-engraving",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017throne\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001b\u0017wall\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$l#wizintrinsic\r>30f\r  \u001b\u001blll\u0017throne\r  \u001b\u001b:  \u001b\u001b"
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$lllll  \u001b\u001b"
+    },
+    {
+      "name": "before-door-carving-negative",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bl\u0017throne\r  \u001b\u001bE- mark\r  \u001b\u001bhhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b  \u001b\u001bd$"
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b"
+    }
+  ]
+}

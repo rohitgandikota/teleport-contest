@@ -1,0 +1,551 @@
+{
+  "classification": "Ordinary source controls; original C output is checked separately",
+  "passed": 25,
+  "total": 25,
+  "results": [
+    {
+      "name": "door-beyond-room-deletes-engraving: passive observation is neutral",
+      "pass": true
+    },
+    {
+      "name": "door-beyond-room-deletes-engraving: deferred input preserves all streams",
+      "pass": true
+    },
+    {
+      "name": "door-beyond-room-deletes-engraving: all keys and random boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "door-beyond-room-deletes-engraving: actual door and engraving producers",
+      "pass": true
+    },
+    {
+      "name": "door-beyond-room-deletes-engraving: C doorway cleanup or paired negative",
+      "pass": true
+    },
+    {
+      "name": "door-current-room-deletes-engraving: passive observation is neutral",
+      "pass": true
+    },
+    {
+      "name": "door-current-room-deletes-engraving: deferred input preserves all streams",
+      "pass": true
+    },
+    {
+      "name": "door-current-room-deletes-engraving: all keys and random boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "door-current-room-deletes-engraving: actual door and engraving producers",
+      "pass": true
+    },
+    {
+      "name": "door-current-room-deletes-engraving: C doorway cleanup or paired negative",
+      "pass": true
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving: passive observation is neutral",
+      "pass": true
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving: deferred input preserves all streams",
+      "pass": true
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving: all keys and random boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving: actual door and engraving producers",
+      "pass": true
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving: C doorway cleanup or paired negative",
+      "pass": true
+    },
+    {
+      "name": "before-door-carving-negative: passive observation is neutral",
+      "pass": true
+    },
+    {
+      "name": "before-door-carving-negative: deferred input preserves all streams",
+      "pass": true
+    },
+    {
+      "name": "before-door-carving-negative: all keys and random boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "before-door-carving-negative: actual door and engraving producers",
+      "pass": true
+    },
+    {
+      "name": "before-door-carving-negative: C doorway cleanup or paired negative",
+      "pass": true
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative: passive observation is neutral",
+      "pass": true
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative: deferred input preserves all streams",
+      "pass": true
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative: all keys and random boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative: actual door and engraving producers",
+      "pass": true
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative: C doorway cleanup or paired negative",
+      "pass": true
+    }
+  ],
+  "rows": [
+    {
+      "name": "door-beyond-room-deletes-engraving",
+      "keys": 183,
+      "boundaries": 184,
+      "calls": 6248,
+      "hashes": {
+        "screens": "55efc1a628d694bb9291a97842c8fae4eda04621776071a5d2cd2831a374ec44",
+        "cursors": "d3e645e0b7398a59e93cfdbe86100b576029f9415abe77c0698878d61b0ad731",
+        "calls": "86d5f2cbd6d33ef5abb8091de999413291c922109e4bcd04ce42c8716258e470",
+        "slices": "047f158a125d16e50cf55c2205d92c2a006946543d2ba5671c6b630dcfddf3ae",
+        "frames": "68bc3ba8da5209e959c801aff5727b440c388edd1aa8957e0f41e4f005eed126"
+      },
+      "deferredHashes": {
+        "screens": "55efc1a628d694bb9291a97842c8fae4eda04621776071a5d2cd2831a374ec44",
+        "cursors": "d3e645e0b7398a59e93cfdbe86100b576029f9415abe77c0698878d61b0ad731",
+        "calls": "86d5f2cbd6d33ef5abb8091de999413291c922109e4bcd04ce42c8716258e470",
+        "slices": "047f158a125d16e50cf55c2205d92c2a006946543d2ba5671c6b630dcfddf3ae",
+        "frames": "68bc3ba8da5209e959c801aff5727b440c388edd1aa8957e0f41e4f005eed126"
+      },
+      "before": {
+        "step": 174,
+        "key": "$",
+        "turn": 39,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 2,
+        "at27": 29,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      },
+      "after": {
+        "step": 175,
+        "key": "l",
+        "turn": 40,
+        "hero": [
+          24,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You see here 387 gold pieces.",
+        "guard": {
+          "xy": [
+            26,
+            5
+          ],
+          "end": 2,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 23,
+        "at27": 29,
+        "engraving": null
+      },
+      "last": {
+        "step": 183,
+        "key": "\u001b",
+        "turn": 43,
+        "hero": [
+          27,
+          5
+        ],
+        "inVault": false,
+        "passWalls": false,
+        "top": "",
+        "guard": null,
+        "at26": 2,
+        "at27": 29,
+        "engraving": null
+      }
+    },
+    {
+      "name": "door-current-room-deletes-engraving",
+      "keys": 230,
+      "boundaries": 231,
+      "calls": 6245,
+      "hashes": {
+        "screens": "a3ad60f35cf668570a69f5432cbee20e03f0be2d681e812fe5f2805e0f69550f",
+        "cursors": "44828b24b9e323cf9bad9dc0059ffa606b0940970d326586f1c4fc81c149f3df",
+        "calls": "55f83f5896d086c21fd99cb3422e9a7c7c9c09eaf73029574d6dba4e141e1526",
+        "slices": "600d06da80103d6b71df54389b492f6e62978956f3b427235f019286f3512a8e",
+        "frames": "b238a4006f868803fdeb7a89b35cd575c5c6aa24cbb120236138db70ff9b1fad"
+      },
+      "deferredHashes": {
+        "screens": "a3ad60f35cf668570a69f5432cbee20e03f0be2d681e812fe5f2805e0f69550f",
+        "cursors": "44828b24b9e323cf9bad9dc0059ffa606b0940970d326586f1c4fc81c149f3df",
+        "calls": "55f83f5896d086c21fd99cb3422e9a7c7c9c09eaf73029574d6dba4e141e1526",
+        "slices": "600d06da80103d6b71df54389b492f6e62978956f3b427235f019286f3512a8e",
+        "frames": "b238a4006f868803fdeb7a89b35cd575c5c6aa24cbb120236138db70ff9b1fad"
+      },
+      "before": {
+        "step": 186,
+        "key": "$",
+        "turn": 39,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 29,
+        "at27": 2,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      },
+      "after": {
+        "step": 187,
+        "key": "l",
+        "turn": 40,
+        "hero": [
+          24,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You see here 387 gold pieces.",
+        "guard": {
+          "xy": [
+            26,
+            5
+          ],
+          "end": 2,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 23,
+        "at27": 2,
+        "engraving": null
+      },
+      "last": {
+        "step": 230,
+        "key": "\u001b",
+        "turn": 43,
+        "hero": [
+          27,
+          5
+        ],
+        "inVault": false,
+        "passWalls": true,
+        "top": "",
+        "guard": {
+          "xy": [
+            28,
+            6
+          ],
+          "end": 5,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 23,
+        "at27": 29,
+        "engraving": null
+      }
+    },
+    {
+      "name": "stone-carving-keeps-beyond-engraving",
+      "keys": 177,
+      "boundaries": 178,
+      "calls": 6252,
+      "hashes": {
+        "screens": "2bc331a33e66884252e218fb02c977274f8a809e50ac12f590400e1f42bdd2e1",
+        "cursors": "62493fee8c0d07bb89eb71a427e64dfecd613701cd56d2226c1a120d2db71ca4",
+        "calls": "390b77e18090ae1f840d9eaab5db9ef2ba1e801d227b6d85437571cbaffd2991",
+        "slices": "057e20e5a1b0d70fb6d8f931c4e8130630ae8a9076a48e5341ce3b341dce08ec",
+        "frames": "2de5f186e4250bf67ea7f51cd021113a7dfeebde15df166b48cd22617f91ba2f"
+      },
+      "deferredHashes": {
+        "screens": "2bc331a33e66884252e218fb02c977274f8a809e50ac12f590400e1f42bdd2e1",
+        "cursors": "62493fee8c0d07bb89eb71a427e64dfecd613701cd56d2226c1a120d2db71ca4",
+        "calls": "390b77e18090ae1f840d9eaab5db9ef2ba1e801d227b6d85437571cbaffd2991",
+        "slices": "057e20e5a1b0d70fb6d8f931c4e8130630ae8a9076a48e5341ce3b341dce08ec",
+        "frames": "2de5f186e4250bf67ea7f51cd021113a7dfeebde15df166b48cd22617f91ba2f"
+      },
+      "before": {
+        "step": 168,
+        "key": "$",
+        "turn": 39,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 0,
+        "at27": 29,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      },
+      "after": {
+        "step": 169,
+        "key": "l",
+        "turn": 40,
+        "hero": [
+          24,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You see here 387 gold pieces.",
+        "guard": {
+          "xy": [
+            26,
+            5
+          ],
+          "end": 2,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 24,
+        "at27": 29,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      },
+      "last": {
+        "step": 177,
+        "key": "\u001b",
+        "turn": 43,
+        "hero": [
+          27,
+          5
+        ],
+        "inVault": false,
+        "passWalls": false,
+        "top": "",
+        "guard": null,
+        "at26": 0,
+        "at27": 29,
+        "engraving": {
+          "text": "rar|",
+          "type": 1
+        }
+      }
+    },
+    {
+      "name": "before-door-carving-negative",
+      "keys": 174,
+      "boundaries": 175,
+      "calls": 6117,
+      "hashes": {
+        "screens": "921b93d82b9f6e5140da8fb34c5a3b5e5aaa577634c236970125acf60d1d594f",
+        "cursors": "0cbce8c15eac4112fa873388544f5cedb37cc64465528e5de798814d701e7d31",
+        "calls": "3150a47bfa723b8ff57ede19257bcd0a4c91a266504636410b400adbd514893c",
+        "slices": "99c9d1a08cec33cfcee286cab75de5f52e5e54a7de67a4a9623cea05ea29f252",
+        "frames": "d3dbc610253111fd566aa585d85f68eeea0f9026dc6f0ff091da810ac05f84dd"
+      },
+      "deferredHashes": {
+        "screens": "921b93d82b9f6e5140da8fb34c5a3b5e5aaa577634c236970125acf60d1d594f",
+        "cursors": "0cbce8c15eac4112fa873388544f5cedb37cc64465528e5de798814d701e7d31",
+        "calls": "3150a47bfa723b8ff57ede19257bcd0a4c91a266504636410b400adbd514893c",
+        "slices": "99c9d1a08cec33cfcee286cab75de5f52e5e54a7de67a4a9623cea05ea29f252",
+        "frames": "d3dbc610253111fd566aa585d85f68eeea0f9026dc6f0ff091da810ac05f84dd"
+      },
+      "before": {
+        "step": 174,
+        "key": "$",
+        "turn": 39,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 2,
+        "at27": 29,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      },
+      "after": null,
+      "last": {
+        "step": 174,
+        "key": "$",
+        "turn": 39,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 2,
+        "at27": 29,
+        "engraving": {
+          "text": "mar|",
+          "type": 1
+        }
+      }
+    },
+    {
+      "name": "ordinary-unengraved-wall-negative",
+      "keys": 142,
+      "boundaries": 143,
+      "calls": 6225,
+      "hashes": {
+        "screens": "ed0dff3d08a8685a1a545298ad4eb93d6fff68e855673133279e0cd53986cf0f",
+        "cursors": "841f623af883d90ff31f540bfb63fd5cb5c97bea26a9276b46a4ebfddb8dd54b",
+        "calls": "9397255bac50d7fe7cc158b6ed2a6c5e20a4e831cdf1865b99b0ab495478b103",
+        "slices": "00dc29f5144c03e22ca7a38543048736ed78b0a3912b4da148d32552523bf63c",
+        "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+      },
+      "deferredHashes": {
+        "screens": "ed0dff3d08a8685a1a545298ad4eb93d6fff68e855673133279e0cd53986cf0f",
+        "cursors": "841f623af883d90ff31f540bfb63fd5cb5c97bea26a9276b46a4ebfddb8dd54b",
+        "calls": "9397255bac50d7fe7cc158b6ed2a6c5e20a4e831cdf1865b99b0ab495478b103",
+        "slices": "00dc29f5144c03e22ca7a38543048736ed78b0a3912b4da148d32552523bf63c",
+        "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+      },
+      "before": {
+        "step": 133,
+        "key": "$",
+        "turn": 36,
+        "hero": [
+          23,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You drop 500 gold pieces.",
+        "guard": {
+          "xy": [
+            25,
+            5
+          ],
+          "end": 1,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 2,
+        "at27": 0,
+        "engraving": null
+      },
+      "after": {
+        "step": 134,
+        "key": "l",
+        "turn": 37,
+        "hero": [
+          24,
+          5
+        ],
+        "inVault": true,
+        "passWalls": false,
+        "top": "You see here 387 gold pieces.",
+        "guard": {
+          "xy": [
+            26,
+            5
+          ],
+          "end": 2,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 24,
+        "at27": 0,
+        "engraving": null
+      },
+      "last": {
+        "step": 142,
+        "key": "\u001b",
+        "turn": 41,
+        "hero": [
+          28,
+          5
+        ],
+        "inVault": false,
+        "passWalls": false,
+        "top": "",
+        "guard": {
+          "xy": [
+            29,
+            6
+          ],
+          "end": 6,
+          "done": 0,
+          "peaceful": 1
+        },
+        "at26": 24,
+        "at27": 24,
+        "engraving": null
+      }
+    }
+  ]
+}

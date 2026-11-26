@@ -4625,6 +4625,11 @@
     {"group":"guard-restored-entry","id":"vault.restored-entry.hidden","cFile":"src/vault.c","cFunction":"gd_move","description":"entry-restored-hidden-teleport"},
     {"group":"guard-restored-entry","id":"vault.restored-entry.two-entry-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"two-entry-far-negative"},
     {"group":"guard-restored-entry","id":"vault.restored-entry.before-next-turn-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"restored-entry-before-next-turn-negative"},
-    {"group":"guard-restored-entry","id":"vault.restored-entry.ordinary-exit-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"ordinary-exit-negative"}
+    {"group":"guard-restored-entry","id":"vault.restored-entry.ordinary-exit-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"ordinary-exit-negative"},
+    {"group":"Vault doorway engraving","id":"vault.door-beyond-room-engraving","cFile":"src/vault.c","cFunction":"gd_move","description":"Opening a doorway toward room terrain deletes the engraving one square beyond it."},
+    {"group":"Vault doorway engraving","id":"vault.door-current-room-engraving","cFile":"src/vault.c","cFunction":"gd_move","description":"Opening a doorway on room terrain deletes the engraving beyond it even when that square is a wall."},
+    {"group":"Vault doorway engraving","id":"vault.stone-beyond-engraving-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"Carving stone into a corridor preserves the engraving beyond it."},
+    {"group":"Vault doorway engraving","id":"vault.door-before-carving-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"Dropping gold before the carving move preserves the engraving."},
+    {"group":"Vault doorway engraving","id":"vault.door-unengraved-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"The existing unengraved wall path keeps its complete output."}
   ]
 }

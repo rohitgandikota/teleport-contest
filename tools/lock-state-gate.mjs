@@ -127,7 +127,7 @@ seed(findSeed(25,n=>n===10));assert.equal(await doclose(),ECMD_TIME);assert.equa
 // A mimic acquires the same object and ownership, including wielded items.
 for(const condition of ['visible','blind','wielded','rock','ball','chain','resisted']){
  await setup();const m=await mon(),o=item(condition==='rock'?N.BOULDER:condition==='ball'?N.HEAVY_IRON_BALL:condition==='chain'?N.IRON_CHAIN:N.SKELETON_KEY);
- if(condition==='blind'){game.u.ublind=1;vision_recalc(0);}if(condition==='wielded'){o.owornmask=W_WEP;game.u.uwep=o;}if(condition==='ball')game.u.uball=o;if(condition==='chain')game.u.uchain=o;
+ if(condition==='blind'){game.u.intrinsic.HBlinded=1;vision_recalc(0);}if(condition==='wielded'){o.owornmask=W_WEP;game.u.uwep=o;}if(condition==='ball')game.u.uball=o;if(condition==='chain')game.u.uchain=o;
  seed();await maybe_absorb_item(m,o,condition==='resisted'?0:100,100);const blocked=['rock','ball','chain','resisted'].includes(condition);
  assert.equal(game.invent.includes(o),blocked);assert.equal(o.where,blocked?OBJ_INVENT:OBJ_MINVENT);if(!blocked){assert.equal(o.ocarry,m);assert.ok(m.minvent.includes(o));if(condition==='wielded'){assert.equal(game.u.uwep,null);assert.equal(o.owornmask,0);}assert.match(text(),condition==='blind'?/pulled from your hand/:/absorbs it/);}
 }

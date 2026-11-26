@@ -1,0 +1,143 @@
+{
+  "name": "level-change-trap-reset",
+  "classification": "ordinary keyboard tuples fixed before candidate; source-based branch predictions",
+  "segments": [
+    {
+      "name": "interrupted-trap-level-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u00162\r\u00161\r\u0014<k.\u001baa\u001b"
+    },
+    {
+      "name": "interrupted-trap-cancelled-level-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u0016\u001baa\u001b"
+    },
+    {
+      "name": "interrupted-trap-same-level-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u00161\raa\u001b"
+    },
+    {
+      "name": "interrupted-trap-resume-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raaaa\u001b"
+    },
+    {
+      "name": "no-trap-level-roundtrip-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u00162\r\u00161\r\u001b"
+    }
+  ],
+  "branches": [
+    "level-change-trap.interrupted-trap-level-roundtrip",
+    "level-change-trap.interrupted-trap-cancelled-level-negative",
+    "level-change-trap.interrupted-trap-same-level-negative",
+    "level-change-trap.interrupted-trap-resume-negative",
+    "level-change-trap.no-trap-level-roundtrip-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "level-change-trap.interrupted-trap-level-roundtrip",
+      "segment": 0,
+      "screenIncludes": [
+        "You begin setting your bear trap.",
+        "You materialize on a different level!"
+      ],
+      "screenCells": [
+        {
+          "step": 44,
+          "x": 4,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 44,
+          "x": 5,
+          "y": 0,
+          "equals": "e"
+        }
+      ]
+    },
+    {
+      "branch": "level-change-trap.interrupted-trap-cancelled-level-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "You resume setting your bear trap."
+      ],
+      "screenExcludes": [
+        "You materialize on a different level!"
+      ]
+    },
+    {
+      "branch": "level-change-trap.interrupted-trap-same-level-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "You resume setting your bear trap."
+      ],
+      "screenExcludes": [
+        "You materialize on a different level!"
+      ]
+    },
+    {
+      "branch": "level-change-trap.interrupted-trap-resume-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You resume setting your bear trap."
+      ],
+      "screenExcludes": [
+        "You materialize on a different level!"
+      ]
+    },
+    {
+      "branch": "level-change-trap.no-trap-level-roundtrip-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "You materialize on a different level!"
+      ],
+      "screenExcludes": [
+        "setting your bear trap"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "interrupted-trap-cancelled-level-negative": {
+      "screens": "9d587b0684c555af16882a7b2f9d479a7c389976d985eb559ee30c11e307a65c",
+      "cursors": "1ba54c2afc1c3b20149af8134ed0d1faabebd2b48c0ae435fb9c29845a4799a9",
+      "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+      "slices": "690782483059b95bfc93e67f30ef5ae6d89a6394211ca41b5f8dd7a8f6d613b6",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "interrupted-trap-same-level-negative": {
+      "screens": "33ebc171952dcc4e21edfedde250b27ff1ecb5b2123c89557729e866ec8cbbbb",
+      "cursors": "d2aafc01ca491e14404d695fda448e5598d04c4bad94eebb06f698c12e170a8b",
+      "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+      "slices": "bc7fb93e788dc9abb7a1a8ff4063f0dd5740de9f3a677fc5e9150aee8c0a3adf",
+      "frames": "66e00794d06e09b4d80066682769c2d9fdb683b3158fbdbfe887c727eeeba53a"
+    },
+    "interrupted-trap-resume-negative": {
+      "screens": "8c517468bcd44b9f03e26de750bde7028dce312848c0244c15756d915878de70",
+      "cursors": "e0a5e968ffc00def7b98d9dd89a870e3533f300a5fe8fec49f5dc69e405c17c0",
+      "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+      "slices": "9bd388dedc85846a0959f56d4e69ba65e2c963aab542026fc5764bc1271eecbb",
+      "frames": "89d2001be71c9ed2b7a38ea178329280ad4ad5637170558bf764244822adbbcb"
+    },
+    "no-trap-level-roundtrip-negative": {
+      "screens": "780dbb984a7503b21c6f45ba614717748fe46cfca3cbe72a0db9f65485431902",
+      "cursors": "157c707ebca2c5aa160523e872cced7fd097ccf5ae1c9b7dd31dc2223d08fe7c",
+      "calls": "8eb0f7d3cd4b56dad0a335eb8c2d121855a56a1eeb2f0bd3b29b6e9bb5de4046",
+      "slices": "3828157c9ac7abcec890f9b833937b5cb35a5efb851232e45a80a1a513b04db8",
+      "frames": "fdbe274dfb6fdf2e63df5fe56c4ef676477280dff1a4758ad13d74cbcbea5954"
+    }
+  }
+}

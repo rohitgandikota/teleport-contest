@@ -1,0 +1,487 @@
+{
+  "recipeSHA256": "684570352b672600c5dfc3bc951e841ffee8053fbbcd9936525576acc28dc0f2",
+  "results": [
+    {
+      "name": "polearm-producer-survey",
+      "keys": 43,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 19,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 63
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 24,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 63,
+              "worn": 256
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 39,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 63,
+              "worn": 256
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 56,
+              "xy": [
+                61,
+                15
+              ],
+              "hp": 8,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "Unknown command ' '."
+        },
+        {
+          "step": 2,
+          "text": "For what do you wish?"
+        },
+        {
+          "step": 3,
+          "text": "For what do you wish? u"
+        },
+        {
+          "step": 4,
+          "text": "For what do you wish? un"
+        },
+        {
+          "step": 5,
+          "text": "For what do you wish? unc"
+        },
+        {
+          "step": 6,
+          "text": "For what do you wish? uncu"
+        },
+        {
+          "step": 7,
+          "text": "For what do you wish? uncur"
+        },
+        {
+          "step": 8,
+          "text": "For what do you wish? uncurs"
+        },
+        {
+          "step": 9,
+          "text": "For what do you wish? uncurse"
+        },
+        {
+          "step": 10,
+          "text": "For what do you wish? uncursed"
+        },
+        {
+          "step": 12,
+          "text": "For what do you wish? uncursed h"
+        },
+        {
+          "step": 13,
+          "text": "For what do you wish? uncursed ha"
+        },
+        {
+          "step": 14,
+          "text": "For what do you wish? uncursed hal"
+        },
+        {
+          "step": 15,
+          "text": "For what do you wish? uncursed halb"
+        },
+        {
+          "step": 16,
+          "text": "For what do you wish? uncursed halbe"
+        },
+        {
+          "step": 17,
+          "text": "For what do you wish? uncursed halber"
+        },
+        {
+          "step": 18,
+          "text": "For what do you wish? uncursed halberd"
+        },
+        {
+          "step": 19,
+          "text": "a - an angled poleaxe."
+        },
+        {
+          "step": 20,
+          "text": "Unknown command ' '."
+        },
+        {
+          "step": 22,
+          "text": ""
+        },
+        {
+          "step": 23,
+          "text": "What do you want to wield? [- a or ?*]"
+        },
+        {
+          "step": 24,
+          "text": "a - an angled poleaxe (weapon in hands)."
+        },
+        {
+          "step": 25,
+          "text": "Unknown command ' '."
+        },
+        {
+          "step": 27,
+          "text": ""
+        },
+        {
+          "step": 28,
+          "text": "Create what kind of monster?"
+        },
+        {
+          "step": 29,
+          "text": "Create what kind of monster? b"
+        },
+        {
+          "step": 30,
+          "text": "Create what kind of monster? bl"
+        },
+        {
+          "step": 31,
+          "text": "Create what kind of monster? blu"
+        },
+        {
+          "step": 32,
+          "text": "Create what kind of monster? blue"
+        },
+        {
+          "step": 34,
+          "text": "Create what kind of monster? blue j"
+        },
+        {
+          "step": 35,
+          "text": "Create what kind of monster? blue je"
+        },
+        {
+          "step": 36,
+          "text": "Create what kind of monster? blue jel"
+        },
+        {
+          "step": 37,
+          "text": "Create what kind of monster? blue jell"
+        },
+        {
+          "step": 38,
+          "text": "Create what kind of monster? blue jelly"
+        },
+        {
+          "step": 39,
+          "text": "A blue jelly appears next to you."
+        },
+        {
+          "step": 40,
+          "text": "Unknown command ' '."
+        },
+        {
+          "step": 42,
+          "text": ""
+        }
+      ],
+      "hashes": {
+        "screens": "88398f6fb259f74d470cf8e90db3218a13823eb1fb112763531aefe7085ecb27",
+        "cursors": "276789b1e8550e8ea7ece595843adf827665175759337cca2e05a0cf60a0c95e",
+        "calls": "15f620a1ed52d79cd4d7a153ce559d204d415f66cd9b61212df8bf5e7feb336b",
+        "slices": "69666d6d059eeeba8306fe43ac6f76c9b48cefed2705b48db4148855eb2cc268",
+        "frames": "a147172b881a30ec4c105645a48f0c4fa10e621a48460129b7abe8cc96126a46"
+      },
+      "lastScreen": "\n\n\n                                         ###############+--------+     +----+\n                                         #+-------+    #+........| ####.....|\n    +----------+       +---+             #|.......|    #|........|##   |>...|\n    |...........#      |....##############|.......|   ##+-+------+#####.....|\n    |..........|###   #....|             #........|   ##  #########    +---.+\n    |...........#######|...|             #+--+----+  ##############        #\n    +----+-----+   ####+....#            #   ###    ###########            #\n         ######       #+---+#            #     #  ####    +--.+            #\n              #       ##    #         #############  #    |...|          ###\n              #        #    #   #######  #     ###   #    |..o.######    #\n              #        #    #  ##        #   +---+--+#    |...|     #+---+--+\n              ##       #    ####         #   |......|#    |...|     #.......|\n       +-------+------+#  ####           #   |......|#    |...|      |......|\n       |..............|#  #  #           #   |.......#    |@j.|      |.....^|\n       |..............-#  #  #+-------+ ##   +------+     +---+      |{.....|\n       |..............|####  #.........##                            +------+\n       |..............+#      |.......|\n       +----+---------+       +-------+\n            #\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    }
+  ]
+}

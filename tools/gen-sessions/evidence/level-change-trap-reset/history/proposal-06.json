@@ -1,0 +1,40 @@
+{
+  "classification": "ordinary keyboard proposals before lock; remove only unnecessary acknowledgements identified in proposal05",
+  "segments": [
+    {
+      "name": "interrupted-trap-level-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u00162\r\u00161\r\u0014<k.\u001baa\u001b"
+    },
+    {
+      "name": "interrupted-trap-cancelled-level-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u0016\u001baa\u001b"
+    },
+    {
+      "name": "interrupted-trap-same-level-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raa\u00161\raa\u001b"
+    },
+    {
+      "name": "interrupted-trap-resume-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u0017uncursed bear trap\rk\u0007lichen\raaaa\u001b"
+    },
+    {
+      "name": "no-trap-level-roundtrip-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": "\u00162\r\u00161\r\u001b"
+    }
+  ]
+}

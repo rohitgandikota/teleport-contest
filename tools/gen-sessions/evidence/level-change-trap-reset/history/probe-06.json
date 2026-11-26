@@ -1,0 +1,3404 @@
+{
+  "recipeSHA256": "3f213df082cf1ab33a1826827012e1098f1eea52dac0e76a0e662d380a3dfc0b",
+  "results": [
+    {
+      "name": "interrupted-trap-level-roundtrip",
+      "keys": 45,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 20,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 21,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 29,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 31,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 34,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 2
+          },
+          "xy": [
+            9,
+            6
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 47,
+              "type": 322,
+              "xy": [
+                68,
+                15
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 41,
+              "type": 322,
+              "xy": [
+                44,
+                9
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 37,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            13,
+            5
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 41,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                70,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 42,
+          "turn": 5,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                70,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                6
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 44,
+          "turn": 7,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 3
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                68,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                60,
+                13
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                4
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                38,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "For what do you wish?"
+        },
+        {
+          "step": 2,
+          "text": "For what do you wish? u"
+        },
+        {
+          "step": 3,
+          "text": "For what do you wish? un"
+        },
+        {
+          "step": 4,
+          "text": "For what do you wish? unc"
+        },
+        {
+          "step": 5,
+          "text": "For what do you wish? uncu"
+        },
+        {
+          "step": 6,
+          "text": "For what do you wish? uncur"
+        },
+        {
+          "step": 7,
+          "text": "For what do you wish? uncurs"
+        },
+        {
+          "step": 8,
+          "text": "For what do you wish? uncurse"
+        },
+        {
+          "step": 9,
+          "text": "For what do you wish? uncursed"
+        },
+        {
+          "step": 11,
+          "text": "For what do you wish? uncursed b"
+        },
+        {
+          "step": 12,
+          "text": "For what do you wish? uncursed be"
+        },
+        {
+          "step": 13,
+          "text": "For what do you wish? uncursed bea"
+        },
+        {
+          "step": 14,
+          "text": "For what do you wish? uncursed bear"
+        },
+        {
+          "step": 16,
+          "text": "For what do you wish? uncursed bear t"
+        },
+        {
+          "step": 17,
+          "text": "For what do you wish? uncursed bear tr"
+        },
+        {
+          "step": 18,
+          "text": "For what do you wish? uncursed bear tra"
+        },
+        {
+          "step": 19,
+          "text": "For what do you wish? uncursed bear trap"
+        },
+        {
+          "step": 20,
+          "text": "a - a beartrap."
+        },
+        {
+          "step": 21,
+          "text": ""
+        },
+        {
+          "step": 22,
+          "text": "Create what kind of monster?"
+        },
+        {
+          "step": 23,
+          "text": "Create what kind of monster? l"
+        },
+        {
+          "step": 24,
+          "text": "Create what kind of monster? li"
+        },
+        {
+          "step": 25,
+          "text": "Create what kind of monster? lic"
+        },
+        {
+          "step": 26,
+          "text": "Create what kind of monster? lich"
+        },
+        {
+          "step": 27,
+          "text": "Create what kind of monster? liche"
+        },
+        {
+          "step": 28,
+          "text": "Create what kind of monster? lichen"
+        },
+        {
+          "step": 29,
+          "text": "A lichen appears next to you."
+        },
+        {
+          "step": 30,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 31,
+          "text": "You begin setting your bear trap.  You stop setting the trap."
+        },
+        {
+          "step": 32,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 33,
+          "text": "To what level do you want to teleport? 2"
+        },
+        {
+          "step": 34,
+          "text": "You materialize on a different level!"
+        },
+        {
+          "step": 35,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 36,
+          "text": "To what level do you want to teleport? 1"
+        },
+        {
+          "step": 37,
+          "text": "You materialize on a different level!"
+        },
+        {
+          "step": 38,
+          "text": "Where do you want to be teleported?  (For instructions type a '?')"
+        },
+        {
+          "step": 39,
+          "text": "branch staircase up"
+        },
+        {
+          "step": 40,
+          "text": "dark part of a room"
+        },
+        {
+          "step": 41,
+          "text": "You materialize in a different location!  The lichen touches you!--More--"
+        },
+        {
+          "step": 42,
+          "text": "The goblin wields a crude dagger!"
+        },
+        {
+          "step": 43,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 44,
+          "text": "You resume setting your bear trap.  You stop setting the trap."
+        },
+        {
+          "step": 45,
+          "text": ""
+        }
+      ],
+      "hashes": {
+        "screens": "61ac04f3d06459182aed17e82d77056ef04b5113ab81e57dc80d6daeefc3501a",
+        "cursors": "3fd046463064e2ab6c1c8f31a4599785e23e807154eff7e5d570ba82ea27751a",
+        "calls": "d602b724eb3d51ea6aace3609a0f1888acba9ffc11390b993616c69833ceb5ca",
+        "slices": "b9f93d3122ca4b175c08dc1ffd0b4eb06cc7e969400bc213219387edea03cec4",
+        "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+      },
+      "lastScreen": "\n\n\n\n\n    +----------+\n    |...........\n    |..........|\n    |.........$.\n    +----+-----+\n                                                          +--.+\n                                                          |...|\n                                                          |....\n                                                          |...|\n                                                          |o..|\n                                                          |@F.|\n                                                          |<..|\n                                                          +---+\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    },
+    {
+      "name": "interrupted-trap-cancelled-level-negative",
+      "keys": 36,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 20,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 21,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 29,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 31,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 35,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": "set_trap",
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 36,
+          "turn": 5,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                70,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                6
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "For what do you wish?"
+        },
+        {
+          "step": 2,
+          "text": "For what do you wish? u"
+        },
+        {
+          "step": 3,
+          "text": "For what do you wish? un"
+        },
+        {
+          "step": 4,
+          "text": "For what do you wish? unc"
+        },
+        {
+          "step": 5,
+          "text": "For what do you wish? uncu"
+        },
+        {
+          "step": 6,
+          "text": "For what do you wish? uncur"
+        },
+        {
+          "step": 7,
+          "text": "For what do you wish? uncurs"
+        },
+        {
+          "step": 8,
+          "text": "For what do you wish? uncurse"
+        },
+        {
+          "step": 9,
+          "text": "For what do you wish? uncursed"
+        },
+        {
+          "step": 11,
+          "text": "For what do you wish? uncursed b"
+        },
+        {
+          "step": 12,
+          "text": "For what do you wish? uncursed be"
+        },
+        {
+          "step": 13,
+          "text": "For what do you wish? uncursed bea"
+        },
+        {
+          "step": 14,
+          "text": "For what do you wish? uncursed bear"
+        },
+        {
+          "step": 16,
+          "text": "For what do you wish? uncursed bear t"
+        },
+        {
+          "step": 17,
+          "text": "For what do you wish? uncursed bear tr"
+        },
+        {
+          "step": 18,
+          "text": "For what do you wish? uncursed bear tra"
+        },
+        {
+          "step": 19,
+          "text": "For what do you wish? uncursed bear trap"
+        },
+        {
+          "step": 20,
+          "text": "a - a beartrap."
+        },
+        {
+          "step": 21,
+          "text": ""
+        },
+        {
+          "step": 22,
+          "text": "Create what kind of monster?"
+        },
+        {
+          "step": 23,
+          "text": "Create what kind of monster? l"
+        },
+        {
+          "step": 24,
+          "text": "Create what kind of monster? li"
+        },
+        {
+          "step": 25,
+          "text": "Create what kind of monster? lic"
+        },
+        {
+          "step": 26,
+          "text": "Create what kind of monster? lich"
+        },
+        {
+          "step": 27,
+          "text": "Create what kind of monster? liche"
+        },
+        {
+          "step": 28,
+          "text": "Create what kind of monster? lichen"
+        },
+        {
+          "step": 29,
+          "text": "A lichen appears next to you."
+        },
+        {
+          "step": 30,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 31,
+          "text": "You begin setting your bear trap.  You stop setting the trap."
+        },
+        {
+          "step": 32,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 33,
+          "text": ""
+        },
+        {
+          "step": 34,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 35,
+          "text": "You resume setting your bear trap.  The lichen touches you!--More--"
+        },
+        {
+          "step": 36,
+          "text": "You stop setting the trap."
+        }
+      ],
+      "hashes": {
+        "screens": "9d587b0684c555af16882a7b2f9d479a7c389976d985eb559ee30c11e307a65c",
+        "cursors": "1ba54c2afc1c3b20149af8134ed0d1faabebd2b48c0ae435fb9c29845a4799a9",
+        "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+        "slices": "690782483059b95bfc93e67f30ef5ae6d89a6394211ca41b5f8dd7a8f6d613b6",
+        "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+      },
+      "lastScreen": "You stop setting the trap.\n\n\n\n\n\n\n\n\n\n                                                          +--.+\n                                                          |...|\n                                                          |....\n                                                          |.o.|\n                                                          |...|\n                                                          |@F.|\n                                                          |<..|\n                                                          +---+\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    },
+    {
+      "name": "interrupted-trap-same-level-negative",
+      "keys": 37,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 20,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 21,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 29,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 31,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 36,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": "set_trap",
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 37,
+          "turn": 5,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                70,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                6
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "For what do you wish?"
+        },
+        {
+          "step": 2,
+          "text": "For what do you wish? u"
+        },
+        {
+          "step": 3,
+          "text": "For what do you wish? un"
+        },
+        {
+          "step": 4,
+          "text": "For what do you wish? unc"
+        },
+        {
+          "step": 5,
+          "text": "For what do you wish? uncu"
+        },
+        {
+          "step": 6,
+          "text": "For what do you wish? uncur"
+        },
+        {
+          "step": 7,
+          "text": "For what do you wish? uncurs"
+        },
+        {
+          "step": 8,
+          "text": "For what do you wish? uncurse"
+        },
+        {
+          "step": 9,
+          "text": "For what do you wish? uncursed"
+        },
+        {
+          "step": 11,
+          "text": "For what do you wish? uncursed b"
+        },
+        {
+          "step": 12,
+          "text": "For what do you wish? uncursed be"
+        },
+        {
+          "step": 13,
+          "text": "For what do you wish? uncursed bea"
+        },
+        {
+          "step": 14,
+          "text": "For what do you wish? uncursed bear"
+        },
+        {
+          "step": 16,
+          "text": "For what do you wish? uncursed bear t"
+        },
+        {
+          "step": 17,
+          "text": "For what do you wish? uncursed bear tr"
+        },
+        {
+          "step": 18,
+          "text": "For what do you wish? uncursed bear tra"
+        },
+        {
+          "step": 19,
+          "text": "For what do you wish? uncursed bear trap"
+        },
+        {
+          "step": 20,
+          "text": "a - a beartrap."
+        },
+        {
+          "step": 21,
+          "text": ""
+        },
+        {
+          "step": 22,
+          "text": "Create what kind of monster?"
+        },
+        {
+          "step": 23,
+          "text": "Create what kind of monster? l"
+        },
+        {
+          "step": 24,
+          "text": "Create what kind of monster? li"
+        },
+        {
+          "step": 25,
+          "text": "Create what kind of monster? lic"
+        },
+        {
+          "step": 26,
+          "text": "Create what kind of monster? lich"
+        },
+        {
+          "step": 27,
+          "text": "Create what kind of monster? liche"
+        },
+        {
+          "step": 28,
+          "text": "Create what kind of monster? lichen"
+        },
+        {
+          "step": 29,
+          "text": "A lichen appears next to you."
+        },
+        {
+          "step": 30,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 31,
+          "text": "You begin setting your bear trap.  You stop setting the trap."
+        },
+        {
+          "step": 32,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 33,
+          "text": "To what level do you want to teleport? 1"
+        },
+        {
+          "step": 34,
+          "text": ""
+        },
+        {
+          "step": 35,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 36,
+          "text": "You resume setting your bear trap.  The lichen touches you!--More--"
+        },
+        {
+          "step": 37,
+          "text": "You stop setting the trap."
+        }
+      ],
+      "hashes": {
+        "screens": "33ebc171952dcc4e21edfedde250b27ff1ecb5b2123c89557729e866ec8cbbbb",
+        "cursors": "d2aafc01ca491e14404d695fda448e5598d04c4bad94eebb06f698c12e170a8b",
+        "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+        "slices": "bc7fb93e788dc9abb7a1a8ff4063f0dd5740de9f3a677fc5e9150aee8c0a3adf",
+        "frames": "66e00794d06e09b4d80066682769c2d9fdb683b3158fbdbfe887c727eeeba53a"
+      },
+      "lastScreen": "You stop setting the trap.\n\n\n\n\n\n\n\n\n\n                                                          +--.+\n                                                          |...|\n                                                          |....\n                                                          |.o.|\n                                                          |...|\n                                                          |@F.|\n                                                          |<..|\n                                                          +---+\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    },
+    {
+      "name": "interrupted-trap-resume-negative",
+      "keys": 34,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 20,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 21,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 29,
+          "turn": 2,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 31,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 33,
+          "turn": 4,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": "set_trap",
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                71,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                50,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 34,
+          "turn": 5,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            14
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": 34,
+            "time": 4
+          },
+          "occupation": null,
+          "inventory": [
+            {
+              "id": 34,
+              "letter": "a",
+              "type": 244
+            }
+          ],
+          "monsters": [
+            {
+              "id": 35,
+              "type": 158,
+              "xy": [
+                61,
+                14
+              ],
+              "hp": 2,
+              "peaceful": false
+            },
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                70,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                61,
+                12
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                6
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "For what do you wish?"
+        },
+        {
+          "step": 2,
+          "text": "For what do you wish? u"
+        },
+        {
+          "step": 3,
+          "text": "For what do you wish? un"
+        },
+        {
+          "step": 4,
+          "text": "For what do you wish? unc"
+        },
+        {
+          "step": 5,
+          "text": "For what do you wish? uncu"
+        },
+        {
+          "step": 6,
+          "text": "For what do you wish? uncur"
+        },
+        {
+          "step": 7,
+          "text": "For what do you wish? uncurs"
+        },
+        {
+          "step": 8,
+          "text": "For what do you wish? uncurse"
+        },
+        {
+          "step": 9,
+          "text": "For what do you wish? uncursed"
+        },
+        {
+          "step": 11,
+          "text": "For what do you wish? uncursed b"
+        },
+        {
+          "step": 12,
+          "text": "For what do you wish? uncursed be"
+        },
+        {
+          "step": 13,
+          "text": "For what do you wish? uncursed bea"
+        },
+        {
+          "step": 14,
+          "text": "For what do you wish? uncursed bear"
+        },
+        {
+          "step": 16,
+          "text": "For what do you wish? uncursed bear t"
+        },
+        {
+          "step": 17,
+          "text": "For what do you wish? uncursed bear tr"
+        },
+        {
+          "step": 18,
+          "text": "For what do you wish? uncursed bear tra"
+        },
+        {
+          "step": 19,
+          "text": "For what do you wish? uncursed bear trap"
+        },
+        {
+          "step": 20,
+          "text": "a - a beartrap."
+        },
+        {
+          "step": 21,
+          "text": ""
+        },
+        {
+          "step": 22,
+          "text": "Create what kind of monster?"
+        },
+        {
+          "step": 23,
+          "text": "Create what kind of monster? l"
+        },
+        {
+          "step": 24,
+          "text": "Create what kind of monster? li"
+        },
+        {
+          "step": 25,
+          "text": "Create what kind of monster? lic"
+        },
+        {
+          "step": 26,
+          "text": "Create what kind of monster? lich"
+        },
+        {
+          "step": 27,
+          "text": "Create what kind of monster? liche"
+        },
+        {
+          "step": 28,
+          "text": "Create what kind of monster? lichen"
+        },
+        {
+          "step": 29,
+          "text": "A lichen appears next to you."
+        },
+        {
+          "step": 30,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 31,
+          "text": "You begin setting your bear trap.  You stop setting the trap."
+        },
+        {
+          "step": 32,
+          "text": "What do you want to use or apply? [a or ?*]"
+        },
+        {
+          "step": 33,
+          "text": "You resume setting your bear trap.  The lichen touches you!--More--"
+        },
+        {
+          "step": 34,
+          "text": "You stop setting the trap."
+        }
+      ],
+      "hashes": {
+        "screens": "8c517468bcd44b9f03e26de750bde7028dce312848c0244c15756d915878de70",
+        "cursors": "e0a5e968ffc00def7b98d9dd89a870e3533f300a5fe8fec49f5dc69e405c17c0",
+        "calls": "04cd0dd90767dce4c4807cd68b0bd26605a7b5089907bfb1faae6c47990e94bc",
+        "slices": "9bd388dedc85846a0959f56d4e69ba65e2c963aab542026fc5764bc1271eecbb",
+        "frames": "89d2001be71c9ed2b7a38ea178329280ad4ad5637170558bf764244822adbbcb"
+      },
+      "lastScreen": "You stop setting the trap.\n\n\n\n\n\n\n\n\n\n                                                          +--.+\n                                                          |...|\n                                                          |....\n                                                          |.o.|\n                                                          |...|\n                                                          |@F.|\n                                                          |<..|\n                                                          +---+\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    },
+    {
+      "name": "no-trap-level-roundtrip-negative",
+      "keys": 7,
+      "states": [
+        {
+          "step": 0,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            60,
+            15
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 2
+          },
+          "xy": [
+            34,
+            18
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": []
+        },
+        {
+          "step": 6,
+          "turn": 1,
+          "level": {
+            "dnum": 0,
+            "dlevel": 1
+          },
+          "xy": [
+            21,
+            16
+          ],
+          "hp": 12,
+          "polearm": {
+            "hitmon": null,
+            "savedId": null
+          },
+          "lock": {
+            "usedtime": 0,
+            "box": null,
+            "where": null,
+            "door": false
+          },
+          "trap": {
+            "object": null,
+            "time": null
+          },
+          "occupation": null,
+          "inventory": [],
+          "monsters": [
+            {
+              "id": 15,
+              "type": 12,
+              "xy": [
+                73,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 12,
+              "type": 70,
+              "xy": [
+                62,
+                11
+              ],
+              "hp": 3,
+              "peaceful": false
+            },
+            {
+              "id": 7,
+              "type": 12,
+              "xy": [
+                49,
+                5
+              ],
+              "hp": 4,
+              "peaceful": false
+            },
+            {
+              "id": 4,
+              "type": 322,
+              "xy": [
+                37,
+                17
+              ],
+              "hp": 2,
+              "peaceful": false
+            }
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "step": 0,
+          "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+        },
+        {
+          "step": 1,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 2,
+          "text": "To what level do you want to teleport? 2"
+        },
+        {
+          "step": 3,
+          "text": "You materialize on a different level!"
+        },
+        {
+          "step": 4,
+          "text": "To what level do you want to teleport?"
+        },
+        {
+          "step": 5,
+          "text": "To what level do you want to teleport? 1"
+        },
+        {
+          "step": 6,
+          "text": "You materialize on a different level!"
+        },
+        {
+          "step": 7,
+          "text": ""
+        }
+      ],
+      "hashes": {
+        "screens": "780dbb984a7503b21c6f45ba614717748fe46cfca3cbe72a0db9f65485431902",
+        "cursors": "157c707ebca2c5aa160523e872cced7fd097ccf5ae1c9b7dd31dc2223d08fe7c",
+        "calls": "8eb0f7d3cd4b56dad0a335eb8c2d121855a56a1eeb2f0bd3b29b6e9bb5de4046",
+        "slices": "3828157c9ac7abcec890f9b833937b5cb35a5efb851232e45a80a1a513b04db8",
+        "frames": "fdbe274dfb6fdf2e63df5fe56c4ef676477280dff1a4758ad13d74cbcbea5954"
+      },
+      "lastScreen": "\n\n\n\n\n\n\n\n\n\n                                                          +--.+\n                                                          |...|\n                                                          |....\n                                                          |...|\n                                                          |...|\n       +-------+------+                                   |...|\n       |..............|                                   |<..|\n       |............@.-                                   +---+\n       |..............|\n       |...$..........+\n       +----+---------+\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+    }
+  ]
+}

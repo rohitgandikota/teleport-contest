@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-11-26T01:17:32.911113+00:00",
+  "status": "before source controls and candidate",
+  "baselineRuntime": "saved-monster-traits-parent-composed-runtime.json",
+  "baselineRuntimeSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "primaryRecipeSHA256": "414d39a8a8b21d7f97993ab89741331fa392b60708f339127ec9ecb4a2a079b0",
+  "ordinaryProducer": "Nearby lichen interrupts real use_trap/set_trap occupation. Roundtrip returns by teleport without walking, exposing old resume context.",
+  "minimalScope": [
+    "Add C goto_level same-level return before outbound context work.",
+    "Call existing reset_trapset at C departure point before travel cache clear and save/free."
+  ],
+  "sourceReviewed": [
+    "Complete C/JS goto_level during level-change/tower audits, re-read exact guard and cleanup order at C do.c1583-1611.",
+    "Complete C/JS use_trap, set_trap, reset_trapset and stop_occupation; real ordinary interruption confirmed.",
+    "Complete C/JS maybe_reset_pick and save/restore polearm id lifecycle, for explicitly deferred adjacent gaps."
+  ],
+  "plannedChecks": [
+    "All five ordinary cases, exact field presence and input bytes,20negativeoutputhashes, five output-channel observer neutrality and heldEOF equality.",
+    "Constructed direct same-level public goto_level after real interrupted-trap producer: object identity, pending time, force flag,level object, coordinates and complete RNG history unchanged.",
+    "Constructed actual departure after same producer clears tobj/force only; time/coordinates retained as C reset_trapset specifies."
+  ],
+  "deferred": [
+    "Floor/carried lock and polearm departure resets need independent ownership controls; leave these runtime calls for later checkpoint.",
+    "next_level passes wrong falling argument on non-stair paths; separate gap.",
+    "Full goto_level and generalized occupations are not claimed closed."
+  ],
+  "preserve": "All six original proposals and probe reports remain immutable. No expected native output exists yet. No helper mocks, synthetic RNG or private runtime exports."
+}

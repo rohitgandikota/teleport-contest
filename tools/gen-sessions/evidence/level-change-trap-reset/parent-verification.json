@@ -1,0 +1,129 @@
+{
+  "baselineCommit": "92e5d8584e5437b258c06e50b9998bf5e6112cf2",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/do.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "ad3ae77cd497f281ba802f22151ec0a2109d4b4831c8c175153ac050d4c28f0c",
+  "sourceSeal": {
+    "members": 317,
+    "sha256": "98c962eaf00e7773ab3bef4f24f54eeebab1d685c5de956043ce152f477f87c7"
+  },
+  "promotionSeal": {
+    "members": 53,
+    "sha256": "c016024f12b2dd8c2a201c224597892e9d00df39bd77b42c82ff447d77e1d8e9"
+  },
+  "sourceControls": "3/3 versus 0/3",
+  "ordinaryChecks": "15/15 versus 14/15",
+  "native": {
+    "baseline": 4,
+    "candidate": 5,
+    "composed": 5,
+    "cases": 5,
+    "boundaries": 164,
+    "calls": 16004,
+    "frames": 0,
+    "rawSHA256": "8e1c68d16e15adb0b33c9fb4d552b6c0c5962489d52c09307629671977600e28",
+    "negativeReportsUnchanged": 4,
+    "negativeHashesUnchanged": 20
+  },
+  "portable": {
+    "payloadFiles": 23,
+    "requirements": 5,
+    "preflightRejections": 11,
+    "validMetadataControls": 2,
+    "assertionsUnchanged": 35,
+    "reports": {
+      "tools/level-change-trap-reset-state-gate.mjs": "d89aff1b1310781ce476b5a1b43ce7374f79cb5ba321a4af98ac3ee05ea09797",
+      "tools/level-change-trap-reset-input-gate.mjs": "1fd44574906319fb40af7761bc0f093b7074574c90f8ade1d33f0a01828d5cd3"
+    }
+  },
+  "retained": {
+    "initialPassed": 22,
+    "passedAfterFixtureCorrection": 23,
+    "total": 23,
+    "correction": {
+      "source": "include/youprop.h:86-103, src/vision.c:548, src/steal.c:772-811; js/youprop.js:50-64, js/vision.js:742-780, js/steal.js:562-588",
+      "baselineFailureReproduced": true,
+      "path": "tools/lock-state-gate.mjs",
+      "originalSHA256": "b74d5df0a23a295d3f33552565cd320a76d0ed3579e200b3d152c45a0c54dd56",
+      "correctedSHA256": "583989c5bf687d6ce231c19ff00c0ebc7b4867ef331bd7050c1b189046f52540",
+      "change": "Construct HBlinded instead of cached ublind, retain vision recalculation. All assertion expressions and expected messages unchanged.",
+      "assertionsBefore": 100,
+      "assertionsAfter": 100,
+      "runtimeChanged": false,
+      "checks": [
+        {
+          "kind": "baseline",
+          "command": [
+            "node",
+            "--preserve-symlinks",
+            "--preserve-symlinks-main",
+            "/Users/rohit/research/code/contest/.cache/restart-20261122/level-change-trap-reset-parent-lock-test-review/baseline/tools/lock-state-gate.mjs"
+          ],
+          "exit": 0,
+          "seconds": 33.37,
+          "log": ".cache/restart-20261122/level-change-trap-reset-parent-lock-test-review/corrected-baseline.log",
+          "sha256": "652f3fbea4649ad30df85c6216699b9af1ef13e4a4d0cbb5980db2e30da4ad45"
+        },
+        {
+          "kind": "main",
+          "command": [
+            "node",
+            "tools/lock-state-gate.mjs"
+          ],
+          "exit": 0,
+          "seconds": 40.0,
+          "log": ".cache/restart-20261122/level-change-trap-reset-parent-lock-test-review/corrected-main.log",
+          "sha256": "652f3fbea4649ad30df85c6216699b9af1ef13e4a4d0cbb5980db2e30da4ad45"
+        }
+      ],
+      "removedAssertions": 0
+    }
+  },
+  "selectedPublic": {
+    "passed": 113,
+    "screens": 148960,
+    "cursors": 148960,
+    "rngCalls": 2760541,
+    "animFrames": 9785
+  },
+  "strict8s": {
+    "passed": 111,
+    "total": 113,
+    "publicPassed": 44,
+    "publicTotal": 44,
+    "failedBundles": [
+      "tools/gen-sessions/generated/untrapping-floor.session.json",
+      "tools/gen-sessions/generated/untrapping-rescue.session.json"
+    ],
+    "baselineAlsoTimesOut": true,
+    "normal45sPassesBothRuntimes": true,
+    "originalFailureRetained": true,
+    "reviewSHA256": "1054d659441d1c890a24e0f813d46e462fcc40b15cfb1933bfc3c8d72a66efa0"
+  },
+  "full911": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/level-change-trap-reset-full911-js-20261125",
+    "passed": 911,
+    "sessions": 911,
+    "totals": {
+      "screens": 926078,
+      "cursors": 926078,
+      "rngCalls": 20011996,
+      "animFrames": 33131
+    },
+    "allFilesFixed": 1202,
+    "allFilesSHA256": "2a258619b96af5b0f6efee6ec30964218fc8d28492965f2a53a319415270230f",
+    "verificationSHA256": "127b93a6cfd37dcc23e181db7f789d25f646119702a4e8a4163c4238a5f3c7cb",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Direct same-level goto and force_bungle are constructed checks after an ordinary interrupted-trap producer.",
+    "Lock and polearm departure cleanup, the non-stair falling argument and whole goto_level remain open.",
+    "Two large bundles exceed strict8s on both published baseline and candidate; all public workers and default45s corpus checks pass.",
+    "Full styled cells, cursor, ordered RNG and frames are checked. Literal serialized bytes, whole-port completeness and a newer held-out score are not established."
+  ]
+}

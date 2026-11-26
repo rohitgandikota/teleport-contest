@@ -51,8 +51,11 @@ diagnostic remains unchanged. See STATUS and corpse-impact-owner evidence.
 
 Fruit UTF8, merged byte caps and level-departure context cleanup remain
 separate work. Five fruit-byte C inputs establish a 1/5 baseline. The level
-trap-reset candidate passes all five targeted C cases versus four; its full
-replay and portable promotion are pending. The latest leaderboard
+trap-reset change passes all five targeted C cases versus four, all 113 selected
+recordings and 23 retained checks. Full911 passes 926,078 screens/cursors,
+20,011,996 random positions and33,131 frames. The strict 8-second check passes 111/113, including
+all 44 public recordings; two large bundles also exceed 8 seconds on the published
+baseline and pass the normal 45-second limit on both runtimes. The latest leaderboard
 check, 20:12 EST on November 25, still shows rank 7 and 659 unmatched screens;
 its scored row predates these checkpoints. Local parity does not establish a
 newer held-out score or whole-port completion.

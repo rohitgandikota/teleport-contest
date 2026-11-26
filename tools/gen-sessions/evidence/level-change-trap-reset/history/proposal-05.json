@@ -1,0 +1,12 @@
+{
+  "classification": "ordinary keyboard exploration; not locked",
+  "segments": [
+    {
+      "name": "interrupted-trap-return-without-walking",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017uncursed bear trap\r  \u001bk\u0007lichen\r  \u001baa  \u001b\u00162\r  \u001b\u00161\r\u001b\u0014<k.\u001baa\u001b"
+    }
+  ]
+}

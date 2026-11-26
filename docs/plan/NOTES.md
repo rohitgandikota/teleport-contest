@@ -11,6 +11,22 @@ Newest first within each section.
 
 ---
 
+## Interrupted trap setup belongs to its level
+
+goto_level returns for the current level before clearing context. A real
+departure calls reset_trapset even when the trap is still carried. That helper
+clears the object and force_bungle fields while retaining coordinates and
+duration. Walking after returning also resets setup, so an ordinary witness
+must return directly to the old square before applying the carried trap.
+Keep cancelled and same-level choices as negative controls. Lock and polearm
+cleanup have separate ownership rules and need separate evidence.
+
+The untrapping-floor and untrapping-rescue recordings bundle 90 and 71 cases.
+Both exceed the separate 8-second worker check on the published corpse
+baseline and trap-reset candidate. Both finish and match C under the normal
+45-second scorer budget. Preserve the strict failures and report them as such;
+do not treat a complete bundle as one short action or silently raise its gate.
+
 ## Corpse impact ordering and statue production
 
 C's miscellaneous-hit CORPSE arm prints the hit before observing the object,
@@ -7977,6 +7993,12 @@ covered by the FROMFORM bit set_uasmon() sets. The one place that used
 the cache as a stand-in, lock.c chest_shatter_msg()'s temporary
 HBlinded=1 for singular(), now sets the property words like the C.
 u.ublind stays as a cache for the direct reads that remain.
+
+The lock-state mimic-absorption fixture also needs HBlinded, followed by
+vision_recalc. Setting only ublind leaves the mimic visible and selects the
+wrong message branch. The original test fails on both the published corpse
+runtime and trap-reset candidate. Correcting only that constructed field
+passes on both with all 100 assertions unchanged.
 
 ## do.js, dothrow.js and spell.js notes: portals, boulders, slips, spell sorting
 

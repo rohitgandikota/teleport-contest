@@ -1,0 +1,11 @@
+{
+  "status": "controls and inputs fixed before candidate",
+  "files": {
+    "PLAN.json": "18e70cdbd6c672968460008dae1f92219b83faa3ad6d532a1c8237da2cd6c787",
+    "recipe.json": "414d39a8a8b21d7f97993ab89741331fa392b60708f339127ec9ecb4a2a079b0",
+    "tools/ordinary.mjs": "62230f56bcff5bfae8f8e5162b9c37bd61fabff9425d6341bbc1be572762b276",
+    "tools/state.mjs": "a387b4554832e5daa6b92f0d4d793dab683544ce3721ba774b65fd235abbbc51"
+  },
+  "negativeCases": 4,
+  "negativeHashes": 20
+}

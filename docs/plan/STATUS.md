@@ -1,8 +1,56 @@
 # STATUS — live handoff board
 
-## 2026-11-25: corpse-impact checkpoint verified for publication
+## 2026-11-25: level-departure trap reset verified for publication
 
-The uncommitted runtime change is only js/uhitm.js. Its CORPSE arm follows C's
+Only js/do.js changes at runtime. goto_level returns for the current level
+before changing context, and calls the existing reset_trapset on departure.
+The fixed composed 280-file map is level-change-trap-reset-parent-composed-runtime.json,
+SHA256 `ad3ae77cd497f281ba802f22151ec0a2109d4b4831c8c175153ac050d4c28f0c`.
+Five original C cases pass versus four: 164 styled boundaries/cursors,
+16,004 random calls and no frames. Four complete negative reports and twenty
+hashes are unchanged. Source317 and promotion53 are sealed. The exact 23 payloads,
+five requirements and the single original C recording are installed. Portable
+source 3/3 and ordinary 15/15 reports match the sealed composition exactly.
+
+All 113 selected/public recordings pass: 148,960 screens/cursors, 2,760,541 random
+positions and 9,785 frames. Retained checks initially pass 22/23. The lock test
+used cached ublind to construct blindness; it fails identically on the pushed
+corpse runtime. Changing only that setup to HBlinded passes on baseline and
+main with all 100 assertions unchanged, giving 23/23 retained checks.
+
+The strict 8-second check passes 111/113 workers, including all 44 public recordings. The two
+failures are the complete 90-case untrapping-floor and 71-case untrapping-rescue
+bundles. Both also exceed 8 seconds on the exact pushed corpse baseline. Baseline
+normal 45-second runs pass in 12.5 and 11.4 seconds; candidate normal runs pass in 13.3 and 9.4 seconds.
+The original strict failure remains recorded. No budget was changed to turn
+that strict result into a pass. See level-change-trap-reset-parent-timeout-review.
+
+Full911 passes all 911 recordings with two NFS CPU workers, default 45-second budgets
+and no retries: 926,078 screens/cursors, 20,011,996 random positions and 33,131
+frames. All 1,202 fixed files have map SHA256
+`2a258619b96af5b0f6efee6ec30964218fc8d28492965f2a53a319415270230f`.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/level-change-trap-reset-full911-js-20261125.
+Parent receipt: level-change-trap-reset-main-verification.json, SHA256
+`09218683388738b84d6809d9dc80f601f995a894ecd582f1d1725d1ad906899b`.
+Public evidence: tools/gen-sessions/evidence/level-change-trap-reset/parent-verification.json.
+Commit and immediately push, then check the exact published tree.
+Direct same-level goto and force_bungle are constructed controls. Lock/carried
+box and polearm cleanup, non-stair falling and whole goto_level remain open.
+
+Next: shared ismnum bounds source318 is sealed, const.js only, source 32/32
+versus 26/32 and all four existing ordinary corpse reports unchanged. Portable
+promotion and parent composition are pending. Fruit/text source334 native
+comparison passes 16/18 versus 6/18. The two remaining failures share an inherited
+menu search-marker color defect; its separate C owner review is underway.
+All 35 original negative hashes remain fixed. The original 13 inputs were recorded
+once. The first raw lacked top-level source metadata because the parent input
+omitted it; the preserved raw is unchanged, and a certified companion inserts
+only source:c. No C recording was repeated. Existing five-case fruit raw stays fixed.
+The guard prompt's postmov/newsym diagnostic await remains a separate audit.
+
+## 2026-11-25: corpse-impact checkpoint pushed as 92e5d858
+
+The published runtime change is only js/uhitm.js. Its CORPSE arm follows C's
 message, observation, cure, petrification and early-return order. Four locked
 C cases pass versus three: 617 styled boundaries/cursors, 24,239 random calls
 and 21 frames. Three complete negative native reports and fifteen output
@@ -30,28 +78,13 @@ identical to the sealed promotion. Source340 and promotion67 verify unchanged.
 The parent receipt is corpse-impact-main-verification.json, SHA256
 `a97efd5f1db7888dded8326523b61c1b8b33857751f8f462b9802069e59d84f8`.
 Public evidence is tools/gen-sessions/evidence/corpse-impact-owner/parent-verification.json.
-Commit and immediately push this checkpoint, then verify its exact Git tree.
+Commit 92e5d8584e5437b258c06e50b9998bf5e6112cf2 is pushed. All 1,201 tested
+files match its Git tree. Publication receipt SHA256:
+`9fba1fb86a0ec8946f3ddbbe59a308f0a038f866bba6c23dc2b1650c154f99ab`.
 Shared plural-corpse naming and ismnum bounds remain open. Only the corpse
 dispatch arm is covered, not the whole miscellaneous-hit owner.
 
-The separate level-change-trap-reset source317 is sealed. It adds only the C
-same-level return and the existing trap reset on departure. Its ordinary
-checks pass 15/15 versus 14/15; three constructed public-owner checks pass
-versus zero. Four complete negative rows and twenty hashes are unchanged.
-Five original C inputs were recorded once. Native comparison passes 5/5 versus
-4/5, including 164 styled boundaries/cursors and 16,004 random calls. Candidate
-and composed reports are identical; all four negative reports stay unchanged.
-Full911 is running on two NFS CPU workers with default budgets and no retries.
-PID3294213, root /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/level-change-trap-reset-full911-js-20261125.
-Its 1,202 fixed files have all-files SHA256
-`2a258619b96af5b0f6efee6ec30964218fc8d28492965f2a53a319415270230f`.
-Portable promotion is separate; do.js is not installed on main yet.
-Lock/carried-box and polearm departure cleanup remain independently open.
-The guard-cleanup-prompt source23 records an ordinary extra-prompt witness,
-but a postmov/newsym diagnostic await must be reviewed before a runtime fix.
-Fruit/text has a sealed334 eight-file candidate. Its source controls pass
-22/22 versus 2/22 and thirteen ordinary checks pass versus six. Parent native
-verification and composition with wrapped clearing remain pending.
+Subsequent level, bounds, fruit and guard work is tracked above.
 
 ## 2026-11-25: wrapped message clearing pushed as 5c755158
 

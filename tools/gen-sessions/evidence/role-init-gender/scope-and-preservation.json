@@ -1,0 +1,43 @@
+{
+  "runtimeChanges": [
+    "js/role.js"
+  ],
+  "insertedLines": 9,
+  "deletedLines": 0,
+  "reverseRemovalEqualsFixedBaseline": true,
+  "otherModulesUnchanged": 279,
+  "originalAssertionBodyBytes": 6248,
+  "originalAssertionBodySHA256": "2c1a88b166ec7a197a5847a304ef61b6f70d17d7f50674b9eba387ae55ed6eab",
+  "observerAndAssertionBodyUnchanged": true,
+  "source27": {
+    "SEAL.json": "115b29dbde45316b6dac8cf9953d58b905490bd83ae2e1bb2c067352721117b8",
+    "MANIFEST.json": "6ecb12c949f8d16afae6d39e6e5b3d6d63f3d62c1204d23a915acb375436e02d",
+    "verify.py": "b02c59e687844643fade8a5b2117347c297ae48adc4d791b5cb9bcf4c727beae",
+    "probe.mjs": "3e297e508cb500776837b87e2ae2238d92cb682f5dcf958b29e31d6dc69d0802",
+    "input-lock.json": "18c483074461011935d4d8c7318c05848bd790c19881d52dad5aee6016ea44bd",
+    "recipe.json": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+    "negative-hashes.json": "3f0a0bbdd93a7e2ac301844ce1bca9fb7ebf47254447185a9e3011e768d62c28"
+  },
+  "pins": {
+    "runtime.json": "7313a316acc791465285a592e9f11d9f19cec0227411f91bee69b99ef27452f9",
+    "js/role.js": "2a23dacd8cd6c1b351b4c9faeba42ac68dca08ad62dc6b9a2915b5f43c87b9ea",
+    "role-init-gender.patch": "083197e7f47c6c07fcfb33519b5075bec5e60b4433359188c588cee4c166cf71",
+    "candidate-lock.json": "28c649f0d0751f983fb4c599e80e24a77c44dca8a7bb932328a418ce48a3f072",
+    "review/preflight.json": "a2793aa06b538dca6d07989a72113b9a9ba83b6c5d4da29e0a66a4df4bdfa7aa",
+    "review/ordinary-candidate.json": "7d1beba71cddf44d450da9e8b0e57fed18735b2740bc5b63e003ba92ed864a34",
+    "review/candidate-native.json": "e90de24948db4eda10f0cf8ca5642467bfd729dcc36a9c605409b55ecbe10476",
+    "review/retained-welcome.json": "e4a4b3c728ffcb68a17730d8d233db78e70e2e96bce2a28254decaa1f964ca1d",
+    "review/validation.json": "56c6fdb4310dc72836db7665c9f99963f7e2edac1f633660b83a2adeeda50ef0",
+    "review/worker.json": "2d7ca50f3352be493f80679ca0b89733c01ba65ec2d3a777130d2ff30bc344bf"
+  },
+  "parentBaselineNativeSHA256": "813d73b719860ed135ec271afaa6b8a109b3b72f55661a773938a018d63131e2",
+  "parentRawSHA256": "daa5157ad653a5c49e7d431e40f6b4e91862598a8920eeeb488232aab65f86c5",
+  "retainedWelcomeGateSHA256": "9380b97f2186ffad79dde5c8f76de50284403cde0be518e8932fff66850219f3",
+  "restoreSentinelSourceVerified": true,
+  "realRetainedSaveRestorePassed": true,
+  "restoredInvalidGenderValkyrieOrdinaryCovered": false,
+  "nativeCallNormalization": "Existing maintained native gate removes C location/sequence annotations only; no calls discarded, masks or oracle adjustment.",
+  "preflightBeforeAnyGameplay": true,
+  "CExecuted": false,
+  "promotionCreated": false
+}

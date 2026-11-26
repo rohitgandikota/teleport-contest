@@ -1,0 +1,10 @@
+{
+  "sourceRecipeSHA256": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+  "sourceSealSHA256": "115b29dbde45316b6dac8cf9953d58b905490bd83ae2e1bb2c067352721117b8",
+  "primaryRecipeSHA256": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+  "minimalSHA256": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+  "segments": 4,
+  "keys": 216,
+  "preserveAllRootMetadata": true,
+  "beforeC": true
+}

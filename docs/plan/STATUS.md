@@ -1,5 +1,60 @@
 # STATUS — live handoff board
 
+## 2026-11-26: pickup correction published; startup gender verified on full951
+
+Published main is8c3b7e1f, the separate pickup-test correction. Fire-trap slime
+is published asb15a043c with all1,241 tested Git blobs verified. The only current
+runtime change is role.js: nine lines port C role_init gender checks before
+quest fixups. Candidate321 and fresh parent both pass4/4, versus3/4 on baseline,
+and complete native reports match. Runtime-map SHA256:
+52e5aa78874a514e096278b92453620b953bd2709726c63d67dc73979229eea8.
+
+Promotion48 is verified and all28 payloads plus original raw are installed.
+The fresh installed gate passes44/44 in1.862s; all behavior fields, complete
+rows and15 negative hashes match promotion. Reports differ only in the actual
+runtimeSHA256, which correctly names the composed graph. Main report SHA:
+51517325807f32df1c7433f5b5f549905d67f16b82a03837ff8354116d2d7b3e.
+Four branch rows bring the registry to4,792; aggregate coverage remains111.
+C selector attribution and untested invalid-gender restored Valkyrie limits
+remain explicit. All original source41/44 and native3/4 results are preserved.
+
+Full951 passes on NFS, two CPU workers, default45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/role-init-gender-full951-js-20261126.
+PID3632497 is complete. All951 recordings pass, with948,808 screens/cursors,
+20,816,806 random calls and33,260 frames. All1,242 files are fixed.
+All-files SHA256:
+d137bdf5c7cbd234fb5dc86f868eb7b0351d6a47143a94f3a776232e471d7d04.
+Verification SHA256:
+816dbfb39cec5adf7489ec9aee05ab99bd981f5ece1d53bf3a16d075279b85a7.
+Both retained startup gates,45 strict workers and empty source audit pass.
+Public parent proof is under evidence/role-init-gender. Next: stage intended
+paths, verify all tested Git blobs, commit and immediately push.
+
+A separate comment correction is prepared in uhitm-comment-readability. The
+old warning says the unarmed predicate uses nonexistent slots, but that code
+is already correct. Its replacement states the C1779 armor/shield rule. The
+complete parsed syntax trees are identical except positions. No gameplay runs
+or main edits were made. Initial root-level acorn resolution failed; resolving
+the existing tools dependency passes, with both inspection records preserved.
+The prepared fixed comment graph is uhitm-comment-parent-composed, runtime SHA
+6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8.
+After role publication, install and publish only the comment change, record
+uhitm-comment-publication.json, then run the prepared gremlin composition.
+
+Gremlin candidate329 is independently verified: only monmove.js equipment
+reads, naming imports and missing monflee light feedback change. It passes
+65/65 source/producer checks,10 neutrality comparisons and native5/5, versus
+3/5 before. All15 negative hashes and three complete ordinary/native control
+rows stay exact. Runtime SHAafd0199f3623ac9c3c7137d555879a0272c9765f0b1183b50088d2b4cf9ae9a9.
+Leibniz owns portable promotion. Read-only inspection confirms the pinned C
+tty binary has no active sound backend: monflee has no set_voice call and
+set_voice/sound_speak only return. Other sound builds remain outside this
+terminal proof. Prepared gremlin composition/full952 scripts have not run.
+Euclid owns underwater fire source30-style evidence on fixed2b; Sartre owns
+human HP-floor source review after sealing billing review32. Neither has a
+runtime candidate or C recording authorized. Parent's remaining giant flag
+versus class weapon-selection lead is untested and has no locked input family.
+
 ## 2026-11-26: fire-trap slime published; pickup test corrected
 
 Published main is b15a043c8dd76a074d9ea845b2863ebebff2d04a. All1,241

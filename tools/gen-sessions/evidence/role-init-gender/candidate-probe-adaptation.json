@@ -1,0 +1,22 @@
+{
+  "originalProbeSHA256": "3e297e508cb500776837b87e2ae2238d92cb682f5dcf958b29e31d6dc69d0802",
+  "candidateProbeSHA256": "dd2770835ee61c1374ab896bb7e072e490b1c4efe80d7d5db36ee268e1a880af",
+  "assertionBodyBytes": 6248,
+  "assertionBodySHA256": "2c1a88b166ec7a197a5847a304ef61b6f70d17d7f50674b9eba387ae55ed6eab",
+  "assertionGroups": 44,
+  "changes": [
+    {
+      "before": "// One source-only batch, after original assertions and input tuples are locked.\nimport assert from 'node:assert/strict';\nimport {readFileSync,writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nconst root = new URL('./',import.meta.url);\nconst sha = bytes => createHash('sha256').update(bytes).digest('hex');\nconst read = name => JSON.parse(readFileSync(new URL(name,root)));\nconst lock = read('input-lock.json');\nassert.equal(lock.beforeGameplayAndCandidate,true);\nfor (const [name,digest] of Object.entries(lock.files))\n    assert.equal(sha(readFileSync(new URL(name,root))),digest,name);\nassert.equal(sha(readFileSync(new URL('probe.mjs',root))),lock.probeSHA256);\nconst recipe = read('recipe.json'), predictions = read('predictions.json');\nconst tuple = part => lock.fields.map(field => ({field,present:Object.hasOwn(part,field),\n    ...(Object.hasOwn(part,field) ? {value:part[field]} : {})}));\nassert.deepEqual(recipe.segments.map(tuple),lock.tuples);\nassert.equal(sha(JSON.stringify(lock.tuples)),lock.tuplesSHA256);\nassert.equal(sha(JSON.stringify(recipe.segments.map(part => [null,...part.moves]))),lock.allKeysSHA256);\nassert.deepEqual(lock.negativeIndexes,[1,2,3]);\nfor (const item of read('source-pins.json').files)\n    assert.equal(sha(readFileSync(new URL(item.path,root))),item.sha256,item.path);\nconst runtimeBytes = readFileSync(new URL('baseline-runtime.json',root));\nassert.equal(sha(runtimeBytes),'54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388');\nconst runtime = JSON.parse(runtimeBytes);\nfunction verifyRuntime() {\n    assert.equal(Object.keys(runtime).length,280);\n    for (const [name,digest] of Object.entries(runtime))\n        assert.equal(sha(readFileSync(new URL(name,root))),digest,name);\n}\nverifyRuntime();\nconst {runSegment} = await import('./js/jsmain.js');\nconst {InMemoryStorage} = await import('./js/storage.js');\nconst {decodeScreen,renderCell} = await import('./frozen/screen-decode.mjs');\nconst {outputs,hashes,hash,deferred} = await import('./tools/half-damage-reader-observe.mjs');\n\n",
+      "after": "// Original source27 observer and assertion body, with candidate-only path/report adaptation.\nimport { verifyRuntime } from './preflight.mjs';\nimport assert from 'node:assert/strict';\nimport { readFileSync, writeFileSync } from 'node:fs';\nimport { createHash } from 'node:crypto';\nconst root = new URL('./', import.meta.url);\nconst sha = bytes => createHash('sha256').update(bytes).digest('hex');\nconst read = name => JSON.parse(readFileSync(new URL(name, root)));\nconst lock = read('input-lock.json');\nconst recipe = read('recipe.json'), predictions = read('predictions.json');\nconst runtimeBytes = readFileSync(new URL('runtime.json', root));\nverifyRuntime();\nconst {runSegment} = await import('./js/jsmain.js');\nconst {InMemoryStorage} = await import('./js/storage.js');\nconst {decodeScreen,renderCell} = await import('./frozen/screen-decode.mjs');\nconst {outputs,hashes,hash,deferred} = await import('./tools/half-damage-reader-observe.mjs');\n\n"
+    },
+    {
+      "before": "classification:'Source-only ordinary keyboard evidence, not original C comparison'",
+      "after": "classification:'Fresh candidate ordinary keyboard evidence; native comparison recorded separately'"
+    },
+    {
+      "before": "'review/ordinary-baseline.json'",
+      "after": "'review/ordinary-candidate.json'"
+    }
+  ],
+  "observerAndAssertionBodyUnchanged": true
+}

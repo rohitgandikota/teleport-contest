@@ -1,0 +1,6 @@
+{
+  "phase": "pre-lock source-pin construction",
+  "passCheck": false,
+  "error": "Requested gstate.js range1-29 exceeds the23-line fixed file.",
+  "resolution": "Use actual complete file boundary before lock. No input or gameplay changed."
+}

@@ -1,0 +1,5 @@
+{
+  "phase": "read-only source census before gameplay",
+  "error": "The guessed include/role.h path does not exist.",
+  "resolution": "Use include/you.h for role/gender declarations. No runtime or input changes."
+}

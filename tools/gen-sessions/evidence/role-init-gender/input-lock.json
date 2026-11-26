@@ -1,0 +1,147 @@
+{
+  "beforeGameplayAndCandidate": true,
+  "sourceOnly": true,
+  "CRecorded": false,
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "valkyrie-invalid-male"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "valkyrie-valid-female"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wizard-valid-male"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wizard-valid-female"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+      }
+    ]
+  ],
+  "tuplesSHA256": "36c15c9ba50c559143c8ff348060aa52f42d8031deca3486a70a4fbe9fb6e194",
+  "allKeysSHA256": "c52617bd2836af8e3199c9308218176c7b1de2e93b4f2ef580353225782b181d",
+  "files": {
+    "recipe.json": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+    "predictions.json": "c3ac673d02b7433d952dffd0705fa429ac748404bdfd178fa6c488b71ad9b6da",
+    "producer-origin.json": "1098668a59e0442846e1a20f2a63803dd48836ea939166d8d32314f697c7fed2",
+    "SOURCE-REVIEW.md": "717c6a738d695688cddf45ff0adb0c7f3340e4ec6bd60ff3f916377b7d929408",
+    "source-pins.json": "0d56e8b0d6244f22e6d4aa5d5a101c19688fdd5ec642063053d5f146a1e765cd",
+    "read-scope.json": "d178d3e53e6e52f4633c6f27d1cb4efb26434e871657165488de9d3fb33ff74e",
+    "baseline-runtime.json": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "review/assertion-body.json": "d0f6c277ca88cca6225f0e345da7bf1ac785955a120d3f1ebae2718df76c1474"
+  },
+  "probeSHA256": "3e297e508cb500776837b87e2ae2238d92cb682f5dcf958b29e31d6dc69d0802",
+  "assertionBodySHA256": "2c1a88b166ec7a197a5847a304ef61b6f70d17d7f50674b9eba387ae55ed6eab",
+  "cases": 4,
+  "keys": 216,
+  "boundaries": 220,
+  "negativeIndexes": [
+    1,
+    2,
+    3
+  ],
+  "negativeHashesPreexisting": false,
+  "negativePolicy": "Indices1/2/3 chosen before gameplay; record all five baseline output hashes in this sole batch and freeze for future candidates.",
+  "runtimeCopies": 0
+}

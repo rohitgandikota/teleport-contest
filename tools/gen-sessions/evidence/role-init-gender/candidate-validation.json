@@ -1,0 +1,24 @@
+{
+  "ordinary": "44/44",
+  "native": "4/4",
+  "baselineNative": "3/4",
+  "negativeHashes": 15,
+  "completeNegativeOrdinaryRows": 3,
+  "completeNegativeNativeRows": 3,
+  "observedPlainDeferred": "4/4 each",
+  "retainedWelcomeOrdinary": "16/16 each mode",
+  "retainedWelcomeIsFreshNativeComparison": false,
+  "keys": 216,
+  "boundaries": 220,
+  "calls": 11232,
+  "frames": 0,
+  "sourceAttributionLimit": "C selection can repair initgend before role_init; patch follows the explicit C owner contract.",
+  "restoreLimit": "Real retained changed-gender restores pass; no restored gender-invalid Valkyrie input was added.",
+  "CExecuted": false,
+  "source27Changed": false,
+  "runtimeChanges": [
+    "js/role.js"
+  ],
+  "failures": [],
+  "runtimeSHA256": "7313a316acc791465285a592e9f11d9f19cec0227411f91bee69b99ef27452f9"
+}

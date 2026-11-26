@@ -1,0 +1,165 @@
+{
+  "files": [
+    {
+      "path": "../../../nethack-c/upstream/include/flag.h",
+      "sha256": "bb28a3f835f3b38119f95311d76b535ef5053f3fffa42372d9f7b1c4c917806f",
+      "bytes": 29819
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/global.h",
+      "sha256": "97bcc4fdd9c1f880dacaf1fffe0043f78874f9fc7e9d84f57aa1a1d4be811e88",
+      "bytes": 19826
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/optlist.h",
+      "sha256": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+      "bytes": 46241
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/you.h",
+      "sha256": "d19cfa0233582f1ad550b9dfc788f26166f3ff21225e3d8a0cd43b6de2094289",
+      "bytes": 25173
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/allmain.c",
+      "sha256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+      "bytes": 33124
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/botl.c",
+      "sha256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "bytes": 159716
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/exper.c",
+      "sha256": "b2348ce804db130fb84d832c60d3c454eb8e52c5e6debe9e173ef3d3ec226a12",
+      "bytes": 12854
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/options.c",
+      "sha256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "bytes": 329769
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/restore.c",
+      "sha256": "42a1251840cc5a964d6f6b93f6425e72c34149659a850e23ac7b44cdde88712f",
+      "bytes": 49209
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "sha256": "d6f9341da2a6dff5197442f78cb322c8b22437c95646c44350810fbc058f25a8",
+      "bytes": 102977
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/save.c",
+      "sha256": "fb55bb137c931bbb2a91fb4daff28bd6944113d158c05e51cbfb64e3579a62f5",
+      "bytes": 40341
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/u_init.c",
+      "sha256": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71",
+      "bytes": 47592
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "sha256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+      "bytes": 66043
+    },
+    {
+      "path": "../../../nethack-c/upstream/sys/unix/unixmain.c",
+      "sha256": "9c8a9a498acaffee6ce62d44a5e07977d2ec4852f29a77a1fbabdea0fd9f2165",
+      "bytes": 25882
+    },
+    {
+      "path": "../../../nethack-c/upstream/win/tty/wintty.c",
+      "sha256": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5",
+      "bytes": 178849
+    },
+    {
+      "path": "../../../tools/config-menu-bindings-prerequisite-input-gate.mjs",
+      "sha256": "2ed09eac470435c98acfa9525d1f4dbb0d970df8575e9aa0bf0d7e4fa7a562b6",
+      "bytes": 8047
+    },
+    {
+      "path": "../../../tools/restore-phase-source-gate.mjs",
+      "sha256": "be4467f4e1e11ed6183d139764bc6506694ba51774db91363ea4e2dd0ca233d2",
+      "bytes": 12610
+    },
+    {
+      "path": "../../../tools/welcome-restore-branches-input-gate.mjs",
+      "sha256": "9380b97f2186ffad79dde5c8f76de50284403cde0be518e8932fff66850219f3",
+      "bytes": 26538
+    },
+    {
+      "path": "js/allmain.js",
+      "sha256": "eaec232835f989d6b0cb5b5a113343ef580f77c1a5868917e97ce21d09ddee01",
+      "bytes": 55299
+    },
+    {
+      "path": "js/botl.js",
+      "sha256": "a487fd8138595e55b8e2be64ca4fb945fbb1b08eb1bb1e3eb93081feaa846343",
+      "bytes": 127798
+    },
+    {
+      "path": "js/const.js",
+      "sha256": "5dace7ce5a0a917226ff8b762c7de8fb953dc50867e0cfce9ad2f9bf84b52061",
+      "bytes": 119217
+    },
+    {
+      "path": "js/exper.js",
+      "sha256": "e67d7be66c4584ca0a587d23f7f357da4056082a509627fffd47e501c85f1db6",
+      "bytes": 16970
+    },
+    {
+      "path": "js/gstate.js",
+      "sha256": "99ebcdb3a5c5ddae89d914bf46772683cca5cb83587251d3844e3855b3fe7d15",
+      "bytes": 881
+    },
+    {
+      "path": "js/jsmain.js",
+      "sha256": "dda1d824fbd7ea022418b8191aae9bee0adce9ef31b78c1e2a25bc89f2d19f59",
+      "bytes": 20229
+    },
+    {
+      "path": "js/options.js",
+      "sha256": "b3de18f3f5cafb7ecf7e2ceef40a34fc231b08470d0cf5f77be8f5b398b6b548",
+      "bytes": 182084
+    },
+    {
+      "path": "js/plselect.js",
+      "sha256": "47a3dfeec58ba680afc0b66cb9e09b00cdae99fedbd7e64d51adbad76f0c12dd",
+      "bytes": 38247
+    },
+    {
+      "path": "js/restore.js",
+      "sha256": "fbe62b5bc08b5415560887a53f72b9abd6252f1ed97dace699de25562a6a3eec",
+      "bytes": 19127
+    },
+    {
+      "path": "js/role.js",
+      "sha256": "69080459868d0260129121fcff0d73f8dc6862acd3601853b8297839d8535f76",
+      "bytes": 35103
+    },
+    {
+      "path": "js/role_data.js",
+      "sha256": "c371cb85c785942cc8339fd34f29cad0a60293dc402fe04af721ef5ca2e18e9d",
+      "bytes": 37270
+    },
+    {
+      "path": "js/save.js",
+      "sha256": "0b49d10e0b0b4591dd338d957bad82c93f61f7575bb588c5ebda49d456c21d85",
+      "bytes": 19714
+    },
+    {
+      "path": "js/wizcmds.js",
+      "sha256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+      "bytes": 71674
+    },
+    {
+      "path": "tools/half-damage-reader-observe.mjs",
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+      "bytes": 3796
+    }
+  ],
+  "rangeManifestSHA256": "d178d3e53e6e52f4633c6f27d1cb4efb26434e871657165488de9d3fb33ff74e"
+}

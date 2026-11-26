@@ -1,0 +1,34 @@
+{
+  "prefix": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b",
+  "prefixBytes": 52,
+  "prefixSHA256": "8e2b66c1ad2d0533472ac2f9ce24ced54112b4f8fc200ba72915b29ea961becd",
+  "parentExperiencePrefixBytes": 46,
+  "parentExperiencePrefixSHA256": "6ab8c7e93fc57b93928a47d5b2e054d34e74722e8f0fe87e11c11f41c0760fea",
+  "additionalEstablishedCleanup": "\u001b\u001b\u001b\u001b\u001b\u001b",
+  "suffix": "i\u001b",
+  "seed": 102200,
+  "datetime": "20000110090000",
+  "originalTuplePreserved": false,
+  "changes": "Shorten the established family after its46-key levelchange prefix and six ESC cleanup keys; append inventory/cancel, vary role/gender/alignment for four new cases.",
+  "files": {
+    "producers/balrog-recipe.json": {
+      "sha256": "c9d6609945576063741ff2062107130879293144541b7eb5822e32b3f95298d6",
+      "bytes": 4781
+    },
+    "producers/balrog-input-lock.json": {
+      "sha256": "aabfcfce7e783e8766cb92697e655315614b825fba56272c0db7d77d87ca32b5",
+      "bytes": 6061
+    },
+    "producers/balrog-parent-native.session.json": {
+      "sha256": "160265351dca3ffcb6de26d852f173ff1155b9fa11743fd6fe1648b7369196c0",
+      "bytes": 767343
+    }
+  },
+  "parentNativeUse": "Read-only provenance for an already reached keyboard prefix. This new four-case family is not C-confirmed.",
+  "negativePreselection": [
+    1,
+    2,
+    3
+  ],
+  "negativeHashesPreexisting": false
+}

@@ -12,14 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Fire-trap slime cleanup is pushed as `b15a043c`, with all 1,241 tested Git blobs
-verified. All six C cases, 54 ordinary checks, seven retained gates, 45 strict
-workers and 950 maintained recordings pass. Two source-backed pickup-test
-corrections pass all 17 replays and source controls on both fixed runtimes;
-their separate test-only commit is ready. Startup gender normalization passes
-all four C cases on the combined code and is running the full951 regression.
-Its isolated candidate and portable gate are verified. C confirms both gremlin light
-failures, with all three controls exact; its candidate is in progress.
+Fire-trap slime cleanup is pushed as `b15a043c`; the pickup-test correction is
+pushed as `8c3b7e1f`. Startup gender normalization passes all four C cases,
+44 ordinary checks, both retained startup gates, 45 strict workers and all
+951 maintained recordings. The installed behavior report matches the isolated
+report; only the measured runtime hash differs. Publication is next. The
+gremlin candidate passes all five C cases and is being prepared for integration.
+Separate fire-trap source reviews cover underwater return and the human HP floor.
 The latest official result remains agentic rank7 with659 unmatched
 screens; its timestamp predates the newest gameplay pushes.
 See STATUS for exact evidence, preserved diagnostics and limits.

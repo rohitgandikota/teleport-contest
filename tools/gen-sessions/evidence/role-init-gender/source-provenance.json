@@ -1,0 +1,42 @@
+{
+  "sourceSealSHA256": "115b29dbde45316b6dac8cf9953d58b905490bd83ae2e1bb2c067352721117b8",
+  "candidateSealSHA256": "8b0f381e29dde483752924fe17d295c4ca79f9d147427187d500c7923fab1861",
+  "sourceInputLockSHA256": "18c483074461011935d4d8c7318c05848bd790c19881d52dad5aee6016ea44bd",
+  "recipeSHA256": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+  "sourceProbeSHA256": "3e297e508cb500776837b87e2ae2238d92cb682f5dcf958b29e31d6dc69d0802",
+  "candidateProbeSHA256": "dd2770835ee61c1374ab896bb7e072e490b1c4efe80d7d5db36ee268e1a880af",
+  "sourceBaselineRuntimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+  "candidateRuntimeSHA256": "7313a316acc791465285a592e9f11d9f19cec0227411f91bee69b99ef27452f9",
+  "candidatePatchSHA256": "083197e7f47c6c07fcfb33519b5075bec5e60b4433359188c588cee4c166cf71",
+  "rawSHA256": "daa5157ad653a5c49e7d431e40f6b4e91862598a8920eeeb488232aab65f86c5",
+  "publicPathsForOriginalLock": {
+    "recipe.json": "tools/gen-sessions/recipes/role-init-gender.json",
+    "predictions.json": "tools/gen-sessions/evidence/role-init-gender/predictions.json",
+    "producer-origin.json": "tools/gen-sessions/evidence/role-init-gender/producer-origin.json",
+    "SOURCE-REVIEW.md": "tools/gen-sessions/evidence/role-init-gender/source-review.md",
+    "source-pins.json": "tools/gen-sessions/evidence/role-init-gender/source-pins.json",
+    "read-scope.json": "tools/gen-sessions/evidence/role-init-gender/read-scope.json",
+    "review/assertion-body.json": "tools/gen-sessions/evidence/role-init-gender/assertion-body.json"
+  },
+  "historicalLockOnlyFiles": {
+    "baseline-runtime.json": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388"
+  },
+  "baselineSnapshotRequired": false,
+  "historicalHashesOnly": true,
+  "sourceOrdinary": "41/44",
+  "candidateOrdinary": "44/44",
+  "baselineNative": "3/4",
+  "candidateNative": "4/4",
+  "retainedWelcomeArchivedOnly": true,
+  "failedMetadataHistory": [
+    "history/prefix-pin-setup-initial.json",
+    "history/prefix-pin-setup-resolution.json",
+    "history/source-range-setup-initial.json",
+    "history/source-read-diagnostic.json"
+  ],
+  "limits": [
+    "C genl_player_setup can correct initgend before role_init; native output alone cannot isolate the owner correction.",
+    "No ordinary restored gender-invalid Valkyrie coverage.",
+    "Other role_init head omissions remain outside scope."
+  ]
+}

@@ -1,0 +1,784 @@
+{
+  "classification": "Source-only ordinary keyboard evidence, not original C comparison",
+  "recipeSHA256": "2d8324be36150ed57577386897cfd4d05560b6d10d85e7ec63626012c2f0697d",
+  "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+  "cases": 4,
+  "checks": 44,
+  "failures": [
+    {
+      "case": "valkyrie-invalid-male",
+      "name": "C newgame gender flags are valid from the first gameplay row",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+    },
+    {
+      "case": "valkyrie-invalid-male",
+      "name": "C intermediate gendered rank is actually rendered",
+      "pass": false,
+      "error": "Woman-at-arms"
+    },
+    {
+      "case": "valkyrie-invalid-male",
+      "name": "C final rank is actually rendered",
+      "pass": false,
+      "error": "Lady"
+    }
+  ],
+  "rows": [
+    {
+      "name": "valkyrie-invalid-male",
+      "negative": false,
+      "checks": [
+        {
+          "name": "real startup identity and initial rank",
+          "pass": true
+        },
+        {
+          "name": "C newgame gender flags are valid from the first gameplay row",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+        },
+        {
+          "name": "newgame owns its pantheon and starts at level one",
+          "pass": true
+        },
+        {
+          "name": "real levelchange input reaches experience level thirty",
+          "pass": true
+        },
+        {
+          "name": "C intermediate gendered rank is actually rendered",
+          "pass": false,
+          "error": "Woman-at-arms"
+        },
+        {
+          "name": "C final rank is actually rendered",
+          "pass": false,
+          "error": "Lady"
+        },
+        {
+          "name": "initial gender fields stay stable through the real producer",
+          "pass": true
+        },
+        {
+          "name": "no movement death or weapon producer is involved",
+          "pass": true
+        },
+        {
+          "name": "every input boundary and RNG slice is retained",
+          "pass": true
+        },
+        {
+          "name": "passive observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five output streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 0,
+        "turn": 1,
+        "level": 1,
+        "hp": 16,
+        "mortality": 0,
+        "xy": [
+          52,
+          13
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 11,
+        "initrace": 0,
+        "initalign": 0,
+        "initgend": 0,
+        "initgendType": "number",
+        "female": false,
+        "femaleType": "boolean",
+        "rcGender": "male",
+        "roleName": "Valkyrie",
+        "raceName": "human",
+        "genderMask": 8192,
+        "pantheon": 11,
+        "gods": [
+          "Tyr",
+          "Odin",
+          "Loki"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "last": {
+        "step": 54,
+        "turn": 1,
+        "level": 30,
+        "hp": 124,
+        "mortality": 0,
+        "xy": [
+          52,
+          13
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 11,
+        "initrace": 0,
+        "initalign": 0,
+        "initgend": 0,
+        "initgendType": "number",
+        "female": false,
+        "femaleType": "boolean",
+        "rcGender": "male",
+        "roleName": "Valkyrie",
+        "raceName": "human",
+        "genderMask": 8192,
+        "pantheon": 11,
+        "gods": [
+          "Tyr",
+          "Odin",
+          "Loki"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "ranks": [
+        {
+          "step": 0,
+          "rank": "Stripling"
+        },
+        {
+          "step": 18,
+          "rank": "Skirmisher"
+        },
+        {
+          "step": 21,
+          "rank": "Fighter"
+        },
+        {
+          "step": 26,
+          "rank": "Man-at-arms"
+        },
+        {
+          "step": 30,
+          "rank": "Warrior"
+        },
+        {
+          "step": 34,
+          "rank": "Swashbuckler"
+        },
+        {
+          "step": 38,
+          "rank": "Hero"
+        },
+        {
+          "step": 42,
+          "rank": "Champion"
+        },
+        {
+          "step": 46,
+          "rank": "Lord"
+        }
+      ],
+      "stateTraceSHA256": "a373002540fe1946b942e138d508bc4d0854435c569e2d0851feb59134023005",
+      "hashes": {
+        "screens": "f33607909f761bd589937d5fa1fa1519eda736833a99b56d14eed082569d178a",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "plainHashes": {
+        "screens": "f33607909f761bd589937d5fa1fa1519eda736833a99b56d14eed082569d178a",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "deferredHashes": {
+        "screens": "f33607909f761bd589937d5fa1fa1519eda736833a99b56d14eed082569d178a",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "keys": 54,
+      "boundaries": 55,
+      "calls": 2555,
+      "frames": 0
+    },
+    {
+      "name": "valkyrie-valid-female",
+      "negative": true,
+      "checks": [
+        {
+          "name": "real startup identity and initial rank",
+          "pass": true
+        },
+        {
+          "name": "C newgame gender flags are valid from the first gameplay row",
+          "pass": true
+        },
+        {
+          "name": "newgame owns its pantheon and starts at level one",
+          "pass": true
+        },
+        {
+          "name": "real levelchange input reaches experience level thirty",
+          "pass": true
+        },
+        {
+          "name": "C intermediate gendered rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "C final rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "initial gender fields stay stable through the real producer",
+          "pass": true
+        },
+        {
+          "name": "no movement death or weapon producer is involved",
+          "pass": true
+        },
+        {
+          "name": "every input boundary and RNG slice is retained",
+          "pass": true
+        },
+        {
+          "name": "passive observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five output streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 0,
+        "turn": 1,
+        "level": 1,
+        "hp": 16,
+        "mortality": 0,
+        "xy": [
+          52,
+          13
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 11,
+        "initrace": 0,
+        "initalign": 0,
+        "initgend": 1,
+        "initgendType": "number",
+        "female": true,
+        "femaleType": "boolean",
+        "rcGender": "female",
+        "roleName": "Valkyrie",
+        "raceName": "human",
+        "genderMask": 8192,
+        "pantheon": 11,
+        "gods": [
+          "Tyr",
+          "Odin",
+          "Loki"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "last": {
+        "step": 54,
+        "turn": 1,
+        "level": 30,
+        "hp": 124,
+        "mortality": 0,
+        "xy": [
+          52,
+          13
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 11,
+        "initrace": 0,
+        "initalign": 0,
+        "initgend": 1,
+        "initgendType": "number",
+        "female": true,
+        "femaleType": "boolean",
+        "rcGender": "female",
+        "roleName": "Valkyrie",
+        "raceName": "human",
+        "genderMask": 8192,
+        "pantheon": 11,
+        "gods": [
+          "Tyr",
+          "Odin",
+          "Loki"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "ranks": [
+        {
+          "step": 0,
+          "rank": "Stripling"
+        },
+        {
+          "step": 18,
+          "rank": "Skirmisher"
+        },
+        {
+          "step": 21,
+          "rank": "Fighter"
+        },
+        {
+          "step": 26,
+          "rank": "Woman-at-arms"
+        },
+        {
+          "step": 30,
+          "rank": "Warrior"
+        },
+        {
+          "step": 34,
+          "rank": "Swashbuckler"
+        },
+        {
+          "step": 38,
+          "rank": "Heroine"
+        },
+        {
+          "step": 42,
+          "rank": "Champion"
+        },
+        {
+          "step": 46,
+          "rank": "Lady"
+        }
+      ],
+      "stateTraceSHA256": "7d3a75976c9b9a99b7a70b824c815590f4067f9dbe997930d542e410a49633df",
+      "hashes": {
+        "screens": "86bd451ce1b51b3ca9bcbfb1d41ca46e6fb970abe459cb38ccb9463a4c39f9c5",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "plainHashes": {
+        "screens": "86bd451ce1b51b3ca9bcbfb1d41ca46e6fb970abe459cb38ccb9463a4c39f9c5",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "deferredHashes": {
+        "screens": "86bd451ce1b51b3ca9bcbfb1d41ca46e6fb970abe459cb38ccb9463a4c39f9c5",
+        "cursors": "8f29460fa3e2f2a9284fcb7eb68025cdb188d1e42da31427da73bff9ae78ff5f",
+        "calls": "e4788aeeb11f0ea02ffd446172a09ddc8aa615bf7ac732ff8eeaf21442b03223",
+        "slices": "946f169016c4be474fef51849bc2375a91ab9ab12515a32ccf0f0c25063ac9dd",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "keys": 54,
+      "boundaries": 55,
+      "calls": 2555,
+      "frames": 0
+    },
+    {
+      "name": "wizard-valid-male",
+      "negative": true,
+      "checks": [
+        {
+          "name": "real startup identity and initial rank",
+          "pass": true
+        },
+        {
+          "name": "C newgame gender flags are valid from the first gameplay row",
+          "pass": true
+        },
+        {
+          "name": "newgame owns its pantheon and starts at level one",
+          "pass": true
+        },
+        {
+          "name": "real levelchange input reaches experience level thirty",
+          "pass": true
+        },
+        {
+          "name": "C intermediate gendered rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "C final rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "initial gender fields stay stable through the real producer",
+          "pass": true
+        },
+        {
+          "name": "no movement death or weapon producer is involved",
+          "pass": true
+        },
+        {
+          "name": "every input boundary and RNG slice is retained",
+          "pass": true
+        },
+        {
+          "name": "passive observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five output streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 0,
+        "turn": 1,
+        "level": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          62,
+          18
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 12,
+        "initrace": 0,
+        "initalign": 1,
+        "initgend": 0,
+        "initgendType": "number",
+        "female": false,
+        "femaleType": "boolean",
+        "rcGender": "male",
+        "roleName": "Wizard",
+        "raceName": "human",
+        "genderMask": 12288,
+        "pantheon": 12,
+        "gods": [
+          "Ptah",
+          "Thoth",
+          "Anhur"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "last": {
+        "step": 54,
+        "turn": 1,
+        "level": 30,
+        "hp": 110,
+        "mortality": 0,
+        "xy": [
+          62,
+          18
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 12,
+        "initrace": 0,
+        "initalign": 1,
+        "initgend": 0,
+        "initgendType": "number",
+        "female": false,
+        "femaleType": "boolean",
+        "rcGender": "male",
+        "roleName": "Wizard",
+        "raceName": "human",
+        "genderMask": 12288,
+        "pantheon": 12,
+        "gods": [
+          "Ptah",
+          "Thoth",
+          "Anhur"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "ranks": [
+        {
+          "step": 0,
+          "rank": "Evoker"
+        },
+        {
+          "step": 18,
+          "rank": "Conjurer"
+        },
+        {
+          "step": 21,
+          "rank": "Thaumaturge"
+        },
+        {
+          "step": 25,
+          "rank": "Magician"
+        },
+        {
+          "step": 29,
+          "rank": "Enchanter"
+        },
+        {
+          "step": 34,
+          "rank": "Sorcerer"
+        },
+        {
+          "step": 38,
+          "rank": "Necromancer"
+        },
+        {
+          "step": 42,
+          "rank": "Wizard"
+        },
+        {
+          "step": 46,
+          "rank": "Mage"
+        }
+      ],
+      "stateTraceSHA256": "affcf6497d5a607e4eba170daef330bfbe1c8587503b7c2df91d981071d78181",
+      "hashes": {
+        "screens": "afe34e12760f094e2373a995c3d73ef1fcfa26c4daa3beed80d44d0f2446dbc0",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "plainHashes": {
+        "screens": "afe34e12760f094e2373a995c3d73ef1fcfa26c4daa3beed80d44d0f2446dbc0",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "deferredHashes": {
+        "screens": "afe34e12760f094e2373a995c3d73ef1fcfa26c4daa3beed80d44d0f2446dbc0",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "keys": 54,
+      "boundaries": 55,
+      "calls": 3061,
+      "frames": 0
+    },
+    {
+      "name": "wizard-valid-female",
+      "negative": true,
+      "checks": [
+        {
+          "name": "real startup identity and initial rank",
+          "pass": true
+        },
+        {
+          "name": "C newgame gender flags are valid from the first gameplay row",
+          "pass": true
+        },
+        {
+          "name": "newgame owns its pantheon and starts at level one",
+          "pass": true
+        },
+        {
+          "name": "real levelchange input reaches experience level thirty",
+          "pass": true
+        },
+        {
+          "name": "C intermediate gendered rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "C final rank is actually rendered",
+          "pass": true
+        },
+        {
+          "name": "initial gender fields stay stable through the real producer",
+          "pass": true
+        },
+        {
+          "name": "no movement death or weapon producer is involved",
+          "pass": true
+        },
+        {
+          "name": "every input boundary and RNG slice is retained",
+          "pass": true
+        },
+        {
+          "name": "passive observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five output streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 0,
+        "turn": 1,
+        "level": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          62,
+          18
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 12,
+        "initrace": 0,
+        "initalign": 1,
+        "initgend": 1,
+        "initgendType": "number",
+        "female": true,
+        "femaleType": "boolean",
+        "rcGender": "female",
+        "roleName": "Wizard",
+        "raceName": "human",
+        "genderMask": 12288,
+        "pantheon": 12,
+        "gods": [
+          "Ptah",
+          "Thoth",
+          "Anhur"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "last": {
+        "step": 54,
+        "turn": 1,
+        "level": 30,
+        "hp": 110,
+        "mortality": 0,
+        "xy": [
+          62,
+          18
+        ],
+        "dungeon": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "initrole": 12,
+        "initrace": 0,
+        "initalign": 1,
+        "initgend": 1,
+        "initgendType": "number",
+        "female": true,
+        "femaleType": "boolean",
+        "rcGender": "female",
+        "roleName": "Wizard",
+        "raceName": "human",
+        "genderMask": 12288,
+        "pantheon": 12,
+        "gods": [
+          "Ptah",
+          "Thoth",
+          "Anhur"
+        ],
+        "inventoryCount": 0,
+        "gameover": false,
+        "parserErrors": [],
+        "unhandled": []
+      },
+      "ranks": [
+        {
+          "step": 0,
+          "rank": "Evoker"
+        },
+        {
+          "step": 18,
+          "rank": "Conjurer"
+        },
+        {
+          "step": 21,
+          "rank": "Thaumaturge"
+        },
+        {
+          "step": 25,
+          "rank": "Magician"
+        },
+        {
+          "step": 29,
+          "rank": "Enchantress"
+        },
+        {
+          "step": 34,
+          "rank": "Sorceress"
+        },
+        {
+          "step": 38,
+          "rank": "Necromancer"
+        },
+        {
+          "step": 42,
+          "rank": "Wizard"
+        },
+        {
+          "step": 46,
+          "rank": "Mage"
+        }
+      ],
+      "stateTraceSHA256": "a954c9946b9ab4daf849c8993016b8d882736180b3333692c5499aa35de7fcf4",
+      "hashes": {
+        "screens": "c788c25317e9c19b9093003a2732ac2c3fdc9c69d56353fe428b23e2cfc5ea72",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "plainHashes": {
+        "screens": "c788c25317e9c19b9093003a2732ac2c3fdc9c69d56353fe428b23e2cfc5ea72",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "deferredHashes": {
+        "screens": "c788c25317e9c19b9093003a2732ac2c3fdc9c69d56353fe428b23e2cfc5ea72",
+        "cursors": "65139988cf6940bbd96cd97712883045c6c5c9b2bbbb8d5e999a175c94825dcd",
+        "calls": "47434a65713989b06fb4424830ce1354200ad3ffb0aed453739f2f0013e2d775",
+        "slices": "36b3f340c069501fb20282d3fdd202559439ba5da6e038a0a435ac9586a2236b",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "keys": 54,
+      "boundaries": 55,
+      "calls": 3061,
+      "frames": 0
+    }
+  ]
+}

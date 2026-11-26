@@ -1,0 +1,10 @@
+{
+  "phase": "pre-lock metadata construction; no game import",
+  "passCheck": false,
+  "error": "AssertionError from treating the parent experiencePrefixSHA256 as a raw UTF8 prefix hash without checking its encoding.",
+  "prefixBytes": 52,
+  "utf8SHA256": "8e2b66c1ad2d0533472ac2f9ce24ced54112b4f8fc200ba72915b29ea961becd",
+  "JSONSHA256": "39c5e6a8a14ab870a8a400e8efec1498b3a1bf3576493cdf76dd38b29c8f88bb",
+  "gameplayStarted": false,
+  "inputLockCreated": false
+}

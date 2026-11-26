@@ -1,0 +1,8 @@
+{
+  "phase": "pre-lock metadata only",
+  "cause": "Parent experiencePrefixSHA256 covers46 keys, excluding the next six ESC cleanup keys. The planned prefix was52 keys.",
+  "parent46SHA256": "6ab8c7e93fc57b93928a47d5b2e054d34e74722e8f0fe87e11c11f41c0760fea",
+  "reused52SHA256": "8e2b66c1ad2d0533472ac2f9ce24ced54112b4f8fc200ba72915b29ea961becd",
+  "inputBytesChanged": false,
+  "gameplayStarted": false
+}

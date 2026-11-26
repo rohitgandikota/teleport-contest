@@ -5643,6 +5643,42 @@
       "cFile": "src/trap.c",
       "cFunction": "dofiretrap",
       "description": "Looking while slimed as a minotaur leaves the slime timer and fire trap unchanged."
+    },
+    {
+      "group": "Newgame gender validation",
+      "id": "role-init-gender.valkyrie-invalid-male",
+      "cFile": "src/role.c",
+      "cFunction": "role_init",
+      "description": "Start a fully specified male Valkyrie and render the canonical female intermediate and final ranks after real levelchange.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Newgame gender validation",
+      "id": "role-init-gender.valkyrie-valid-female",
+      "cFile": "src/role.c",
+      "cFunction": "role_init",
+      "description": "Preserve valid female Valkyrie startup and its intermediate and final ranks.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Newgame gender validation",
+      "id": "role-init-gender.wizard-valid-male",
+      "cFile": "src/role.c",
+      "cFunction": "role_init",
+      "description": "Preserve valid male Wizard startup and its intermediate and final ranks.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Newgame gender validation",
+      "id": "role-init-gender.wizard-valid-female",
+      "cFile": "src/role.c",
+      "cFunction": "role_init",
+      "description": "Preserve valid female Wizard startup and its intermediate and final ranks.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

@@ -1,0 +1,460 @@
+{
+  "ranges": [
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 1980,
+      "end": 2117,
+      "label": "role_init",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "49aceb752bb80e3cfe0708a2bf72a95445778271467dd580430108c411718cac"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 844,
+      "end": 850,
+      "label": "validgend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "25abe46133b4f3e200773763149d0ee7cb67115c41b1bb789294a94ac7fe9f5d"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 880,
+      "end": 904,
+      "label": "str2gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "4ca54f2edcb4a4d131b2cd75e39c4a86546acba35233cebcb1671fce16ac8204"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 1107,
+      "end": 1139,
+      "label": "ok_gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "20c777495bca7e19f58cdaff1f1840088b7a8257eeac453ac84102b84249548b"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 1146,
+      "end": 1167,
+      "label": "pick_gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "dda725d93ce86b1df980cacef2950d659a873e2a1409f39510232e32d4d646e7"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 1235,
+      "end": 1281,
+      "label": "rigid_role_checks",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "bac6465e9ce1348a9e7c3f8ecbd5e67df5a35c443b6a6f1d2c860463cfc7acf5"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 1665,
+      "end": 1721,
+      "label": "plnamesuffix",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "9dad4b653bd9998f276ea492681eb9dccbc1ad9bbf3a4401355e973e8eebf3b9"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 2206,
+      "end": 2725,
+      "label": "genl_player_setup",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "e5255d4f4b003516d5ea162ed2edc7f251e4e8e39e34d85974e04b1d63fa7c0b"
+    },
+    {
+      "path": "js/role.js",
+      "start": 395,
+      "end": 457,
+      "label": "role_init",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "a0ed862dbfe0bc88e0ecb49e77fece82c28547617354185a45ff3fcfb036c5bc"
+    },
+    {
+      "path": "js/role.js",
+      "start": 736,
+      "end": 741,
+      "label": "validgend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "956147341ded0cf16ae53e490c0f164c23d29ea0b41d2a10b3d2b37561f16d26"
+    },
+    {
+      "path": "js/role.js",
+      "start": 504,
+      "end": 511,
+      "label": "str2gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "7091f0d502de6beb23829a81548b6f9b5cd668e967a27d92c0193855a0d44d2a"
+    },
+    {
+      "path": "js/role.js",
+      "start": 240,
+      "end": 270,
+      "label": "ok_gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "5e324b97b7ea09d950535e07da8cbc8c0b05be686aa97281bd527bfb063459c4"
+    },
+    {
+      "path": "js/role.js",
+      "start": 273,
+      "end": 293,
+      "label": "pick_gend",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "62b3965524a03c6b9b523bf80a8a39a81c947f80253145e71adaebd4a6ba8572"
+    },
+    {
+      "path": "js/role.js",
+      "start": 543,
+      "end": 575,
+      "label": "rigid_role_checks",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "08c3a51c96c87b8050bc604736d8c6bfd8b067766acd4ad5093d0acb6e4ad2ce"
+    },
+    {
+      "path": "js/plselect.js",
+      "start": 144,
+      "end": 177,
+      "label": "plnamesuffix",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "d476c4690792b2dae5dc08f9d647e9b49652b96a7bdb84bc1023e739e420cc7f"
+    },
+    {
+      "path": "js/plselect.js",
+      "start": 526,
+      "end": 533,
+      "label": "player_selection",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "f8b1d692fa7240c6144bf170a452d38b85068727c537c3d39c3f1623aa0ba7b4"
+    },
+    {
+      "path": "js/plselect.js",
+      "start": 535,
+      "end": 846,
+      "label": "genl_player_setup",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "8495e65ca7c488c7d111861cff554061a7eaf8812ec68b66d9e93c8698e6f4db"
+    },
+    {
+      "path": "../../../nethack-c/upstream/win/tty/wintty.c",
+      "start": 634,
+      "end": 641,
+      "label": "tty_player_selection",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "d91ff5971a99e7b052c55cd061dc75886a166f1f6059e1d202436237966bbdbd"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/allmain.c",
+      "start": 766,
+      "end": 850,
+      "label": "newgame",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "516da94f910d961a4ee95b1bf316bdea773d5df418b423e10cbd95e289d7b7e5"
+    },
+    {
+      "path": "js/allmain.js",
+      "start": 184,
+      "end": 527,
+      "label": "newgame",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "8cd088941ded9cc8de3c6f7c14e0b34a1913ac044aa326977ec346dffee0f7a6"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/options.c",
+      "start": 1777,
+      "end": 1812,
+      "label": "optfn_gender",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "08d2432e2c28664511372c053851a436ccdd82e4143a1f71c535f1780d08d4de"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/options.c",
+      "start": 7905,
+      "end": 8016,
+      "label": "parse_role_opt",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "1a21e31661601106e36358b82428c5867dbd4a64a155f7f08d16b7db0c0ffa13"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/options.c",
+      "start": 7119,
+      "end": 7305,
+      "label": "initoptions_init",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "0acb2d96d2c88483b9011541f74a7fab813b3693b61453a200b824324ec6028a"
+    },
+    {
+      "path": "js/options.js",
+      "start": 978,
+      "end": 1101,
+      "label": "parseNethackrc",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "3facc3ddc94b87399c99873113aedd1ce99e8378ddb6b6c98852a68ed906a5fd"
+    },
+    {
+      "path": "js/gstate.js",
+      "start": 8,
+      "end": 23,
+      "label": "resetGame",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "fb785ca0811fbb503698a9b2592bf6133c4baea648ad69ffea100df3f285489e"
+    },
+    {
+      "path": "js/restore.js",
+      "start": 157,
+      "end": 246,
+      "label": "restgamestate",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "6de7aa12b5990f4d3978a3cb1f772bcc71830681ba563225fe219c381f72732b"
+    },
+    {
+      "path": "js/save.js",
+      "start": 343,
+      "end": 369,
+      "label": "savegamestate",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "557eabb2081aa7068413f3ac5d931ba3e82f3733b0a6767b7c586b72d655c056"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/save.c",
+      "start": 265,
+      "end": 333,
+      "label": "savegamestate",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "1ad3f423d9429431bef6123d83fec3acc5645d590e29892ec7c3a98393fd219e"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/botl.c",
+      "start": 298,
+      "end": 311,
+      "label": "xlev_to_rank",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "08323adeeae2663bfd61cac5c7b34ace9fe91cda56bc5cf9870a7b42ab437076"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/botl.c",
+      "start": 332,
+      "end": 358,
+      "label": "rank_of",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "0d14dbded9bcd03158bc7d852f1842e27a49e18435bf65415b698188e7c8f5ad"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/botl.c",
+      "start": 361,
+      "end": 364,
+      "label": "rank",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "d07ad7bd3eb025b99059b2365d8a9e4ff3ccb7ff24d211af85e95f710f0abc07"
+    },
+    {
+      "path": "js/botl.js",
+      "start": 322,
+      "end": 324,
+      "label": "xlev_to_rank",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "45ea0726bfeb90a826b5c7198f67ad5404854a384aee5e8401bb27c1c4e74d5d"
+    },
+    {
+      "path": "js/botl.js",
+      "start": 335,
+      "end": 346,
+      "label": "rank_of",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "61e66a6ebaef31841969f7e4fd1f38be3436d5c449ec6a947fc8fbcdbceed754"
+    },
+    {
+      "path": "js/botl.js",
+      "start": 349,
+      "end": 351,
+      "label": "rank",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "0886eb9f509694ee6b21b5f95235a5a65c3bba36c1bfd1f3377ae8b4fc7a9f4f"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "start": 446,
+      "end": 488,
+      "label": "wiz_level_change",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "e69d0d5cee745cbdd54d6ec70d30b10a736b800b502a47aa36b2192ab19cbe15"
+    },
+    {
+      "path": "js/wizcmds.js",
+      "start": 340,
+      "end": 389,
+      "label": "wiz_level_change",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "c45a2eb1e6f44cdce1972137f227dced40732fe4d9f70d53b8d7f91492d387e0"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/exper.c",
+      "start": 307,
+      "end": 372,
+      "label": "pluslvl",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "155bd9f94112c7d0e7e4cb296bed047ca4ac6dd8a4542989f598891fdd9a115e"
+    },
+    {
+      "path": "js/exper.js",
+      "start": 314,
+      "end": 373,
+      "label": "pluslvl",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "318724247e7291ebf94be51f2b53628d4a04559cdfacef1836ad4a2ce4b1f09d"
+    },
+    {
+      "path": "js/jsmain.js",
+      "start": 377,
+      "end": 425,
+      "label": "runSegment",
+      "coverage": "complete owner/helper",
+      "rangeSHA256": "d7ee525c05c4f134c34c624f22d764e24c27e4c3588df463a16b5ee77b7fee04"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/role.c",
+      "start": 493,
+      "end": 576,
+      "label": "Valkyrie/Wizard role entries",
+      "coverage": "selected contract",
+      "rangeSHA256": "339fb8a7fac0d07650dd28e1873f674e2ec36cc423705d7897dd134fd12d6f4a"
+    },
+    {
+      "path": "../../../nethack-c/upstream/sys/unix/unixmain.c",
+      "start": 193,
+      "end": 317,
+      "label": "newgame/restore/selection callers",
+      "coverage": "selected contract",
+      "rangeSHA256": "5eb66db2f41df5efe771e7d96de59d7920f276f2d920d70c0856171b6c20748b"
+    },
+    {
+      "path": "js/options.js",
+      "start": 204,
+      "end": 366,
+      "label": "RC comma and option storage",
+      "coverage": "selected contract",
+      "rangeSHA256": "38e66a0ee31f12eb7007606ea9f5988dea69b1077d286253910620f50e75f47d"
+    },
+    {
+      "path": "js/options.js",
+      "start": 888,
+      "end": 905,
+      "label": "generic text option tail",
+      "coverage": "selected contract",
+      "rangeSHA256": "8911f778bf82147cc40a484ed11d86f18f59673e084b628efa8f099cab9ebabb"
+    },
+    {
+      "path": "js/jsmain.js",
+      "start": 111,
+      "end": 248,
+      "label": "reset and RC startup flags",
+      "coverage": "selected contract",
+      "rangeSHA256": "11d441f26f1de40d1a50594692850f656b62cc46be7968a3066b52ce77c4a9ad"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/flag.h",
+      "start": 14,
+      "end": 36,
+      "label": "persistent female field",
+      "coverage": "selected contract",
+      "rangeSHA256": "cdcf1bf70ef115abd91e46f2ec2ec9244976caeb907ff702941dda0bbae29206"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/flag.h",
+      "start": 130,
+      "end": 155,
+      "label": "initial facets and pantheon",
+      "coverage": "selected contract",
+      "rangeSHA256": "4da650ac00f4a9a00fe0cbc8acf8d543a2f0fb85d1c393a91494947f09f9f339"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/global.h",
+      "start": 73,
+      "end": 85,
+      "label": "numeric boolean typedef",
+      "coverage": "selected contract",
+      "rangeSHA256": "88938993b6a07bae1ec8aaa52b3589f3818498b48da5384c09590adcb90c6fd1"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/you.h",
+      "start": 300,
+      "end": 314,
+      "label": "Gender table contract",
+      "coverage": "selected contract",
+      "rangeSHA256": "4a48a0b098d4248c60e06cf07fde93288892a619ce163bde03a12e24ed10ac96"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/optlist.h",
+      "start": 306,
+      "end": 308,
+      "label": "female default and alias",
+      "coverage": "selected contract",
+      "rangeSHA256": "c72275464a3f2c32742f5421bfc041cc160323e1a2b4aa54a90e9f6ea9c5d39c"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/u_init.c",
+      "start": 941,
+      "end": 1015,
+      "label": "female copy and startup consumer",
+      "coverage": "selected contract",
+      "rangeSHA256": "d716d2ba9583fdb5c07a3612694ca3573ddd6c81419ab877f9d21c39dc492282"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/restore.c",
+      "start": 550,
+      "end": 610,
+      "label": "restore flags and role_init ordering",
+      "coverage": "selected contract",
+      "rangeSHA256": "a081af44913d8b2cc2dcef1d242facffe05387fc0f8734de907c59ea1dcb443b"
+    },
+    {
+      "path": "js/save.js",
+      "start": 46,
+      "end": 65,
+      "label": "saved root exclusions",
+      "coverage": "selected contract",
+      "rangeSHA256": "6e656c1e970fe0e8c56b8bd0d422380f2c411f7f349a2a24656af044db68ca69"
+    },
+    {
+      "path": "js/jsmain.js",
+      "start": 305,
+      "end": 339,
+      "label": "passive observer boundary",
+      "coverage": "selected contract",
+      "rangeSHA256": "ef176fcb9075b2b800050037e7eb56292731d9e6d002f16d1811d97640ef7709"
+    },
+    {
+      "path": "tools/half-damage-reader-observe.mjs",
+      "start": 1,
+      "end": 75,
+      "label": "complete maintained observer/deferred helper",
+      "coverage": "complete existing helper/gate",
+      "rangeSHA256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07"
+    },
+    {
+      "path": "../../../tools/config-menu-bindings-prerequisite-input-gate.mjs",
+      "start": 1,
+      "end": 115,
+      "label": "complete existing selection gate",
+      "coverage": "complete existing helper/gate",
+      "rangeSHA256": "2ed09eac470435c98acfa9525d1f4dbb0d970df8575e9aa0bf0d7e4fa7a562b6"
+    },
+    {
+      "path": "../../../tools/welcome-restore-branches-input-gate.mjs",
+      "start": 188,
+      "end": 242,
+      "label": "existing changed-gender restore controls",
+      "coverage": "selected contract",
+      "rangeSHA256": "f736180dd8dc396f1c355cc16d95fc76478490d2525afd55e81726ea321cda6d"
+    },
+    {
+      "path": "../../../tools/restore-phase-source-gate.mjs",
+      "start": 192,
+      "end": 210,
+      "label": "existing restore source ordering",
+      "coverage": "selected contract",
+      "rangeSHA256": "4c87d1c851a7b7cc78076827f47b18123b1d38966bfd3a6918ec779d9d9e272a"
+    }
+  ]
+}

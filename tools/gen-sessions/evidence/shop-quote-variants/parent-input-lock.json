@@ -1,0 +1,13 @@
+{
+  "sourceSealSHA256": "d5116395c46abe24601fad30c36928502254fc370fdef1d79d035c999af67acb",
+  "sourceManifestSHA256": "7b48423712521a77075c92bdb4ba11aca1da054ed24d33d5e56db1be4f5c9434",
+  "primaryRecipeSHA256": "10663b6efb6ee81126111b46adaa71fda5d28b7e15bdfbce0c01472517b311da",
+  "minimalSHA256": "10663b6efb6ee81126111b46adaa71fda5d28b7e15bdfbce0c01472517b311da",
+  "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "segments": 4,
+  "keys": 332,
+  "beforeC": true,
+  "allPrimaryMetadataRetained": true,
+  "version5AddedToMinimal": false,
+  "negativeSHA256": "2202e75bec55a1f31b40084d14025a3078ee2a2f92a3df7858a532a5fbef7a5c"
+}

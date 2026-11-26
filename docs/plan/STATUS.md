@@ -1,5 +1,62 @@
 # STATUS — live handoff board
 
+## 2026-11-26: altar and bones checkpoint verified on full941
+
+Published main is ee4f59667e32ae2ae6ea6b5a28f06d59ad0549db (shop quotes).
+Its full938 publication receipt verifies all 1,229 tested Git blobs, SHA256:
+f2967f739fbe11fc4672a391eebb68138737bb14d22b493d4fe1a7e4b184ba31.
+
+Current gameplay changes only do.js. First sighted hero drops on an altar log
+LL_CONDUCT before identifying the object. The named familiar_level_msg ports
+both C message tables and live Blind substitution. goto_level captures the
+same-name bones flag only after new level creation, so saved-level returns do
+not draw for another familiar message. Parent composition map:
+0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6.
+Altar native 3/6 improves to 6/6 and source 36/42 to 42/42. Familiar native 6/7
+improves to 7/7; only the revisit changes. All 17 fresh composed native cases,
+including four shop variants, reproduce their isolated reports exactly.
+All three fresh public ordinary gates reproduce the isolated mode rows.
+There are 15 altar, 20 familiar and 15 quote negative hashes, all unchanged.
+
+Full941 passes on NFS, two CPU workers, default 45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/altar-familiar-full941-js-20261126.
+PID 3550288 is complete. All 941 recordings pass: 942,532 screens/cursors,
+20,623,817 calls and 33,188 frames. All 1,232 tested files were fixed.
+all-files SHA256:
+48e76b020a4f274718225220c343b6aecc3769cb9b0eca168b8998d4170851c6.
+Verification SHA256:
+fc772d09631222002d7fbdb4af1739c098f97193d16daa62173d061889aa476f.
+All 47 strict workers pass in 32.042s; the scope/import audit is empty.
+Six retained checks pass. A seventh, bones-state, passes 91 native replays then
+fails a synthetic fruit-warning expectation identically on the published and
+new runtimes. It expects interactive output in the completed RC error list;
+C config_erradd routes it to pline outside a parse context. Both original
+failures and attribution are preserved publicly; no assertion was weakened.
+
+Familiar promotion27, quote promotion56 and altar promotion48 are installed:
+20+18+26 payloads, three untouched C fixtures, 17 new branch rows and one
+coverage row. Registry totals are 4,729 and 109; prior bytes remain unchanged.
+The altar proposal placed all seven rows in coverage-requirements. The parent
+placement correction preserves that sealed proposal while registering six
+source branches with their C owner and one coverage compatibility label.
+See evidence/altar-drop-conduct/registry-placement.json. Parent proof is
+cached as altar-familiar-parent-verification.json and published under familiar
+level evidence. Next: verify staged files, commit and push immediately.
+
+Chat source28 and candidate316 are sealed. Original C11 improves from 5/11 to
+11/11, with 1,067 boundaries and 31,031 calls. Only sounds.js changes. The
+original 99-check diagnostic remains 91/99: five history predicates demand the
+old positive output, and three predicates also reject original C (two mounted
+messages have a following jackal message; one map-coordinate translation is
+wrong). Euclid is producing an explicit portable reconciliation that preserves
+all old diagnostics and 25 negative hashes. Compose its patch over the shop
+branch after this checkpoint; do not replace sounds.js wholesale.
+Leibniz owns a source-only contents/coins quote family. Sartre owns source-only
+scrolltele restrictions after completing altar promotion. Parent has read
+prayer/turn logging owners; their legacy log helper omits LL_CONDUCT flags,
+but no new prayer input or candidate is locked yet. Crowning log omission is
+only a lead, with complete-owner review still pending.
+
 ## 2026-11-26: shop quote checkpoint verified after welcome publication
 
 Published main is 735a07839935e41547db4aebf2fdb026c668a34e. All 1,228

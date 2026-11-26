@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T18:01:35.097737+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/altar-drop-conduct-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/altar-drop-conduct-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/altar-drop-conduct-parent-minimal.session.json",
+  "inputSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "primaryRecipeSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/altar-drop-conduct-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T18:01:35.603519+00:00",
+  "log": ".cache/restart-20261122/altar-drop-conduct-parent-native-recording.log",
+  "logSHA256": "32af985c4cc6d929ed79d1b5b5a809305815b17b69054d9f9e52f20cf6ec6fbd",
+  "rawSha256": "36def34578ebf169073b7d9c349a7a797967c32e47402dfdc25fb82463b52d0e",
+  "bytes": 862551,
+  "segments": 6,
+  "boundaries": 290,
+  "keys": 284,
+  "calls": 18301,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

@@ -129,6 +129,13 @@
       "group": "Social and economy",
       "id": "src/shk.c:price_quote",
       "description": "Single-priced, multiple-goods and single-no-charge price quotes. Unexercised hallucination/stack/contents/coin branches remain open."
+    },
+    {
+      "group": "Altar conduct",
+      "id": "src/do.c:doaltarobj",
+      "description": "First sighted non-coin altar-drop conduct event and coin/blind/floor exclusions. Original source recipe compatibility label; not complete doaltarobj branch coverage.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

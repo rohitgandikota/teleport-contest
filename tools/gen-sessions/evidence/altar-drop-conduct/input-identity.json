@@ -1,0 +1,19 @@
+{
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "recipeSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "sourceInputLockSHA256": "c539cd4b2091542bebf91252a76f72c6a5c1b251834c942846f197fc0d9aa342",
+  "tuplesSHA256": "9d7614f046d280da22af6342e88f68f2eb84a8fd7260cb696222757feb192dd4",
+  "allKeysSHA256": "6a791af8b13a176e7aea75383fe8e4b90fbd24068a11dbcbb1fd663c73f73108",
+  "segments": 6,
+  "keys": 284,
+  "boundaries": 290,
+  "primaryAssertions": 6,
+  "allFieldsPresent": true,
+  "originalRootMetadataUnchanged": true
+}

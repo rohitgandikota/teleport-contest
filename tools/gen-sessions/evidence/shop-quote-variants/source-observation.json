@@ -1,0 +1,438 @@
+{
+  "reportSHA256": "24ac2a8eb88879b54a8d6187f4815a3692d41077511e7f4ac156d98473e315d9",
+  "sourceSealSHA256": "d5116395c46abe24601fad30c36928502254fc370fdef1d79d035c999af67acb",
+  "cases": 4,
+  "checks": 88,
+  "neutrality": 4,
+  "rows": [
+    {
+      "name": "hallucinated-single",
+      "negative": false,
+      "checks": [
+        {
+          "name": "original natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "real wished object held in selected inventory slot",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly position",
+          "pass": true
+        },
+        {
+          "name": "original price prerequisites and charisma bracket",
+          "pass": true
+        },
+        {
+          "name": "exact floor record order quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "actual hallucination and resistance predicates",
+          "pass": true
+        },
+        {
+          "name": "other speech guards permit quote",
+          "pass": true
+        },
+        {
+          "name": "real item consumed or dropped through selected action",
+          "pass": true
+        },
+        {
+          "name": "one real action turn before chat",
+          "pass": true
+        },
+        {
+          "name": "matched sale payment or absence",
+          "pass": true
+        },
+        {
+          "name": "survival throughout ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source-derived producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source-derived quote phrases",
+          "pass": true
+        },
+        {
+          "name": "quote preempts direction prompt",
+          "pass": true
+        },
+        {
+          "name": "quote consumes exactly one turn",
+          "pass": true
+        },
+        {
+          "name": "multiple records wait in menu before turn processing",
+          "pass": true
+        },
+        {
+          "name": "sober menu waits before any core random call",
+          "pass": true
+        },
+        {
+          "name": "scoped object state survives chat unchanged",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices preserve full core log",
+          "pass": true
+        },
+        {
+          "name": "owner RNG prefix respects source constraints",
+          "pass": true
+        }
+      ],
+      "outputHashes": {
+        "screens": "818076136a945e744d8777edafa7c1937c1dfbd1cb30cf631c28ad6ebd938ead",
+        "cursors": "5a8582790fa56d0240bcd1e6f9d730f7a67985ee6921c440c746ddab04d1b3b6",
+        "calls": "b052cbffd2780d3f92059f9dd87192f0e7becfbca2cebbd854decd3c60b131b2",
+        "slices": "6a65e0107d815d1a3803b3b7f895e2f2fb8fd5f6668754e74d537e6b299ba8c1",
+        "frames": "d7923ac301c0a298a8997a954f1c8e13f2474271f43979077bf13ec0f0fa4fb9"
+      },
+      "neutrality": {
+        "pass": true,
+        "eofStable": true,
+        "observedEqualsPlain": true,
+        "plainEqualsDeferred": true
+      }
+    },
+    {
+      "name": "sober-single-control",
+      "negative": true,
+      "checks": [
+        {
+          "name": "original natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "real wished object held in selected inventory slot",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly position",
+          "pass": true
+        },
+        {
+          "name": "original price prerequisites and charisma bracket",
+          "pass": true
+        },
+        {
+          "name": "exact floor record order quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "actual hallucination and resistance predicates",
+          "pass": true
+        },
+        {
+          "name": "other speech guards permit quote",
+          "pass": true
+        },
+        {
+          "name": "real item consumed or dropped through selected action",
+          "pass": true
+        },
+        {
+          "name": "one real action turn before chat",
+          "pass": true
+        },
+        {
+          "name": "matched sale payment or absence",
+          "pass": true
+        },
+        {
+          "name": "survival throughout ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source-derived producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source-derived quote phrases",
+          "pass": true
+        },
+        {
+          "name": "quote preempts direction prompt",
+          "pass": true
+        },
+        {
+          "name": "quote consumes exactly one turn",
+          "pass": true
+        },
+        {
+          "name": "multiple records wait in menu before turn processing",
+          "pass": true
+        },
+        {
+          "name": "sober menu waits before any core random call",
+          "pass": true
+        },
+        {
+          "name": "scoped object state survives chat unchanged",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices preserve full core log",
+          "pass": true
+        },
+        {
+          "name": "owner RNG prefix respects source constraints",
+          "pass": true
+        }
+      ],
+      "outputHashes": {
+        "screens": "2094282183a0e5a86bbdc72c822f5229263674d26edba9eafa5f45931750b11d",
+        "cursors": "0aba20481062c20478daf12b1b464396375129f33aa383e7ead8602310fa92db",
+        "calls": "a8591b81418361498ee5d2a1522a81be8e4d0b1290a9cd9fcc19da8308844ef2",
+        "slices": "115e728806b9cc5a2dc2e5cde07fe9266771e13416f8e0e7995350fe701335bb",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "neutrality": {
+        "pass": true,
+        "eofStable": true,
+        "observedEqualsPlain": true,
+        "plainEqualsDeferred": true
+      }
+    },
+    {
+      "name": "priced-stack-control",
+      "negative": true,
+      "checks": [
+        {
+          "name": "original natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "real wished object held in selected inventory slot",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly position",
+          "pass": true
+        },
+        {
+          "name": "original price prerequisites and charisma bracket",
+          "pass": true
+        },
+        {
+          "name": "exact floor record order quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "actual hallucination and resistance predicates",
+          "pass": true
+        },
+        {
+          "name": "other speech guards permit quote",
+          "pass": true
+        },
+        {
+          "name": "real item consumed or dropped through selected action",
+          "pass": true
+        },
+        {
+          "name": "one real action turn before chat",
+          "pass": true
+        },
+        {
+          "name": "matched sale payment or absence",
+          "pass": true
+        },
+        {
+          "name": "survival throughout ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source-derived producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source-derived quote phrases",
+          "pass": true
+        },
+        {
+          "name": "quote preempts direction prompt",
+          "pass": true
+        },
+        {
+          "name": "quote consumes exactly one turn",
+          "pass": true
+        },
+        {
+          "name": "multiple records wait in menu before turn processing",
+          "pass": true
+        },
+        {
+          "name": "sober menu waits before any core random call",
+          "pass": true
+        },
+        {
+          "name": "scoped object state survives chat unchanged",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices preserve full core log",
+          "pass": true
+        },
+        {
+          "name": "owner RNG prefix respects source constraints",
+          "pass": true
+        }
+      ],
+      "outputHashes": {
+        "screens": "bc686e98cefbafde9bbf4d80d5390af258513142f2e7e6def62d4d9145eb51f0",
+        "cursors": "a32ab1d3619b1061d5bdc4336c3c7a0ed304f4d63d8c2bcaa0a542fdc68fd3a5",
+        "calls": "c088b02a39201ab967b1ffbc57f5274103df63eda97a4f05c48592e6cfab939f",
+        "slices": "a89f82ee730aeeeb480aa6d7d38351a84365fdd89adbfc7ed70e8c3d2ec9213f",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "neutrality": {
+        "pass": true,
+        "eofStable": true,
+        "observedEqualsPlain": true,
+        "plainEqualsDeferred": true
+      }
+    },
+    {
+      "name": "free-stack-control",
+      "negative": true,
+      "checks": [
+        {
+          "name": "original natural shop prefix reached",
+          "pass": true
+        },
+        {
+          "name": "real wished object held in selected inventory slot",
+          "pass": true
+        },
+        {
+          "name": "all keys consumed without runtime error",
+          "pass": true
+        },
+        {
+          "name": "peaceful able unrobbed resident at costly position",
+          "pass": true
+        },
+        {
+          "name": "original price prerequisites and charisma bracket",
+          "pass": true
+        },
+        {
+          "name": "exact floor record order quantity and ownership",
+          "pass": true
+        },
+        {
+          "name": "actual hallucination and resistance predicates",
+          "pass": true
+        },
+        {
+          "name": "other speech guards permit quote",
+          "pass": true
+        },
+        {
+          "name": "real item consumed or dropped through selected action",
+          "pass": true
+        },
+        {
+          "name": "one real action turn before chat",
+          "pass": true
+        },
+        {
+          "name": "matched sale payment or absence",
+          "pass": true
+        },
+        {
+          "name": "survival throughout ordinary producer",
+          "pass": true
+        },
+        {
+          "name": "source-derived producer feedback",
+          "pass": true
+        },
+        {
+          "name": "source-derived quote phrases",
+          "pass": true
+        },
+        {
+          "name": "quote preempts direction prompt",
+          "pass": true
+        },
+        {
+          "name": "quote consumes exactly one turn",
+          "pass": true
+        },
+        {
+          "name": "multiple records wait in menu before turn processing",
+          "pass": true
+        },
+        {
+          "name": "sober menu waits before any core random call",
+          "pass": true
+        },
+        {
+          "name": "scoped object state survives chat unchanged",
+          "pass": true
+        },
+        {
+          "name": "all output boundaries present",
+          "pass": true
+        },
+        {
+          "name": "ordered slices preserve full core log",
+          "pass": true
+        },
+        {
+          "name": "owner RNG prefix respects source constraints",
+          "pass": true
+        }
+      ],
+      "outputHashes": {
+        "screens": "95babc9eb317b35834f36b34b4fa8c36114802c8d5f73e02faca99c34707dac0",
+        "cursors": "a32ab1d3619b1061d5bdc4336c3c7a0ed304f4d63d8c2bcaa0a542fdc68fd3a5",
+        "calls": "42e97c1babf76a9072e0570f4a7f70d691652758a05622463f34076917997b70",
+        "slices": "f1537a4cece170cf3979556e6ce4f15762036499bda10d425f2c55d1fc3c6434",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "neutrality": {
+        "pass": true,
+        "eofStable": true,
+        "observedEqualsPlain": true,
+        "plainEqualsDeferred": true
+      }
+    }
+  ],
+  "hashUse": "Original observation evidence. Only the15 original negative hashes and negative full-row hashes are acceptance oracles; positive correctness uses original predicates and original C evidence."
+}

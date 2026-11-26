@@ -1,0 +1,33 @@
+{
+  "status": "Observed in the pinned compiled binary for this call/input only",
+  "sourceClaimAtSeal": "Compiled C argument order unknown. Source35 remains unchanged.",
+  "rawSHA256": "5f2300ac9bd795957e260d1f990b2b443384aeba86cadf0d3ba434afa331d491",
+  "nativeResultSHA256": "57b635dde6af7c43b367220e264fcaa9c55eb68357c5368e5c1fc176b7549bce",
+  "runtimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "binarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "segment": 0,
+  "name": "hallucinated-single",
+  "boundary": 84,
+  "CAnnotatedPrefix": [
+    "rn2(21)=13 @ currency(invent.c:1550)",
+    "rn2(21)=7 @ currency(invent.c:1550)",
+    "rn2(3)=1 @ shk_embellish(shk.c:5470)"
+  ],
+  "interpretation": [
+    "First rn2(21)=13 formats the price-loop menu entry.",
+    "Second rn2(21)=7 formats the spoken currency, Flanian Pobble Beads.",
+    "rn2(3)=1 then selects the plain embellishment suffix and skips inner rn2(5)."
+  ],
+  "CNative": "4/4 exact;336 styled boundaries/cursors21379 ordered calls/slices0frames, unchanged9dbb runtime.",
+  "scopeLimit": "This observation is not a C language guarantee, compiler-wide rule, or proof of other callsites/branches. No bug or runtime candidate.",
+  "unobserved": [
+    "contents-only/container prices",
+    "leading/interleaved coins",
+    "artifacts",
+    "inner rn2(5) embellishment choices",
+    "other naming/helper currency draws",
+    "hallucinated menus",
+    "other excluded keeper states"
+  ]
+}

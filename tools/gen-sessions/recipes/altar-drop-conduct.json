@@ -1,0 +1,117 @@
+{
+  "name": "altar-drop-conduct",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "src/do.c:doaltarobj"
+  ],
+  "branches": [
+    "altar-drop-conduct.first-apple",
+    "altar-drop-conduct.first-blessed-apple",
+    "altar-drop-conduct.second-drop-no-extra-log",
+    "altar-drop-conduct.coin-negative",
+    "altar-drop-conduct.blind-negative",
+    "altar-drop-conduct.floor-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "first-apple",
+      "moves": " \u0017uncursed apple\r\u001b\u001b\u0017neutral altar\r\u001b\u001bda\u001b\u001bv"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "first-blessed-apple",
+      "moves": " \u0017blessed apple\r\u001b\u001b\u0017neutral altar\r\u001b\u001bda\u001b\u001bv"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "second-drop-no-extra-log",
+      "moves": " \u0017uncursed apple\r\u001b\u001b\u0017uncursed pear\r\u001b\u001b\u0017neutral altar\r\u001b\u001bda\u001b\u001bdb\u001b\u001bv"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "coin-negative",
+      "moves": " \u001710 gold pieces\r\u001b\u001b\u0017neutral altar\r\u001b\u001bd$\u001b\u001bv"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "blind-negative",
+      "moves": " \u0017uncursed blindfold\r\u001b\u001bPa\u001b\u001b\u0017uncursed apple\r\u001b\u001b\u0017neutral altar\r\u001b\u001bdb\u001b\u001bv"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "floor-negative",
+      "moves": " \u0017floor\r\u001b\u001b\u0017uncursed apple\r\u001b\u001bda\u001b\u001bv"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "altar-drop-conduct.first-apple",
+      "segment": 0,
+      "screenIncludes": [
+        "Logged events:",
+        "eschewed atheism, by dropping"
+      ]
+    },
+    {
+      "branch": "altar-drop-conduct.first-blessed-apple",
+      "segment": 1,
+      "screenIncludes": [
+        "Logged events:",
+        "eschewed atheism, by dropping"
+      ]
+    },
+    {
+      "branch": "altar-drop-conduct.second-drop-no-extra-log",
+      "segment": 2,
+      "screenIncludes": [
+        "Logged events:",
+        "eschewed atheism, by dropping"
+      ]
+    },
+    {
+      "branch": "altar-drop-conduct.coin-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Logged events:"
+      ],
+      "screenExcludes": [
+        "eschewed atheism, by dropping"
+      ]
+    },
+    {
+      "branch": "altar-drop-conduct.blind-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Logged events:"
+      ],
+      "screenExcludes": [
+        "eschewed atheism, by dropping"
+      ]
+    },
+    {
+      "branch": "altar-drop-conduct.floor-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "Logged events:"
+      ],
+      "screenExcludes": [
+        "eschewed atheism, by dropping"
+      ]
+    }
+  ]
+}

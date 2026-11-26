@@ -1,0 +1,15 @@
+{
+  "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "candidateRuntimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+  "baselineLogSHA256": "23dce228093d2bb6afacf536702c4eadbfbe16c8af354f681bd1007dcb4d3b06",
+  "candidateLogSHA256": "52424ff8ea28d1598528ce0840d4c0e8397de7897f2e53e64c451d9c58547224",
+  "diagnosticEqualExceptRunnerPath": true,
+  "nativePrefix": "91 native replays,29 written bones,30 load boundaries,25 inventory observations,5 fruit observations PASS on both graphs",
+  "failure": "tools/bones-state-gate.mjs:214 expects interactive fruit warning in game.rc.errors; actual[] on both graphs",
+  "sourceAttribution": [
+    "C optfn_fruit options.c1706-1766 fruit-limit and naming clauses, complete config_erradd cfgfiles.c1544-1593, and complete JS set_fruit_name/options.js99-119 and config_erradd/options.js939-955",
+    "No active parse context means config_error_add emits pline and wait_synch. It does not append the completed startup configuration result.",
+    "The fixture invokes set_fruit_name directly after real game startup. Its RC-errors expectation is stale. No runtime, assertion or producer was changed."
+  ],
+  "status": "Preexisting synthetic test limitation, not a new-runtime regression; complete required corpus and timeout gates remain pending."
+}

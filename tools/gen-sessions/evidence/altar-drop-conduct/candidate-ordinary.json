@@ -1,0 +1,729 @@
+{
+  "recipeSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "runtimeSHA256": "49c56f3a27e9fa6edab7160bd372551d26721bba2444d14d636f77421da7eb19",
+  "rows": [
+    {
+      "name": "first-apple",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 36,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 38,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 1,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 41,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 1,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "99ff2610666107e32bd78b6ec09a7fde5156e6bdb13cee50b0dfa13b01321f0d",
+        "cursors": "e7e9c66c4b13cbc4cc495fda5c2e7a9e9b8e88789047330b2134b60815fb27a5",
+        "calls": "2cc603ee92076825ef8e4092a2a9a454db84fece131d6ef29af37fafc5ac57ed",
+        "slices": "3bf90e29b3f6c81f6c641121b3979176def2b167e985866a369049472f6259d3",
+        "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+      },
+      "keys": 41,
+      "boundaries": 42,
+      "calls": 3043,
+      "frames": 0
+    },
+    {
+      "name": "first-blessed-apple",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 35,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 37,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 1,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 40,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 1,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "3467e2c6065d8ca3953b86024cf64e9709f450815716eff196cb504661e3a26e",
+        "cursors": "9b1d8bedc2b7f61197cb70bbf81834faa182eeb34558145b7476c893142d3da1",
+        "calls": "2cc603ee92076825ef8e4092a2a9a454db84fece131d6ef29af37fafc5ac57ed",
+        "slices": "704b80987bb164a7488437fa97d87c92b6adcf9ce534052a73e5247b54b1d55a",
+        "frames": "c328b9bb48a1e7fcc359de0a7dd2b7398c3eb7993dbfb87a9a0ac084be406dc2"
+      },
+      "keys": 40,
+      "boundaries": 41,
+      "calls": 3043,
+      "frames": 0
+    },
+    {
+      "name": "second-drop-no-extra-log",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 53,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          },
+          {
+            "id": 73,
+            "type": 279,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 59,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 2,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 73,
+            "type": 279,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          },
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 62,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 2,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 73,
+            "type": 279,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          },
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": true
+          }
+        ],
+        "logs": [
+          {
+            "flags": 32,
+            "turn": 1,
+            "text": "eschewed atheism, by dropping an apple on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "fb642f2d59b377eced9b5b3bb90b6e361e18e56723f3908a359b787692ca5c43",
+        "cursors": "7f9ab5c047635fcfb626b4edbfff8f839b7b341508bca4f5da16a89500156a26",
+        "calls": "98fe3555ef8d38d127ecc9c57e7d60eda64b53e3d1a33e010a89d9e656e4726f",
+        "slices": "c2ea4f11ea61967d4183ecd2ab12d30a05ae365617e52170d2137443fa5360dc",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      },
+      "keys": 62,
+      "boundaries": 63,
+      "calls": 3065,
+      "frames": 0
+    },
+    {
+      "name": "coin-negative",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 36,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 72,
+            "type": 438,
+            "quantity": 10,
+            "letter": "$",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 38,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 438,
+            "quantity": 10,
+            "letter": "$",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "last": {
+        "step": 41,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 438,
+            "quantity": 10,
+            "letter": "$",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "hashes": {
+        "screens": "4f1e70ebe1b5751727892e5df3d5fd06557665aed1aac7cd878aebb458ca6a3c",
+        "cursors": "e7e9c66c4b13cbc4cc495fda5c2e7a9e9b8e88789047330b2134b60815fb27a5",
+        "calls": "a1ea69f94079a297424f365a2bcf7edd8a5a5cba0f4fc890f4fbbc22dfb0ebbc",
+        "slices": "69bf84dc3f19b92bc6c98e3d921ee129683af794f618d8d1103bfae65e807cd2",
+        "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+      },
+      "keys": 41,
+      "boundaries": 42,
+      "calls": 3041,
+      "frames": 0
+    },
+    {
+      "name": "blind-negative",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 62,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": true,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 73,
+            "type": 277,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 64,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": true,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 73,
+            "type": 277,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "last": {
+        "step": 67,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 32,
+        "blind": true,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 73,
+            "type": 277,
+            "quantity": 1,
+            "letter": "b",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "hashes": {
+        "screens": "dc729cc3792bdebaa893e49a7b9a8ff3e49c3f6d605b84996b0069f272bd082a",
+        "cursors": "a3878b715c77ce7af11ab95b58934acfe0886bf1e1ebd8646777adca153131a2",
+        "calls": "41314e58aaea9ba0742f9999e1ff009f3e4c4b840d297bf09593871c768f128c",
+        "slices": "d8a528e1276c5f166c093e91e50efe944fa10e148ae328dc6200bf63098f2a5f",
+        "frames": "9cff06d5a2a0095c86ac6c0e5e54cd9475a4eb865c2f95ab0e978b5853d6a5ef"
+      },
+      "keys": 67,
+      "boundaries": 68,
+      "calls": 3066,
+      "frames": 0
+    },
+    {
+      "name": "floor-negative",
+      "checks": [
+        {
+          "name": "real altar, item and perception setup",
+          "pass": true
+        },
+        {
+          "name": "drop ownership, conduct counter and turns",
+          "pass": true
+        },
+        {
+          "name": "C first-drop conduct log",
+          "pass": true
+        },
+        {
+          "name": "C chronicle visibility",
+          "pass": true
+        },
+        {
+          "name": "survival, boundaries and random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 28,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 26,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "floor": [],
+        "logs": []
+      },
+      "after": {
+        "step": 30,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 26,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "last": {
+        "step": 33,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "terrain": 26,
+        "blind": false,
+        "gnostic": 0,
+        "inventory": [],
+        "floor": [
+          {
+            "id": 72,
+            "type": 277,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": false,
+            "cursed": false,
+            "known": false
+          }
+        ],
+        "logs": []
+      },
+      "hashes": {
+        "screens": "25ccfcc911db0c5cf857a30eb5f5aa46f856e645bc399a26918bec2f7687a429",
+        "cursors": "4a417d143cebf5eb167907507a4b8d452f9c2d29e4aca36b7772d7d22f4ab76d",
+        "calls": "2cc603ee92076825ef8e4092a2a9a454db84fece131d6ef29af37fafc5ac57ed",
+        "slices": "4dd8d680f51b6ec14c0fc5df15011dc020325f325f9e8477b2e82321fcdea04a",
+        "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+      },
+      "keys": 33,
+      "boundaries": 34,
+      "calls": 3043,
+      "frames": 0
+    }
+  ]
+}

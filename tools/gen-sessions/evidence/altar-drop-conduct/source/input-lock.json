@@ -1,0 +1,28 @@
+{
+  "files": {
+    "recipe.json": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+    "predictions.json": "98499ba1a572d8707da93eb774f131f5439c439f46d139d93786a6788d2f3eb3",
+    "baseline-runtime.json": "50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6",
+    "source-pins.json": "066a96cae129a75ae55d066be302b70d4a90cf9da5b469f0da2f10b239f0fdc1",
+    "producer-origin.json": "b21fcfcfa4b3a0449ef4ed2f680ee5fd5fe98889b121211168e617d75eceaadf",
+    "SOURCE-REVIEW.md": "10a9a02f88a766c9f4c1c26789d6020cbe034966db59b290049ce37af5683810"
+  },
+  "probeSHA256": "17ad8c38efbf7489ded41870a760c818f16f96bd2ea1111f6c332029242d0dfa",
+  "beforeGameplayCAndCandidate": true,
+  "expectedBaselineFailures": {
+    "indexes": [
+      0,
+      1,
+      2
+    ],
+    "checks": [
+      "C first-drop conduct log",
+      "C chronicle visibility"
+    ]
+  },
+  "negativeIndexes": [
+    3,
+    4,
+    5
+  ]
+}

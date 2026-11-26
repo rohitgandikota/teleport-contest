@@ -1,0 +1,81 @@
+{
+  "originalPromotionManifestSHA256": "67e45b56eec3f13ca83c104f138cc365d94f05d5d09eaef315bab5c744f9ee36",
+  "originalRequirementsSHA256": "cdcec3b61e3ad6d7c8401164d14e1c6db6da3f9b659166d626b9aae5ececf2c6",
+  "originalPlacement": {
+    "source": "requirements.json",
+    "target": "tools/gen-sessions/coverage-requirements.json",
+    "sha256": "cdcec3b61e3ad6d7c8401164d14e1c6db6da3f9b659166d626b9aae5ececf2c6",
+    "appendRows": 7,
+    "primaryBranchRows": 6,
+    "coverageRootRows": 1,
+    "reason": "Preserve original recipe/raw src/do.c:doaltarobj label and register it explicitly. Append only these rows, preserve all prior registry bytes."
+  },
+  "correction": "Six branch IDs belong in branch-requirements with their source owner. Only the original coverage compatibility label belongs in coverage-requirements. The sealed proposal is preserved unchanged.",
+  "reason": "coverage-report.mjs reads separate registries and requires cFile/cFunction on branch requirements at lines121-125.",
+  "branchRows": [
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.first-apple",
+      "description": "Original C-confirmed first-apple keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.first-blessed-apple",
+      "description": "Original C-confirmed first-blessed-apple keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.second-drop-no-extra-log",
+      "description": "Original C-confirmed second-drop-no-extra-log keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.coin-negative",
+      "description": "Original C-confirmed coin-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.blind-negative",
+      "description": "Original C-confirmed blind-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.floor-negative",
+      "description": "Original C-confirmed floor-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    }
+  ],
+  "coverageRows": [
+    {
+      "group": "Altar conduct",
+      "id": "src/do.c:doaltarobj",
+      "description": "First sighted non-coin altar-drop conduct event and coin/blind/floor exclusions. Original source recipe compatibility label; not complete doaltarobj branch coverage.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    }
+  ],
+  "recipeRawAndPredicateChanges": false
+}

@@ -1,0 +1,9 @@
+{
+  "exit": 0,
+  "timeout": false,
+  "stdout": "{\"pass\":true,\"cases\":4,\"total\":4,\"checks\":88,\"totalChecks\":88,\"neutrality\":4,\"failures\":[],\"compiledCArgumentOrder\":\"unknown\"}\n",
+  "stderr": "",
+  "seconds": 1.988,
+  "sourceAndInputPinsUnchanged": true,
+  "nativeExecutions": 0
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/altar-drop-conduct-source-audit/probe.mjs"
+  ],
+  "exit": 1,
+  "seconds": 0.684,
+  "logSHA256": "81a68a975590b5842d44bda6557d398766f12d7f4f3e5b1f53a38321f4092d55",
+  "timeoutSeconds": 55,
+  "memoryMB": 512
+}

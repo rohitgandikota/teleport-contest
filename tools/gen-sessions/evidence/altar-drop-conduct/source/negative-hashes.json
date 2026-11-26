@@ -1,0 +1,23 @@
+{
+  "coin-negative": {
+    "screens": "4f1e70ebe1b5751727892e5df3d5fd06557665aed1aac7cd878aebb458ca6a3c",
+    "cursors": "e7e9c66c4b13cbc4cc495fda5c2e7a9e9b8e88789047330b2134b60815fb27a5",
+    "calls": "a1ea69f94079a297424f365a2bcf7edd8a5a5cba0f4fc890f4fbbc22dfb0ebbc",
+    "slices": "69bf84dc3f19b92bc6c98e3d921ee129683af794f618d8d1103bfae65e807cd2",
+    "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+  },
+  "blind-negative": {
+    "screens": "dc729cc3792bdebaa893e49a7b9a8ff3e49c3f6d605b84996b0069f272bd082a",
+    "cursors": "a3878b715c77ce7af11ab95b58934acfe0886bf1e1ebd8646777adca153131a2",
+    "calls": "41314e58aaea9ba0742f9999e1ff009f3e4c4b840d297bf09593871c768f128c",
+    "slices": "d8a528e1276c5f166c093e91e50efe944fa10e148ae328dc6200bf63098f2a5f",
+    "frames": "9cff06d5a2a0095c86ac6c0e5e54cd9475a4eb865c2f95ab0e978b5853d6a5ef"
+  },
+  "floor-negative": {
+    "screens": "25ccfcc911db0c5cf857a30eb5f5aa46f856e645bc399a26918bec2f7687a429",
+    "cursors": "4a417d143cebf5eb167907507a4b8d452f9c2d29e4aca36b7772d7d22f4ab76d",
+    "calls": "2cc603ee92076825ef8e4092a2a9a454db84fece131d6ef29af37fafc5ac57ed",
+    "slices": "4dd8d680f51b6ec14c0fc5df15011dc020325f325f9e8477b2e82321fcdea04a",
+    "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "runtimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "proposalSHA256": "a3b8b5799599bb524c40b55ebd03a8434fde9a0b48c24e989644059c128c7420",
+  "reportSHA256": "24ac2a8eb88879b54a8d6187f4815a3692d41077511e7f4ac156d98473e315d9",
+  "rows": [
+    {
+      "name": "sober-single-control",
+      "completeRowSHA256": "7ce28090e8bde4a98c6b0c2ad533f58048fab6f2ce14ee9cd7b20271f3dd2e8c",
+      "outputHashes": {
+        "screens": "2094282183a0e5a86bbdc72c822f5229263674d26edba9eafa5f45931750b11d",
+        "cursors": "0aba20481062c20478daf12b1b464396375129f33aa383e7ead8602310fa92db",
+        "calls": "a8591b81418361498ee5d2a1522a81be8e4d0b1290a9cd9fcc19da8308844ef2",
+        "slices": "115e728806b9cc5a2dc2e5cde07fe9266771e13416f8e0e7995350fe701335bb",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "reached": true,
+      "neutrality": true
+    },
+    {
+      "name": "priced-stack-control",
+      "completeRowSHA256": "ac20726ce16ebb8e0fcb3538a22bc013d0b5acf7473cf7e671295634446d2d6c",
+      "outputHashes": {
+        "screens": "bc686e98cefbafde9bbf4d80d5390af258513142f2e7e6def62d4d9145eb51f0",
+        "cursors": "a32ab1d3619b1061d5bdc4336c3c7a0ed304f4d63d8c2bcaa0a542fdc68fd3a5",
+        "calls": "c088b02a39201ab967b1ffbc57f5274103df63eda97a4f05c48592e6cfab939f",
+        "slices": "a89f82ee730aeeeb480aa6d7d38351a84365fdd89adbfc7ed70e8c3d2ec9213f",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "reached": true,
+      "neutrality": true
+    },
+    {
+      "name": "free-stack-control",
+      "completeRowSHA256": "6ce5293e5218626b1ecfd62c3b108ee1721e9accfd86b9515a34890b1bc4c067",
+      "outputHashes": {
+        "screens": "95babc9eb317b35834f36b34b4fa8c36114802c8d5f73e02faca99c34707dac0",
+        "cursors": "a32ab1d3619b1061d5bdc4336c3c7a0ed304f4d63d8c2bcaa0a542fdc68fd3a5",
+        "calls": "42e97c1babf76a9072e0570f4a7f70d691652758a05622463f34076917997b70",
+        "slices": "f1537a4cece170cf3979556e6ce4f15762036499bda10d425f2c55d1fc3c6434",
+        "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+      },
+      "reached": true,
+      "neutrality": true
+    }
+  ]
+}

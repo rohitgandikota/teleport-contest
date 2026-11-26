@@ -1,0 +1,178 @@
+{
+  "name": "familiar-level-message",
+  "description": "Locked source-only shared-storage family. Original seed31 bones producer and sober load unchanged; actual hallucination and blindfold arrival variants, restored-level return, and declined-bones negative. Original C confirmation pending.",
+  "source": "c",
+  "coverage": [
+    "mode.debug",
+    "persistence.bones"
+  ],
+  "branches": [
+    "familiar-level-message.strangulation-save",
+    "familiar-level-message.load-strangulation-bones",
+    "familiar-level-message.hallucinating-arrival",
+    "familiar-level-message.blind-sober-arrival",
+    "familiar-level-message.blind-hallucinating-arrival",
+    "familiar-level-message.sober-bones-return",
+    "familiar-level-message.declined-bones-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "strangulation-save",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u00166\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed amulet of strangulation\rPb m. m. m. m. m. yy"
+    },
+    {
+      "name": "load-strangulation-bones",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hallucinating-arrival",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed potion of hallucination\rmqb                  \u001b\u001b\u001b\u001b\u001b\u001b\u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-sober-arrival",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\rPb                  \u001b\u001b\u001b\u001b\u001b\u001b\u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-hallucinating-arrival",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\rPb                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed potion of hallucination\rmqc                  \u001b\u001b\u001b\u001b\u001b\u001b\u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "sober-bones-return",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b\u00161\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u00166\r                  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "declined-bones-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u00166\rn                  \u001b\u001b\u001b\u001b\u001b\u001b#overview\r                  \u001b\u001b\u001b\u001b\u001b\u001bi                   \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "familiar-level-message.strangulation-save",
+      "segment": 0,
+      "screenIncludes": [
+        "Save bones?"
+      ]
+    },
+    {
+      "branch": "familiar-level-message.load-strangulation-bones",
+      "segment": 1,
+      "screenIncludes": [
+        "Get bones?",
+        "Unlink bones?"
+      ],
+      "screenExcludes": [
+        "Whoa!  Everything looks different.",
+        "Whoa!  Everything seems different.",
+        "You are surrounded by twisty little passages, all alike.",
+        "Gee, this looks like uncle Conan's place...",
+        "Gee, this seems like uncle Conan's place..."
+      ]
+    },
+    {
+      "branch": "familiar-level-message.hallucinating-arrival",
+      "segment": 2,
+      "screenIncludes": [
+        "Get bones?",
+        "Unlink bones?",
+        "so cosmic!"
+      ],
+      "screenExcludes": [
+        "You have a sense of deja vu.",
+        "You feel like you've been here before.",
+        "This place looks familiar...",
+        "This place seems familiar..."
+      ]
+    },
+    {
+      "branch": "familiar-level-message.blind-sober-arrival",
+      "segment": 3,
+      "screenIncludes": [
+        "Get bones?",
+        "Unlink bones?"
+      ],
+      "screenExcludes": [
+        "Whoa!  Everything looks different.",
+        "Whoa!  Everything seems different.",
+        "You are surrounded by twisty little passages, all alike.",
+        "Gee, this looks like uncle Conan's place...",
+        "Gee, this seems like uncle Conan's place...",
+        "This place looks familiar..."
+      ]
+    },
+    {
+      "branch": "familiar-level-message.blind-hallucinating-arrival",
+      "segment": 4,
+      "screenIncludes": [
+        "Get bones?",
+        "Unlink bones?",
+        "so cosmic!"
+      ],
+      "screenExcludes": [
+        "You have a sense of deja vu.",
+        "You feel like you've been here before.",
+        "This place looks familiar...",
+        "This place seems familiar..."
+      ]
+    },
+    {
+      "branch": "familiar-level-message.sober-bones-return",
+      "segment": 5,
+      "screenIncludes": [
+        "Get bones?",
+        "Unlink bones?"
+      ],
+      "screenExcludes": [
+        "You have a sense of deja vu.",
+        "You feel like you've been here before.",
+        "This place looks familiar...",
+        "This place seems familiar...",
+        "Whoa!  Everything looks different.",
+        "Whoa!  Everything seems different.",
+        "You are surrounded by twisty little passages, all alike.",
+        "Gee, this looks like uncle Conan's place...",
+        "Gee, this seems like uncle Conan's place..."
+      ]
+    },
+    {
+      "branch": "familiar-level-message.declined-bones-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "Get bones?"
+      ],
+      "screenExcludes": [
+        "Unlink bones?",
+        "You have a sense of deja vu.",
+        "You feel like you've been here before.",
+        "This place looks familiar...",
+        "This place seems familiar...",
+        "Whoa!  Everything looks different.",
+        "Whoa!  Everything seems different.",
+        "You are surrounded by twisty little passages, all alike.",
+        "Gee, this looks like uncle Conan's place...",
+        "Gee, this seems like uncle Conan's place..."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "phase": "before the single ordinary batch and before C/candidate",
+  "source": "C do.c1447-1477 and1479-2000; bones.c762-780",
+  "messageTables": {
+    "sober": [
+      "You have a sense of deja vu.",
+      "You feel like you've been here before.",
+      "This place looks familiar...",
+      "This place seems familiar..."
+    ],
+    "hallucinating": [
+      "Whoa!  Everything looks different.",
+      "Whoa!  Everything seems different.",
+      "You are surrounded by twisty little passages, all alike.",
+      "Gee, this looks like uncle Conan's place...",
+      "Gee, this seems like uncle Conan's place..."
+    ]
+  },
+  "canonicalDraw": "One rn2(4) per first-generation same-name bones arrival, even when choice3 emits no message. No call on saved-level revisits.",
+  "expectedFailures": [
+    {
+      "cases": [
+        2,
+        4
+      ],
+      "condition": "If a non-null familiar choice is made while actual Hallucination is true",
+      "prediction": "Fixed JS emits the corresponding sober text; C uses the hallucination table. Primary screenExcludes must fail in JS if this real branch is selected."
+    },
+    {
+      "cases": [
+        3,
+        4
+      ],
+      "condition": "A formatted choice while actual Blind differs from cached u.ublind",
+      "prediction": "JS reads stale cache; C reads Blind. Blindf_on currently mirrors the cache, so this ordinary blindfold route is a control, not a promised stale-cache positive."
+    },
+    {
+      "cases": [
+        5
+      ],
+      "condition": "Return to already visited same-name bones level",
+      "prediction": "C makes no familiar helper call; JS draws rn2(4) again and may emit a second clue. If choice3, native RNG confirmation is needed; do not manufacture visible evidence."
+    }
+  ],
+  "negativeSegments": [
+    0,
+    1,
+    3,
+    6
+  ],
+  "ordinaryReachRequirements": {
+    "0": "real strangulation death leaves bones:0.6 with wizard cemetery prefix",
+    "1": "load real bones, sober sighted, retain exact storage",
+    "2": "real cursed potion, active hallucination without resistance on same-name bones arrival",
+    "3": "real blindfold W_TOOL; Blind true, no hallucination",
+    "4": "real blindfold and cursed potion, both active on arrival",
+    "5": "actual0:1->0:6->0:1->0:6 travel; one bones load only; saved-level restoration retains cemetery",
+    "6": "answer n to real Get bones prompt, numbones0 and no cemetery while storage file remains"
+  },
+  "unobservedUntilBatch": [
+    "which of four random message choices naturally occurs",
+    "formatted blind-versus-cache distinction",
+    "all hallucinated choices",
+    "nonmatching/partial/case-sensitive player names",
+    "multiple cemetery ancestors",
+    "nonwizard bones probabilities"
+  ],
+  "priorNativeObservation": {
+    "fixture": "tools/gen-sessions/generated/bones-retain-delete.session.json",
+    "sha256": "e56dc6a1cc6e0b066ebcb1929072f6498f396f3bcbe4dd8a85f0ca55ebc37bef",
+    "facts": "Original sober loads each contain rn2(4)=3 @ familiar_level_msg(do.c:1462) at boundary121, no clue. Historical proof only; no new C was executed."
+  }
+}

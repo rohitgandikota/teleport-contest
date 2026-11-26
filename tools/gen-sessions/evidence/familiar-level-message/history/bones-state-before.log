@@ -1,0 +1,23 @@
+91 native replays, 29 written bones, 30 load boundaries, 25 inventory observations, 5 fruit observations PASS
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ []
+- [
+-   "Doing that so many times isn't very fruitful."
+- ]
+
+    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/shop-chat-parent-composed/tools/bones-state-gate.mjs:214:274 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [],
+  expected: [ "Doing that so many times isn't very fruitful." ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

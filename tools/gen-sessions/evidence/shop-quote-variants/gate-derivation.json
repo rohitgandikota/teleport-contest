@@ -1,0 +1,24 @@
+{
+  "originalDriverSHA256": "e81f65fa810eebae0d047057c38c5cd6c8aaaabb00c60f37f92447843a2e4281",
+  "preservedBodySHA256": "2da4aa97211a023b862828e02ae7a53b48c2577c688b38c8ecfbaff58f89509d",
+  "start": "const {runSegment,NethackGame}",
+  "lastOriginalLine": "    rows.push(row);",
+  "assertions": 88,
+  "perCase": 22,
+  "bodyChanges": [],
+  "observerChanges": [],
+  "deferredChanges": [],
+  "liveBindingChanges": [],
+  "recipeChanges": [],
+  "inputChanges": [],
+  "negativeChanges": [],
+  "wrapperChanges": [
+    "Replace cached source/runtime preflight with mandatory canonical C4 data preflight.",
+    "Keep current-repository imports and original complete observation/88-check/neutrality/row body.",
+    "Remove automatic progress/full-report/negative-lock writes; optional compact report uses exclusive create.",
+    "Require original fifteen negative hashes and three complete negative row hashes.",
+    "Add a separate comparison with the three recorded C calls at segment0 boundary84."
+  ],
+  "historicalRowMetadata": "Original rows retain compiledCArgumentOrder:unknown and nativeParityClaimed:false for exact source-row hashes. Current compiled-order evidence is reported separately.",
+  "positiveHashUse": "Source positive JS hashes are provenance, not acceptance oracles."
+}

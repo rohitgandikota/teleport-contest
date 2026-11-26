@@ -1,0 +1,11 @@
+{
+  "sourceFilesSHA256": "74f2b4b1b294ed62dbef7a0123f99dcb4aa87bc6f185d017543678f25739c85a",
+  "primaryRecipeSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "minimalSHA256": "a0fe158c2722f67c8cd33f5764d48ba86a0a35ecf0184926aabb6cd32cc04f28",
+  "negativeSHA256": "1460dd965e1c6fe62ea94cb16bd10fe1960b63b9c3d163d79c45b506b940ba21",
+  "baselineRuntimeSHA256": "50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6",
+  "segments": 6,
+  "keys": 284,
+  "beforeC": true,
+  "preserveAllRootMetadata": true
+}

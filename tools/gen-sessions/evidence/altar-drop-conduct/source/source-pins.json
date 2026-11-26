@@ -1,0 +1,8 @@
+{
+  "nethack-c/upstream/src/do.c": "e2fe19b83f22dcf496d2ced54f8d727433ef29aa4c3a3151a64e66350cae985f",
+  "nethack-c/upstream/src/pline.c": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+  "nethack-c/upstream/src/insight.c": "190e28746d8e11d297df8bccce183c588833c97434627660cda0b903d9cebc50",
+  "nethack-c/upstream/include/extern.h": "f7e0008bf1d5d5d7a3b7b14ea04a6e14f78ce054444a2d53f06da31802ce6cbe",
+  "nethack-c/upstream/include/you.h": "d19cfa0233582f1ad550b9dfc788f26166f3ff21225e3d8a0cd43b6de2094289",
+  "nethack-c/upstream/include/global.h": "97bcc4fdd9c1f880dacaf1fffe0043f78874f9fc7e9d84f57aa1a1d4be811e88"
+}

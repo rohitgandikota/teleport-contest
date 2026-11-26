@@ -12,13 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Welcome and level-entry feedback are pushed as `735a0783`, with all 1,228
-full937 tested files verified against the publication. Shop chat quotes now
-pass all 938 recordings, five targeted native cases, 65 ordinary contracts,
-four focused checks and 45 strict workers. Its two runtime files and portable
-evidence are ready for the staged-tree check and immediate push. Separate
-altar, chat-producer and familiar-bones audits remain in progress. See STATUS
-for evidence, preserved diagnostics and the remaining unobserved branches.
+Shop price quotes are pushed as `ee4f5966`. Altar conduct and bones arrival
+fixes pass all 941 recordings, 17 targeted native cases and 47 timeout workers.
+All three portable gates preserve their isolated results and fifty control
+hashes. Six retained checks pass; one older synthetic fruit assertion fails
+identically before and after, with both failures and source attribution kept.
+The next step is the verified commit and immediate push, then the separate
+chat candidate. See STATUS for the exact evidence and remaining limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

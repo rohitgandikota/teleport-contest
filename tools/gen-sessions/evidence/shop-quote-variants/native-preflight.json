@@ -1,0 +1,13 @@
+{
+  "rawSHA256": "5f2300ac9bd795957e260d1f990b2b443384aeba86cadf0d3ba434afa331d491",
+  "sourceFilesSHA256": "7b48423712521a77075c92bdb4ba11aca1da054ed24d33d5e56db1be4f5c9434",
+  "primaryAssertions": 4,
+  "segments": 4,
+  "keys": 332,
+  "boundaries": 336,
+  "fieldsAndPresence": true,
+  "keysExact": true,
+  "metadataPreserved": true,
+  "integrityErrors": [],
+  "beforeGameplayImports": true
+}

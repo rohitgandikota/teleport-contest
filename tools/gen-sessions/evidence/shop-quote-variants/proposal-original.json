@@ -1,0 +1,369 @@
+{
+  "name": "shop-quote-variants",
+  "classification": "source-only ordinary proposal, compiled C argument order unknown",
+  "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+  "seedSearch": false,
+  "segments": [
+    {
+      "name": "hallucinated-single",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017cursed potion of hallucination\r  \u001b\u001bqo    \u001b\u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "sober-single-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017cursed potion of fruit juice\r  \u001b\u001bqo    \u001b\u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "priced-stack-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo y   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "free-stack-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ],
+  "predictions": [
+    {
+      "name": "hallucinated-single",
+      "negative": false,
+      "controlMeaning": "Target compiled currency/embellishment order, currently unknown",
+      "kind": "single",
+      "wishedType": "POT_HALLUCINATION",
+      "quantity": 1,
+      "cursed": true,
+      "hallucinating": true,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "beforeAction": 69,
+        "afterActionKeys": 71,
+        "chatStart": 78,
+        "chatEnter": 84,
+        "end": 90
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "charismaRange": [
+          8,
+          10
+        ],
+        "notHungry": true,
+        "blind": false,
+        "deaf": false,
+        "hallucinating": true,
+        "hallucinationResistance": false,
+        "peacefulAbleKeeperInShop": true,
+        "robbed": 0,
+        "billCount": 0,
+        "appleSold": false,
+        "goldDeltaFromAction": 0
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "directionPrompt": false,
+        "requiredPhrases": [
+          "\"A pick-axe, price 67 "
+        ],
+        "producerPhrase": "Oh wow!  Everything looks so cosmic!",
+        "menuPendingAtChatEnter": false,
+        "expectedUnitPrices": {
+          "PICK_AXE": 67
+        },
+        "ownerRNG": "Initial loop currency rn2(21), then currency rn2(21) versus embellishment rn2(3), conditional rn2(5), in unknown compiled argument order",
+        "compiledArgumentOrder": "unknown",
+        "allowedHallucinatedCorePrefixes": [
+          [
+            "rn2(21)",
+            "rn2(21)",
+            "rn2(3)",
+            "optional rn2(5) iff rn2(3)=0"
+          ],
+          [
+            "rn2(21)",
+            "rn2(3)",
+            "optional rn2(5) iff rn2(3)=0",
+            "rn2(21)"
+          ]
+        ],
+        "totalTurnRNG": "Not predicted; includes normal turn and hallucinated display work."
+      },
+      "JSsourcePrediction": {
+        "firstCoreBounds": [
+          21,
+          21,
+          3
+        ],
+        "classification": "Current source observation target, not a compiled C correctness oracle"
+      },
+      "reachRisks": [
+        "Milky/smoky potion occupant can replace intended effect; classify first unmet producer, never retry.",
+        "Extra message/call prompt may consume acknowledgement keys; state and command phase checks are mandatory."
+      ]
+    },
+    {
+      "name": "sober-single-control",
+      "negative": true,
+      "controlMeaning": "No hallucinated currency draws; preserve ordinary quote behavior",
+      "kind": "single",
+      "wishedType": "POT_FRUIT_JUICE",
+      "quantity": 1,
+      "cursed": true,
+      "hallucinating": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "beforeAction": 67,
+        "afterActionKeys": 69,
+        "chatStart": 76,
+        "chatEnter": 82,
+        "end": 88
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "charismaRange": [
+          8,
+          10
+        ],
+        "notHungry": true,
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "hallucinationResistance": false,
+        "peacefulAbleKeeperInShop": true,
+        "robbed": 0,
+        "billCount": 0,
+        "appleSold": false,
+        "goldDeltaFromAction": 0
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "directionPrompt": false,
+        "requiredPhrases": [
+          "\"A pick-axe, price 67 zorkmids"
+        ],
+        "producerPhrase": "Yecch!  This tastes rotten.",
+        "menuPendingAtChatEnter": false,
+        "expectedUnitPrices": {
+          "PICK_AXE": 67
+        },
+        "ownerRNG": "rn2(3), conditional rn2(5), before ordinary turn processing",
+        "compiledArgumentOrder": "not exercised",
+        "allowedHallucinatedCorePrefixes": [],
+        "totalTurnRNG": "Not predicted; includes normal turn and hallucinated display work."
+      },
+      "JSsourcePrediction": {
+        "firstCoreBounds": [
+          3
+        ],
+        "classification": "Current source observation target, not a compiled C correctness oracle"
+      },
+      "reachRisks": [
+        "Milky/smoky potion occupant can replace intended effect; classify first unmet producer, never retry.",
+        "Extra message/call prompt may consume acknowledgement keys; state and command phase checks are mandatory."
+      ]
+    },
+    {
+      "name": "priced-stack-control",
+      "negative": true,
+      "controlMeaning": "No hallucinated currency draws; preserve ordinary quote behavior",
+      "kind": "multiple",
+      "wishedType": "APPLE",
+      "quantity": 2,
+      "cursed": false,
+      "hallucinating": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "beforeAction": 56,
+        "afterActionKeys": 60,
+        "chatStart": 65,
+        "chatEnter": 71,
+        "end": 77
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "APPLE",
+            2,
+            false
+          ],
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "charismaRange": [
+          8,
+          10
+        ],
+        "notHungry": true,
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "hallucinationResistance": false,
+        "peacefulAbleKeeperInShop": true,
+        "robbed": 0,
+        "billCount": 0,
+        "appleSold": true,
+        "goldDeltaFromAction": 7
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "directionPrompt": false,
+        "requiredPhrases": [
+          "Fine goods for sale:",
+          "2 apples, 9 zorkmids each",
+          "a pick-axe, 67 zorkmids"
+        ],
+        "producerPhrase": "Sell them?",
+        "menuPendingAtChatEnter": true,
+        "expectedUnitPrices": {
+          "PICK_AXE": 67,
+          "APPLE": 9
+        },
+        "ownerRNG": "No currency/embellishment RNG before waiting in the menu",
+        "compiledArgumentOrder": "not exercised",
+        "allowedHallucinatedCorePrefixes": [],
+        "totalTurnRNG": "Not predicted; includes normal turn and hallucinated display work."
+      },
+      "JSsourcePrediction": {
+        "firstCoreBounds": [],
+        "classification": "Current source observation target, not a compiled C correctness oracle"
+      },
+      "reachRisks": [
+        "Sale prompt/quantity/ownership must be reached through actual wish/drop; preserve failure if not.",
+        "Extra message/call prompt may consume acknowledgement keys; state and command phase checks are mandatory."
+      ]
+    },
+    {
+      "name": "free-stack-control",
+      "negative": true,
+      "controlMeaning": "No hallucinated currency draws; preserve ordinary quote behavior",
+      "kind": "multiple",
+      "wishedType": "APPLE",
+      "quantity": 2,
+      "cursed": false,
+      "hallucinating": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "beforeAction": 56,
+        "afterActionKeys": 60,
+        "chatStart": 65,
+        "chatEnter": 71,
+        "end": 77
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "APPLE",
+            2,
+            true
+          ],
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "charismaRange": [
+          8,
+          10
+        ],
+        "notHungry": true,
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "hallucinationResistance": false,
+        "peacefulAbleKeeperInShop": true,
+        "robbed": 0,
+        "billCount": 0,
+        "appleSold": false,
+        "goldDeltaFromAction": 0
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "directionPrompt": false,
+        "requiredPhrases": [
+          "Fine goods for sale:",
+          "2 apples, no charge",
+          "a pick-axe, 67 zorkmids"
+        ],
+        "producerPhrase": "Sell them?",
+        "menuPendingAtChatEnter": true,
+        "expectedUnitPrices": {
+          "PICK_AXE": 67,
+          "APPLE": 0
+        },
+        "ownerRNG": "No currency/embellishment RNG before waiting in the menu",
+        "compiledArgumentOrder": "not exercised",
+        "allowedHallucinatedCorePrefixes": [],
+        "totalTurnRNG": "Not predicted; includes normal turn and hallucinated display work."
+      },
+      "JSsourcePrediction": {
+        "firstCoreBounds": [],
+        "classification": "Current source observation target, not a compiled C correctness oracle"
+      },
+      "reachRisks": [
+        "Sale prompt/quantity/ownership must be reached through actual wish/drop; preserve failure if not.",
+        "Extra message/call prompt may consume acknowledgement keys; state and command phase checks are mandatory."
+      ]
+    }
+  ]
+}

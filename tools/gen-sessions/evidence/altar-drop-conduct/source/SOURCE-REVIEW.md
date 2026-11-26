@@ -1,0 +1,9 @@
+# Altar drop conduct source review
+
+Complete C doaltarobj (do.c363-390), drop714-780, dropx786-796 and dropy800-803 were read alongside their JS owners. C returns before all work if blind. Non-coin hero drops increment gnostic and log LL_CONDUCT only when the prior count was zero. Coins clear blessed/cursed instead. Existing flash and object-knowledge clauses follow the log. JS increments the counter but omits the event. No runtime candidate exists.
+
+Complete C gamelog_add/livelog_printf (pline.c494-526), do_gamelog/show_gamelog (insight.c2532-2598), and JS counterparts were read. The in-game chronicle includes conduct events; LL_CONDUCT is0x20. The counter is C long (you.h151). Prototype and constant files are pinned. This audit does not change the naming helper or claim all naming paths reviewed. JS already imports doname at module scope but also shadows it later inside doaltarobj; any later implementation must respect that binding order.
+
+The actual terrain-wish producer and fixed seed/date/RC come from the maintained altar-glyph-preservation recipe. Six independently named tuples cover first ordinary and blessed apple drops, a second distinct food drop, gold, a worn blindfold, and ordinary floor. Only real keyboard wishes, wearing, dropping and chronicle commands produce state. Expected baseline failures are the missing conduct event and chronicle text for the first three cases. Setup, counter changes, object ownership, turns, controls and five-stream neutrality must remain independently checked.
+
+Lock the complete family and assertion body before one bounded observed/plain/deferred batch. Store all failures. Record C once only after intended setup reach. Monster-turn drops, hallucination, remote falls and alternate object naming remain unobserved. No helper-state injection, mocked random draws or save edits are permitted.

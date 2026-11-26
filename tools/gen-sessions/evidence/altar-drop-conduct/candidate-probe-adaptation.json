@@ -1,0 +1,19 @@
+{
+  "originalProbeSHA256": "17ad8c38efbf7489ded41870a760c818f16f96bd2ea1111f6c332029242d0dfa",
+  "candidateAdapterSHA256": "1b5577277a20da3b7a136751bbf22cdf6d7f8eb8eba4cd28892631b57646974a",
+  "originalAssertionBodySHA256": "17d53b98d820e9b470d98435bee703b220ea3fb3e73f1a01465e9b47ab261474",
+  "candidateAssertionBodySHA256": "17d53b98d820e9b470d98435bee703b220ea3fb3e73f1a01465e9b47ab261474",
+  "assertionBodyByteIdentical": true,
+  "namedChecksPerCase": 7,
+  "cases": 6,
+  "originalChecks": 42,
+  "changes": [
+    "replace original path/self-pin header with preflight of immutable original and candidate",
+    "route all gameplay/helper imports through fixed candidate",
+    "exclusive-new report path",
+    "report candidate runtime hash and verify both maps after gameplay"
+  ],
+  "inputsChanged": false,
+  "originalFailureReportChanged": false,
+  "negativeExpectationsChanged": false
+}

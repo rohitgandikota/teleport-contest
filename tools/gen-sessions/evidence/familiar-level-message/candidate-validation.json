@@ -1,0 +1,99 @@
+{
+  "runtimeSHA256": "cbc747688c7bfe95d3c490eeb6ab7d3ae6586aca7a573bfafb43fc1b859dbc74",
+  "runtimeChanged": [
+    "js/do.js"
+  ],
+  "copies": 1,
+  "fixedLinks": 279,
+  "rawSHA256": "37dc4229d3d117ff9447f11a65a356aaaef822157ee615a69813f42e0a8cd78e",
+  "baselineNativeSHA256": "b119f32496b70e71019b9edd1c65313377a7aa1aee18209e897f93745b3cefd3",
+  "candidateNativeSHA256": "c4a2517f8f14133eff312d8bbd8c5944da24ca058d5bca5adcb5298effca9d28",
+  "nativeBefore": "6/7",
+  "nativeAfter": "7/7",
+  "nativeChangedIndexes": [
+    5
+  ],
+  "nativeExactBoundaries": 1697,
+  "nativeCalls": 23336,
+  "nativeFrames": 0,
+  "C_familiarCalls": [
+    [],
+    [
+      {
+        "step": 121,
+        "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+      }
+    ],
+    [
+      {
+        "step": 180,
+        "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+      }
+    ],
+    [
+      {
+        "step": 167,
+        "call": "rn2(4)=1 @ familiar_level_msg(do.c:1462)"
+      }
+    ],
+    [
+      {
+        "step": 226,
+        "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+      }
+    ],
+    [
+      {
+        "step": 121,
+        "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+      }
+    ],
+    []
+  ],
+  "revisitBaselineExtraCall": {
+    "index": 2361,
+    "c": null,
+    "js": "rn2(4)=3"
+  },
+  "ordinaryModes": {
+    "observed": {
+      "pass": 7,
+      "total": 7
+    },
+    "plain": {
+      "pass": 7,
+      "total": 7
+    },
+    "deferred": {
+      "pass": 7,
+      "total": 7
+    }
+  },
+  "unchangedNativeRows": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "unchangedCompleteOrdinaryRows": 18,
+  "negativeOutputHashes": 20,
+  "candidateOrdinarySHA256": "78ac1a378d09424d7fa6b2574bdde45ac13a74d253b10f0da5e9a67968ce5a11",
+  "probeAdaptation": {
+    "sourceProbeSHA256": "513d3e19bcd23f5c4eb3d80a3b30d56b1163d2cec1b1c7f77569f0d32fd0544c",
+    "candidateProbeSHA256": "ff35d4bf910c3f4c8c1291bf782d380a608269ece7ca00e438cf98a16ead2f97",
+    "assertionBodySHA256": "0db012d08fe62e65ff3b9f23521a7cee3fe53775f51e4d5831907b2bca08a651",
+    "bodyUnchanged": true,
+    "changes": "Only packet/runtime/report paths, candidate graph pin/report label and independent C preflight. No assertion or input changes.",
+    "runtimeSHA256": "cbc747688c7bfe95d3c490eeb6ab7d3ae6586aca7a573bfafb43fc1b859dbc74",
+    "changedRuntime": [
+      "js/do.js"
+    ]
+  },
+  "limits": [
+    "Hallucinated familiar text, formatted Blind substitution, stale blindness cache not witnessed; complete helper is source port only for these branches."
+  ],
+  "noCReexecution": true,
+  "noMainWrites": true
+}

@@ -1,0 +1,520 @@
+{
+  "baselineCommit": "ee4f59667e32ae2ae6ea6b5a28f06d59ad0549db",
+  "composition": {
+    "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+    "familiarRuntimeSHA256": "cbc747688c7bfe95d3c490eeb6ab7d3ae6586aca7a573bfafb43fc1b859dbc74",
+    "altarRuntimeSHA256": "49c56f3a27e9fa6edab7160bd372551d26721bba2444d14d636f77421da7eb19",
+    "runtimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+    "runtimeChanged": [
+      "js/do.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279,
+    "familiarSealSHA256": "30480422ae1a4dc2ccbb2b7d6b5bd932734f190794a8fe67c5f3b09fa314de47",
+    "altarSealSHA256": "bbb7d3f12554f6c51bfb52036e08c667ea2282de2f0904bb07fed59f2a91b45e",
+    "altarPatchSHA256": "41ed98ceb5305017a65ceec95054fe986e362b7b4acb9424082eca19f96f01f5",
+    "ownedOriginalFileEqual": true
+  },
+  "altarValidation": {
+    "baselineOrdinary": "36/42",
+    "candidateOrdinary": "42/42",
+    "originalCheckBodiesUnchanged": true,
+    "observedPlainDeferred": "6/6 each, five-stream equality",
+    "category": "0x20",
+    "firstOnlyTurn": 1,
+    "baselineNative": "3/6",
+    "candidateNative": "6/6",
+    "boundaries": 290,
+    "calls": 18301,
+    "frames": 0,
+    "fullStyleCursorRngSlicesFrames": true,
+    "negativeOrdinaryRowsIdentical": 3,
+    "negativeNativeRowsIdentical": 3,
+    "negativeHashesIdentical": 15,
+    "ordinaryNativeJSHashesEqual": 6,
+    "ordinaryReportSHA256": "d55b35dc738c7f32cc9d75f6acf1aa1fdd00a8f00e8d93e4c6ceab069d1b4773",
+    "nativeReportSHA256": "f59aa9f105ace02fa7450aa5bd63fb3a10aa10c9673d9f4f34b781beb067d4e1",
+    "preflightSHA256": "d27e63b2ef99fada24af93de482dc55435ef1faf854d5132904347317e94bdca",
+    "baselineNativeReportSHA256": "02529542a31472fa86d6d4125b34a5f8eb9b89f130ea41cc53209d81d48b8478",
+    "candidateRuntimeSHA256": "49c56f3a27e9fa6edab7160bd372551d26721bba2444d14d636f77421da7eb19",
+    "rawSHA256": "36def34578ebf169073b7d9c349a7a797967c32e47402dfdc25fb82463b52d0e",
+    "runtimeFilesAfter": 280,
+    "workerCRecordings": 0,
+    "combinedJSWorkers": 1
+  },
+  "familiarValidation": {
+    "runtimeSHA256": "cbc747688c7bfe95d3c490eeb6ab7d3ae6586aca7a573bfafb43fc1b859dbc74",
+    "runtimeChanged": [
+      "js/do.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279,
+    "rawSHA256": "37dc4229d3d117ff9447f11a65a356aaaef822157ee615a69813f42e0a8cd78e",
+    "baselineNativeSHA256": "b119f32496b70e71019b9edd1c65313377a7aa1aee18209e897f93745b3cefd3",
+    "candidateNativeSHA256": "c4a2517f8f14133eff312d8bbd8c5944da24ca058d5bca5adcb5298effca9d28",
+    "nativeBefore": "6/7",
+    "nativeAfter": "7/7",
+    "nativeChangedIndexes": [
+      5
+    ],
+    "nativeExactBoundaries": 1697,
+    "nativeCalls": 23336,
+    "nativeFrames": 0,
+    "C_familiarCalls": [
+      [],
+      [
+        {
+          "step": 121,
+          "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+        }
+      ],
+      [
+        {
+          "step": 180,
+          "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+        }
+      ],
+      [
+        {
+          "step": 167,
+          "call": "rn2(4)=1 @ familiar_level_msg(do.c:1462)"
+        }
+      ],
+      [
+        {
+          "step": 226,
+          "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+        }
+      ],
+      [
+        {
+          "step": 121,
+          "call": "rn2(4)=3 @ familiar_level_msg(do.c:1462)"
+        }
+      ],
+      []
+    ],
+    "revisitBaselineExtraCall": {
+      "index": 2361,
+      "c": null,
+      "js": "rn2(4)=3"
+    },
+    "ordinaryModes": {
+      "observed": {
+        "pass": 7,
+        "total": 7
+      },
+      "plain": {
+        "pass": 7,
+        "total": 7
+      },
+      "deferred": {
+        "pass": 7,
+        "total": 7
+      }
+    },
+    "unchangedNativeRows": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6
+    ],
+    "unchangedCompleteOrdinaryRows": 18,
+    "negativeOutputHashes": 20,
+    "candidateOrdinarySHA256": "78ac1a378d09424d7fa6b2574bdde45ac13a74d253b10f0da5e9a67968ce5a11",
+    "probeAdaptation": {
+      "sourceProbeSHA256": "513d3e19bcd23f5c4eb3d80a3b30d56b1163d2cec1b1c7f77569f0d32fd0544c",
+      "candidateProbeSHA256": "ff35d4bf910c3f4c8c1291bf782d380a608269ece7ca00e438cf98a16ead2f97",
+      "assertionBodySHA256": "0db012d08fe62e65ff3b9f23521a7cee3fe53775f51e4d5831907b2bca08a651",
+      "bodyUnchanged": true,
+      "changes": "Only packet/runtime/report paths, candidate graph pin/report label and independent C preflight. No assertion or input changes.",
+      "runtimeSHA256": "cbc747688c7bfe95d3c490eeb6ab7d3ae6586aca7a573bfafb43fc1b859dbc74",
+      "changedRuntime": [
+        "js/do.js"
+      ]
+    },
+    "limits": [
+      "Hallucinated familiar text, formatted Blind substitution, stale blindness cache not witnessed; complete helper is source port only for these branches."
+    ],
+    "noCReexecution": true,
+    "noMainWrites": true
+  },
+  "quoteVariantsNative": "4/4 exact on published and composed runtime; compiled order source-attributed in preserved C recording",
+  "newRaw": [
+    {
+      "path": "tools/gen-sessions/generated/altar-drop-conduct.session.json",
+      "bytes": 862551,
+      "sha256": "36def34578ebf169073b7d9c349a7a797967c32e47402dfdc25fb82463b52d0e"
+    },
+    {
+      "path": "tools/gen-sessions/generated/familiar-level-message.session.json",
+      "bytes": 1838514,
+      "sha256": "37dc4229d3d117ff9447f11a65a356aaaef822157ee615a69813f42e0a8cd78e"
+    },
+    {
+      "path": "tools/gen-sessions/generated/shop-chat-quote-variants.session.json",
+      "bytes": 1798206,
+      "sha256": "5f2300ac9bd795957e260d1f990b2b443384aeba86cadf0d3ba434afa331d491"
+    }
+  ],
+  "composedNative": [
+    {
+      "family": "altar-drop-conduct",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/altar-familiar-parent-composed/altar-drop-conduct-native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.57,
+      "logSHA256": "d253e242c268c6efbc841a67fe7439eaa990224102d5db3f327dfb958d77d09c"
+    },
+    {
+      "family": "familiar-level-message",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/altar-familiar-parent-composed/familiar-level-message-native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.956,
+      "logSHA256": "8f2dced857e109a02098dab64bd896f87ce33fee9ef98c12ee3e1468d275f90d"
+    },
+    {
+      "family": "shop-chat-quote-variants",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/altar-familiar-parent-composed/shop-chat-quote-variants-native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.055,
+      "logSHA256": "d553e30aae92584dd48eb718e3b0f17ff9acac08040a2895cf428ad6433cae8d"
+    }
+  ],
+  "nativeCases": 17,
+  "completeNativeReportsEqualIsolated": true,
+  "ordinary": [
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/familiar-level-message-input-gate.mjs",
+        ".cache/restart-20261122/altar-familiar-main-familiar-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 4.343,
+      "logSHA256": "5482f7b0d5aba97a1d5a172f67188a465f707614860a898b9942b8c3d59156f9",
+      "reportSHA256": "5482f7b0d5aba97a1d5a172f67188a465f707614860a898b9942b8c3d59156f9"
+    },
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/altar-drop-conduct-input-gate.mjs",
+        ".cache/restart-20261122/altar-familiar-main-altar-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 0.749,
+      "logSHA256": "442e58f7fb90cb3edf4282319f76381cd9aae874944138cde45f71e4f9504853",
+      "reportSHA256": "ac1665339fb06d3fb4af22a410dad4389bec570f068d8bb2d05c44115237c74b"
+    },
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/shop-quote-variants-input-gate.mjs",
+        ".cache/restart-20261122/altar-familiar-main-shop-variants-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 2.135,
+      "logSHA256": "f3c84f8b262310894a74e33d9462c5d958ebebe239d8268842bd694cae234728",
+      "reportSHA256": "41d6d30898f99e0e8fc9511a44289d8abed881f4af624341f178165fe0a21d62"
+    }
+  ],
+  "ordinaryAllModeRowsEqualIsolated": true,
+  "installations": [
+    {
+      "promotionSealSHA256": "15105cc354e352a7f9c965a018135ac12963f8281eaf87f555d3e43a2434332b",
+      "manifestSHA256": "9db2bad221934833bed298c6351728582ff0abc14c5246baf50908b6d1de3c15",
+      "payloads": 20,
+      "payloadBytes": 248573,
+      "rawUnchanged": true,
+      "branchRows": 7,
+      "branchCount": 4719,
+      "registrySHA256": "0477588d6d3e1ae75bd349a5b1273a3a68294362e64a4ac6866bf30c611f7175",
+      "priorRegistryBytesPreserved": true
+    },
+    {
+      "promotionSealSHA256": "711b87c7dcbac93becf99e162f00a265be48c7f278ba855e7dd841551945f623",
+      "manifestSHA256": "a2be54ea80e68d79cbe183b2d6fbb813a126fab709e4378d8d02307203a58dee",
+      "payloads": 18,
+      "rawUnchanged": true,
+      "requirementsAdded": 4,
+      "registryTotal": 4723,
+      "registrySHA256": "d490f43b5f905dace1d5b2885b9bd2ce4022fb4b39c09d1ed0877b3cab390a12",
+      "priorRegistryBytesPreserved": true
+    },
+    {
+      "promotionSealSHA256": "98b10208dabf5ff7c54c47baf1bceefaa900bc41c22f604458f1574503f7a1d5",
+      "manifestSHA256": "67e45b56eec3f13ca83c104f138cc365d94f05d5d09eaef315bab5c744f9ee36",
+      "payloads": 26,
+      "rawUnchanged": true,
+      "registries": [
+        {
+          "path": "tools/gen-sessions/branch-requirements.json",
+          "appended": 6,
+          "total": 4729,
+          "sha256": "398c7f99429bce712a8a2e7f957fbbb46a109f999f21bb3125e85d283652eb54",
+          "priorBytesPreserved": true
+        },
+        {
+          "path": "tools/gen-sessions/coverage-requirements.json",
+          "appended": 1,
+          "total": 109,
+          "sha256": "f7680d1280c0d55b0147fa73ec1a1275939e349f4be32d6d494a68fb0f625ac9",
+          "priorBytesPreserved": true
+        }
+      ],
+      "placementCorrectionSHA256": "dcfbf7827c5f1c0ce17e7d43befd999f7bdaeddea59838b170b6b520da6a10a4"
+    }
+  ],
+  "branchRegistryTotal": 4729,
+  "coverageRegistryTotal": 109,
+  "retainedInitial": [
+    {
+      "name": "altar-glyph-preservation-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/altar-glyph-preservation-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.631,
+      "log": ".cache/restart-20261122/altar-familiar-retained-altar-glyph-preservation-input.log",
+      "sha256": "5db8026e531e3898d7fff69627e40cc8b3980d86ef3b46894d1c795c7933644f"
+    },
+    {
+      "name": "altar-wrath-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/altar-wrath-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.982,
+      "log": ".cache/restart-20261122/altar-familiar-retained-altar-wrath-state.log",
+      "sha256": "51e457e81cbe017c66bb585b0e5b9635bbffdf0a8758aebe27c21f7ce78c2643"
+    },
+    {
+      "name": "weapon-conduct-chronicle-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/weapon-conduct-chronicle-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.794,
+      "log": ".cache/restart-20261122/altar-familiar-retained-weapon-conduct-chronicle-state.log",
+      "sha256": "244676666fe6433cb1b9b408eee64f70f88ccdfb15668d2ccafdea8c73b349fc"
+    },
+    {
+      "name": "bones-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/bones-state-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 20.718,
+      "log": ".cache/restart-20261122/altar-familiar-retained-bones-state.log",
+      "sha256": "52424ff8ea28d1598528ce0840d4c0e8397de7897f2e53e64c451d9c58547224"
+    }
+  ],
+  "retainedRemaining": [
+    {
+      "name": "bones-links-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/bones-links-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.057,
+      "log": ".cache/restart-20261122/altar-familiar-retained-bones-links-state.log",
+      "sha256": "706930bf93c5e96bab3f7ce8e1408688eb3f974d98b4f19da47d07b61c3c2c3b"
+    },
+    {
+      "name": "welcome-restore-branches-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/welcome-restore-branches-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 8.786,
+      "log": ".cache/restart-20261122/altar-familiar-retained-welcome-restore-branches-input.log",
+      "sha256": "d33eb23c76cee2f420382dc57d4d9f4f18898ceb65f5c81d89a6d4020b0f1304"
+    },
+    {
+      "name": "restore-phase-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-phase-input-gate.mjs",
+        "tools/gen-sessions/generated/restore-current-fixed-floor.session.json",
+        "tools/gen-sessions/generated/restore-current-first-revert.session.json",
+        "tools/gen-sessions/generated/restore-current-held-control.session.json",
+        "tools/gen-sessions/generated/restore-air-clouds.session.json"
+      ],
+      "exit": 0,
+      "seconds": 1.874,
+      "log": ".cache/restart-20261122/altar-familiar-retained-restore-phase-input.log",
+      "sha256": "f1b70a862847629de22deef79b5a73a368ef635a0058f5d142333708d91d82bf"
+    }
+  ],
+  "preexistingRetainedFailure": {
+    "baselineRuntimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+    "candidateRuntimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+    "baselineLogSHA256": "23dce228093d2bb6afacf536702c4eadbfbe16c8af354f681bd1007dcb4d3b06",
+    "candidateLogSHA256": "52424ff8ea28d1598528ce0840d4c0e8397de7897f2e53e64c451d9c58547224",
+    "diagnosticEqualExceptRunnerPath": true,
+    "nativePrefix": "91 native replays,29 written bones,30 load boundaries,25 inventory observations,5 fruit observations PASS on both graphs",
+    "failure": "tools/bones-state-gate.mjs:214 expects interactive fruit warning in game.rc.errors; actual[] on both graphs",
+    "sourceAttribution": [
+      "C optfn_fruit options.c1706-1766 fruit-limit and naming clauses, complete config_erradd cfgfiles.c1544-1593, and complete JS set_fruit_name/options.js99-119 and config_erradd/options.js939-955",
+      "No active parse context means config_error_add emits pline and wait_synch. It does not append the completed startup configuration result.",
+      "The fixture invokes set_fruit_name directly after real game startup. Its RC-errors expectation is stale. No runtime, assertion or producer was changed."
+    ],
+    "status": "Preexisting synthetic test limitation, not a new-runtime regression; complete required corpus and timeout gates remain pending."
+  },
+  "originalBonesStateGateSHA256": "a2257b00a04ede7db4a223a7cb4bf96f1291d14c814085d97abbbac1f7fdc6ed",
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/altar-drop-conduct.session.json",
+      "tools/gen-sessions/generated/familiar-level-message.session.json",
+      "tools/gen-sessions/generated/shop-chat-quote-variants.session.json"
+    ],
+    "exit": 0,
+    "seconds": 32.042,
+    "targets": 47,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/altar-familiar-public47-strict.log",
+    "sha256": "07eaa04722bebc4d6cd99d15f89d29eb68c3c47523305f2ab6ec3fe0552a0e58"
+  },
+  "scopeImportAudit": [],
+  "full": {
+    "verifiedAt": "2026-11-26T18:26:31.656812+00:00",
+    "sessions": 941,
+    "passed": 941,
+    "failures": [],
+    "totals": {
+      "screens": 942532,
+      "cursors": 942532,
+      "rngCalls": 20623817,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 941,
+    "allFilesFixed": 1232,
+    "allFilesSHA256": "48e76b020a4f274718225220c343b6aecc3769cb9b0eca168b8998d4170851c6",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T18:15:51.018542+00:00",
+      "workers": 2,
+      "pid": 3550288,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.16748046875,
+        1.10693359375,
+        1.57275390625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "48e76b020a4f274718225220c343b6aecc3769cb9b0eca168b8998d4170851c6"
+    },
+    "logs": {
+      "shard-0.log": "677f81a9f33beb709d0121fa20c24afacc952d5283f8c884d8468851c01fd538",
+      "shard-1.log": "c5762e0cca103fda8be8a297e93de19cbb49193158d121eda4e310cfab6580fc"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "fc772d09631222002d7fbdb4af1739c098f97193d16daa62173d061889aa476f",
+  "limits": [
+    "Full corpus parity is not serialized terminal-byte or whole-port completeness proof.",
+    "One preexisting synthetic bones-state fruit-warning assertion fails identically on published baseline and candidate, after91 native replays pass. Original test remains unchanged.",
+    "Hallucinated familiar text, formatted blind feedback and stale-cache behavior remain unobserved; helper table is a source port.",
+    "Altar monster-turn, alternate object naming and remote-impact variants remain unobserved.",
+    "Quote compiled argument order applies to this pinned binary and call; container and coin variants remain open.",
+    "No leaderboard change is attributed to this checkpoint."
+  ]
+}

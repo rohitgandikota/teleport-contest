@@ -1,0 +1,83 @@
+{
+  "name": "shop-quote-variants",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "social.shops-billing"
+  ],
+  "branches": [
+    "shop-quote-variants.hallucinated-single",
+    "shop-quote-variants.sober-single-control",
+    "shop-quote-variants.priced-stack-control",
+    "shop-quote-variants.free-stack-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "shop-quote-variants.hallucinated-single",
+      "segment": 0,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "\"A pick-axe, price 67 "
+      ]
+    },
+    {
+      "branch": "shop-quote-variants.sober-single-control",
+      "segment": 1,
+      "screenIncludes": [
+        "Yecch!  This tastes rotten.",
+        "\"A pick-axe, price 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-quote-variants.priced-stack-control",
+      "segment": 2,
+      "screenIncludes": [
+        "Sell them?",
+        "Fine goods for sale:",
+        "2 apples, 9 zorkmids each",
+        "a pick-axe, 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-quote-variants.free-stack-control",
+      "segment": 3,
+      "screenIncludes": [
+        "Sell them?",
+        "Fine goods for sale:",
+        "2 apples, no charge",
+        "a pick-axe, 67 zorkmids"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hallucinated-single",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017cursed potion of hallucination\r  \u001b\u001bqo    \u001b\u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "sober-single-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017cursed potion of fruit juice\r  \u001b\u001bqo    \u001b\u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "priced-stack-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo y   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "free-stack-control",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u00172 uncursed apples\r  \u001b\u001bdo n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/shop-chat-quote-variants-parent-review/baseline-native.mjs"
+  ],
+  "exit": 0,
+  "seconds": 1.097,
+  "logSHA256": "d553e30aae92584dd48eb718e3b0f17ff9acac08040a2895cf428ad6433cae8d"
+}

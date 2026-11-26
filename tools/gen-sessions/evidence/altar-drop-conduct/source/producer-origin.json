@@ -1,0 +1,10 @@
+{
+  "path": "tools/gen-sessions/recipes/altar-glyph-preservation.json",
+  "sha256": "4c7e010f58a623895cfab793074d472514df63a1fe18479fa43c84f80d243734",
+  "reusedFields": [
+    "seed",
+    "datetime",
+    "nethackrc"
+  ],
+  "newInputsLockedBeforeRun": true
+}

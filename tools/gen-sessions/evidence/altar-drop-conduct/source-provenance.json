@@ -1,0 +1,32 @@
+{
+  "sourceFilesSHA256": "74f2b4b1b294ed62dbef7a0123f99dcb4aa87bc6f185d017543678f25739c85a",
+  "sourceFilePublicPaths": {
+    "SOURCE-REVIEW.md": "tools/gen-sessions/evidence/altar-drop-conduct/source/SOURCE-REVIEW.md",
+    "baseline-command.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/baseline-command.json",
+    "baseline-observation.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/baseline-observation.json",
+    "baseline-runtime.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/baseline-runtime.json",
+    "baseline.log": "tools/gen-sessions/evidence/altar-drop-conduct/source/baseline.log",
+    "input-lock.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/input-lock.json",
+    "negative-hashes.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/negative-hashes.json",
+    "predictions.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/predictions.json",
+    "probe.mjs": "tools/gen-sessions/evidence/altar-drop-conduct/source/probe.mjs",
+    "producer-origin.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/producer-origin.json",
+    "recipe.json": "tools/gen-sessions/recipes/altar-drop-conduct.json",
+    "source-pins.json": "tools/gen-sessions/evidence/altar-drop-conduct/source/source-pins.json"
+  },
+  "candidateSealSHA256": "bbb7d3f12554f6c51bfb52036e08c667ea2282de2f0904bb07fed59f2a91b45e",
+  "candidateManifestSHA256": "895d55044248e5b6998f6adc315edbee501c1f6eef0edf7dcb6299a40552dba5",
+  "candidateMembers": 316,
+  "candidateRuntimeSHA256": "49c56f3a27e9fa6edab7160bd372551d26721bba2444d14d636f77421da7eb19",
+  "sourceBaselineRuntimeSHA256": "50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6",
+  "scope": "do.js only, first altar-drop LL_CONDUCT event before knowledge update, module-scope doname",
+  "historicalCBuildPins": "Provenance only; no C binary, recorder or cache path is required by the portable gate.",
+  "unobserved": [
+    "monster-turn drops",
+    "alternate item naming",
+    "hallucination",
+    "remote impacts and container/horn variants",
+    "huge counters",
+    "external logfile output and general chronicle filtering"
+  ]
+}

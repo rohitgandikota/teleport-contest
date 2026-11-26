@@ -1,0 +1,9 @@
+# Altar drop conduct evidence
+
+The maintained ordinary gate runs all six original keyboard inputs on the installed runtime. Its original42 checks use fresh passive observations, then plain and deferred runs of the same inputs. It verifies first-only category0x20/turn1 conduct logging and chronicle visibility, retaining all three complete negative rows and15 output hashes. Saved candidate states are expected evidence only; they never replace the current observer.
+
+Before game imports, require the exact source map and its12 tracked files, original input lock/probe, unchanged recipe, parent recording receipt and exact C5 raw, all five input fields/presence/every key, original root metadata, recording integrity and six primary C assertions. Historical C/source paths, runtime maps and build pins are provenance only. No cache directory, C source tree, native binary or recorder is required after installation.
+
+Original baseline ordinary36/42 and native3/6 failures remain. Candidate proof is42/42 and native6/6,290 boundaries/18301 calls/0 frames. The public gate performs fresh JS ordinary checks; native comparison is inherited proof, not repeated or relabeled. Its report omits the isolated candidate runtime map hash so it can run on later composed runtimes. All original row/check/state/output bodies remain unchanged.
+
+Default is read-only, with an optional exclusive-new compact report path. No selectors, skipped cases or runtime switching. Coverage additions are six branch rows plus the original source recipe label src/do.c:doaltarobj. The label describes this scoped family, not complete owner coverage. Monster-turn drops, alternate item naming, hallucination, remote impacts, horn/container variants, huge counters and external logfile/general chronicle filtering remain unobserved or inherited limits.

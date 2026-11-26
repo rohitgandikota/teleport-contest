@@ -5075,6 +5075,137 @@
       "cFile": "src/sounds.c",
       "cFunction": "dochat",
       "description": "A worn blindfold excludes the stock quote and preserves the cancellable direction prompt."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.strangulation-save",
+      "cFile": "src/do.c",
+      "cFunction": "goto_level",
+      "description": "Real strangulation death creates retained same-name bones."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.load-strangulation-bones",
+      "cFile": "src/do.c",
+      "cFunction": "familiar_level_msg",
+      "description": "Original sober same-name bones load remains unchanged."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.hallucinating-arrival",
+      "cFile": "src/do.c",
+      "cFunction": "familiar_level_msg",
+      "description": "Actual hallucination is active when loading same-name bones."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.blind-sober-arrival",
+      "cFile": "src/do.c",
+      "cFunction": "familiar_level_msg",
+      "description": "A worn blindfold is active on a sober same-name bones arrival."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.blind-hallucinating-arrival",
+      "cFile": "src/do.c",
+      "cFunction": "familiar_level_msg",
+      "description": "Blindness and hallucination are active together on bones arrival."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.sober-bones-return",
+      "cFile": "src/do.c",
+      "cFunction": "goto_level",
+      "description": "A saved-level revisit consumes no additional familiar-message draw."
+    },
+    {
+      "group": "Familiar bones arrival",
+      "id": "familiar-level-message.declined-bones-negative",
+      "cFile": "src/do.c",
+      "cFunction": "goto_level",
+      "description": "Declining bones leaves no matching cemetery or familiar-message draw."
+    },
+    {
+      "group": "Shop quote variants",
+      "id": "shop-quote-variants.hallucinated-single",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Real cursed hallucination quaff followed by one priced single-stock quote. The recorded binary at this call uses two currency draws before embellishment; this is not a general C argument-order claim."
+    },
+    {
+      "group": "Shop quote variants",
+      "id": "shop-quote-variants.sober-single-control",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Matched cursed fruit-juice quaff leaves the hero sober; one priced single-stock quote names zorkmids, consumes one turn and calls embellishment."
+    },
+    {
+      "group": "Shop quote variants",
+      "id": "shop-quote-variants.priced-stack-control",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Accept sale of two real apples beside natural stock; the waiting menu quotes apples per unit and the pick-axe separately before the chat turn."
+    },
+    {
+      "group": "Shop quote variants",
+      "id": "shop-quote-variants.free-stack-control",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Refuse sale of two real apples beside natural stock; the waiting menu marks apples no charge and still prices the pick-axe before the chat turn."
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.first-apple",
+      "description": "Original C-confirmed first-apple keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.first-blessed-apple",
+      "description": "Original C-confirmed first-blessed-apple keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.second-drop-no-extra-log",
+      "description": "Original C-confirmed second-drop-no-extra-log keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.coin-negative",
+      "description": "Original C-confirmed coin-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.blind-negative",
+      "description": "Original C-confirmed blind-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Altar conduct",
+      "id": "altar-drop-conduct.floor-negative",
+      "description": "Original C-confirmed floor-negative keyboard case, including conduct event/chronicle and observed/plain/deferred controls.",
+      "minimumSessions": 1,
+      "normalModeRequired": false,
+      "cFile": "src/do.c",
+      "cFunction": "doaltarobj"
     }
   ]
 }

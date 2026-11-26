@@ -1,0 +1,39 @@
+{
+  "evidence": "Fresh fixed-baseline JS negative controls; all five streams equal plain/deferred. No candidate/native comparison yet.",
+  "indices": [
+    0,
+    1,
+    3,
+    6
+  ],
+  "hashes": {
+    "strangulation-save": {
+      "screens": "4b242d5c2fcd47862c045804bd64361e1210fefc690da96618e8e0a196f97266",
+      "cursors": "a4b9c5706d3c0095f463e93165b479f0a09b54aade0892f693cd6cc81730fc36",
+      "calls": "416d3228a17a7abda10643061156f9b792d933945408c8a55373e1f3c52449c8",
+      "slices": "de017ac3f99a3013c5d4382ca915db4c9799799f6d1b9e4a51eed91187e2a759",
+      "frames": "431e926e4872a0d723010e64ef8caf7fe211b057a7af043ee28ddaed1790184f"
+    },
+    "load-strangulation-bones": {
+      "screens": "d230dd768268cb022029b727925d0634558cb7fe6aa289d487a225fc2c0a7859",
+      "cursors": "6e87c2205a48cc1a9530102b3d5bb533e583a8bea9b025be7ff70c113d26b349",
+      "calls": "bf0eac8f93860f32c204061c7414e4b6fdfac170ebc397f1ea24f2b7bd1890d9",
+      "slices": "3150287d095b7377903d62f195c74714fd782f05e767b149755a7fcb9ff59637",
+      "frames": "cf9b6a0ec504cd5da53d01a675a2441052f08ddd144fd048ef12806b086281c7"
+    },
+    "blind-sober-arrival": {
+      "screens": "d92f91f0c40eb0649e862ea5ef1b4aa6714069f24c04ceb1ae2f6cb5aaac376e",
+      "cursors": "f27225b21aa17de3330fd2a452df43d8e6a3bddc05a76fd471e2ba78e5721897",
+      "calls": "76ca340af30a99a78c8cf4a0515f0f503c7a282d33d4b861cc0ca1a00214453e",
+      "slices": "383a4c54a741c8de83ed5772dbb09ac7fcc6af5f251dc70c530759ef263b3e03",
+      "frames": "7e7595b5f3b1d5a01957ebf31a3d0ed1ee59391335c1d619f24ecc1279639f7d"
+    },
+    "declined-bones-negative": {
+      "screens": "96ad708242b26268d091cde144de2f341fe66409daeec1cb192ade60f41fed5d",
+      "cursors": "da81f57f261a67ccf6d72f167fcf60701f21604b54e68f276c7674da887543ca",
+      "calls": "a5cb1ae47f34d05558c755c22f0dd773572ee4d678eebe45e1bcd84940559071",
+      "slices": "5c2e8cf0cd0ab8eb8e6b1712b81b2c4b44c9696e7c2b690c0eed24ce31a2b68b",
+      "frames": "c75c4f9868e2b0097c0c4c8d938852d9540e4225a683fb1d35b1c0ea887e6fe2"
+    }
+  }
+}

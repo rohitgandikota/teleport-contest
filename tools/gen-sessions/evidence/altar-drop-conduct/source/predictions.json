@@ -1,0 +1,87 @@
+[
+  {
+    "name": "first-apple",
+    "beforeDrop": 36,
+    "afterDrop": 38,
+    "types": [
+      "APPLE"
+    ],
+    "gnostic": 1,
+    "logs": 1,
+    "blind": false,
+    "altar": true,
+    "turns": 1,
+    "positive": true
+  },
+  {
+    "name": "first-blessed-apple",
+    "beforeDrop": 35,
+    "afterDrop": 37,
+    "types": [
+      "APPLE"
+    ],
+    "gnostic": 1,
+    "logs": 1,
+    "blind": false,
+    "altar": true,
+    "turns": 1,
+    "positive": true
+  },
+  {
+    "name": "second-drop-no-extra-log",
+    "beforeDrop": 53,
+    "afterDrop": 59,
+    "types": [
+      "APPLE",
+      "PEAR"
+    ],
+    "gnostic": 2,
+    "logs": 1,
+    "blind": false,
+    "altar": true,
+    "turns": 2,
+    "positive": true
+  },
+  {
+    "name": "coin-negative",
+    "beforeDrop": 36,
+    "afterDrop": 38,
+    "types": [
+      "GOLD_PIECE"
+    ],
+    "gnostic": 0,
+    "logs": 0,
+    "blind": false,
+    "altar": true,
+    "turns": 1,
+    "positive": false
+  },
+  {
+    "name": "blind-negative",
+    "beforeDrop": 62,
+    "afterDrop": 64,
+    "types": [
+      "APPLE"
+    ],
+    "gnostic": 0,
+    "logs": 0,
+    "blind": true,
+    "altar": true,
+    "turns": 1,
+    "positive": false
+  },
+  {
+    "name": "floor-negative",
+    "beforeDrop": 28,
+    "afterDrop": 30,
+    "types": [
+      "APPLE"
+    ],
+    "gnostic": 0,
+    "logs": 0,
+    "blind": false,
+    "altar": false,
+    "turns": 1,
+    "positive": false
+  }
+]

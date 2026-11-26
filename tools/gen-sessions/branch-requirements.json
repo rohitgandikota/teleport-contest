@@ -4587,6 +4587,11 @@
     {"group":"level-change-trap-reset","id":"level-change-trap.interrupted-trap-cancelled-level-negative","cFile":"src/do.c","cFunction":"goto_level","description":"Cancelled level choice preserves the pending trap attempt."},
     {"group":"level-change-trap-reset","id":"level-change-trap.interrupted-trap-same-level-negative","cFile":"src/do.c","cFunction":"goto_level","description":"Same-level keyboard choice preserves the pending trap attempt; direct goto guard is constructed coverage."},
     {"group":"level-change-trap-reset","id":"level-change-trap.interrupted-trap-resume-negative","cFile":"src/do.c","cFunction":"goto_level","description":"Resuming without departure preserves the pending trap attempt."},
-    {"group":"level-change-trap-reset","id":"level-change-trap.no-trap-level-roundtrip-negative","cFile":"src/do.c","cFunction":"goto_level","description":"Level roundtrip with no trap context remains unchanged."}
+    {"group":"level-change-trap-reset","id":"level-change-trap.no-trap-level-roundtrip-negative","cFile":"src/do.c","cFunction":"goto_level","description":"Level roundtrip with no trap context remains unchanged."},
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.default-diagnostic-mask-control","cFile":"src/monmove.c","cFunction":"postmov","description":"Normal disappearance acknowledgement is caused by the awaited subsequent redraw diagnostic."},
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.hidden","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Hidden disappearance emits no extra acknowledgement; the diagnostic follows immediately."},
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.explicit-stop-once","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Stop message policy acknowledges disappearance once, then the diagnostic follows."},
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.hide-before-exit-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Before-exit hide prefix remains unchanged and does not reach cleanup."},
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.stop-before-exit-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Before-exit stop prefix remains unchanged and does not reach cleanup."}
   ]
 }

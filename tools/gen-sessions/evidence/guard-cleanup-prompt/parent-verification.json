@@ -1,0 +1,207 @@
+{
+  "baselineCommit": "aa9ecbbdc925e521a523a6bd7975a9a35a3cc146",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/monmove.js",
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "f6f0c2e511b3bbc22f79b107a820f27ebea4f1cc47714421516621020900fe5f",
+  "sourceSeal": {
+    "members": 328,
+    "sha256": "26d46a8ecd86824a064924cdbdc96310f2264e2614058aa8a39bc65e0c89bcdc"
+  },
+  "prerequisiteSeal": {
+    "members": 325,
+    "sha256": "24725c254c53bf6ebdcc0eb6219a77750b4411960de66b781f57c258f8b41c82"
+  },
+  "promotionSeal": {
+    "members": 56,
+    "sha256": "b3d231f26d53525a60cb804471b25d927abdd915913787faab77dd2c3f70871a"
+  },
+  "sourceControls": {
+    "ordinary": "40/40",
+    "constructedHelpers": "17/17",
+    "promptPolicy": "5/5 versus 3/5"
+  },
+  "native": {
+    "verifiedAt": "2026-11-26T02:09:37.570241+00:00",
+    "native": {
+      "original": 2,
+      "await": 3,
+      "cleanup": 5,
+      "composed": 5,
+      "total": 5,
+      "boundaries": 1009,
+      "calls": 32501,
+      "frames": 0
+    },
+    "negativeCompleteReportsUnchanged": 2,
+    "negativeOutputHashesUnchanged": 10,
+    "normalCompleteReportUnchangedAfterCleanup": true,
+    "allCallsAndFramesUnchangedAfterCleanup": true,
+    "rawSHA256": "fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218",
+    "parentChecksSHA256": "ca92e7a643ebbc5ee67917390a1f899bb06fc1211b9b17ec267ac09ec8278eb5",
+    "branchAndIntegrityChecksSHA256": "8578347588abcfa1a23784ab3e76e5fde37bea4f49b033b59baef94e2f73517d",
+    "sourceCandidateAndComposedReportsIdentical": true,
+    "composedRuntimeSHA256": "f6f0c2e511b3bbc22f79b107a820f27ebea4f1cc47714421516621020900fe5f"
+  },
+  "portable": {
+    "payloadFiles": 23,
+    "requirements": 5,
+    "preflightRejections": 12,
+    "validMetadataControls": 2,
+    "assertionSitesPreserved": 75,
+    "reports": {
+      "tools/guard-cleanup-prompt-state-gate.mjs": "b2121069ba9800bce6b167d8ea9096cfab930ec84fec38cfbf7b0d6412e9f950",
+      "tools/guard-cleanup-prompt-input-gate.mjs": "23684bedd1f4cd72dace4538d2fe42c0d23bfb9ce3cc71d37c8136d2e3a48c18"
+    }
+  },
+  "retained": {
+    "initialPassed": 32,
+    "total": 35,
+    "passedAfterCorrections": 35,
+    "runtimeChangedByCorrections": false,
+    "initialFailuresRetained": [
+      "vault-corridor-destination-deferred-gate",
+      "vault-exit-corridor-state-gate",
+      "vault-exit-input-gate"
+    ],
+    "testCorrection": {
+      "runtimeChanged": false,
+      "path": "tools/vault-exit-corridor-state-gate.mjs",
+      "originalSHA256": "9e3e661351f19bf1c9bde5545e5b0add819a79672f973b32172b350349cde30f",
+      "correctedSHA256": "8d9796dc0721d12ed5e1c09bf19d9d309de215089d78181d5279057aa31b454b",
+      "assertionsBefore": 55,
+      "assertionsAfter": 55,
+      "removedAssertions": 0,
+      "baselineOriginalPassed": true,
+      "candidateOriginal": "7/8: expected unconditional cleanup prompt absent",
+      "correction": "Keep all assertions; trigger C-owned overflow after gd_move returns, using the real pline owner.",
+      "checks": [
+        {
+          "kind": "baseline",
+          "label": "original",
+          "command": [
+            "node",
+            "--preserve-symlinks",
+            "--preserve-symlinks-main",
+            "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-cleanup-policy-parent-retained-review/baseline/tools/original.mjs"
+          ],
+          "exit": 0,
+          "seconds": 2.05,
+          "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/baseline-original.log",
+          "sha256": "39cbeff9eeedb7a9ac2ab821b3a0f108f5ad19d485958bff43ba302510eba2f5"
+        },
+        {
+          "kind": "baseline",
+          "label": "corrected",
+          "command": [
+            "node",
+            "--preserve-symlinks",
+            "--preserve-symlinks-main",
+            "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-cleanup-policy-parent-retained-review/baseline/tools/corrected.mjs"
+          ],
+          "exit": 0,
+          "seconds": 2.02,
+          "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/baseline-corrected.log",
+          "sha256": "ce9d4e2f493b6ebce24e9b0659ef9a0bed82b367cb4565a55fcbdb77da3db0d6"
+        },
+        {
+          "kind": "candidate",
+          "label": "corrected",
+          "command": [
+            "node",
+            "--preserve-symlinks",
+            "--preserve-symlinks-main",
+            "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-cleanup-policy-parent-retained-review/candidate/tools/corrected.mjs"
+          ],
+          "exit": 0,
+          "seconds": 2.04,
+          "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/candidate-corrected.log",
+          "sha256": "5aefebc4533f4c047349693e634fad25042bf5bd2e8b15547f0753386bfda9e8"
+        }
+      ]
+    },
+    "mainCorrectedTest": {
+      "command": [
+        "node",
+        "tools/vault-exit-corridor-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.31,
+      "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/main-corrected-test.log",
+      "sha256": "c50aa25bdb870af8de6e79a0c523812c354b56853caf590f382e2aacd3bc58ab"
+    },
+    "invocationCorrections": {
+      "initialFailures": "Both invocations omitted their required fixture argument; failed before game checks. Original logs retained.",
+      "runtimeChanged": false,
+      "testChanged": false,
+      "checks": [
+        {
+          "name": "vault-corridor-destination-deferred-gate",
+          "command": [
+            "node",
+            "--max-old-space-size=512",
+            "tools/vault-corridor-destination-deferred-gate.mjs",
+            "tools/gen-sessions/generated/vault-corridor-destination.session.json",
+            "tools/gen-sessions/generated/guard-cleanup-prompt.session.json"
+          ],
+          "exit": 0,
+          "seconds": 3.09,
+          "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/vault-corridor-destination-deferred-gate-correct-invocation.log",
+          "sha256": "acc7916f62c460c3a0410ef472e84f74e82152e3d1040e0d5007ef2553f4cecb"
+        },
+        {
+          "name": "vault-exit-input-gate",
+          "command": [
+            "node",
+            "--max-old-space-size=512",
+            "tools/vault-exit-input-gate.mjs",
+            "tools/gen-sessions/generated/vault-exit-corridor.session.json"
+          ],
+          "exit": 0,
+          "seconds": 1.19,
+          "log": ".cache/restart-20261122/guard-cleanup-policy-parent-retained-review/vault-exit-input-gate-correct-invocation.log",
+          "sha256": "a87e34103817f90b8418cb1fc1120aea1e27082ea1e95b8ac7287ae8b24ee1b8"
+        }
+      ]
+    },
+    "testedRuntimeSHA256": "f6f0c2e511b3bbc22f79b107a820f27ebea4f1cc47714421516621020900fe5f"
+  },
+  "selectedPublic": {
+    "passed": 80,
+    "screens": 37951,
+    "cursors": 37951,
+    "rngCalls": 1656853,
+    "animFrames": 1588
+  },
+  "strict8s": {
+    "passed": 80,
+    "total": 80
+  },
+  "full912": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-cleanup-policy-full912-js-20261125",
+    "passed": 912,
+    "sessions": 912,
+    "totals": {
+      "screens": 927087,
+      "cursors": 927087,
+      "rngCalls": 20044497,
+      "animFrames": 33131
+    },
+    "allFilesFixed": 1203,
+    "allFilesSHA256": "a3ec8393090cef7ae0afbe2411900087232e3bfd0fd5a4ea65fa8e4b26d2cc21",
+    "verificationSHA256": "bc3d806261832412de92bb7b23e953d41b39db4da0afdc9ab025d3b6d236e925",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "The five ordinary cases establish completed-escort cleanup; other vault movement and cleanup routes remain open.",
+    "Early hallucinated naming, restored-entry confusion and broader wall/corridor restoration are not repaired here.",
+    "Constructed helpers do not establish ordinary reach for every invalid-coordinate caller.",
+    "Full styled cells, cursor, ordered RNG and frames are checked. Literal serialized bytes and whole-port completeness are not established.",
+    "The latest observed leaderboard row is rank 7 with 812 unmatched screens and predates this checkpoint; local parity does not establish held-out improvement."
+  ]
+}

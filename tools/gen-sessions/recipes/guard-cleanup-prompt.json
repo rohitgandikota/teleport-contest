@@ -1,0 +1,147 @@
+{
+  "name": "guard-cleanup-prompt",
+  "description": "Source-grounded ordinary proposal: guard cleanup must honor message-type policy without an extra pause. Existing C redraw diagnostics remain required. Original C recording pending parent.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.messages"
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "guard-cleanup-normal",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^Suddenly, the guard disappears[.]$\"\n",
+      "name": "guard-cleanup-hide",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^Suddenly, the guard disappears[.]$\"\n",
+      "name": "guard-cleanup-stop",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^Suddenly, the guard disappears[.]$\"\n",
+      "name": "guard-cleanup-hide-before-exit-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^Suddenly, the guard disappears[.]$\"\n",
+      "name": "guard-cleanup-stop-before-exit-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll"
+    }
+  ],
+  "branches": [
+    "vault.cleanup-prompt.default-diagnostic-mask-control",
+    "vault.cleanup-prompt.hidden",
+    "vault.cleanup-prompt.explicit-stop-once",
+    "vault.cleanup-prompt.hide-before-exit-negative",
+    "vault.cleanup-prompt.stop-before-exit-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.cleanup-prompt.default-diagnostic-mask-control",
+      "segment": 0,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "Suddenly, the guard disappears.",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "source": "vault.c:836-867; pline.c:244-289; topl.c:251-312; monmove.c:1658. Source prediction, new native evidence pending.",
+      "screenCells": [
+        {
+          "step": 188,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "vault.cleanup-prompt.hidden",
+      "segment": 1,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "source": "vault.c:836-867; pline.c:244-289; topl.c:251-312; monmove.c:1658. Source prediction, new native evidence pending.",
+      "screenExcludes": [
+        "Suddenly, the guard disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 188,
+          "x": 0,
+          "y": 0,
+          "equals": "n"
+        }
+      ]
+    },
+    {
+      "branch": "vault.cleanup-prompt.explicit-stop-once",
+      "segment": 2,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "Suddenly, the guard disappears.",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "source": "vault.c:836-867; pline.c:244-289; topl.c:251-312; monmove.c:1658. Source prediction, new native evidence pending.",
+      "screenCells": [
+        {
+          "step": 188,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 189,
+          "x": 0,
+          "y": 0,
+          "equals": "n"
+        }
+      ]
+    },
+    {
+      "branch": "vault.cleanup-prompt.hide-before-exit-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces."
+      ],
+      "source": "vault.c:836-867; pline.c:244-289; topl.c:251-312; monmove.c:1658. Source prediction, new native evidence pending.",
+      "screenExcludes": [
+        "Suddenly, the guard disappears.",
+        "newsym: attempting screen update for <0,0>"
+      ]
+    },
+    {
+      "branch": "vault.cleanup-prompt.stop-before-exit-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces."
+      ],
+      "source": "vault.c:836-867; pline.c:244-289; topl.c:251-312; monmove.c:1658. Source prediction, new native evidence pending.",
+      "screenExcludes": [
+        "Suddenly, the guard disappears.",
+        "newsym: attempting screen update for <0,0>"
+      ]
+    }
+  ]
+}

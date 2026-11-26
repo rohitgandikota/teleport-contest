@@ -1,0 +1,2822 @@
+{
+  "classification": "JS ordinary keyboard observation, no C comparison or candidate",
+  "results": [
+    {
+      "name": "guard-cleanup-normal",
+      "keys": 210,
+      "error": null,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "4ae74fa76f1a2712441a2bd0dd3d15fd9bc6d5d9b742f89f9fa061beb3e2abaf",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "prefix187Hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "entry": {
+        "step": 181,
+        "turn": 40,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "\"Please drop that gold and follow me.\"",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 0,
+          "cury": 0,
+          "pending": "\"Please drop that gold and follow me.\"",
+          "previous": "\"Please drop that gold and follow me.\"",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            25,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 1,
+          "old": [
+            25,
+            5
+          ]
+        }
+      },
+      "cleanup": {
+        "step": 188,
+        "turn": 43,
+        "hero": [
+          26,
+          5
+        ],
+        "top": [
+          "Suddenly, the guard disappears.--More--",
+          ""
+        ],
+        "cursor": [
+          39,
+          0
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 39,
+          "cury": 0,
+          "pending": "Suddenly, the guard disappears.",
+          "previous": "Suddenly, the guard disappears.",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            0,
+            0
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 1,
+          "begin": 0,
+          "end": 3,
+          "old": [
+            0,
+            0
+          ]
+        }
+      },
+      "final": {
+        "step": 210,
+        "turn": 49,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "Unknown command ' '.",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 20,
+          "cury": 0,
+          "pending": "",
+          "previous": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": 1
+        },
+        "guard": null
+      },
+      "selected": [
+        {
+          "step": 185,
+          "turn": 41,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "You drop 500 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You drop 500 gold pieces.",
+            "previous": "You drop 500 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 186,
+          "turn": 42,
+          "hero": [
+            24,
+            5
+          ],
+          "top": [
+            "You see here 387 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            23,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You see here 387 gold pieces.",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              26,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 2,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            24,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              26,
+              5
+            ]
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Suddenly, the guard disappears.--More--",
+            ""
+          ],
+          "cursor": [
+            39,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 39,
+            "cury": 0,
+            "pending": "Suddenly, the guard disappears.",
+            "previous": "Suddenly, the guard disappears.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "newsym: attempting screen update for <0,0>--More--",
+            ""
+          ],
+          "cursor": [
+            50,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 50,
+            "cury": 0,
+            "pending": "newsym: attempting screen update for <0,0>",
+            "previous": "newsym: attempting screen update for <0,0>",
+            "impossible": 1,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Program in disorder!  (Saving and reloading may fix this problem.)--More--",
+            ""
+          ],
+          "cursor": [
+            74,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 74,
+            "cury": 0,
+            "pending": "Program in disorder!  (Saving and reloading may fix this problem.)",
+            "previous": "Program in disorder!  (Saving and reloading may fix this problem.)",
+            "impossible": 1,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Please report these messages to devteam@nethack.org.",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "Please report these messages to devteam@nethack.org.",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Something is written here in the dust.  You read: \"r|??\".--More--",
+            ""
+          ],
+          "cursor": [
+            65,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 65,
+            "cury": 0,
+            "pending": "Something is written here in the dust.  You read: \"r|??\".",
+            "previous": "You read: \"r|??\".",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 3,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "The corridor disappears.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "The corridor disappears.",
+            "previous": "The corridor disappears.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Unknown command ' '.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 20,
+            "cury": 0,
+            "pending": "",
+            "previous": "Unknown command ' '.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 196,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Where do you want to be teleported?  (For instructions type a '?')",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 66,
+            "cury": 0,
+            "pending": "Where do you want to be teleported?  (For instructions type a '?')",
+            "previous": "(For instructions type a '?')",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 197,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "stone",
+            ""
+          ],
+          "cursor": [
+            25,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 5,
+            "cury": 0,
+            "pending": "",
+            "previous": "stone",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 198,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "wall",
+            ""
+          ],
+          "cursor": [
+            24,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 4,
+            "cury": 0,
+            "pending": "",
+            "previous": "wall",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        }
+      ],
+      "allKeysConsumed": true,
+      "allBoundariesCaptured": true
+    },
+    {
+      "name": "guard-cleanup-hide",
+      "keys": 210,
+      "error": null,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "0390f9daf8e07aaa7ff293220bc18921167f0dfcccd6890bb962c644a210377d",
+        "cursors": "4c493a12edb2e83e1963f4cd466f0fbb10ac93bd448a6fa49cb640977299eff3",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "adfb1aa4ff2c0376c66286299b77d4b0b09336891f9703e3914b69d4ec3e7ecd",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "prefix187Hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "entry": {
+        "step": 181,
+        "turn": 40,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "\"Please drop that gold and follow me.\"",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 0,
+          "cury": 0,
+          "pending": "\"Please drop that gold and follow me.\"",
+          "previous": "\"Please drop that gold and follow me.\"",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            25,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 1,
+          "old": [
+            25,
+            5
+          ]
+        }
+      },
+      "cleanup": {
+        "step": 188,
+        "turn": 43,
+        "hero": [
+          26,
+          5
+        ],
+        "top": [
+          "--More--",
+          ""
+        ],
+        "cursor": [
+          8,
+          0
+        ],
+        "message": {
+          "toplin": 0,
+          "curx": 8,
+          "cury": 0,
+          "pending": "",
+          "previous": "You see here 387 gold pieces.",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            0,
+            0
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 1,
+          "begin": 0,
+          "end": 3,
+          "old": [
+            0,
+            0
+          ]
+        }
+      },
+      "final": {
+        "step": 210,
+        "turn": 49,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "Unknown command ' '.",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 20,
+          "cury": 0,
+          "pending": "",
+          "previous": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": 1
+        },
+        "guard": null
+      },
+      "selected": [
+        {
+          "step": 185,
+          "turn": 41,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "You drop 500 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You drop 500 gold pieces.",
+            "previous": "You drop 500 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 186,
+          "turn": 42,
+          "hero": [
+            24,
+            5
+          ],
+          "top": [
+            "You see here 387 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            23,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You see here 387 gold pieces.",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              26,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 2,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            24,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              26,
+              5
+            ]
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "--More--",
+            ""
+          ],
+          "cursor": [
+            8,
+            0
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 8,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "newsym: attempting screen update for <0,0>--More--",
+            ""
+          ],
+          "cursor": [
+            50,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 50,
+            "cury": 0,
+            "pending": "newsym: attempting screen update for <0,0>",
+            "previous": "newsym: attempting screen update for <0,0>",
+            "impossible": 1,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Program in disorder!  (Saving and reloading may fix this problem.)--More--",
+            ""
+          ],
+          "cursor": [
+            74,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 74,
+            "cury": 0,
+            "pending": "Program in disorder!  (Saving and reloading may fix this problem.)",
+            "previous": "Program in disorder!  (Saving and reloading may fix this problem.)",
+            "impossible": 1,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Please report these messages to devteam@nethack.org.",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "Please report these messages to devteam@nethack.org.",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Something is written here in the dust.  You read: \"r|??\".--More--",
+            ""
+          ],
+          "cursor": [
+            65,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 65,
+            "cury": 0,
+            "pending": "Something is written here in the dust.  You read: \"r|??\".",
+            "previous": "You read: \"r|??\".",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 3,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "The corridor disappears.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "The corridor disappears.",
+            "previous": "The corridor disappears.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Unknown command ' '.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 20,
+            "cury": 0,
+            "pending": "",
+            "previous": "Unknown command ' '.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 196,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Where do you want to be teleported?  (For instructions type a '?')",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 66,
+            "cury": 0,
+            "pending": "Where do you want to be teleported?  (For instructions type a '?')",
+            "previous": "(For instructions type a '?')",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 197,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "stone",
+            ""
+          ],
+          "cursor": [
+            25,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 5,
+            "cury": 0,
+            "pending": "",
+            "previous": "stone",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 198,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "wall",
+            ""
+          ],
+          "cursor": [
+            24,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 4,
+            "cury": 0,
+            "pending": "",
+            "previous": "wall",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        }
+      ],
+      "allKeysConsumed": true,
+      "allBoundariesCaptured": true
+    },
+    {
+      "name": "guard-cleanup-stop",
+      "keys": 210,
+      "error": null,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "db69f986f3b58a9f55e87bf208bf2df215d7344f7ff20dea0596a8ed833154dd",
+        "cursors": "864adf1aa0bf172817a5c6771360226edfb9c5946d52205081ac6475db07e11e",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "fd7957519c3bcaf4bff185c56836eee40ce16ae7cba35b187d662927959981ca",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "prefix187Hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "entry": {
+        "step": 181,
+        "turn": 40,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "\"Please drop that gold and follow me.\"",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 0,
+          "cury": 0,
+          "pending": "\"Please drop that gold and follow me.\"",
+          "previous": "\"Please drop that gold and follow me.\"",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            25,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 1,
+          "old": [
+            25,
+            5
+          ]
+        }
+      },
+      "cleanup": {
+        "step": 188,
+        "turn": 43,
+        "hero": [
+          26,
+          5
+        ],
+        "top": [
+          "Suddenly, the guard disappears.--More--",
+          ""
+        ],
+        "cursor": [
+          39,
+          0
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 39,
+          "cury": 0,
+          "pending": "Suddenly, the guard disappears.",
+          "previous": "Suddenly, the guard disappears.",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            0,
+            0
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 1,
+          "begin": 0,
+          "end": 3,
+          "old": [
+            0,
+            0
+          ]
+        }
+      },
+      "final": {
+        "step": 210,
+        "turn": 49,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "Unknown command ' '.",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 20,
+          "cury": 0,
+          "pending": "",
+          "previous": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": 1
+        },
+        "guard": null
+      },
+      "selected": [
+        {
+          "step": 185,
+          "turn": 41,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "You drop 500 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You drop 500 gold pieces.",
+            "previous": "You drop 500 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 186,
+          "turn": 42,
+          "hero": [
+            24,
+            5
+          ],
+          "top": [
+            "You see here 387 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            23,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You see here 387 gold pieces.",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              26,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 2,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            24,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              26,
+              5
+            ]
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Suddenly, the guard disappears.--More--",
+            ""
+          ],
+          "cursor": [
+            39,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 39,
+            "cury": 0,
+            "pending": "Suddenly, the guard disappears.",
+            "previous": "Suddenly, the guard disappears.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "--More--",
+            ""
+          ],
+          "cursor": [
+            8,
+            0
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 8,
+            "cury": 0,
+            "pending": "",
+            "previous": "Suddenly, the guard disappears.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "newsym: attempting screen update for <0,0>--More--",
+            ""
+          ],
+          "cursor": [
+            50,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 50,
+            "cury": 0,
+            "pending": "newsym: attempting screen update for <0,0>",
+            "previous": "newsym: attempting screen update for <0,0>",
+            "impossible": 1,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "Program in disorder!  (Saving and reloading may fix this problem.)",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            25,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "Please report these messages to devteam@nethack.org.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Something is written here in the dust.  You read: \"r|??\".--More--",
+            ""
+          ],
+          "cursor": [
+            65,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 65,
+            "cury": 0,
+            "pending": "Something is written here in the dust.  You read: \"r|??\".",
+            "previous": "You read: \"r|??\".",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 1,
+            "begin": 3,
+            "end": 3,
+            "old": [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "The corridor disappears.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "The corridor disappears.",
+            "previous": "The corridor disappears.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Unknown command ' '.",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 20,
+            "cury": 0,
+            "pending": "",
+            "previous": "Unknown command ' '.",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 196,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "Where do you want to be teleported?  (For instructions type a '?')",
+            ""
+          ],
+          "cursor": [
+            26,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 66,
+            "cury": 0,
+            "pending": "Where do you want to be teleported?  (For instructions type a '?')",
+            "previous": "(For instructions type a '?')",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 197,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "stone",
+            ""
+          ],
+          "cursor": [
+            25,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 5,
+            "cury": 0,
+            "pending": "",
+            "previous": "stone",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        },
+        {
+          "step": 198,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": [
+            "wall",
+            ""
+          ],
+          "cursor": [
+            24,
+            5
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 4,
+            "cury": 0,
+            "pending": "",
+            "previous": "wall",
+            "impossible": 0,
+            "diagnostics": 1
+          },
+          "guard": null
+        }
+      ],
+      "allKeysConsumed": true,
+      "allBoundariesCaptured": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative",
+      "keys": 187,
+      "error": null,
+      "boundaries": 188,
+      "calls": 6379,
+      "hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "prefix187Hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "entry": {
+        "step": 181,
+        "turn": 40,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "\"Please drop that gold and follow me.\"",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 0,
+          "cury": 0,
+          "pending": "\"Please drop that gold and follow me.\"",
+          "previous": "\"Please drop that gold and follow me.\"",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            25,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 1,
+          "old": [
+            25,
+            5
+          ]
+        }
+      },
+      "cleanup": null,
+      "final": {
+        "step": 187,
+        "turn": 43,
+        "hero": [
+          25,
+          5
+        ],
+        "top": [
+          "",
+          ""
+        ],
+        "cursor": [
+          24,
+          6
+        ],
+        "message": {
+          "toplin": 0,
+          "curx": 0,
+          "cury": 0,
+          "pending": "",
+          "previous": "You see here 387 gold pieces.",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            27,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 3,
+          "old": [
+            26,
+            5
+          ]
+        }
+      },
+      "selected": [
+        {
+          "step": 180,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "\"Most likely all your gold was stolen from this vault.\"--More--",
+            ""
+          ],
+          "cursor": [
+            63,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 63,
+            "cury": 0,
+            "pending": "\"Most likely all your gold was stolen from this vault.\"",
+            "previous": "\"Most likely all your gold was stolen from this vault.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 181,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "\"Please drop that gold and follow me.\"",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "\"Please drop that gold and follow me.\"",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 182,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 183,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 184,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "What do you want to drop? [$a-n or ?*]",
+            ""
+          ],
+          "cursor": [
+            39,
+            0
+          ],
+          "message": {
+            "toplin": 3,
+            "curx": 39,
+            "cury": 0,
+            "pending": "What do you want to drop? [$a-n or ?*] ",
+            "previous": "What do you want to drop? [$a-n or ?*] ",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 185,
+          "turn": 41,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "You drop 500 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You drop 500 gold pieces.",
+            "previous": "You drop 500 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 186,
+          "turn": 42,
+          "hero": [
+            24,
+            5
+          ],
+          "top": [
+            "You see here 387 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            23,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You see here 387 gold pieces.",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              26,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 2,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            24,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              26,
+              5
+            ]
+          }
+        }
+      ],
+      "allKeysConsumed": true,
+      "allBoundariesCaptured": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative",
+      "keys": 187,
+      "error": null,
+      "boundaries": 188,
+      "calls": 6379,
+      "hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "prefix187Hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "entry": {
+        "step": 181,
+        "turn": 40,
+        "hero": [
+          23,
+          5
+        ],
+        "top": [
+          "\"Please drop that gold and follow me.\"",
+          ""
+        ],
+        "cursor": [
+          22,
+          6
+        ],
+        "message": {
+          "toplin": 1,
+          "curx": 0,
+          "cury": 0,
+          "pending": "\"Please drop that gold and follow me.\"",
+          "previous": "\"Please drop that gold and follow me.\"",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            25,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 1,
+          "old": [
+            25,
+            5
+          ]
+        }
+      },
+      "cleanup": null,
+      "final": {
+        "step": 187,
+        "turn": 43,
+        "hero": [
+          25,
+          5
+        ],
+        "top": [
+          "",
+          ""
+        ],
+        "cursor": [
+          24,
+          6
+        ],
+        "message": {
+          "toplin": 0,
+          "curx": 0,
+          "cury": 0,
+          "pending": "",
+          "previous": "You see here 387 gold pieces.",
+          "impossible": 0,
+          "diagnostics": 0
+        },
+        "guard": {
+          "id": 122,
+          "xy": [
+            27,
+            5
+          ],
+          "hp": 47,
+          "isgd": 1,
+          "peaceful": 1,
+          "done": 0,
+          "begin": 0,
+          "end": 3,
+          "old": [
+            26,
+            5
+          ]
+        }
+      },
+      "selected": [
+        {
+          "step": 180,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "\"Most likely all your gold was stolen from this vault.\"--More--",
+            ""
+          ],
+          "cursor": [
+            63,
+            0
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 63,
+            "cury": 0,
+            "pending": "\"Most likely all your gold was stolen from this vault.\"",
+            "previous": "\"Most likely all your gold was stolen from this vault.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 181,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "\"Please drop that gold and follow me.\"",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "\"Please drop that gold and follow me.\"",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 182,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 183,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "\"Please drop that gold and follow me.\"",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 184,
+          "turn": 40,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "What do you want to drop? [$a-n or ?*]",
+            ""
+          ],
+          "cursor": [
+            39,
+            0
+          ],
+          "message": {
+            "toplin": 3,
+            "curx": 39,
+            "cury": 0,
+            "pending": "What do you want to drop? [$a-n or ?*] ",
+            "previous": "What do you want to drop? [$a-n or ?*] ",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 185,
+          "turn": 41,
+          "hero": [
+            23,
+            5
+          ],
+          "top": [
+            "You drop 500 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            22,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You drop 500 gold pieces.",
+            "previous": "You drop 500 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 1,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 186,
+          "turn": 42,
+          "hero": [
+            24,
+            5
+          ],
+          "top": [
+            "You see here 387 gold pieces.",
+            ""
+          ],
+          "cursor": [
+            23,
+            6
+          ],
+          "message": {
+            "toplin": 1,
+            "curx": 0,
+            "cury": 0,
+            "pending": "You see here 387 gold pieces.",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              26,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 2,
+            "old": [
+              25,
+              5
+            ]
+          }
+        },
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": [
+            "",
+            ""
+          ],
+          "cursor": [
+            24,
+            6
+          ],
+          "message": {
+            "toplin": 0,
+            "curx": 0,
+            "cury": 0,
+            "pending": "",
+            "previous": "You see here 387 gold pieces.",
+            "impossible": 0,
+            "diagnostics": 0
+          },
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "isgd": 1,
+            "peaceful": 1,
+            "done": 0,
+            "begin": 0,
+            "end": 3,
+            "old": [
+              26,
+              5
+            ]
+          }
+        }
+      ],
+      "allKeysConsumed": true,
+      "allBoundariesCaptured": true
+    }
+  ]
+}

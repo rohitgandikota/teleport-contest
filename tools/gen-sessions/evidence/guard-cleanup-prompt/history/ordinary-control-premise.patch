@@ -1,0 +1,30 @@
+--- ordinary-controls.mjs
++++ ordinary-controls-validated.mjs
+@@ -25,6 +25,7 @@
+         top: g.nhDisplay.grid[0].map(c => c.ch).join('').trimEnd(),
+         impossible: g.program_state.in_impossible || 0,
+         diagnostics: [...(g.impossible_log || [])],
++        logical: g._toplines, previous: g._prevmsg,
+         guard: mon ? {id: mon.m_id, xy: [mon.mx,mon.my], hp: mon.mhp,
+             peaceful: mon.mpeaceful, state: mon.mstate, done: egd.gddone,
+             end: egd.fcend, begin: egd.fcbeg} : null};
+@@ -98,8 +99,17 @@
+                 const diagnostic = tops.findIndex(s => s.startsWith('newsym: attempting screen update'));
+                 const disorder = tops.findIndex(s => s.startsWith('Program in disorder!'));
+                 const report = tops.findIndex(s => s.startsWith('Please report these messages'));
+-                if (positive) assert.ok(diagnostic >= 0 && disorder > diagnostic && report > disorder);
+-                else assert.deepEqual([diagnostic,disorder,report],[-1,-1,-1]);
++                if (positive) {
++                    assert.ok(diagnostic >= 0 && disorder > diagnostic);
++                    if (part.moves[run.states[diagnostic].step] === '\x1b') {
++                        // C topl.c257-308: the next footer is buffered under WIN_STOP.
++                        const finished = run.states.slice(diagnostic+1).find(s => !s.impossible);
++                        assert.ok(finished);
++                        assert.equal(finished.logical,'Please report these messages to devteam@nethack.org.');
++                        assert.equal(finished.previous,finished.logical);
++                        assert.equal(report,-1);
++                    } else assert.ok(report > disorder);
++                } else assert.deepEqual([diagnostic,disorder,report],[-1,-1,-1]);
+             }
+         });
+         check(results, `${part.name}: original prefix and negative hashes`, () => {

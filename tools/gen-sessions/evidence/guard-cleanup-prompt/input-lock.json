@@ -1,0 +1,154 @@
+{
+  "final": true,
+  "classification": "JS ordinary reach and source predictions; no new native recording/comparison or runtime candidate",
+  "recipe": "ordinary/guard-cleanup-prompt.json",
+  "recipeSHA256": "f9918a947a5cc009eb7985efb92042e78d8e896b41d1b05ecab072c839b652af",
+  "sourceProposalsSHA256": "340be103d5c2a319564a7c818e6e11cc4ae2081e2c1be0bf2de2623829bd76d6",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSerialization": "JSON.stringify-equivalent ASCII JSON, ordered field presence/value objects, no spaces",
+  "tupleSHA256": "fc19347a713fe57d054bdf5f295787929458d414713919cc32c9e2f6302fef72",
+  "cases": 5,
+  "keys": 1004,
+  "boundaries": 1009,
+  "tuples": [
+    {
+      "name": {
+        "present": true,
+        "value": "guard-cleanup-normal"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "guard-cleanup-hide"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^Suddenly, the guard disappears[.]$\"\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "guard-cleanup-stop"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^Suddenly, the guard disappears[.]$\"\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "guard-cleanup-hide-before-exit-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^Suddenly, the guard disappears[.]$\"\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "guard-cleanup-stop-before-exit-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^Suddenly, the guard disappears[.]$\"\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll"
+      }
+    }
+  ],
+  "negativeHashes": {
+    "guard-cleanup-hide-before-exit-negative": {
+      "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+      "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+      "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+      "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+      "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+    },
+    "guard-cleanup-stop-before-exit-negative": {
+      "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+      "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+      "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+      "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+      "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+    }
+  },
+  "existingFixture": {
+    "recipe": "views/vault-exit-recipe.json",
+    "recipeSHA256": "e0079b59fa7cbc429a927c7504d0f0b4e47de1507828de36eb515f293adfab3d",
+    "raw": "views/vault-exit-native.session.json",
+    "rawSHA256": "a29d82fd2f79ab9e3fcaa1153afeb2eeed3b2015cc5f746fff432745ef314579",
+    "segment": 1
+  }
+}

@@ -1,6 +1,85 @@
 # STATUS — live handoff board
 
-## 2026-11-25: species upper bound verified for publication
+## 2026-11-25: guard prompt correction verified for publication
+
+Latest official recheck at 21:12 EST returned a new feed (21:05 EST). Rank
+remains 7, but unmatched screens increased from 659 to 812 and held-out passes
+fell from 43/56 to 42/56; matched animations fell by 22. Public stays 44/44 and
+all totals are unchanged. The scored row is 20:32 EST, before the corpse,
+trap-reset and species pushes. The feed does not name the scored commit.
+Receipt: leaderboard-current-recheck-20261126-021240.json. A separate regression
+audit is examining the nineteen runtime commits between the prior scored row
+and that timestamp. Timestamp overlap is not causal attribution. Corpse naming
+source work is preserved while that audit takes priority. The audit has proved
+one code regression: 42655f63 removed the arrival newsym await while adding the
+engulfer branch. On the five locked guard inputs, ordinary controls pass 40/40
+before that commit, 31/40 afterward and at the interval end, then 40/40 with
+the await restored. All five output streams return to their prior hashes.
+The pending guard checkpoint already restores that await. This does not identify
+the hidden session or establish that it accounts for the 153 lost screens.
+
+Main has only the two guard runtime fixes beyond pushed aa9ecbbd:
+postmov awaits its existing arrival newsym, and gd_move_cleanup leaves
+acknowledgement to C's message policy. The latter removes its explicit more
+call and unused import. Source325 and cleanup328 remain sealed. Original23
+and all earlier failed probes are retained. The composed280 map is
+guard-cleanup-policy-parent-composed-runtime.json, SHA256
+`f6f0c2e511b3bbc22f79b107a820f27ebea4f1cc47714421516621020900fe5f`.
+
+Five original C cases pass versus two; the await alone passes three. Final
+candidate/composed reports are byte-identical: 1,009 styled boundaries/cursors,
+32,501 random calls and zero frames. Two complete negative reports and ten
+output hashes are unchanged. Normal output remains unchanged after cleanup.
+The original C recording is installed as guard-cleanup-prompt.session.json,
+SHA256 `fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218`.
+No C input was changed or rerecorded. Source controls pass 40/40 ordinary,
+17/17 constructed helpers and 5/5 prompt policies versus 3/5.
+
+All 80 selected/public recordings and all 80 strict eight-second workers pass.
+Retained checks initially pass 32/35. Two parent invocations omitted required
+fixture arguments; both corrected commands pass with no test edits. The old
+exit-state test expects the extra unconditional prompt. Its original passes on
+the published baseline, and the corrected setup uses real pline overflow after
+gd_move returns. All 55 assertions remain. Corrected tests pass on baseline,
+candidate and main. See guard-cleanup-policy-parent-retained-review. Initial
+failures remain recorded; no runtime was changed to satisfy those tests.
+
+Full912 passes all 912 recordings on NFS with two CPU workers, default
+45-second budgets and no retries: 927,087 screens/cursors, 20,044,497 random
+positions and 33,131 frames. Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-cleanup-policy-full912-js-20261125.
+Completed PID3312733, 1,203 files, all-files SHA256
+`a3ec8393090cef7ae0afbe2411900087232e3bfd0fd5a4ea65fa8e4b26d2cc21`.
+Its 911 prior fixtures are linked; only the new four-MB C recording is uploaded.
+Verification receipt SHA256:
+`bc3d806261832412de92bb7b23e953d41b39db4da0afdc9ab025d3b6d236e925`.
+Promotion56 is sealed and independently reviewed. Its exact 23 payloads,
+five requirements and unchanged C raw are installed. Main portable gates pass
+17/17 helper and 45/45 ordinary/policy checks with reports byte-identical to the
+fixed source and composition. All 75 static control assertions are unchanged.
+Parent receipt: guard-cleanup-policy-main-verification.json, SHA256
+`fddaf98de172286c26474d87b7380644e9421e9d7b19a4c5e458a6cc86973c4f`.
+Public evidence: tools/gen-sessions/evidence/guard-cleanup-prompt/parent-verification.json.
+Commit and immediately push, then verify the published tree. Do not relaunch.
+Other vault paths, hallucinated naming and complete message behavior remain open.
+
+Next fruit/text: sealed334 and separate marker334 now pass all eighteen C
+comparisons, versus six before either fix. One marker color argument explains
+the final two changed cells. Sixteen complete native reports are unchanged;
+all cursor, call, slice and frame hashes remain exact. The original ASCII
+negative screen hash remains an explicit historical failure, with a separate
+C-backed correction receipt. The other 34 negative hashes remain unchanged.
+The initial raw missing source metadata is preserved; its companion inserts
+only source:c. No C recording was repeated. Portable promotion is still unsealed.
+
+Fruit plus both guard fixes has composed280 map
+fruit-text-marker-guard-parent-composed-runtime.json, SHA256
+`b161939eae5516586ccd728590eb6393167509297536bbbc72395e7eb6b26587`.
+All 18 fruit and five guard C comparisons pass on it, with complete reports
+byte-identical to the separate candidates. Main does not contain fruit changes.
+Plural corpse naming has source review and the old 2/3 diagnostic reproduced;
+ordinary input proposals and caller review are in progress, with no candidate.
+
+## 2026-11-25: species upper bound pushed as aa9ecbbd
 
 Only js/const.js changes at runtime. ismnum now excludes NUMMONS and larger
 indices, matching include/monst.h. All 383 valid species remain accepted.
@@ -24,29 +103,13 @@ Runtime280 map: ismnum-upper-bound-parent-composed-runtime.json, SHA256
 Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/ismnum-upper-bound-full911-js-20261125.
 Parent receipt: ismnum-upper-bound-main-verification.json. Public evidence:
 tools/gen-sessions/evidence/ismnum-upper-bound/parent-verification.json.
-Commit and immediately push, then check the exact published tree.
+Commit aa9ecbbdc925e521a523a6bd7975a9a35a3cc146 is pushed. All 1,202 tested
+files match its Git tree. Publication receipt SHA256:
+`6b8512fa7f0580874a03efedf02e8c749f6dbcc54ff15b785bf147ecca991b97`.
 Sentinel generation, local predicates, the pray reader, obj_pmname's omitted
 diagnostic and shared corpse naming remain separate gaps.
 
-Next: fruit/text source334 improves native comparisons from 6/18 to 16/18.
-Its composition with runtime32dd has byte-identical reports. The separate
-menu-marker source334 corrects one color argument, passes 12/12 versus 6/12
-constructed controls, and accounts for exactly two changed styled cells across
-all eighteen original inputs. Parent native comparison is pending. The original
-ASCII negative screen hash remains a recorded failure; the other 34 hashes are
-unchanged. No expectations were rewritten. Fruit promotion remains unsealed.
-The initial eleven C inputs were recorded once; the raw lacking source metadata
-is retained and its certified companion inserts only source:c. Pickup2 and
-original fruit5 raw recordings remain fixed.
-
-Guard diagnostic-await source325 passes 40/40 ordinary controls and 17/17 helper
-controls. Its five original C inputs were recorded once: 2/5 baseline, 3/5 after
-the await, with complete candidate/composed reports identical. Raw SHA256:
-`fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218`.
-A separate vault cleanup audit is removing the two extra blank prompts. Main
-has neither guard change yet. Shared plural-corpse naming is also under review.
-The official recheck at 20:48 EST still shows rank 7 and 659 unmatched screens;
-its last-scored row remains 14:31 EST, before these checkpoints.
+Subsequent guard, fruit/text and corpse-naming work is tracked above.
 
 ## 2026-11-25: level-departure trap reset pushed as b09a3ace
 

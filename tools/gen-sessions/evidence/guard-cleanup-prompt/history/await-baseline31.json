@@ -1,0 +1,1635 @@
+{
+  "classification": "Ordinary JS keyboard controls, no new C comparison",
+  "passed": 31,
+  "total": 40,
+  "results": [
+    {
+      "name": "guard-cleanup-normal: actual guard producer",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-normal: legitimate diagnostic retained and finished",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-normal: C diagnostic finishes before next turn",
+      "pass": false,
+      "error": "boundary 190: diagnostic still pending after turn advanced\n\n44 !== 43\n"
+    },
+    {
+      "name": "guard-cleanup-normal: all diagnostic lines precede resumed command",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(diagnostic >= 0 && disorder > diagnostic && report > disorder)\n"
+    },
+    {
+      "name": "guard-cleanup-normal: original prefix and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-normal: observer neutrality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-normal: deferred and held EOF equality",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66',\n+   cursors: '0e354c9de6c464733c9ffbacf2585544ffa6d617168248df23e60eea799916b7',\n-   cursors: 'b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82',\n    frames: 'eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c',\n+   screens: '38b40312c1e70ca82cc75bb09c6e0d3e2ba552eb78de5d54a722d6aa90346e9e',\n+   slices: '76c9be9913ab879a70c60c4e8af8742e3fc20342e3db691523a661f5151ed810'\n-   screens: '51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0',\n-   slices: '4ae74fa76f1a2712441a2bd0dd3d15fd9bc6d5d9b742f89f9fa061beb3e2abaf'\n  }\n"
+    },
+    {
+      "name": "guard-cleanup-normal: complete keys and five stream integrity",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide: actual guard producer",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide: legitimate diagnostic retained and finished",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide: C diagnostic finishes before next turn",
+      "pass": false,
+      "error": "boundary 190: diagnostic still pending after turn advanced\n\n44 !== 43\n"
+    },
+    {
+      "name": "guard-cleanup-hide: all diagnostic lines precede resumed command",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(diagnostic >= 0 && disorder > diagnostic && report > disorder)\n"
+    },
+    {
+      "name": "guard-cleanup-hide: original prefix and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide: observer neutrality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide: deferred and held EOF equality",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66',\n+   cursors: '87704209b2a0ce1beeb48c5c132f1a2e6c5565d1b0d44299e9726b2fab3a6ee6',\n-   cursors: '4c493a12edb2e83e1963f4cd466f0fbb10ac93bd448a6fa49cb640977299eff3',\n    frames: 'eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c',\n+   screens: 'f90d74d3cdbf9ba4226f491c011590b91c6c7c45d419628a0c8ebe6189c7b59d',\n+   slices: 'b1be7877a045068cbe8cf7b74c7a2f0d52269e21e0daa0aa008cdd8e3080fe7f'\n-   screens: '0390f9daf8e07aaa7ff293220bc18921167f0dfcccd6890bb962c644a210377d',\n-   slices: 'adfb1aa4ff2c0376c66286299b77d4b0b09336891f9703e3914b69d4ec3e7ecd'\n  }\n"
+    },
+    {
+      "name": "guard-cleanup-hide: complete keys and five stream integrity",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop: actual guard producer",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop: legitimate diagnostic retained and finished",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop: C diagnostic finishes before next turn",
+      "pass": false,
+      "error": "boundary 191: diagnostic still pending after turn advanced\n\n44 !== 43\n"
+    },
+    {
+      "name": "guard-cleanup-stop: all diagnostic lines precede resumed command",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(diagnostic >= 0 && disorder > diagnostic && report > disorder)\n"
+    },
+    {
+      "name": "guard-cleanup-stop: original prefix and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop: observer neutrality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop: deferred and held EOF equality",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66',\n    cursors: '864adf1aa0bf172817a5c6771360226edfb9c5946d52205081ac6475db07e11e',\n    frames: 'eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c',\n+   screens: '485233ed700250cc462f6fc4702a4a90500fa85815a02cc825f07f719232aba1',\n-   screens: 'db69f986f3b58a9f55e87bf208bf2df215d7344f7ff20dea0596a8ed833154dd',\n    slices: 'fd7957519c3bcaf4bff185c56836eee40ce16ae7cba35b187d662927959981ca'\n  }\n"
+    },
+    {
+      "name": "guard-cleanup-stop: complete keys and five stream integrity",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: actual guard producer",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: legitimate diagnostic retained and finished",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: C diagnostic finishes before next turn",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: all diagnostic lines precede resumed command",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: original prefix and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: observer neutrality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: deferred and held EOF equality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative: complete keys and five stream integrity",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: actual guard producer",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: legitimate diagnostic retained and finished",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: C diagnostic finishes before next turn",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: all diagnostic lines precede resumed command",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: original prefix and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: observer neutrality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: deferred and held EOF equality",
+      "pass": true
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative: complete keys and five stream integrity",
+      "pass": true
+    }
+  ],
+  "cleanupPolicy": {
+    "passed": 3,
+    "total": 5,
+    "results": [
+      {
+        "name": "guard-cleanup-normal: C cleanup message policy",
+        "pass": true
+      },
+      {
+        "name": "guard-cleanup-hide: C cleanup message policy",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '--More--'\n- 'newsym: attempting screen update for <0,0>--More--'\n"
+      },
+      {
+        "name": "guard-cleanup-stop: C cleanup message policy",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '--More--'\n- 'newsym: attempting screen update for <0,0>--More--'\n"
+      },
+      {
+        "name": "guard-cleanup-hide-before-exit-negative: C cleanup message policy",
+        "pass": true
+      },
+      {
+        "name": "guard-cleanup-stop-before-exit-negative: C cleanup message policy",
+        "pass": true
+      }
+    ]
+  },
+  "rows": [
+    {
+      "name": "guard-cleanup-normal",
+      "keys": 210,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "4ae74fa76f1a2712441a2bd0dd3d15fd9bc6d5d9b742f89f9fa061beb3e2abaf",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "deferredHashes": {
+        "screens": "38b40312c1e70ca82cc75bb09c6e0d3e2ba552eb78de5d54a722d6aa90346e9e",
+        "cursors": "0e354c9de6c464733c9ffbacf2585544ffa6d617168248df23e60eea799916b7",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "76c9be9913ab879a70c60c4e8af8742e3fc20342e3db691523a661f5151ed810",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "originalQueuedEqual": true,
+      "queued": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Suddenly, the guard disappears.--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Program in disorder!  (Saving and reloading may fix this problem.)--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Please report these messages to devteam@nethack.org.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Something is written here in the dust.  You read: \"r|??\".--More--",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 3
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "The corridor disappears.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ],
+      "deferred": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Suddenly, the guard disappears.--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ]
+    },
+    {
+      "name": "guard-cleanup-hide",
+      "keys": 210,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "0390f9daf8e07aaa7ff293220bc18921167f0dfcccd6890bb962c644a210377d",
+        "cursors": "4c493a12edb2e83e1963f4cd466f0fbb10ac93bd448a6fa49cb640977299eff3",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "adfb1aa4ff2c0376c66286299b77d4b0b09336891f9703e3914b69d4ec3e7ecd",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "deferredHashes": {
+        "screens": "f90d74d3cdbf9ba4226f491c011590b91c6c7c45d419628a0c8ebe6189c7b59d",
+        "cursors": "87704209b2a0ce1beeb48c5c132f1a2e6c5565d1b0d44299e9726b2fab3a6ee6",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "b1be7877a045068cbe8cf7b74c7a2f0d52269e21e0daa0aa008cdd8e3080fe7f",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "originalQueuedEqual": true,
+      "queued": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Program in disorder!  (Saving and reloading may fix this problem.)--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Please report these messages to devteam@nethack.org.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Something is written here in the dust.  You read: \"r|??\".--More--",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 3
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "The corridor disappears.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ],
+      "deferred": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ]
+    },
+    {
+      "name": "guard-cleanup-stop",
+      "keys": 210,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "db69f986f3b58a9f55e87bf208bf2df215d7344f7ff20dea0596a8ed833154dd",
+        "cursors": "864adf1aa0bf172817a5c6771360226edfb9c5946d52205081ac6475db07e11e",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "fd7957519c3bcaf4bff185c56836eee40ce16ae7cba35b187d662927959981ca",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "deferredHashes": {
+        "screens": "485233ed700250cc462f6fc4702a4a90500fa85815a02cc825f07f719232aba1",
+        "cursors": "864adf1aa0bf172817a5c6771360226edfb9c5946d52205081ac6475db07e11e",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "fd7957519c3bcaf4bff185c56836eee40ce16ae7cba35b187d662927959981ca",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "originalQueuedEqual": true,
+      "queued": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Suddenly, the guard disappears.--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Program in disorder!  (Saving and reloading may fix this problem.)",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Something is written here in the dust.  You read: \"r|??\".--More--",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 3
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "The corridor disappears.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ],
+      "deferred": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 188,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "Suddenly, the guard disappears.--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 189,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "--More--",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 190,
+          "turn": 43,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 191,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "newsym: attempting screen update for <0,0>--More--",
+          "impossible": 1,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 192,
+          "turn": 44,
+          "hero": [
+            26,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 0
+          }
+        },
+        {
+          "step": 193,
+          "turn": 44,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Something is written here in the dust.  You read: \"r|??\".--More--",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": {
+            "id": 122,
+            "xy": [
+              0,
+              0
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 1,
+            "end": 3,
+            "begin": 3
+          }
+        },
+        {
+          "step": 194,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "The corridor disappears.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        },
+        {
+          "step": 195,
+          "turn": 45,
+          "hero": [
+            27,
+            4
+          ],
+          "top": "Unknown command ' '.",
+          "impossible": 0,
+          "diagnostics": [
+            "newsym: attempting screen update for <0,0>"
+          ],
+          "guard": null
+        }
+      ]
+    },
+    {
+      "name": "guard-cleanup-hide-before-exit-negative",
+      "keys": 187,
+      "boundaries": 188,
+      "calls": 6379,
+      "hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "deferredHashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "originalQueuedEqual": true,
+      "queued": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        }
+      ],
+      "deferred": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "guard-cleanup-stop-before-exit-negative",
+      "keys": 187,
+      "boundaries": 188,
+      "calls": 6379,
+      "hashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "deferredHashes": {
+        "screens": "04582d32de485d528b18fc33ddfc5e92ef3a9782afc01ccfbdefee636f93afc2",
+        "cursors": "54936c5034b8b64ee82d72efad479921b761c444b417fc11b7107d651f798ca3",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "d2a76c99080e092cc9a0a41c73e03b87380f8612210d23b9cee49b8458d4d95c",
+        "frames": "e1506b23b2c9da5d1bc877d95ca03687eb28ef49bd15c848c0b7460ff927c3ce"
+      },
+      "originalQueuedEqual": true,
+      "queued": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        }
+      ],
+      "deferred": [
+        {
+          "step": 187,
+          "turn": 43,
+          "hero": [
+            25,
+            5
+          ],
+          "top": "",
+          "impossible": 0,
+          "diagnostics": [],
+          "guard": {
+            "id": 122,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 47,
+            "peaceful": 1,
+            "state": 0,
+            "done": 0,
+            "end": 3,
+            "begin": 0
+          }
+        }
+      ]
+    }
+  ]
+}

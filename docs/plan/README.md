@@ -12,14 +12,20 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
+The 21:12 EST official recheck is still rank 7, now 812 unmatched screens and
+42/56 held-out passes, versus 659 and 43/56 previously. Public stays 44/44.
+The 20:32 EST scored row predates the three latest pushes. A source-grounded
+regression audit now runs alongside the guard and fruit checkpoints.
+
 Species bounds now match C's NUMMONS limit. Source controls pass 32/32 versus
 26/32, four ordinary cases and nine C comparisons remain exact, and all 107
 selected/public and strict checks pass. Full911 passes on NFS with default
 budgets and no retries: 926,078 screens/cursors, 20,011,996 random positions and
 33,131 frames. The previous trap-reset checkpoint is pushed as b09a3ace.
-The species checkpoint is verified for immediate publication. Fruit/text is at
-16/18 native matches; the separate menu-color prerequisite and vault cleanup
-are next. See the top of STATUS for fixed snapshots and remaining limits.
+The species checkpoint is pushed as aa9ecbbd. The guard cleanup now matches
+all five C cases and passes 80 selected/public and strict checks; full912 is
+now passes all 912 recordings on NFS. Fruit/text and its menu-color prerequisite match all eighteen
+C cases, including after composition with the guard fixes. See the top of STATUS for fixed snapshots and remaining limits.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets

@@ -1,0 +1,9 @@
+# Preserved first assertion failure
+
+The first candidate ordinary report is 39/40, with the same five tuples and unchanged control body as the 31/40 baseline. All three turn-order and all three deferred-equality failures are fixed. The sole remaining assertion assumes that every diagnostic line must be visible at an input boundary. Keep both first reports and their control script unchanged.
+
+That assumption is invalid for the stop configuration's existing key 190, ESC. C `impossible` resets `URGENT_MESSAGE` after its initial message (`pline.c:605-608`). The next `update_topl` computes `skip` before calling `more` (`topl.c:257-279`). ESC there sets `WIN_STOP` (`topl.c:232-235`). The current update still paints `Program in disorder!`, since its local `skip` was false before the wait. The later footer's update sees `WIN_STOP`, saves the logical text, but does not call `redotoplin` (`topl.c:282-308`). `vpline` still records it in `prevmsg` (`pline.c:282-284`). Thus the footer must be composed and the recursion flag cleared before movement resumes; it need not appear physically after ESC.
+
+The original input index and every key remain fixed. An additional constructed control will exercise this exact ESC path through the real public `newsym`/`impossible` owners, using the real input adapter, with no mocked message functions. A separate derived ordinary control will retain the original visible-line requirements for non-ESC cases and check the logical footer and `prevmsg` when the first diagnostic acknowledgement is ESC. It adds observation of these existing fields. No initial failure, input, source prediction or runtime candidate is rewritten.
+
+This correction is about the test premise only. It does not justify the extra blank prompt in `gd_move_cleanup`; both original C-policy failures stay unchanged and separately reported. It is not native evidence for the five ordinary tuples.

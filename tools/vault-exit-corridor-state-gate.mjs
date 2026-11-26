@@ -78,11 +78,13 @@ async function finish(guard, original, result, added = true) {
     assert.equal(guard.mpeaceful, 1);
 }
 
-await test('secret-door exit records original terrain before the real disappearance prompt', async () => {
+await test('secret-door exit records original terrain before its message overflow acknowledgement', async () => {
     const {guard, prompts} = await setup();
     await finish(guard, SDOOR, DOOR);
     assert.equal(game.level.at(27, 4).doormask, D_NODOOR);
     assert.deepEqual(getRngLog(), []);
+    // C cleanup leaves its message pending; the next long message owns overflow.
+    await pline('Checking the recorded corridor after the guard has disappeared.');
     const prompt = prompts.find(p => p.message.includes('guard disappears'));
     assert.ok(prompt);
     assert.equal(prompt.record.fcend, 4); assert.equal(prompt.engraving, false);

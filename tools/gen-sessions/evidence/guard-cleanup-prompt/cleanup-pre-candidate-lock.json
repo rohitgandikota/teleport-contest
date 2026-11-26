@@ -1,0 +1,82 @@
+{
+  "candidateExisted": false,
+  "baselineMapSHA256": "301f03d938470072506c81b71b536b3be5a306ad9a820de4e1a8213f3f342271",
+  "baselinePolicy": "3/5",
+  "baselineOrdinary": "40/40",
+  "baselineConstructed": "17/17",
+  "inputCases": 5,
+  "inputKeys": 1004,
+  "inputBoundaries": 1009,
+  "files": {
+    "PLAN.md": {
+      "sha256": "da6047bd4b4ed11a5b223c00377f367b231c55f8a05b56babdd5372b88c51935",
+      "bytes": 1802
+    },
+    "review/PREDICTIONS.md": {
+      "sha256": "b2371acec7ef7270c358f62a0aa74c41d42915b1bbea983e49f154d6963411ab",
+      "bytes": 2902
+    },
+    "review/setup.json": {
+      "sha256": "4ef78154289abe4248bae063f17bbec131dbf28f88dece98717a0b6fa56427e8",
+      "bytes": 4811
+    },
+    "review/baseline-runtime.json": {
+      "sha256": "301f03d938470072506c81b71b536b3be5a306ad9a820de4e1a8213f3f342271",
+      "bytes": 24861
+    },
+    "review/parent-evidence.json": {
+      "sha256": "094674c72c14f066f764490e53ea2916f7fe413b33af5feaf1eeaa4a2cfb3b5e",
+      "bytes": 1488
+    },
+    "review/metadata-initial-check.json": {
+      "sha256": "68b4c56f2dfe82bf96348a2becc4f55638256c48fe3528e3aba32e4c1ed9087a",
+      "bytes": 345
+    },
+    "evidence/input-lock.json": {
+      "sha256": "92991e901984e5a9a9957f872c355eb7386ab297c4dd97ffda8eb440ef618c73",
+      "bytes": 6695
+    },
+    "evidence/guard-cleanup-prompt.json": {
+      "sha256": "f9918a947a5cc009eb7985efb92042e78d8e896b41d1b05ecab072c839b652af",
+      "bytes": 6876
+    },
+    "tools/ordinary-controls-validated.mjs": {
+      "sha256": "c80cea6236e2f25d05170a1e49c5006fa0564842a3ecd1bdcb594638b729c5d4",
+      "bytes": 9067
+    },
+    "tools/source-controls.mjs": {
+      "sha256": "ee121bb0250b347606d9c078c39e38d15897df3531947a061d659767467e395d",
+      "bytes": 6301
+    },
+    "tools/escape-feedback-control.mjs": {
+      "sha256": "1cc4df850c91a5cf4ef3be01469e427da959c21369e514be77a21d4b6cfb1494",
+      "bytes": 3166
+    },
+    "tools/trace-outputs.mjs": {
+      "sha256": "0fb12dd24bcfa131dbb4dfda56de5e0be6157e1c0aa6729983e4cd8f0d20893b",
+      "bytes": 5073
+    },
+    "review/baseline-ordinary.json": {
+      "sha256": "d0c9ba6b5defe737238f72d7096e86248d0e423a8a7c8a9697008f9fe0a69ffb",
+      "bytes": 47378
+    },
+    "review/baseline-source.json": {
+      "sha256": "d661c8f33a24f3b81f8c2204ccd97a597d4235f0f90f7d3b21264bd66dd2c521",
+      "bytes": 1641
+    },
+    "review/baseline-escape.json": {
+      "sha256": "85042da68a4faf6e4fe260843af874dab477a1e459356396f16139819abdee65",
+      "bytes": 843
+    }
+  },
+  "plannedRuntimeChange": [
+    "js/vault.js: remove gd_move_cleanup explicit more and unused import"
+  ],
+  "protected": [
+    "js/monmove.js",
+    "early guard_name evaluation",
+    "all original input fields and branches"
+  ],
+  "parentRawSHA256": "fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218",
+  "parentEvidenceLimit": "Await-only native3/5, cleanup candidate comparison pending parent"
+}

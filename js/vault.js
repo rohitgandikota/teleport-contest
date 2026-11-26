@@ -10,7 +10,7 @@ import { PMNAMES } from './monst_data.js';
 import { g_at, hidden_gold, money_cnt, obj_extract_self, sobj_at,
          stackobj } from './invent.js';
 import { canspotmon, map_background, map_invisible, map_location, mon_visible,
-         more, newsym, pline, unset_seenv } from './display.js';
+         newsym, pline, unset_seenv } from './display.js';
 import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
 import { Monnam, Some_Monnam, noit_Monnam, noit_mon_nam, pmname,
@@ -414,7 +414,6 @@ async function gd_move_cleanup(guard, semi_dead, disappear_msg_seen) {
                        || cansee(x, y))) {
         if (!disappear_msg_seen && see_guard) {
             await pline(`Suddenly, ${guard_name} disappears.`);
-            await more();
         }
         return 1;
     }

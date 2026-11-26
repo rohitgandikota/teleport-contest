@@ -1,0 +1,66 @@
+{
+  "classification": "Fixed inputs and baseline failures locked before any candidate",
+  "candidateExisted": false,
+  "originalPacketSealSHA256": "213270d7642139ab0c17c855d3456c2cdb38d4aed8272949b17ec693be0c1a69",
+  "files": {
+    "PLAN.md": {
+      "sha256": "9ce2f549f726a6aff8c559ebdf1854970a7925b67345d044113fb0ec6eb71c6b",
+      "bytes": 2077
+    },
+    "review/PREDICTIONS.md": {
+      "sha256": "50d5d46622c35dd14b50200b7ff3ebaf647d93f3e42e496cc3851097cbff6f50",
+      "bytes": 3398
+    },
+    "review/original-lock.json": {
+      "sha256": "37951bb7e994a3906484d31c1b9b89dbbac10a1037f0e23f1b2fe12cbc7b8f7d",
+      "bytes": 2566
+    },
+    "review/baseline-runtime.json": {
+      "sha256": "71fc45e6a4f55fa8dc30703afc86216c5c0be1d2c198fec439e0a36c1771d97c",
+      "bytes": 24861
+    },
+    "evidence/guard-cleanup-prompt.json": {
+      "sha256": "f9918a947a5cc009eb7985efb92042e78d8e896b41d1b05ecab072c839b652af",
+      "bytes": 6876
+    },
+    "evidence/input-lock.json": {
+      "sha256": "92991e901984e5a9a9957f872c355eb7386ab297c4dd97ffda8eb440ef618c73",
+      "bytes": 6695
+    },
+    "tools/ordinary-controls.mjs": {
+      "sha256": "6da316e0b3b9df2a9f459ac350094b5960f70d25f8ef17573ac40755cf661984",
+      "bytes": 8412
+    },
+    "tools/source-controls.mjs": {
+      "sha256": "ee121bb0250b347606d9c078c39e38d15897df3531947a061d659767467e395d",
+      "bytes": 6301
+    },
+    "review/baseline-ordinary.json": {
+      "sha256": "a82be8c22575e1f3b8b643e620852cd6f2687dc81a2e5cc05e4e7a9f1a6bd9b0",
+      "bytes": 42182
+    },
+    "review/baseline-source.json": {
+      "sha256": "d661c8f33a24f3b81f8c2204ccd97a597d4235f0f90f7d3b21264bd66dd2c521",
+      "bytes": 1641
+    }
+  },
+  "expectedScope": [
+    "js/monmove.js"
+  ],
+  "plannedChange": "await existing non-engulfing postmov arrival newsym, C monmove.c1656",
+  "unchangedOwners": [
+    "vault.js",
+    "display.js",
+    "pline.js",
+    "input.js"
+  ],
+  "ordinary": {
+    "cases": 5,
+    "keys": 1004,
+    "boundaries": 1009,
+    "baseline": "31/40",
+    "policy": "3/5, both failures preserved",
+    "negativeHashes": 10
+  },
+  "constructedHelpers": "14/14"
+}

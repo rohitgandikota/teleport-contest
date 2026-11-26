@@ -1,0 +1,20 @@
+{
+  "scope": "Observer fields and one feedback-visibility assertion only",
+  "basis": "review/FEEDBACK-PREMISE.md and baseline-escape.json, no runtime change",
+  "originalSHA256": "6da316e0b3b9df2a9f459ac350094b5960f70d25f8ef17573ac40755cf661984",
+  "derivedSHA256": "c80cea6236e2f25d05170a1e49c5006fa0564842a3ecd1bdcb594638b729c5d4",
+  "recipeSHA256": "f9918a947a5cc009eb7985efb92042e78d8e896b41d1b05ecab072c839b652af",
+  "originalReports": [
+    "baseline-ordinary.json",
+    "candidate-ordinary.json"
+  ],
+  "originalResults": [
+    "31/40",
+    "39/40"
+  ],
+  "unchangedCheckFamilies": 7,
+  "correctedCheckFamilies": 1,
+  "checkedCases": 5,
+  "correctedVisibilityPremiseCases": 1,
+  "unchangedPolicyFamily": true
+}

@@ -1,0 +1,138 @@
+{
+  "beforeGameplayAndCandidate": true,
+  "lockedAt": "2026-11-26T20:00:54.622372+00:00",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wait-wielded-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wait-wielded-dagger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wait-carried-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wait-alternate-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001bx\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ]
+  ],
+  "keys": 599,
+  "negativeIndexes": [
+    2,
+    3
+  ],
+  "files": {
+    "recipe.json": "c9d6609945576063741ff2062107130879293144541b7eb5822e32b3f95298d6",
+    "predictions.json": "c4d58b3a532f59bf340fc4f8e7aedcad18ebc70cb04fc53a324ae9f9cd7b6718",
+    "runtime.json": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "SOURCE-REVIEW.md": "76d12bb6b1a90a43335de02e723bb4355b6e149a9812dc567838264ed181fe27",
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe",
+    "../balrog-weapon-source-audit/SEAL.json": "dd3e8877960cf6b71ddf659785bda7ef3a4c28ac6547fc5b3672b82ec5087893",
+    "../balrog-weapon-source-audit/SOURCE-REVIEW.md": "a6eda07c100d460f43015e2d713e9396a60b33cf376cb3cf7005a534e88eeae3"
+  },
+  "probeSHA256": "b055655f117034024b57ebfa9dcce8ffae43ed4a8e3b7a60d3689d1b09be1ec3",
+  "experiencePrefixSHA256": "6ab8c7e93fc57b93928a47d5b2e054d34e74722e8f0fe87e11c11f41c0760fea"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "wielded-sword",
+    "armed": true,
+    "alternate": false,
+    "weapon": "LONG_SWORD"
+  },
+  {
+    "name": "wielded-dagger",
+    "armed": true,
+    "alternate": false,
+    "weapon": "DAGGER"
+  },
+  {
+    "name": "carried-sword",
+    "armed": false,
+    "alternate": false,
+    "weapon": "LONG_SWORD"
+  },
+  {
+    "name": "alternate-sword",
+    "armed": false,
+    "alternate": true,
+    "weapon": "LONG_SWORD"
+  }
+]

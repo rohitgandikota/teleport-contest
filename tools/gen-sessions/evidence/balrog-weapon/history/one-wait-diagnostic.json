@@ -1,0 +1,700 @@
+[
+  {
+    "index": 0,
+    "name": "wielded-sword",
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "one live hostile Balrog created through the real command",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real desired primary and alternate hero slots",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary bullwhip and broadsword both available",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon && mon.hp > 0)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "real monster wield action and visible message reached",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "Balrog prefers its bullwhip only while the hero is armed",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": false,
+    "source": false,
+    "created": {
+      "step": 51,
+      "turn": 2,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "cursed": false
+      },
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 67,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            }
+          ]
+        }
+      ]
+    },
+    "final": {
+      "step": 64,
+      "turn": 3,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "cursed": false
+      },
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 67,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            }
+          ]
+        }
+      ]
+    },
+    "hashes": {
+      "screens": "2e958d6015c38764d8ff6ecede1a7a1672e16e18b0f59861356db5eba5130fd6",
+      "cursors": "9cc22556e54b084b5bf7376c83aa567352e5522b6cb462c6f29b377a375e0f4f",
+      "calls": "7b871201b84e74dea4619ee93ca79e51a0a783020fa925130842d4c02d19581b",
+      "slices": "f3618818fb1b2d2e61d40dfa08a629be4fe44a44cb0edf49e638e87c0e2f2ef9",
+      "frames": "07dcef581ee2581866ca67d8e290e54aa590694177087de6c7e07b2aae8d53a9"
+    },
+    "boundaries": 65,
+    "calls": 2601,
+    "frames": 0,
+    "wieldMessages": []
+  },
+  {
+    "index": 1,
+    "name": "wielded-dagger",
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "one live hostile Balrog created through the real command",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real desired primary and alternate hero slots",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary bullwhip and broadsword both available",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon && mon.hp > 0)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "real monster wield action and visible message reached",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "Balrog prefers its bullwhip only while the hero is armed",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": false,
+    "source": false,
+    "created": {
+      "step": 47,
+      "turn": 2,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": {
+        "id": 50,
+        "type": 34,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "cursed": false
+      },
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 34,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 67,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            }
+          ]
+        }
+      ]
+    },
+    "final": {
+      "step": 60,
+      "turn": 3,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": {
+        "id": 50,
+        "type": 34,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 256,
+        "cursed": false
+      },
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 34,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 256,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 67,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            }
+          ]
+        }
+      ]
+    },
+    "hashes": {
+      "screens": "1249744014981353f8bf77b26fa39d29d295ef0f7f6ccb4fa3d348fc463d8552",
+      "cursors": "8955329eced82147366895c507deee94275da9c178cd031e66548168f1715d03",
+      "calls": "d0198d0d33c73d8f91bc8558890ccb4e193fffd04aad0e9efca6b26e58a62d59",
+      "slices": "c5781294543e14bd7a9abfb8399fdae336e6a832e083150b5792c480b01a1622",
+      "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+    },
+    "boundaries": 61,
+    "calls": 2601,
+    "frames": 0,
+    "wieldMessages": []
+  },
+  {
+    "index": 2,
+    "name": "carried-sword",
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "one live hostile Balrog created through the real command",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real desired primary and alternate hero slots",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary bullwhip and broadsword both available",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon && mon.hp > 0)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "real monster wield action and visible message reached",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "Balrog prefers its bullwhip only while the hero is armed",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": false,
+    "source": false,
+    "created": {
+      "step": 43,
+      "turn": 1,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": null,
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 0,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            53,
+            13
+          ],
+          "hp": 63,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 53,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            }
+          ]
+        }
+      ]
+    },
+    "final": {
+      "step": 56,
+      "turn": 2,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": null,
+      "alternate": null,
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 0,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            53,
+            13
+          ],
+          "hp": 63,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 53,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": true
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            }
+          ]
+        }
+      ]
+    },
+    "hashes": {
+      "screens": "74d601e476d98b2761d37b61dcd529af00279ebcfe7b613a8df59a1e7522f6fe",
+      "cursors": "8de63468987fec1f872e8d3918e94dcef15b25445f50faed83f0b2a5259ef4de",
+      "calls": "6b1e6079533a6d78b27dc92210c5f1cce3acc49e9be9254287cc09ae0169bb7c",
+      "slices": "5214d7a56d6350dc6b8ad0f680122d1f327e953af620bf978129341d239d2afc",
+      "frames": "b86647c3fcd094442688a9e26f6faad8a5d26459fb781461216d57253e03d344"
+    },
+    "boundaries": 57,
+    "calls": 2583,
+    "frames": 0,
+    "wieldMessages": []
+  },
+  {
+    "index": 3,
+    "name": "alternate-sword",
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "one live hostile Balrog created through the real command",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "real desired primary and alternate hero slots",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary bullwhip and broadsword both available",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon && mon.hp > 0)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "real monster wield action and visible message reached",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "Balrog prefers its bullwhip only while the hero is armed",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(mon?.weapon)\n"
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams and pending EOF",
+        "pass": true
+      }
+    ],
+    "producer": false,
+    "source": false,
+    "created": {
+      "step": 58,
+      "turn": 3,
+      "hp": 16,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": null,
+      "alternate": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 1024,
+        "cursed": false
+      },
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 1024,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 77,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            }
+          ]
+        }
+      ]
+    },
+    "final": {
+      "step": 71,
+      "turn": 4,
+      "hp": 15,
+      "mortality": 0,
+      "hero": [
+        52,
+        13
+      ],
+      "weapon": null,
+      "alternate": {
+        "id": 50,
+        "type": 54,
+        "letter": "a",
+        "artifact": 0,
+        "worn": 1024,
+        "cursed": false
+      },
+      "inventory": [
+        {
+          "id": 50,
+          "type": 54,
+          "letter": "a",
+          "artifact": 0,
+          "worn": 1024,
+          "cursed": false
+        }
+      ],
+      "balrogs": [
+        {
+          "id": 51,
+          "xy": [
+            52,
+            14
+          ],
+          "hp": 77,
+          "peaceful": false,
+          "asleep": false,
+          "weapon": null,
+          "inventory": [
+            {
+              "id": 54,
+              "type": 52,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            },
+            {
+              "id": 52,
+              "type": 82,
+              "artifact": 0,
+              "worn": 0,
+              "cursed": false
+            }
+          ]
+        }
+      ]
+    },
+    "hashes": {
+      "screens": "d3741f99260a3f8512f0c62a59cf71a01f1011745ddde9a98f6e30d1c4b4017c",
+      "cursors": "a900c62b1c5e3832192be5a4661c0968c1a0d8d023b12d040d50b24e66b76fe8",
+      "calls": "87c8cfc809928f1115eb02f1eba1ce063d06ee88777330aa9ad42a5dc50194c3",
+      "slices": "307cd3e17eaa3afd95652b9d823601992a85dced72c9185f0721030258819ca2",
+      "frames": "836368bd9f29635d24140fe7cf1c8b41b45136aff887dc7026acf4997a51f1e4"
+    },
+    "boundaries": 72,
+    "calls": 2613,
+    "frames": 0,
+    "wieldMessages": []
+  }
+]

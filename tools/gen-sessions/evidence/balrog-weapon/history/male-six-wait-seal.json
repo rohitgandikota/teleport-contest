@@ -1,0 +1,13 @@
+{
+  "members": 10,
+  "manifestSHA256": "dd37b745d4e17b63713d9d61ec8d535ae11341971e76066f9e974bf0f2defd51",
+  "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+  "originalSealSHA256": "dd3e8877960cf6b71ddf659785bda7ef3a4c28ac6547fc5b3672b82ec5087893",
+  "recipeSHA256": "c9d6609945576063741ff2062107130879293144541b7eb5822e32b3f95298d6",
+  "producer": "4/4",
+  "source": "2/4",
+  "checks": "30/32",
+  "neutrality": "8/8",
+  "negativeHashes": 10,
+  "CExecutions": 0
+}

@@ -1,0 +1,79 @@
+{
+  "source": "c",
+  "version": 5,
+  "name": "balrog-weapon",
+  "description": "Real Balrog weapon selection with current, alternate and carried hero weapons.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "name": "wielded-sword",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "wielded-dagger",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "\u0017uncursed dagger\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "carried-sword",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "alternate-sword",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001bx\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branches": [
+    "balrog-weapon.wielded-sword",
+    "balrog-weapon.wielded-dagger",
+    "balrog-weapon.carried-sword",
+    "balrog-weapon.alternate-sword"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "balrog-weapon.wielded-sword",
+      "segment": 0,
+      "screenIncludes": [
+        "balrog wields",
+        "bullwhip"
+      ]
+    },
+    {
+      "branch": "balrog-weapon.wielded-dagger",
+      "segment": 1,
+      "screenIncludes": [
+        "balrog wields",
+        "bullwhip"
+      ]
+    },
+    {
+      "branch": "balrog-weapon.carried-sword",
+      "segment": 2,
+      "screenIncludes": [
+        "balrog wields"
+      ]
+    },
+    {
+      "branch": "balrog-weapon.alternate-sword",
+      "segment": 3,
+      "screenIncludes": [
+        "balrog wields"
+      ]
+    }
+  ]
+}

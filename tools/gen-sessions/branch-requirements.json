@@ -5573,6 +5573,34 @@
       "cFile": "src/invent.c",
       "cFunction": "hold_another_object",
       "description": "Autoquiver the first received dart stack without a launcher."
+    },
+    {
+      "group": "Balrog weapon selection",
+      "id": "balrog-weapon-valid.valid-wait-wielded-sword",
+      "cFile": "src/weapon.c",
+      "cFunction": "select_hwep",
+      "description": "A real female level30 hero holding a long sword causes a nearby hostile Balrog with ordinary bullwhip and broadsword to prefer its bullwhip."
+    },
+    {
+      "group": "Balrog weapon selection",
+      "id": "balrog-weapon-valid.valid-wait-wielded-dagger",
+      "cFile": "src/weapon.c",
+      "cFunction": "select_hwep",
+      "description": "A real female level30 hero holding a dagger also causes Balrog bullwhip preference; selection is based on the occupied primary slot."
+    },
+    {
+      "group": "Balrog weapon selection",
+      "id": "balrog-weapon-valid.valid-wait-carried-sword",
+      "cFile": "src/weapon.c",
+      "cFunction": "select_hwep",
+      "description": "A carried but unwielded long sword leaves the primary slot empty and preserves normal Balrog weapon selection and all five negative outputs."
+    },
+    {
+      "group": "Balrog weapon selection",
+      "id": "balrog-weapon-valid.valid-wait-alternate-sword",
+      "cFile": "src/weapon.c",
+      "cFunction": "select_hwep",
+      "description": "A long sword in the alternate slot leaves the primary slot empty and preserves normal Balrog weapon selection and all five negative outputs."
     }
   ]
 }

@@ -1,0 +1,3208 @@
+[
+  {
+    "segment": 0,
+    "name": "valid-wait-wielded-sword",
+    "boundaries": {
+      "expected": 152,
+      "actual": 152
+    },
+    "frozenScreens": 117,
+    "fullStyleScreens": 117,
+    "matchingStyleCells": 290850,
+    "totalCells": 291840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 990,
+    "screenDifferences": [
+      {
+        "step": 117,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1870,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 50,
+        "firstFullStyleDifference": {
+          "x": 21,
+          "y": 0,
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "r",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 21,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "r",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 118,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1850,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 70,
+        "firstFullStyleDifference": {
+          "x": 5,
+          "y": 0,
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 5,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 119,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 120,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 121,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 122,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 123,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 124,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 125,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 126,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 127,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 128,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 129,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 130,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 131,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 132,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 133,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 134,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 135,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 136,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 137,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 138,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 139,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 140,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 141,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 142,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 143,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 144,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 145,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1869,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 51,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 146,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1891,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 29,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 147,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 148,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 149,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 150,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 151,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 152,
+      "actual": 152,
+      "matched": 150,
+      "firstDifference": {
+        "index": 117,
+        "c": [
+          37,
+          0,
+          1
+        ],
+        "js": [
+          74,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 2705,
+      "rawActual": 2705,
+      "discardedEntries": 0,
+      "expected": 2705,
+      "actual": 2705,
+      "firstDifference": {
+        "index": 2652,
+        "c": "rnd(2)=2",
+        "js": "rnd(4)=4"
+      }
+    },
+    "slices": {
+      "expected": 152,
+      "actual": 152,
+      "matched": 145,
+      "differences": [
+        {
+          "step": 117,
+          "expected": 2,
+          "actual": 6,
+          "first": {
+            "index": 2,
+            "c": null,
+            "js": "rnd(21)=6"
+          }
+        },
+        {
+          "step": 118,
+          "expected": 13,
+          "actual": 10,
+          "first": {
+            "index": 0,
+            "c": "rnd(21)=6",
+            "js": "rn2(3)=0"
+          }
+        },
+        {
+          "step": 124,
+          "expected": 8,
+          "actual": 8,
+          "first": {
+            "index": 0,
+            "c": "rn2(12)=11",
+            "js": "rn2(12)=8"
+          }
+        },
+        {
+          "step": 131,
+          "expected": 3,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(5)=3",
+            "js": "rn2(5)=2"
+          }
+        },
+        {
+          "step": 138,
+          "expected": 8,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(12)=1",
+            "js": "rn2(5)=2"
+          }
+        },
+        {
+          "step": 145,
+          "expected": 7,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(5)=3",
+            "js": "rn2(5)=1"
+          }
+        },
+        {
+          "step": 146,
+          "expected": 16,
+          "actual": 0,
+          "first": {
+            "index": 0,
+            "c": "rnd(21)=12",
+            "js": null
+          }
+        }
+      ]
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 152,
+      "actualSlices": 152,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "08fa08b94393230eca6e5e6c45f4fbd448dfdf019c5254c2563e37e7ad66c50c",
+        "cursors": "6bf8c8f3bcd34539324697333148056aee01fda3fdee48ec618229065836a685",
+        "calls": "cc09e6c9ec7d354c2de63404b46d8cc23b0eedb8f16ec7f9d48e45b56ce35b98",
+        "slices": "6a1930c890fa122ba40f2c20cc5fbf11640699ca797305e41a5b54488fb6fa1c",
+        "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+      },
+      "js": {
+        "screens": "05cbc9314ebf31fcf1e1ac516b1cae77eae4ff3b2b9ec2e3e6768425366da485",
+        "cursors": "dede665967f9dee119458b780c2087d22618980e7c42be907da6b4935748dafa",
+        "calls": "377be64999128ff40cc579c169a2fc909cca05a927e1d4ab8f7fa8993ea7a66b",
+        "slices": "98fc8ef0b65ec2595e4007a29f2f469620952b301627421fd1f9a47458cc7c3e",
+        "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "837de6abc3c5cb3dce2e33681c7191318def9edc630d1af63e32433b9e0ec1cb",
+        "slices": "abd641ab03e3e7469b76151b37742cae013ce6338c6ceb18c9de0f9a2561b25d"
+      },
+      "js": {
+        "calls": "377be64999128ff40cc579c169a2fc909cca05a927e1d4ab8f7fa8993ea7a66b",
+        "slices": "98fc8ef0b65ec2595e4007a29f2f469620952b301627421fd1f9a47458cc7c3e"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": false,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "valid-wait-wielded-dagger",
+    "boundaries": {
+      "expected": 148,
+      "actual": 148
+    },
+    "frozenScreens": 113,
+    "fullStyleScreens": 113,
+    "matchingStyleCells": 283170,
+    "totalCells": 284160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 990,
+    "screenDifferences": [
+      {
+        "step": 113,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1870,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 50,
+        "firstFullStyleDifference": {
+          "x": 21,
+          "y": 0,
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "r",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 21,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "r",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 114,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1850,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 70,
+        "firstFullStyleDifference": {
+          "x": 5,
+          "y": 0,
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 5,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "u",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 115,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 116,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 117,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 118,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 119,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 120,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 121,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 122,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 123,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 124,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 125,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 126,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 127,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 128,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 129,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 130,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 131,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 132,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 133,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 134,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 135,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 136,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 137,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 138,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 139,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 140,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1890,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 30,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "1",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 141,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1869,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 51,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 142,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1891,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 29,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 143,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 144,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 145,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 146,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 147,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 14,
+          "y": 23,
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 14,
+          "y": 23,
+          "kind": "ch",
+          "c": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "9",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 148,
+      "actual": 148,
+      "matched": 146,
+      "firstDifference": {
+        "index": 113,
+        "c": [
+          37,
+          0,
+          1
+        ],
+        "js": [
+          74,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 2705,
+      "rawActual": 2705,
+      "discardedEntries": 0,
+      "expected": 2705,
+      "actual": 2705,
+      "firstDifference": {
+        "index": 2652,
+        "c": "rnd(2)=2",
+        "js": "rnd(4)=4"
+      }
+    },
+    "slices": {
+      "expected": 148,
+      "actual": 148,
+      "matched": 141,
+      "differences": [
+        {
+          "step": 113,
+          "expected": 2,
+          "actual": 6,
+          "first": {
+            "index": 2,
+            "c": null,
+            "js": "rnd(21)=6"
+          }
+        },
+        {
+          "step": 114,
+          "expected": 13,
+          "actual": 10,
+          "first": {
+            "index": 0,
+            "c": "rnd(21)=6",
+            "js": "rn2(3)=0"
+          }
+        },
+        {
+          "step": 120,
+          "expected": 8,
+          "actual": 8,
+          "first": {
+            "index": 0,
+            "c": "rn2(12)=11",
+            "js": "rn2(12)=8"
+          }
+        },
+        {
+          "step": 127,
+          "expected": 3,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(5)=3",
+            "js": "rn2(5)=2"
+          }
+        },
+        {
+          "step": 134,
+          "expected": 8,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(12)=1",
+            "js": "rn2(5)=2"
+          }
+        },
+        {
+          "step": 141,
+          "expected": 7,
+          "actual": 11,
+          "first": {
+            "index": 0,
+            "c": "rn2(5)=3",
+            "js": "rn2(5)=1"
+          }
+        },
+        {
+          "step": 142,
+          "expected": 16,
+          "actual": 0,
+          "first": {
+            "index": 0,
+            "c": "rnd(21)=12",
+            "js": null
+          }
+        }
+      ]
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 148,
+      "actualSlices": 148,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "d21c00dfdfee90675b0e2ff4a86ea973debe186f3afa73ebe5854ba976bfc2f1",
+        "cursors": "1ded1c028cb732916ff482b0193d97ccb78f71a5b6db2103c78ce612d4770f12",
+        "calls": "3d02a31d9c6ffe8d184dd4578816657b4547d51199e4bd66049ae28b33b92aa9",
+        "slices": "105c2a57afaf2dfabe0c7352c42b5c1576ea11c69a3b4be26ba7f01ca9e3ba41",
+        "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+      },
+      "js": {
+        "screens": "225f8d27055d90e3d5141127e72d34ae272f9b633368e4785df87250360b0bc8",
+        "cursors": "f6e24a480bf76311221e62176e3472f76c5d9b0c3d50ad21084a494e1ce98421",
+        "calls": "3a74eb05c79a4a959b2ebee10e67744f50f50eeca0bff3e0282c4b7bb4cb1052",
+        "slices": "5d964a135b021ff530f0eddb5521115fee787d92f3481bc45cc049eca8f9aede",
+        "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "78619801e10aec5a01af05f951418d92fb288f6e5c3f08079dd5b552346ea3b8",
+        "slices": "05897516527cbd8d0a9bc63033598fad93bf8f4641ee03b16b5527e6b5123d97"
+      },
+      "js": {
+        "calls": "3a74eb05c79a4a959b2ebee10e67744f50f50eeca0bff3e0282c4b7bb4cb1052",
+        "slices": "5d964a135b021ff530f0eddb5521115fee787d92f3481bc45cc049eca8f9aede"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": false,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "valid-wait-carried-sword",
+    "boundaries": {
+      "expected": 144,
+      "actual": 144
+    },
+    "frozenScreens": 144,
+    "fullStyleScreens": 144,
+    "matchingStyleCells": 276480,
+    "totalCells": 276480,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 144,
+      "actual": 144,
+      "matched": 144,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2707,
+      "rawActual": 2707,
+      "discardedEntries": 0,
+      "expected": 2707,
+      "actual": 2707,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 144,
+      "actual": 144,
+      "matched": 144,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 144,
+      "actualSlices": 144,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "390eea7c3702e1788b3d081c7623ec5c4062cdfaf2741b0e0ad2b96a370c0300",
+        "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+        "calls": "cccc1a47b8fb026e9b11664edd38ac18ba5cfc348c04a9177ae44cae3f45647a",
+        "slices": "0612469afa01098ca5ae309c381a6923c357b96254e214139155ae66f1e3c7b4",
+        "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+      },
+      "js": {
+        "screens": "d378de1772c1ae6669f651325faad9a1c3b18afad643278e22b393610de9fd2f",
+        "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2",
+        "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+      },
+      "js": {
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "valid-wait-alternate-sword",
+    "boundaries": {
+      "expected": 159,
+      "actual": 159
+    },
+    "frozenScreens": 159,
+    "fullStyleScreens": 159,
+    "matchingStyleCells": 305280,
+    "totalCells": 305280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2713,
+      "rawActual": 2713,
+      "discardedEntries": 0,
+      "expected": 2713,
+      "actual": 2713,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 159,
+      "actualSlices": 159,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "0651ecf39ba57835c2f18b572c7ff5a97d9c1b5065a9237f3b61c026820e622b",
+        "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+        "calls": "80f5c6694668d94c8d326ad3c6bdee2cf1ac9c7729a00ff4a12249e3f77715f7",
+        "slices": "80d72db3e1d0450a6f3539af1f811777a34a7e481a25aeb54631a4adf8194580",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      },
+      "js": {
+        "screens": "976499931c068c88cd8a8c6902de7e9ef4556e7f7771133f68c97d18c55703fe",
+        "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+      },
+      "js": {
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

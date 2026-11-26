@@ -12,15 +12,16 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Polymorphed fire damage and its living-ant observer correction are pushed as
-`b2f5a53c` and `aaf35483`. Autoquiver's three equipment reads now pass all six
-C cases, 96 authoritative checks, seven retained gates, 45 strict workers and
-all 948 maintained recordings. Its portable checks are installed; publication
-is next. Balrog's one-line selection fix passes all four C cases and awaits
-composition. Startup gender normalization is an isolated candidate. Fire-trap
-slime cleanup has a new six-case C witness and no candidate yet. Gremlin light
-fear is queued. The latest official result remains agentic rank7 with659
-unmatched screens; its timestamp predates the three newest gameplay pushes.
+Autoquiver is pushed as `e421642b`, with all 1,239 tested Git blobs verified.
+Balrog weapon selection now reads the hero's actual weapon slot. All four C
+cases, 32 ordinary checks, 45 strict workers and 949 maintained recordings
+pass. Three retained gates pass; an older pickup assertion fails identically
+on the published baseline and is being corrected separately. Its original
+failure is preserved. The Balrog checkpoint is ready for publication.
+Startup gender and fire-trap slime cleanup have verified isolated candidates
+and are being prepared for integration. Gremlin light fear is under source
+review. The latest official result remains agentic rank7 with659 unmatched
+screens; its timestamp predates the newest gameplay pushes.
 See STATUS for exact evidence, preserved diagnostics and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.

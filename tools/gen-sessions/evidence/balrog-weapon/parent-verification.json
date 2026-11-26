@@ -1,0 +1,444 @@
+{
+  "verifiedAt": "2026-11-26T20:54:54.081990+00:00",
+  "baselineCommit": "e421642b3d8bad6bb68daa7d3ed7edc594c3d198",
+  "composition": {
+    "baselineCommit": "e421642b3d8bad6bb68daa7d3ed7edc594c3d198",
+    "baselineRuntimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+    "candidateRuntimeSHA256": "daeacc1b4429b219960c244d64ee478ecfe649932e7c959443c1b973d60a03bf",
+    "candidateSealSHA256": "dd74b63c892dbba8b28d38682fa026d8729ab38973a6f0c5f738a121015379d4",
+    "patchSHA256": "be8ec7e32fe56d89255c19f94e8e9c62de4382d821aa0284d9b1c1ffa0e88067",
+    "runtimeSHA256": "697d501632cff9fa3fb61fbfa1f972012af6e5eaf03b406004e781f643d87bd1",
+    "runtimeChanged": [
+      "js/weapon.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 4,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "3698313a8114d186e5601968a0490fec6cbabf5871a70d6ecaa7d77b791538d4",
+    "mainReportSHA256": "443b068313403f491d4ed4699f25a8f60068b713ee43769ecab3dcf6bac0800c",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/balrog-weapon-gate.mjs",
+      ".cache/restart-20261122/balrog-weapon-main-ordinary.json"
+    ],
+    "seconds": 2.086,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "3698313a8114d186e5601968a0490fec6cbabf5871a70d6ecaa7d77b791538d4",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "443b068313403f491d4ed4699f25a8f60068b713ee43769ecab3dcf6bac0800c"
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T20:45:11.849457+00:00",
+    "payloads": [
+      {
+        "source": "tools/balrog-weapon-gate.mjs",
+        "destination": "tools/balrog-weapon-gate.mjs",
+        "bytes": 17167,
+        "sha256": "271a9ca3955da63188f0ca1289c16635343dcb56c36b4be63de778a3a8522765"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/README.md",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/README.md",
+        "bytes": 1632,
+        "sha256": "64aa55d87d7daa8a68ebdb567ae95976cba5453b2ea3a4b32199b1b9f506ed7d"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/baseline-native.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/baseline-native.json",
+        "bytes": 73304,
+        "sha256": "1bef4011306b9871d45b45035e1d737f8277e67dcdc5c33c39df70d5bf72a1b8"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/baseline-observation.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/baseline-observation.json",
+        "bytes": 24949,
+        "sha256": "ba6bead856bb5d4a14f0b1339193ada9e57e1f3848208e82901a77a77a5c0295"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/candidate-native.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/candidate-native.json",
+        "bytes": 9810,
+        "sha256": "3391d2eec6286ee077d4cecc4e29ed5f49abb552d98d858092cbbde43ac4db68"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/candidate-observation.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/candidate-observation.json",
+        "bytes": 24713,
+        "sha256": "fdddb986a77ba6efd7316d982d64ad0acef932ffea609dc605922ee2fbf52638"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/candidate-seal.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/candidate-seal.json",
+        "bytes": 1087,
+        "sha256": "dd74b63c892dbba8b28d38682fa026d8729ab38973a6f0c5f738a121015379d4"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/derivation.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/derivation.json",
+        "bytes": 735,
+        "sha256": "ea7840188b93e9654ede3c4cd60d5c130cd01860a89f3b02e73da5ff53d6c2ac"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/gender-attribution.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/gender-attribution.json",
+        "bytes": 1144,
+        "sha256": "365d88c14ff21e2023a2c2f3ea80bdaf59471cfa4be2cf8e34b20742ff30d798"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-diagnostic.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-diagnostic.json",
+        "bytes": 24661,
+        "sha256": "8578db87d3aaffa8bc01a07efdf9f5701c0f919f70a707cd7b777ad5f5f9111e"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-input-lock.json",
+        "bytes": 6061,
+        "sha256": "aabfcfce7e783e8766cb92697e655315614b825fba56272c0db7d77d87ca32b5"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-native-summary.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-native-summary.json",
+        "bytes": 10618,
+        "sha256": "83612c4c20a8e307f57db8f22be52e8a005a779f52a4c74d9493df0e90249b34"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-negative-hashes.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-negative-hashes.json",
+        "bytes": 937,
+        "sha256": "7af25facbf7bf75bba3fea2a466726937d1a4ef23e3a12cb5c6a7dc47f196e88"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-probe.mjs",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-probe.mjs",
+        "bytes": 7105,
+        "sha256": "b055655f117034024b57ebfa9dcce8ffae43ed4a8e3b7a60d3689d1b09be1ec3"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-recipe.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-recipe.json",
+        "bytes": 4781,
+        "sha256": "c9d6609945576063741ff2062107130879293144541b7eb5822e32b3f95298d6"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-seal.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/male-six-wait-seal.json",
+        "bytes": 501,
+        "sha256": "dea5ec55c15553597dc05a3458583f4841b9e2e104ed6196e38ad7a2e987a527"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-diagnostic.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-diagnostic.json",
+        "bytes": 16656,
+        "sha256": "1fdbbd024a33140fa47bd050ad43dcdca0234c7f9662393b17c98011c0fb41ca"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-input-lock.json",
+        "bytes": 4729,
+        "sha256": "3a7ddd605174925b2bc5f0f6ad9dd52f895443f049ebd8105465d1fe7ba84cba"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-negative-hashes.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-negative-hashes.json",
+        "bytes": 937,
+        "sha256": "57f4ef0ceab1bd0b2d2a0a523177dec4777e7ab3295efa9ea7395103705761f0"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-probe.mjs",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-probe.mjs",
+        "bytes": 6938,
+        "sha256": "8fca661b13c80f90f6a9e609ae0e12e2b9e58d35cb78925805916e9377a3a292"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-recipe.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-recipe.json",
+        "bytes": 3384,
+        "sha256": "adf425cd2fc137372c68fda90abd034c56449031cb5c9f7cfb2b53f6caa1213a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-seal.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/one-wait-seal.json",
+        "bytes": 523,
+        "sha256": "dd3e8877960cf6b71ddf659785bda7ef3a4c28ac6547fc5b3672b82ec5087893"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/history/valid-source-review.md",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/history/valid-source-review.md",
+        "bytes": 1817,
+        "sha256": "bef0ad7fdf4b7504aa776df26e1d670323cd6fcd67cc6fd3768f02283651ef96"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/input-lock.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/input-lock.json",
+        "bytes": 6001,
+        "sha256": "6dbebd8897131ac4d7565a9df04c24c29a6d3afbfa9c5ffdd07b8af91a477279"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/native-preflight.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/native-preflight.json",
+        "bytes": 372,
+        "sha256": "06d0331389a759b49661dd74a95e63bafb6be4136904ac3c200f89ebb37e91e2"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/negative-hashes.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/negative-hashes.json",
+        "bytes": 937,
+        "sha256": "d3447a21f6cb1bd9323e046cd5f73a48c6073b25f5a40d6b8ce4c5accf95115a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/ordinary-original.mjs",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/ordinary-original.mjs",
+        "bytes": 7174,
+        "sha256": "55edcb004f44c05f949bc16edad98bab66b8a35a59387e8973d95ef96f84815c"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/parent-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/parent-input-lock.json",
+        "bytes": 451,
+        "sha256": "f2247b5d889eb194ebe014f38cc1dd0801504280aa97ed3076c003326ce5ce02"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/predictions.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/predictions.json",
+        "bytes": 435,
+        "sha256": "c4d58b3a532f59bf340fc4f8e7aedcad18ebc70cb04fc53a324ae9f9cd7b6718"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/provenance.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/provenance.json",
+        "bytes": 1569,
+        "sha256": "a19a44ac60f39d4c0a9f0ab84eb3a1272e70d227b67caab69e0a30a3c41451a3"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/recording-receipt.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/recording-receipt.json",
+        "bytes": 1620,
+        "sha256": "6399837221262d851b48f6f91d97b3a0507126b0ef79a1e14e0a2323a39693fd"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/source-review.md",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/source-review.md",
+        "bytes": 2925,
+        "sha256": "26863d6d6c5caee6c26e3c451662fb8044ebcbfec5a488146ae3a5294ff97054"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/balrog-weapon/source-seal.json",
+        "destination": "tools/gen-sessions/evidence/balrog-weapon/source-seal.json",
+        "bytes": 501,
+        "sha256": "dfb88913ce2d5164e7f3008e8ea997ebd3b76a99d2c365cb3eb7d80ba2b48f74"
+      },
+      {
+        "source": "tools/gen-sessions/recipes/balrog-weapon-valid.json",
+        "destination": "tools/gen-sessions/recipes/balrog-weapon-valid.json",
+        "bytes": 5044,
+        "sha256": "a8ef6b987fabbec9dcfd2066f2023b26ec395298713b9df264fce9d48918bb93"
+      }
+    ],
+    "raw": {
+      "source": "tools/gen-sessions/generated/balrog-weapon-valid.session.json",
+      "destination": "tools/gen-sessions/generated/balrog-weapon-valid.session.json",
+      "bytes": 767534,
+      "sha256": "633c0e7ffac330591af55781453678c33f898707e1b64b54c50b2058783ea118",
+      "policy": "Copy exact linked bytes only if absent; accept an existing canonical file only with this exact SHA256. Never rewrite metadata."
+    },
+    "promotionSealSHA256": "185e2d61061fb1f6b8c1c15249df390f178c5b4a3634448477a3c7c92caf6b88",
+    "branchRowsBefore": 4778,
+    "branchRowsAfter": 4782,
+    "coverageRows": 111,
+    "coverageSHA256Unchanged": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197"
+  },
+  "retained": [
+    {
+      "name": "monster-wield-location-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-wield-location-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.688,
+      "log": ".cache/restart-20261122/balrog-weapon-valid-retained-monster-wield-location-state-gate.log",
+      "sha256": "844cb55b5c04c59e1861fed60d037641b1dacd6d3a75eda441c2b76976c34459"
+    },
+    {
+      "name": "monster-wield-location-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-wield-location-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.107,
+      "log": ".cache/restart-20261122/balrog-weapon-valid-retained-monster-wield-location-input-gate.log",
+      "sha256": "c1b20ee259b6b9e863a2ff05f331644fe84adc71772e89de63c0c6ae242b53f3"
+    },
+    {
+      "name": "monster-pickup-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-pickup-state-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 2.111,
+      "log": ".cache/restart-20261122/balrog-weapon-valid-retained-monster-pickup-state-gate.log",
+      "sha256": "4a9452efd26a99675730bf45bd692f9098ea96b2cec3b6f3ed2b449dd4c60f9f"
+    },
+    {
+      "name": "getmattk-cancelled-weapon-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/getmattk-cancelled-weapon-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.568,
+      "log": ".cache/restart-20261122/balrog-weapon-valid-retained-getmattk-cancelled-weapon-state-gate.log",
+      "sha256": "7cefe4cec5cb458e423bd096cb4ba3849dbd8ce070935f156f9ac8c52d262496"
+    }
+  ],
+  "retainedFailureBaseline": {
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "--max-old-space-size=512",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/balrog-retained-monster-pickup-baseline/tools/monster-pickup-state-gate.mjs"
+    ],
+    "exit": 1,
+    "seconds": 2.479,
+    "logSHA256": "ed043e9d7bbf830174260ca4f3e4c10a907e281fe9e20692641f36718612fbb3",
+    "baselineCommit": "e421642b3d8bad6bb68daa7d3ed7edc594c3d198",
+    "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+    "sameCompleteAssertionDiff": true,
+    "unchangedGate": true
+  },
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/balrog-weapon-valid.session.json"
+    ],
+    "exit": 0,
+    "seconds": 29.927,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/balrog-weapon-valid-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T20:51:51.097639+00:00",
+    "sessions": 949,
+    "passed": 949,
+    "failures": [],
+    "totals": {
+      "screens": 947642,
+      "cursors": 947642,
+      "rngCalls": 20788700,
+      "animFrames": 33218
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 949,
+    "allFilesFixed": 1240,
+    "allFilesSHA256": "47580b82b7846456090f0febbaf3dadfb38e798bdb9751e564fe083f44c1d716",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T20:41:32.714201+00:00",
+      "workers": 2,
+      "pid": 3615275,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.22216796875,
+        1.77880859375,
+        2.33544921875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "47580b82b7846456090f0febbaf3dadfb38e798bdb9751e564fe083f44c1d716"
+    },
+    "logs": {
+      "shard-0.log": "4d7555d06d698835a4d974883be8d75a9b8953f92631d064310289d16ebdfc58",
+      "shard-1.log": "d0c302aa898614c3e135fea914fc0415584222e6a99c9f5751240b73c9be3eb6"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "97cd53f20e6f9381852457f2a8819170cf7e93fc537e23b0e458fc3d258f4e70",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/balrog-weapon-valid-full949-js-20261126",
+  "limits": [
+    "949 recordings establish corpus parity, not whole-port completion or a held-out result.",
+    "Only the select_hwep hero weapon-slot read changes.",
+    "The retained pickup gate fails identically on baseline and composition; three of four retained gates pass. The post-free object assertion is being corrected separately.",
+    "Original one-wait and invalid-male input diagnostics remain preserved."
+  ]
+}

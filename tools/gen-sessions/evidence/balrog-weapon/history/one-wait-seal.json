@@ -1,0 +1,12 @@
+{
+  "members": 10,
+  "manifestSHA256": "87dbd30f72ea03621038abda54abc71eb277480c517b6d57e8867b28a32a3c0e",
+  "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+  "producer": "0/4",
+  "source": "0/4",
+  "checks": "20/32",
+  "neutrality": "8/8",
+  "CExecutions": 0,
+  "negativeHashes": 10,
+  "diagnostic": "Actual hero slots and real hostile Balrogs are present, but no wield action reached after one wait. Preserve this failed family; do not claim a demonstrated runtime defect from it."
+}

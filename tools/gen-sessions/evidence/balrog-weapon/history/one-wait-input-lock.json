@@ -1,0 +1,136 @@
+{
+  "beforeGameplayAndCandidate": true,
+  "lockedAt": "2026-11-26T19:56:11.329704+00:00",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wielded-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wielded-dagger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "\u0017uncursed dagger\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "carried-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "alternate-sword"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 102200
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "\u0017uncursed long sword\r\u001b\u001b\u001b\u001b\u001b\u001bwa\u001b\u001b\u001b\u001b\u001b\u001bx\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile balrog\r\u001b\u001b\u001b\u001b\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ]
+  ],
+  "keys": 251,
+  "negativeIndexes": [
+    2,
+    3
+  ],
+  "files": {
+    "recipe.json": "adf425cd2fc137372c68fda90abd034c56449031cb5c9f7cfb2b53f6caa1213a",
+    "predictions.json": "c4d58b3a532f59bf340fc4f8e7aedcad18ebc70cb04fc53a324ae9f9cd7b6718",
+    "runtime.json": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "SOURCE-REVIEW.md": "a6eda07c100d460f43015e2d713e9396a60b33cf376cb3cf7005a534e88eeae3",
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "probeSHA256": "8fca661b13c80f90f6a9e609ae0e12e2b9e58d35cb78925805916e9377a3a292",
+  "maintainedProfileSHA256": "37af556b874c05908a57822310346edbc661c60e463f6c7d67a9477903f387e4"
+}

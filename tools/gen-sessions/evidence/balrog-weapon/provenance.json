@@ -1,0 +1,39 @@
+{
+  "sourcePacket": ".cache/restart-20261122/balrog-weapon-valid-source-audit",
+  "sourceSealSHA256": "dfb88913ce2d5164e7f3008e8ea997ebd3b76a99d2c365cb3eb7d80ba2b48f74",
+  "candidatePacket": ".cache/restart-20261122/balrog-weapon-valid-candidate",
+  "candidateSealSHA256": "dd74b63c892dbba8b28d38682fa026d8729ab38973a6f0c5f738a121015379d4",
+  "originalRecipeSHA256": "a8ef6b987fabbec9dcfd2066f2023b26ec395298713b9df264fce9d48918bb93",
+  "rawSHA256": "633c0e7ffac330591af55781453678c33f898707e1b64b54c50b2058783ea118",
+  "archivedNative": {
+    "baseline": "2/4",
+    "candidate": "4/4",
+    "freshPromotionNativeReplays": 0
+  },
+  "history": [
+    {
+      "family": "one-wait",
+      "sourcePacket": ".cache/restart-20261122/balrog-weapon-source-audit",
+      "sourceSealSHA256": "dd3e8877960cf6b71ddf659785bda7ef3a4c28ac6547fc5b3672b82ec5087893",
+      "checks": "20/32",
+      "producer": "0/4",
+      "source": "0/4",
+      "native": null
+    },
+    {
+      "family": "male-six-wait",
+      "sourcePacket": ".cache/restart-20261122/balrog-weapon-wait-source-audit",
+      "sourceSealSHA256": "dea5ec55c15553597dc05a3458583f4841b9e2e104ed6196e38ad7a2e987a527",
+      "checks": "30/32",
+      "producer": "4/4",
+      "source": "2/4",
+      "native": "0/4"
+    }
+  ],
+  "limits": [
+    "M2_GIANT versus S_GIANT remains unchanged and untested.",
+    "Invalid startup gender is a separate owner.",
+    "No artifacts, shield, silver contact, petrifying corpse or alternative caller closure.",
+    "Parent owns current-main composition and fresh native comparison."
+  ]
+}

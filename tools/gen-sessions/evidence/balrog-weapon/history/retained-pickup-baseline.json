@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/balrog-retained-monster-pickup-baseline/tools/monster-pickup-state-gate.mjs"
+  ],
+  "exit": 1,
+  "seconds": 2.479,
+  "logSHA256": "ed043e9d7bbf830174260ca4f3e4c10a907e281fe9e20692641f36718612fbb3",
+  "baselineCommit": "e421642b3d8bad6bb68daa7d3ed7edc594c3d198",
+  "runtimeSHA256": "496c8a939f04187f81463c851cd288d48475af7b8f4573b15cb8b43dffebf87a",
+  "sameCompleteAssertionDiff": true,
+  "unchangedGate": true
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "segment": 0,
+    "name": "valid-wait-wielded-sword",
+    "boundaries": {
+      "expected": 152,
+      "actual": 152
+    },
+    "frozenScreens": 152,
+    "fullStyleScreens": 152,
+    "matchingStyleCells": 291840,
+    "totalCells": 291840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 152,
+      "actual": 152,
+      "matched": 152,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2705,
+      "rawActual": 2705,
+      "discardedEntries": 0,
+      "expected": 2705,
+      "actual": 2705,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 152,
+      "actual": 152,
+      "matched": 152,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 152,
+      "actualSlices": 152,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "08fa08b94393230eca6e5e6c45f4fbd448dfdf019c5254c2563e37e7ad66c50c",
+        "cursors": "6bf8c8f3bcd34539324697333148056aee01fda3fdee48ec618229065836a685",
+        "calls": "cc09e6c9ec7d354c2de63404b46d8cc23b0eedb8f16ec7f9d48e45b56ce35b98",
+        "slices": "6a1930c890fa122ba40f2c20cc5fbf11640699ca797305e41a5b54488fb6fa1c",
+        "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+      },
+      "js": {
+        "screens": "f444c41f55bfcfc2a422246f1797f15d70d95cb9042f7cbdb57698f31d151b0c",
+        "cursors": "6bf8c8f3bcd34539324697333148056aee01fda3fdee48ec618229065836a685",
+        "calls": "837de6abc3c5cb3dce2e33681c7191318def9edc630d1af63e32433b9e0ec1cb",
+        "slices": "abd641ab03e3e7469b76151b37742cae013ce6338c6ceb18c9de0f9a2561b25d",
+        "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "837de6abc3c5cb3dce2e33681c7191318def9edc630d1af63e32433b9e0ec1cb",
+        "slices": "abd641ab03e3e7469b76151b37742cae013ce6338c6ceb18c9de0f9a2561b25d"
+      },
+      "js": {
+        "calls": "837de6abc3c5cb3dce2e33681c7191318def9edc630d1af63e32433b9e0ec1cb",
+        "slices": "abd641ab03e3e7469b76151b37742cae013ce6338c6ceb18c9de0f9a2561b25d"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "valid-wait-wielded-dagger",
+    "boundaries": {
+      "expected": 148,
+      "actual": 148
+    },
+    "frozenScreens": 148,
+    "fullStyleScreens": 148,
+    "matchingStyleCells": 284160,
+    "totalCells": 284160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 148,
+      "actual": 148,
+      "matched": 148,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2705,
+      "rawActual": 2705,
+      "discardedEntries": 0,
+      "expected": 2705,
+      "actual": 2705,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 148,
+      "actual": 148,
+      "matched": 148,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 148,
+      "actualSlices": 148,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "d21c00dfdfee90675b0e2ff4a86ea973debe186f3afa73ebe5854ba976bfc2f1",
+        "cursors": "1ded1c028cb732916ff482b0193d97ccb78f71a5b6db2103c78ce612d4770f12",
+        "calls": "3d02a31d9c6ffe8d184dd4578816657b4547d51199e4bd66049ae28b33b92aa9",
+        "slices": "105c2a57afaf2dfabe0c7352c42b5c1576ea11c69a3b4be26ba7f01ca9e3ba41",
+        "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+      },
+      "js": {
+        "screens": "2ffca7841242adbda3a8d3c1a2908331af2c166d4f2a623f1947895395461d32",
+        "cursors": "1ded1c028cb732916ff482b0193d97ccb78f71a5b6db2103c78ce612d4770f12",
+        "calls": "78619801e10aec5a01af05f951418d92fb288f6e5c3f08079dd5b552346ea3b8",
+        "slices": "05897516527cbd8d0a9bc63033598fad93bf8f4641ee03b16b5527e6b5123d97",
+        "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "78619801e10aec5a01af05f951418d92fb288f6e5c3f08079dd5b552346ea3b8",
+        "slices": "05897516527cbd8d0a9bc63033598fad93bf8f4641ee03b16b5527e6b5123d97"
+      },
+      "js": {
+        "calls": "78619801e10aec5a01af05f951418d92fb288f6e5c3f08079dd5b552346ea3b8",
+        "slices": "05897516527cbd8d0a9bc63033598fad93bf8f4641ee03b16b5527e6b5123d97"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "valid-wait-carried-sword",
+    "boundaries": {
+      "expected": 144,
+      "actual": 144
+    },
+    "frozenScreens": 144,
+    "fullStyleScreens": 144,
+    "matchingStyleCells": 276480,
+    "totalCells": 276480,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 144,
+      "actual": 144,
+      "matched": 144,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2707,
+      "rawActual": 2707,
+      "discardedEntries": 0,
+      "expected": 2707,
+      "actual": 2707,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 144,
+      "actual": 144,
+      "matched": 144,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 144,
+      "actualSlices": 144,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "390eea7c3702e1788b3d081c7623ec5c4062cdfaf2741b0e0ad2b96a370c0300",
+        "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+        "calls": "cccc1a47b8fb026e9b11664edd38ac18ba5cfc348c04a9177ae44cae3f45647a",
+        "slices": "0612469afa01098ca5ae309c381a6923c357b96254e214139155ae66f1e3c7b4",
+        "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+      },
+      "js": {
+        "screens": "d378de1772c1ae6669f651325faad9a1c3b18afad643278e22b393610de9fd2f",
+        "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2",
+        "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+      },
+      "js": {
+        "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+        "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "valid-wait-alternate-sword",
+    "boundaries": {
+      "expected": 159,
+      "actual": 159
+    },
+    "frozenScreens": 159,
+    "fullStyleScreens": 159,
+    "matchingStyleCells": 305280,
+    "totalCells": 305280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2713,
+      "rawActual": 2713,
+      "discardedEntries": 0,
+      "expected": 2713,
+      "actual": 2713,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 159,
+      "actualSlices": 159,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "0651ecf39ba57835c2f18b572c7ff5a97d9c1b5065a9237f3b61c026820e622b",
+        "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+        "calls": "80f5c6694668d94c8d326ad3c6bdee2cf1ac9c7729a00ff4a12249e3f77715f7",
+        "slices": "80d72db3e1d0450a6f3539af1f811777a34a7e481a25aeb54631a4adf8194580",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      },
+      "js": {
+        "screens": "976499931c068c88cd8a8c6902de7e9ef4556e7f7771133f68c97d18c55703fe",
+        "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+      },
+      "js": {
+        "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+        "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

@@ -1,0 +1,9 @@
+# Valid role input isolates weapon selection
+
+The original one-wait source10 and the level30 wait source10 remain sealed and unchanged. The latter reaches all four setups, but original C shows an independent pre-combat gender difference in all four styled reports. Its negative cases have exact C random streams, cursors and frames. Parent attribution is retained at ../balrog-weapon-wait-parent-attribution.json.
+
+C role.c:493-529 allows ROLE_FEMALE for Valkyrie. Complete C role_init1980-2123 corrects invalid flags.female and initgend at2007-2015, while complete JS role_init395-467 omits those checks. Complete C/JS validgend, rank_of and xlev_to_rank were read; JSallmain310 copies initgend into flags.female. C raw first differs at step26 with Woman-at-arms. This is a separate startup defect, now assigned for source-driven coverage. It is not removed from the failure ledger.
+
+This distinct family changes only gender:male to gender:female in each RC, plus new family/segment/branch names and corresponding primary metadata. Every seed, date and action key remains unchanged. Both C and JS should now have the valid female role from entry. An additional passive field and assertion verify actual female state at monster creation; original weapon and setup assertions remain. C primary predicates additionally require the role's female rank titles. No runtime changes or previous evidence rewrites occur.
+
+Two armed cases still predict bullwhip selection. Carried-only and alternate-only cases remain the preselected negative controls. One sequential512MB55s observed/plain/deferred batch runs after the new lock. The original C recording will be separate and performed once only after source setup verification. This does not claim to repair the invalid-gender producer or the separate giant-class predicate.

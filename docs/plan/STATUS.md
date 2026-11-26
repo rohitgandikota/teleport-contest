@@ -1,5 +1,50 @@
 # STATUS — live handoff board
 
+## 2026-11-26: autoquiver published; Balrog verified on full949
+
+Published main is e421642b3d8bad6bb68daa7d3ed7edc594c3d198. All 1,239
+full948 tested Git blobs match publication. Receipt SHA256:
+9809a34668e802991aff402a767691171baf924160c9667ae1237288e83695a3.
+
+The only current runtime change is weapon.js: select_hwep reads game.u.uwep.
+Candidate339 and fresh parent composition both pass all four original C cases,
+versus two on baseline. Their complete native reports match. Runtime-map SHA:
+697d501632cff9fa3fb61fbfa1f972012af6e5eaf03b406004e781f643d87bd1.
+Promotion62 is sealed and its 34 payloads plus original raw are installed.
+Fresh installed checks pass in 2.086s, exactly matching the portable report:
+32 checks, eight neutrality comparisons, ten negative hashes and both complete
+ordinary/native negative rows. Four registry rows bring the total to 4,782;
+aggregate coverage remains 111. The one-wait and invalid-male diagnostics stay
+preserved. This fix makes no claim about the separate giant-class predicate.
+
+Full949 passes on NFS, two CPU workers, default45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/balrog-weapon-valid-full949-js-20261126.
+PID3615275 completed at20:51Z. All949 recordings pass, with947,642 screens and
+cursors,20,788,700 random calls and33,218 frames. All1,240 files are fixed.
+All-files SHA256:
+47580b82b7846456090f0febbaf3dadfb38e798bdb9751e564fe083f44c1d716.
+Verification SHA256:
+97cd53f20e6f9381852457f2a8819170cf7e93fc537e23b0e458fc3d258f4e70.
+All45 strict workers pass and source audit is empty. Three retained gates pass.
+monster-pickup-state-gate fails at its post-free original.where assertion on
+both baseline and composition, with identical complete assertion differences.
+C mkobj.c:2745-2843 stages OBJ_DELETED only until dobjsfree, then clears and
+frees the object. A separate source-backed observer correction is pending;
+this checkpoint does not claim four retained passes. Public parent proof and
+both original failure logs are under evidence/balrog-weapon. Next: verify the
+staged tree, commit and immediately push.
+
+Euclid's dofiretrap-slime candidate334 is sealed and independently verified.
+Only one awaited burn_away_slime call is added after damage and before armor.
+It passes54/54 and native6/6, versus50/54 and4/6. All20 negative hashes, four
+complete ordinary/native rows and ten prior healthy hashes remain exact.
+Seal:2a3681eed9b7e01334c57de370f45e24c1ee5ee6e4b4d6d8b21fdd07a0138568.
+Euclid owns its portable promotion. Sartre owns role-init-gender promotion:
+candidate321 passes44/44 and native4/4, with15 negative hashes and the retained
+welcome/restore checks intact. The C selector attribution limit stays explicit.
+Leibniz owns source-only gremlin light fear on fixed autoquiver runtime496.
+No gremlin candidate or new C recording is authorized yet.
+
 ## 2026-11-26: autoquiver checkpoint verified on full948
 
 Published main is aaf3548321d4c819972ae7b99e6461da7318f869. Both the fire

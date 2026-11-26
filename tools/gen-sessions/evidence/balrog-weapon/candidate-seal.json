@@ -1,0 +1,26 @@
+{
+  "members": 339,
+  "manifestSHA256": "ab996d2aa7b3c114972024d672d754330f3ec101712c437daad15bb4fbdd299a",
+  "runtimeSHA256": "daeacc1b4429b219960c244d64ee478ecfe649932e7c959443c1b973d60a03bf",
+  "baselineRuntimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+  "sourceSealSHA256": "dfb88913ce2d5164e7f3008e8ea997ebd3b76a99d2c365cb3eb7d80ba2b48f74",
+  "preEditLockSHA256": "05a8047d2a17ffea1f5cd4020874101b1c2bc308ed5fa15c6fcd7dff89417134",
+  "workerLockSHA256": "051c06d082180e9e679d162c04168dad912eab2724e317fcc4557b9bc40af328",
+  "patchSHA256": "be8ec7e32fe56d89255c19f94e8e9c62de4382d821aa0284d9b1c1ffa0e88067",
+  "rawSHA256": "633c0e7ffac330591af55781453678c33f898707e1b64b54c50b2058783ea118",
+  "runtimeMembers": 280,
+  "linkedRuntimeMembers": 279,
+  "changedRuntimePaths": [
+    "js/weapon.js"
+  ],
+  "sourceChecks": "32/32",
+  "nativeCases": "4/4",
+  "negativeRows": [
+    2,
+    3
+  ],
+  "negativeHashes": 10,
+  "nativeReportSHA256": "3391d2eec6286ee077d4cecc4e29ed5f49abb552d98d858092cbbde43ac4db68",
+  "CExecutions": 0,
+  "candidateOnly": true
+}

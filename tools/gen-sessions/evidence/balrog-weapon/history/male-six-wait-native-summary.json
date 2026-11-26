@@ -1,0 +1,314 @@
+{
+  "sourcePath": ".cache/restart-20261122/balrog-weapon-wait-parent-review/baseline-native.json",
+  "sourceSHA256": "c4cfca455a5eb9eb2a71913cd28bb4e57ca8955a33dc832b391d0c6d5d2e26a8",
+  "bytes": 399956,
+  "cases": 4,
+  "exactCases": 0,
+  "rows": [
+    {
+      "segment": 0,
+      "name": "wait-wielded-sword",
+      "fullStyleExact": false,
+      "frozenScreenCursorExact": false,
+      "fullRngExact": false,
+      "animationExact": true,
+      "firstStyleDifference": {
+        "step": 26,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1907,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 13,
+        "firstFullStyleDifference": {
+          "x": 11,
+          "y": 22,
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 11,
+          "y": 22,
+          "kind": "ch",
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      "firstRngDifference": {
+        "index": 2652,
+        "c": "rnd(2)=2",
+        "js": "rnd(4)=4"
+      },
+      "rawHashes": {
+        "c": {
+          "screens": "08fa08b94393230eca6e5e6c45f4fbd448dfdf019c5254c2563e37e7ad66c50c",
+          "cursors": "6bf8c8f3bcd34539324697333148056aee01fda3fdee48ec618229065836a685",
+          "calls": "cc09e6c9ec7d354c2de63404b46d8cc23b0eedb8f16ec7f9d48e45b56ce35b98",
+          "slices": "6a1930c890fa122ba40f2c20cc5fbf11640699ca797305e41a5b54488fb6fa1c",
+          "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+        },
+        "js": {
+          "screens": "699d8ae82cadbe6ee29c613d000f3e0d11ec3d9d5b731ea1c717f272e2eefd7c",
+          "cursors": "dede665967f9dee119458b780c2087d22618980e7c42be907da6b4935748dafa",
+          "calls": "377be64999128ff40cc579c169a2fc909cca05a927e1d4ab8f7fa8993ea7a66b",
+          "slices": "98fc8ef0b65ec2595e4007a29f2f469620952b301627421fd1f9a47458cc7c3e",
+          "frames": "2b59ec31c560f30293ddbad37ff1ce7c4adf5f12671a4c5851e13ee0a547eea9"
+        }
+      },
+      "normalizedHashes": {
+        "c": {
+          "calls": "837de6abc3c5cb3dce2e33681c7191318def9edc630d1af63e32433b9e0ec1cb",
+          "slices": "abd641ab03e3e7469b76151b37742cae013ce6338c6ceb18c9de0f9a2561b25d"
+        },
+        "js": {
+          "calls": "377be64999128ff40cc579c169a2fc909cca05a927e1d4ab8f7fa8993ea7a66b",
+          "slices": "98fc8ef0b65ec2595e4007a29f2f469620952b301627421fd1f9a47458cc7c3e"
+        }
+      }
+    },
+    {
+      "segment": 1,
+      "name": "wait-wielded-dagger",
+      "fullStyleExact": false,
+      "frozenScreenCursorExact": false,
+      "fullRngExact": false,
+      "animationExact": true,
+      "firstStyleDifference": {
+        "step": 26,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1907,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 13,
+        "firstFullStyleDifference": {
+          "x": 11,
+          "y": 22,
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 11,
+          "y": 22,
+          "kind": "ch",
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      "firstRngDifference": {
+        "index": 2652,
+        "c": "rnd(2)=2",
+        "js": "rnd(4)=4"
+      },
+      "rawHashes": {
+        "c": {
+          "screens": "d21c00dfdfee90675b0e2ff4a86ea973debe186f3afa73ebe5854ba976bfc2f1",
+          "cursors": "1ded1c028cb732916ff482b0193d97ccb78f71a5b6db2103c78ce612d4770f12",
+          "calls": "3d02a31d9c6ffe8d184dd4578816657b4547d51199e4bd66049ae28b33b92aa9",
+          "slices": "105c2a57afaf2dfabe0c7352c42b5c1576ea11c69a3b4be26ba7f01ca9e3ba41",
+          "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+        },
+        "js": {
+          "screens": "e69399e02c0973753c4389cf88ae23aea58773d7ad0b095c9d731f4e70bd5088",
+          "cursors": "f6e24a480bf76311221e62176e3472f76c5d9b0c3d50ad21084a494e1ce98421",
+          "calls": "3a74eb05c79a4a959b2ebee10e67744f50f50eeca0bff3e0282c4b7bb4cb1052",
+          "slices": "5d964a135b021ff530f0eddb5521115fee787d92f3481bc45cc049eca8f9aede",
+          "frames": "cbee0afeca848291bd11222e81d62d98fad3aee9070fe99c12b332277a16bb73"
+        }
+      },
+      "normalizedHashes": {
+        "c": {
+          "calls": "78619801e10aec5a01af05f951418d92fb288f6e5c3f08079dd5b552346ea3b8",
+          "slices": "05897516527cbd8d0a9bc63033598fad93bf8f4641ee03b16b5527e6b5123d97"
+        },
+        "js": {
+          "calls": "3a74eb05c79a4a959b2ebee10e67744f50f50eeca0bff3e0282c4b7bb4cb1052",
+          "slices": "5d964a135b021ff530f0eddb5521115fee787d92f3481bc45cc049eca8f9aede"
+        }
+      }
+    },
+    {
+      "segment": 2,
+      "name": "wait-carried-sword",
+      "fullStyleExact": false,
+      "frozenScreenCursorExact": false,
+      "fullRngExact": true,
+      "animationExact": true,
+      "firstStyleDifference": {
+        "step": 26,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1907,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 13,
+        "firstFullStyleDifference": {
+          "x": 11,
+          "y": 22,
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 11,
+          "y": 22,
+          "kind": "ch",
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      "firstRngDifference": null,
+      "rawHashes": {
+        "c": {
+          "screens": "390eea7c3702e1788b3d081c7623ec5c4062cdfaf2741b0e0ad2b96a370c0300",
+          "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+          "calls": "cccc1a47b8fb026e9b11664edd38ac18ba5cfc348c04a9177ae44cae3f45647a",
+          "slices": "0612469afa01098ca5ae309c381a6923c357b96254e214139155ae66f1e3c7b4",
+          "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+        },
+        "js": {
+          "screens": "7622e96e2deaeada2207e78a33f03441a2c2d4acdfccece5036c2ca3c6c6ed5b",
+          "cursors": "802ce29477606722ef3dfeec852cd9909fe939ac59893d2ed609243fb35373f9",
+          "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+          "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2",
+          "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+        }
+      },
+      "normalizedHashes": {
+        "c": {
+          "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+          "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+        },
+        "js": {
+          "calls": "e339d78509ba4d1e5015a0de2eb82b4602c3bd0eedb93d29b814c846838cfe2d",
+          "slices": "5609809622ef363ec4b43ab765c1eb58253d3e7895d4f316de396066371d06d2"
+        }
+      }
+    },
+    {
+      "segment": 3,
+      "name": "wait-alternate-sword",
+      "fullStyleExact": false,
+      "frozenScreenCursorExact": false,
+      "fullRngExact": true,
+      "animationExact": true,
+      "firstStyleDifference": {
+        "step": 26,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1907,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 13,
+        "firstFullStyleDifference": {
+          "x": 11,
+          "y": 22,
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 11,
+          "y": 22,
+          "kind": "ch",
+          "c": {
+            "ch": "W",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "M",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      "firstRngDifference": null,
+      "rawHashes": {
+        "c": {
+          "screens": "0651ecf39ba57835c2f18b572c7ff5a97d9c1b5065a9237f3b61c026820e622b",
+          "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+          "calls": "80f5c6694668d94c8d326ad3c6bdee2cf1ac9c7729a00ff4a12249e3f77715f7",
+          "slices": "80d72db3e1d0450a6f3539af1f811777a34a7e481a25aeb54631a4adf8194580",
+          "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+        },
+        "js": {
+          "screens": "d63fa389d55efccacdf805c8969b67b01fe9dc39488dfd30444f90c8d163e0fa",
+          "cursors": "7172f6d4c02c205cd0cad2f95094354520a810bbcb61f38a7467f32156bec8ba",
+          "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+          "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a",
+          "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+        }
+      },
+      "normalizedHashes": {
+        "c": {
+          "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+          "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+        },
+        "js": {
+          "calls": "d589d213ccdb352302a40135d6e7791546846d1ff3122186ebe5961519be3cd1",
+          "slices": "f463adec14bab87cb8c6f7590119140e4e043855ec68d87cce692291abb76e9a"
+        }
+      }
+    }
+  ],
+  "attribution": "Independent invalid male Valkyrie startup gender, first visible at step26. Both negative styled rows fail; they are not native passes."
+}

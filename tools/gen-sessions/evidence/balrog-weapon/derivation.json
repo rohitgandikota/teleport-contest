@@ -1,0 +1,29 @@
+{
+  "originalProbeSHA256": "55edcb004f44c05f949bc16edad98bab66b8a35a59387e8973d95ef96f84815c",
+  "start": "const {runSegment} = await import",
+  "end": "verifyRuntime();",
+  "originalBodySHA256": "64d83066511822ff09b94a877198d4c53382bda57621f1bacef1edc1b36f1174",
+  "portableBodySHA256": "44b720800cf5e64603c3386baa84ddd118de9f54940ed61621453b444d82ef31",
+  "importRelocations": [
+    [
+      "./js/",
+      "../js/"
+    ],
+    [
+      "./frozen/",
+      "../frozen/"
+    ],
+    [
+      "./tools/half-damage-reader-observe.mjs",
+      "./half-damage-reader-observe.mjs"
+    ]
+  ],
+  "assertionEdits": 0,
+  "runtimeBodyEdits": 0,
+  "liveBindingFix": false,
+  "retainedStateHashFields": [
+    "created",
+    "wielded",
+    "final"
+  ]
+}

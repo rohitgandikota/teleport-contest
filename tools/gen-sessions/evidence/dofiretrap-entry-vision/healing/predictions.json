@@ -1,0 +1,50 @@
+[
+  {
+    "index": 0,
+    "name": "blind-full-healing-fire",
+    "before": 231,
+    "potion": "full healing",
+    "blind": true,
+    "fire": true,
+    "cure": true,
+    "negative": false,
+    "visible": false,
+    "smell": true
+  },
+  {
+    "index": 1,
+    "name": "blind-uncursed-healing-fire",
+    "before": 226,
+    "potion": "healing",
+    "blind": true,
+    "fire": true,
+    "cure": false,
+    "negative": true,
+    "visible": false,
+    "smell": true
+  },
+  {
+    "index": 2,
+    "name": "sighted-full-healing-fire",
+    "before": 207,
+    "potion": "full healing",
+    "blind": false,
+    "fire": true,
+    "cure": false,
+    "negative": true,
+    "visible": true,
+    "smell": false
+  },
+  {
+    "index": 3,
+    "name": "blind-full-healing-look",
+    "before": 231,
+    "potion": "full healing",
+    "blind": true,
+    "fire": false,
+    "cure": false,
+    "negative": true,
+    "visible": false,
+    "smell": false
+  }
+]

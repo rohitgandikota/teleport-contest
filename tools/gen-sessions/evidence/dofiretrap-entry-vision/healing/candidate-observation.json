@@ -1,0 +1,4297 @@
+[
+  {
+    "index": 0,
+    "name": "blind-full-healing-fire",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real iron form has the selected entry sight at the dry unseen trap",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twelve real paper scrolls occupy the trap square",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twenty unprotected carried potions have the selected type",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary movement returns to the trap and produces the declared fire",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "fire actually consumes carried potions and floor paper",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "only full-healing vapor cures the real entry blindness",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish with the hero alive in the same form",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "visible paper feedback follows sight at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "paper-smell feedback follows blindness at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "look preserves objects and sight with source-backed time cost",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 231,
+      "turn": 8,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": true,
+      "blinded": 100,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 20,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 12,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "after": {
+      "step": 247,
+      "turn": 12,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 115,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": false,
+      "blinded": 0,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 1,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 14,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 5,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "during": [
+      {
+        "step": 232,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          59,
+          6
+        ],
+        "terrain": 26,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": []
+      },
+      {
+        "step": 233,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 234,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 235,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 236,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 237,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 238,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 239,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 240,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 241,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 242,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 243,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 244,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 245,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 246,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 247,
+        "turn": 12,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 115,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 1,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 14,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 5,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "actionMessages": [
+      "",
+      "You try to feel what is lying here on the floor.--More--",
+      "You feel here 12 scrolls labeled ZELGO MER.--More--",
+      "A tower of flame erupts from the floor!--More--",
+      "The slime that covers you is burned away!--More--",
+      "Some of your dark green potions boil and explode!  You can see again.--More--",
+      "Call a dark green potion:",
+      "You smell paper burning."
+    ],
+    "statesSHA256": "d11a2e150b2d032b0971b2efedb0debd566518520c7ca406d21972460654f71f",
+    "outputHashes": {
+      "screens": "af11f5995c3f3485e26af1f35106ec987cae0c03bc2b5103f496e430a96892e2",
+      "cursors": "4e060b04371114a4eff31552d6c00ac10746b39583c691766bec5846d760b2a2",
+      "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+      "slices": "efda65bc238a9538bda9ea8d50cb27da61cbc2723b1932e971ff539bffa8789c",
+      "frames": "7df5c54207b1dae15c4e83fe5e1e392c1d8805e0f318fe7a24fd7895cccbaa46"
+    },
+    "actionCalls": [
+      "rn2(70)=20",
+      "rn2(400)=195",
+      "rn2(200)=115",
+      "rn2(20)=14",
+      "rn2(85)=55",
+      "rn2(70)=42",
+      "rn2(400)=150",
+      "rn2(200)=93",
+      "rn2(20)=5",
+      "rn2(85)=34",
+      "d(2,4)=5",
+      "rn2(2)=1",
+      "rn2(5)=3",
+      "rn2(5)=2",
+      "rn2(5)=0",
+      "rn2(5)=1",
+      "rn2(5)=4",
+      "rnd(6)=5",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(100)=62",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rnd(2)=2",
+      "rn2(100)=5",
+      "rn2(70)=0",
+      "rn2(77)=28",
+      "rn2(21)=14",
+      "rn2(77)=71",
+      "rn2(21)=2",
+      "rn2(77)=42",
+      "rn2(21)=0",
+      "rn2(77)=58",
+      "rn2(21)=17",
+      "rn2(3)=1",
+      "rn2(4)=1",
+      "rn2(5)=3",
+      "rn2(7)=6",
+      "rn2(8)=5",
+      "rn2(11)=8",
+      "rn2(15)=13",
+      "rn2(16)=7",
+      "rn2(21)=6",
+      "rnd(2)=2",
+      "rnd(4)=1",
+      "rn2(2)=0",
+      "rn2(2)=0",
+      "rn2(50)=6",
+      "rn2(100)=87",
+      "rn2(100)=49",
+      "rn2(400)=387",
+      "rn2(200)=167",
+      "rn2(20)=18",
+      "rn2(85)=34",
+      "rn2(12)=10",
+      "rn2(70)=55",
+      "rn2(400)=75",
+      "rn2(200)=152",
+      "rn2(20)=11",
+      "rn2(85)=16"
+    ],
+    "boundaries": 248,
+    "calls": 2902,
+    "frames": 0
+  },
+  {
+    "index": 1,
+    "name": "blind-uncursed-healing-fire",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real iron form has the selected entry sight at the dry unseen trap",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twelve real paper scrolls occupy the trap square",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twenty unprotected carried potions have the selected type",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary movement returns to the trap and produces the declared fire",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "fire actually consumes carried potions and floor paper",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "only full-healing vapor cures the real entry blindness",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish with the hero alive in the same form",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "visible paper feedback follows sight at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "paper-smell feedback follows blindness at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "look preserves objects and sight with source-backed time cost",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 226,
+      "turn": 8,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": true,
+      "blinded": 100,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 307,
+          "count": 20,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 12,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "after": {
+      "step": 242,
+      "turn": 12,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 115,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": true,
+      "blinded": 96,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 1,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 307,
+          "count": 14,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 5,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "during": [
+      {
+        "step": 227,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          59,
+          6
+        ],
+        "terrain": 26,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": []
+      },
+      {
+        "step": 228,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 229,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 230,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 231,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 232,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 233,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 234,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 235,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 236,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 237,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 238,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 239,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 240,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 241,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 242,
+        "turn": 12,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 115,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 96,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 1,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 307,
+            "count": 14,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 5,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "actionMessages": [
+      "",
+      "You try to feel what is lying here on the floor.--More--",
+      "You feel here 12 scrolls labeled ZELGO MER.--More--",
+      "A tower of flame erupts from the floor!--More--",
+      "The slime that covers you is burned away!--More--",
+      "Some of your fizzy potions boil and explode!--More--",
+      "Call a fizzy potion:",
+      "You smell paper burning."
+    ],
+    "statesSHA256": "814378848e918af42c0a02fa22201870ff758bf7561c8d8706aa3a1761969e62",
+    "outputHashes": {
+      "screens": "1adc142d8e6b32508e81b37a0a84b7be83bc2529cb38df5635de73f34ce403fa",
+      "cursors": "50c6b60b1afcc92a99b6f9435e88f6bb871709e65ae527ddc7aa6415332e3b07",
+      "calls": "2862a3af1937e88da068e4e6a0ca7ccc29181b38aea9fa32e90b7e021a808ed2",
+      "slices": "2de5299dd3ef2f335a0ec9670245024f0d36d57eb682251399b0e9895bae082a",
+      "frames": "a6f3d4c01b29e0f2b7266b9642120f35cb059a8f8d6bb312455a89aae7dc3e18"
+    },
+    "actionCalls": [
+      "rn2(70)=20",
+      "rn2(400)=195",
+      "rn2(200)=115",
+      "rn2(20)=14",
+      "rn2(85)=55",
+      "rn2(70)=42",
+      "rn2(400)=150",
+      "rn2(200)=93",
+      "rn2(20)=5",
+      "rn2(85)=34",
+      "d(2,4)=5",
+      "rn2(2)=1",
+      "rn2(5)=3",
+      "rn2(5)=2",
+      "rn2(5)=0",
+      "rn2(5)=1",
+      "rn2(5)=4",
+      "rnd(6)=5",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(100)=62",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rnd(2)=2",
+      "rn2(100)=5",
+      "rn2(70)=0",
+      "rn2(77)=28",
+      "rn2(21)=14",
+      "rn2(77)=71",
+      "rn2(21)=2",
+      "rn2(77)=42",
+      "rn2(21)=0",
+      "rn2(77)=58",
+      "rn2(21)=17",
+      "rn2(3)=1",
+      "rn2(4)=1",
+      "rn2(5)=3",
+      "rn2(7)=6",
+      "rn2(8)=5",
+      "rn2(11)=8",
+      "rn2(15)=13",
+      "rn2(16)=7",
+      "rn2(21)=6",
+      "rnd(2)=2",
+      "rnd(4)=1",
+      "rn2(2)=0",
+      "rn2(2)=0",
+      "rn2(50)=6",
+      "rn2(100)=87",
+      "rn2(100)=49",
+      "rn2(400)=387",
+      "rn2(200)=167",
+      "rn2(20)=18",
+      "rn2(85)=34",
+      "rn2(12)=10",
+      "rn2(70)=55",
+      "rn2(400)=75",
+      "rn2(200)=152",
+      "rn2(20)=11",
+      "rn2(85)=16"
+    ],
+    "boundaries": 243,
+    "calls": 2902,
+    "frames": 0
+  },
+  {
+    "index": 2,
+    "name": "sighted-full-healing-fire",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real iron form has the selected entry sight at the dry unseen trap",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twelve real paper scrolls occupy the trap square",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twenty unprotected carried potions have the selected type",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary movement returns to the trap and produces the declared fire",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "fire actually consumes carried potions and floor paper",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "only full-healing vapor cures the real entry blindness",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish with the hero alive in the same form",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "visible paper feedback follows sight at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "paper-smell feedback follows blindness at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "look preserves objects and sight with source-backed time cost",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 207,
+      "turn": 8,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": false,
+      "blinded": 0,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 20,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 12,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "after": {
+      "step": 223,
+      "turn": 12,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 115,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": false,
+      "blinded": 0,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": true
+      },
+      "liveMonsters": 1,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 14,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 5,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "during": [
+      {
+        "step": 208,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          59,
+          6
+        ],
+        "terrain": 26,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": []
+      },
+      {
+        "step": 209,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 210,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 211,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 119,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 212,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 213,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 214,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 215,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 216,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 217,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 218,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 219,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 220,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 221,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 222,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 223,
+        "turn": 12,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 115,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": false,
+        "blinded": 0,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": true
+        },
+        "liveMonsters": 1,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 14,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 5,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "actionMessages": [
+      "",
+      "You see here 12 scrolls labeled ZELGO MER.--More--",
+      "A tower of flame erupts from the floor!--More--",
+      "The slime that covers you is burned away!--More--",
+      "Some of your dark green potions boil and explode!--More--",
+      "Call a dark green potion:",
+      "7 scrolls labeled ZELGO MER burn."
+    ],
+    "statesSHA256": "9f0d4943d736c55f0eebd44891dce8723a8bceb7ef9b74b7bbfeb8cd1649aca4",
+    "outputHashes": {
+      "screens": "f2a2d1600473f3250d327a09231fc328de8ec217ad6f06c4cdbdbc49648790a7",
+      "cursors": "bf2c6ea98d7384f7d68d61a7a03852d1f0e319de13a1a1160ae7cf7369464160",
+      "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+      "slices": "7403309816c104c8d41fa4c09230bfc02c117717b8c7acc7fccea6b69e4778a4",
+      "frames": "abe4ad68b9801dff6a9ac1e8bef9d9c7127f041a1266987aa24877f007d2b1e7"
+    },
+    "actionCalls": [
+      "rn2(70)=20",
+      "rn2(400)=195",
+      "rn2(200)=115",
+      "rn2(20)=14",
+      "rn2(85)=55",
+      "rn2(70)=42",
+      "rn2(400)=150",
+      "rn2(200)=93",
+      "rn2(20)=5",
+      "rn2(85)=34",
+      "d(2,4)=5",
+      "rn2(2)=1",
+      "rn2(5)=3",
+      "rn2(5)=2",
+      "rn2(5)=0",
+      "rn2(5)=1",
+      "rn2(5)=4",
+      "rnd(6)=5",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=2",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(100)=62",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=2",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rn2(3)=0",
+      "rn2(3)=1",
+      "rnd(2)=2",
+      "rn2(100)=5",
+      "rn2(70)=0",
+      "rn2(77)=28",
+      "rn2(21)=14",
+      "rn2(77)=71",
+      "rn2(21)=2",
+      "rn2(77)=42",
+      "rn2(21)=0",
+      "rn2(77)=58",
+      "rn2(21)=17",
+      "rn2(3)=1",
+      "rn2(4)=1",
+      "rn2(5)=3",
+      "rn2(7)=6",
+      "rn2(8)=5",
+      "rn2(11)=8",
+      "rn2(15)=13",
+      "rn2(16)=7",
+      "rn2(21)=6",
+      "rnd(2)=2",
+      "rnd(4)=1",
+      "rn2(2)=0",
+      "rn2(2)=0",
+      "rn2(50)=6",
+      "rn2(100)=87",
+      "rn2(100)=49",
+      "rn2(400)=387",
+      "rn2(200)=167",
+      "rn2(20)=18",
+      "rn2(85)=34",
+      "rn2(12)=10",
+      "rn2(70)=55",
+      "rn2(400)=75",
+      "rn2(200)=152",
+      "rn2(20)=11",
+      "rn2(85)=16"
+    ],
+    "boundaries": 224,
+    "calls": 2902,
+    "frames": 21
+  },
+  {
+    "index": 3,
+    "name": "blind-full-healing-look",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "real iron form has the selected entry sight at the dry unseen trap",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twelve real paper scrolls occupy the trap square",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "twenty unprotected carried potions have the selected type",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "ordinary movement returns to the trap and produces the declared fire",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "fire actually consumes carried potions and floor paper",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "only full-healing vapor cures the real entry blindness",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish with the hero alive in the same form",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "visible paper feedback follows sight at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "paper-smell feedback follows blindness at fire entry",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "look preserves objects and sight with source-backed time cost",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 231,
+      "turn": 8,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": true,
+      "blinded": 100,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 20,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 12,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "after": {
+      "step": 246,
+      "turn": 10,
+      "hp": 12,
+      "maxHp": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "form": 259,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "blind": true,
+      "blinded": 98,
+      "fireResistant": true,
+      "underwater": false,
+      "fumbling": false,
+      "flying": false,
+      "levitating": false,
+      "trap": {
+        "type": 10,
+        "seen": false
+      },
+      "liveMonsters": 0,
+      "inventory": [
+        {
+          "id": 57,
+          "type": 315,
+          "count": 20,
+          "letter": "c",
+          "where": 3,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ],
+      "floor": [
+        {
+          "id": 55,
+          "type": 338,
+          "count": 12,
+          "letter": "b",
+          "where": 1,
+          "worn": 0,
+          "blessed": false,
+          "cursed": false
+        }
+      ]
+    },
+    "during": [
+      {
+        "step": 232,
+        "turn": 8,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 100,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 233,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 234,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 235,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 236,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 237,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 238,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 239,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 240,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 241,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 242,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 243,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 244,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 245,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      },
+      {
+        "step": 246,
+        "turn": 10,
+        "hp": 12,
+        "maxHp": 12,
+        "mh": 120,
+        "mhmax": 120,
+        "form": 259,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          58,
+          6
+        ],
+        "terrain": 25,
+        "blind": true,
+        "blinded": 98,
+        "fireResistant": true,
+        "underwater": false,
+        "fumbling": false,
+        "flying": false,
+        "levitating": false,
+        "trap": {
+          "type": 10,
+          "seen": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 57,
+            "type": 315,
+            "count": 20,
+            "letter": "c",
+            "where": 3,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 55,
+            "type": 338,
+            "count": 12,
+            "letter": "b",
+            "where": 1,
+            "worn": 0,
+            "blessed": false,
+            "cursed": false
+          }
+        ]
+      }
+    ],
+    "producer": true,
+    "source": true,
+    "actionMessages": [
+      "You try to feel what is lying here on the floor.--More--",
+      "You feel here 12 scrolls labeled ZELGO MER.",
+      "Unknown command ' '.",
+      ""
+    ],
+    "statesSHA256": "43daac05930347562f2a20f133258d152600046dbe38652e2f0b3860031a3bb1",
+    "outputHashes": {
+      "screens": "cece8b251258e2567fd3339043a1d38ec276741738fcde7533fa2f607563a56c",
+      "cursors": "250073ad67f309feadf06dabb32ba2e428362bbb24a95dfac39b872eeba263d1",
+      "calls": "61cddd17c4c600b931ba2c9acc8c39bb2464dfc57290c41dbd52c30f3d22612b",
+      "slices": "ee9f13c93c1282771eb191fc97ae5727b19d747bbf982f20d06f4e74004c3bf2",
+      "frames": "939b181b0a77bc0da44a5ddda50b617f4695d41b72995a644ac63bbbc37030a4"
+    },
+    "actionCalls": [
+      "rn2(70)=20",
+      "rn2(400)=195",
+      "rn2(200)=115",
+      "rn2(20)=14",
+      "rn2(85)=55",
+      "rn2(70)=42",
+      "rn2(400)=150",
+      "rn2(200)=93",
+      "rn2(20)=5",
+      "rn2(85)=34"
+    ],
+    "boundaries": 247,
+    "calls": 2824,
+    "frames": 0
+  }
+]

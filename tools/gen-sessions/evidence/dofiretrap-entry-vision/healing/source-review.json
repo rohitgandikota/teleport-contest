@@ -1,0 +1,56 @@
+{
+  "completeOwnersRead": [
+    "C trap.c:4233-4314 dofiretrap",
+    "JS trap.js dofiretrap on fixed369",
+    "C zap.c:5613-5653 destroyable",
+    "C zap.c:5676-5701 u_adtyp_resistance_obj",
+    "C zap.c:5710-5718 inventory_resistance_check",
+    "C zap.c:5798-5956 maybe_destroy_item",
+    "C zap.c:5965-6096 destroy_items",
+    "C zap.c:4598-4667 burn_floor_objects",
+    "C potion.c:1932-2117 potionbreathe",
+    "JS zap.js:3839-4071 corresponding destruction owners",
+    "JS potion.js:254-442 potionbreathe",
+    "C invent.c694-732 assigninvlet and JS invent.js456-483",
+    "C do.c29-43 dodrop and JS do.js2240-2258",
+    "C potion.c261-332 make_blinded and JS potion.js981-1058",
+    "C timeout.c743-752 BLINDED arm and JS timeout.js1843-1854 HBlinded arm",
+    "C wizcmds.c949-1098 wiz_intrinsic and JS wizcmds.js512-704",
+    "C timeout.c30-123 propertynames/property_by_index, BLINDED ninth selectable row",
+    "C potion.c1932-2117 potionbreathe including healing fallthrough",
+    "C invent.c4104-4333 look_here and JS invent.js826-995, blind look consumes time"
+  ],
+  "gap": "Reverse direction of entry-time see_it: full-healing vapor cures actual100-turn blindness before floor feedback; C still emits smell and suppresses visible burn text.",
+  "producer": "Use maintained121-key iron prefix, wish/drop actual paper b, carry twenty uncursed full-healing or healing potions, set100-turn blindness through real wizintrinsic menu i, then east/west or look.",
+  "originRecipeSHA256": "d2ab1c2938923ad898409665fa3486e7ee49733a027f0d43a62fa99ad81d06c8",
+  "originRawSHA256": "d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de",
+  "originSegment": 0,
+  "originPrefixKeys": 121,
+  "originPrefixSHA256": "0250e7e27639cf5ef54939e4657509f8ba6de046d50b970304611bcff7a69121",
+  "baselineRuntimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+  "hypotheses": [
+    "Actual form,100-timer,scroll/potion stacks,location,unseen trap and dispatch must all be observed.",
+    "Intrinsic blindness has no wet towel or blindfold source. Full healing always sets cureblind; uncursed ordinary healing does not.",
+    "Object destruction draws are not controlled. A missed stack is retained as failure, no seed search.",
+    "Blind look costs time, including iron-form speed; observe elapsed turns and exact timer decay."
+  ],
+  "negativeIndexes": [
+    1,
+    2,
+    3
+  ],
+  "nativeRecordings": 0,
+  "runtimeCandidate": false,
+  "limits": [
+    "This family reaches floor fire with no carried chest.",
+    "No source-body or runtime edit is made; candidate validation waits for a complete ordinary producer and C evidence."
+  ],
+  "previousFailedFamily": ".cache/restart-20261122/dofiretrap-entry-vision-source-audit",
+  "previousSealSHA256": "82ff6f35c09d6da2d4e734af176060ecf7d1de86c5131b7f6ab0aeaedcf0da4d",
+  "previousPostBatchReviewSHA256": "2267171bd4f736b972261559fef7d2a1bfea1b0d59fd6ad5b43529c730ecdc70",
+  "beforeGameplay": true,
+  "correctedDrop": "db selects actual new paper letter after consumed genocide scroll a",
+  "blindnessEvidence": "Real potion loss plus dark feedback and either an observed positive timer or can-see-again recovery; a one-turn vapor can expire between input boundaries.",
+  "fixedSuffix": "twelve spaces and two Escape after action",
+  "originSourceSealSHA256": "ce9a31539bf8051eb0c58d14e9f612f1ac7d497bd2b90397cd3f4588d2d1d047"
+}

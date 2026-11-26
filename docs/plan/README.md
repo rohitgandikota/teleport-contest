@@ -12,19 +12,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Underwater fire is pushed as `56af1da0`, following the gremlin light fix
-`b939e5a6`. The next checkpoint prevents a trapped chest from burning objects
-on the floor. All three native cases, 27 focused checks, seven retained gates,
-45 strict workers and 954 maintained recordings pass. Its complete installed
-report equals the isolated result. The one-line guard preserves the underwater
-fix, and all 1,245 regression files are fixed. Original failed source and test
-packaging attempts remain preserved separately.
+Chest fire floor isolation is pushed as `81630143`. The next checkpoint saves
+vision at fire-trap entry, so potion vapor changing sight does not change the
+later floor-burning message. All seven native cases and 84 focused checks pass,
+versus five native cases before. Both installed test reports equal the isolated
+results. Eight retained gates, 46 strict workers and all 956 recordings pass,
+with all 1,247 regression files fixed. Failed setup attempts remain preserved.
 
-The next source audits cover fire-entry vision, human HP-floor handling and
-giant weapon selection. The latter two need corrected ordinary producers.
-The latest official result remains agentic rank 7 with 659 unmatched screens;
-its timestamp predates these newest gameplay pushes. See STATUS for evidence
-and limits.
+New source audits cover the missing Master Key trap warning, Wizard intervention
+and human HP-floor handling. The corrected Master Key family reaches five real
+trap setups and is recorded in C; its native comparison is next. Human HP-floor
+coverage still has no qualified crossing. The latest official result remains
+agentic rank 7 with 659 unmatched screens; its timestamp predates these newest
+pushes. See STATUS for evidence and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

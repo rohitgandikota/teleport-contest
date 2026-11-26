@@ -1,0 +1,14 @@
+{
+  "beforeGameplayImports": true,
+  "cases": 4,
+  "primaryAssertions": 4,
+  "supplementalVisibleFeedbackCases": 1,
+  "supplementalNoVisibleFeedbackCases": 3,
+  "fieldsAndPresence": true,
+  "keysExact": true,
+  "metadataPreserved": true,
+  "integrityErrors": [],
+  "branchErrors": [],
+  "rawSHA256": "8c2a8e864b596ae24faf12a36b4b3232d5447ddf5399b387474a1173e95e267d",
+  "runtimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264"
+}

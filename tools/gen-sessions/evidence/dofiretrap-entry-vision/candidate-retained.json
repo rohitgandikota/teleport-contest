@@ -1,0 +1,17 @@
+{
+  "chestFloor": {
+    "checks": 27,
+    "neutrality": 6,
+    "cases": 3
+  },
+  "underwater": {
+    "checks": 102,
+    "neutrality": 12,
+    "cases": 6
+  },
+  "unchangedGateHashes": {
+    "dofiretrap-chest-floor-gate.mjs": "f9d277139cf641b1c41f9caa162f5331189d0ea8115793859f17315be6b24140",
+    "dofiretrap-underwater-gate.mjs": "3e34e2d6506cadcc2563d7301daa28d7acb2ccd6044c8451b6ce2487659c4a73"
+  },
+  "nativeReplayOfRetained": false
+}

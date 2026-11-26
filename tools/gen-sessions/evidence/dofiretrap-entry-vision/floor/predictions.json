@@ -1,0 +1,29 @@
+[
+  {
+    "index": 0,
+    "name": "floor-drop-blindness-fire",
+    "before": 204,
+    "potion": "blindness",
+    "fire": true,
+    "negative": false,
+    "dark": true
+  },
+  {
+    "index": 1,
+    "name": "floor-drop-fruit-juice-fire",
+    "before": 206,
+    "potion": "fruit juice",
+    "fire": true,
+    "negative": true,
+    "dark": false
+  },
+  {
+    "index": 2,
+    "name": "floor-drop-blindness-look",
+    "before": 204,
+    "potion": "blindness",
+    "fire": false,
+    "negative": true,
+    "dark": false
+  }
+]

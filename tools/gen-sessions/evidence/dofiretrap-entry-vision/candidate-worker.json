@@ -1,0 +1,21 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-entry-vision-floor-drop-candidate/batch.mjs"
+  ],
+  "startedAt": "2026-11-26T22:43:19.496514+00:00",
+  "seconds": 7.885,
+  "exitCode": 0,
+  "timedOut": false,
+  "heapMiB": 512,
+  "wallLimitSeconds": 55,
+  "sequentialBatches": 1,
+  "nativeCases": 7,
+  "newCExecutions": 0,
+  "baselineReplays": 0,
+  "logSHA256": "3b627e0949c9d2ec44f6ff1d8060742def071b8397babea722c5ccaaa7a24070",
+  "runLockSHA256": "c931ecd17e78d6de34447294045ec7c49dfe36d70d37d022c92abbbe7ac3b6e9"
+}

@@ -1,0 +1,49 @@
+{
+  "completeOwnersRead": [
+    "C trap.c:4233-4314 dofiretrap",
+    "JS trap.js dofiretrap on fixed369",
+    "C zap.c:5613-5653 destroyable",
+    "C zap.c:5676-5701 u_adtyp_resistance_obj",
+    "C zap.c:5710-5718 inventory_resistance_check",
+    "C zap.c:5798-5956 maybe_destroy_item",
+    "C zap.c:5965-6096 destroy_items",
+    "C zap.c:4598-4667 burn_floor_objects",
+    "C potion.c:1932-2117 potionbreathe",
+    "JS zap.js:3839-4071 corresponding destruction owners",
+    "JS potion.js:254-442 potionbreathe",
+    "C invent.c694-732 assigninvlet and JS invent.js456-483",
+    "C do.c29-43 dodrop and JS do.js2240-2258",
+    "C potion.c261-332 make_blinded and JS potion.js981-1058",
+    "C timeout.c743-752 BLINDED arm and JS timeout.js1843-1854 HBlinded arm"
+  ],
+  "gap": "C captures see_it=!Blind at fire entry and uses that saved value for floor consumption messages. JS evaluates Blind after inventory destruction, which can inhale blinding or healing vapor.",
+  "producer": "Use exact first121 keys and five input field values from existing dry-iron-trigger source/C family, then wish/drop twelve amnesia scrolls and carry twenty blindness or fruit-juice potions. Step east then west onto the unseen trap; sitting would inspect floor objects first. No Fumbling gear, item resistance gear, game-state mutation, private export or random override.",
+  "originRecipeSHA256": "37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f",
+  "originRawSHA256": "d125503c599d02d578681ade762ca7278da2abf4896c4dcff0d4f70e5da053de",
+  "originSegment": 3,
+  "originPrefixKeys": 121,
+  "originPrefixSHA256": "0250e7e27639cf5ef54939e4657509f8ba6de046d50b970304611bcff7a69121",
+  "baselineRuntimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+  "hypotheses": [
+    "Original east square is reachable because the preserved cleanup command moved west onto the current square. Actual return and trap dispatch must be observed.",
+    "Damage can select zero inventory stacks, or objects may survive their random checks. Such a missed producer is retained, not repaired by seed search.",
+    "The iron golem has eyes, so potionbreathe may run even though it is breathless. Intrinsic fire resistance is not an inventory-resistance item."
+  ],
+  "negativeIndexes": [
+    1,
+    2
+  ],
+  "nativeRecordings": 0,
+  "runtimeCandidate": false,
+  "limits": [
+    "Healing-vapor restoration of entry blindness is untested.",
+    "Item recursion/bypass handling and deferred water selection in destroy_items are separate source differences, not changes for this audit."
+  ],
+  "previousFailedFamily": ".cache/restart-20261122/dofiretrap-entry-vision-source-audit",
+  "previousSealSHA256": "82ff6f35c09d6da2d4e734af176060ecf7d1de86c5131b7f6ab0aeaedcf0da4d",
+  "previousPostBatchReviewSHA256": "2267171bd4f736b972261559fef7d2a1bfea1b0d59fd6ad5b43529c730ecdc70",
+  "beforeGameplay": true,
+  "correctedDrop": "db selects actual new paper letter after consumed genocide scroll a",
+  "blindnessEvidence": "Real potion loss plus dark feedback and either an observed positive timer or can-see-again recovery; a one-turn vapor can expire between input boundaries.",
+  "fixedSuffix": "twelve spaces and two Escape after action"
+}

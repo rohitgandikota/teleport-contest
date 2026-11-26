@@ -1,0 +1,12 @@
+{
+  "beforeGameplay": true,
+  "segments": [
+    0,
+    1
+  ],
+  "screenContainsAny": [
+    " burn.",
+    " burns."
+  ],
+  "reason": "Both fire cases begin sighted and must retain visible floor-consumption feedback. Singular or plural wording depends on the unaltered destruction draws."
+}

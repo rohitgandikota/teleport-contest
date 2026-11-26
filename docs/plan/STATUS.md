@@ -1,5 +1,117 @@
 # STATUS — live handoff board
 
+## 2026-11-26: entry-vision full956 verified, ready to publish
+
+The three-line fire-entry vision change is verified. All seven C cases match,
+versus five before. Both freshly installed ordinary reports are byte-identical
+to portable97:84/84 checks,49 producer checks,14 neutrality checks,25 negative
+hashes and five complete ordinary/native negatives unchanged. Main reports
+ran2.171s and2.205s. Both source assertion bodies remain exact. Sixty-eight
+payloads and two original raw files are installed exactly. Seven registry rows
+bring the total to4,813; aggregate coverage remains111.
+
+Full956 passes all956 recordings,952,226 screens/cursors,20,875,599 random calls
+and33,380 frames, with two workers, default45s and no retries. All1,247 files
+are fixed. Verification SHA:
+38b748d3b7da59326cfaabb93ce4053724a0d8e6f830353784af4a0eb5f807bd.
+All-files SHA:e2a0d46021abe6affb47b5ad6a072247ce2d6546a31702c18ebcc67dae1bfd5b.
+Eight retained gates,46 strict workers and empty source audit pass. Public
+parent proof is under evidence/dofiretrap-entry-vision. Commit the exact paths,
+immediately push and verify all tested published Git blobs. Original failed
+source16, source17, healing16 and native baselines remain preserved.
+
+Master Key source17 is sealed51/60 with zero valid producers: trap creation
+on stairs failed. Separate floor source15 is sealed56/60 with all five actual
+producers,35 producer checks and10 neutrality checks. Only both bare wielded
+artifact cases lack warnings and remembered count. Three complete negative
+rows and15 hashes are fixed. Source seal:
+0333f69b81ca215236ed9bbf6966bf2dfa59e997d0e053c6849129550e4579cb.
+Parent C5 recorded once,1,296 keys1,301 boundaries12,524 calls and zero frames;
+raw SHA:9aebbf28da07abbf5308056ee809f4a06a06d8462a4e11c6084db218abe0dfb7.
+C preflight and native baseline still pending. No runtime candidate yet.
+
+Sartre's human-HP source45 is sealed701/783, three producers,122 qualified
+human fires and zero crossings. Proposal16 corrects random generation through
+the actual options menu, since startup debug_mongen is rejected. A separately
+locked one-shot source batch with the same96 cycles and three exact controls
+is authorized. Euclid continues source-only Wizard intervention planning.
+
+## 2026-11-26: entry-vision full956 running; two missing turn-loop owners found
+
+Published HEAD remains 81630143a6f31b3531640aa658fc62e276ccdfa3. The only
+unpublished runtime change captures see_it at dofiretrap entry and uses it for
+both floor-fire message decisions. Two original C recordings confirm opposite
+vision transitions from actual potion vapor. Candidate510 passes 84/84 focused
+checks and all seven native cases, versus five before. All five ordinary/native
+negative rows and 25 stream hashes remain unchanged. Its fixed runtime is
+29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33.
+Parent composition has the identical complete 280-file map. No extra native
+replay was needed. Eight retained gates, 46 strict workers and source audit pass.
+
+Full956 is running on tokyo, PID3670481, at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-entry-vision-full956-js-20261126.
+Its 1,247 files are fixed, with two workers, default45s and no retries. Latest
+poll:806 passing, zero failures. Poll only. Leibniz owns portable promotion;
+parent must verify/install it, append seven registry rows, verify all tested
+Git blobs, commit and immediately push when the full regression passes.
+Candidate seal:2ab2865f73fce23954a8ce111bbbc61dae32be334dec6fa47464e5797c442c87.
+Both original C raw files are already installed, byte-exactly. Original failed
+source16, corrected source17, healing source16 and all baseline errors remain.
+
+Parent Master Key source batch ran once in2.533s:51/60 checks, zero valid
+producers, ten neutrality checks, no C/candidate. Actual hero is71,2 on stairs;
+all five trap wishes failed to create a trap. The original C-screen coordinate
+interpretation70,3 was wrong. Keep the initial preparation error, original
+recipe/predictions and results unchanged. A separately named floor producer
+requires complete trap-creation source review and a new input lock first.
+
+Euclid is reviewing missing Wizard intervention/countdown owners and an actual
+Wizard-death producer, source-only. Corrected giant source47 remains sealed
+66/84, zero complete producers despite four acquisitions. Sartre's corrected
+human-HP source has701/783, three complete producers,122 qualified human fire
+windows and zero crossings. Later random monsters invalidate reset windows;
+review debug_mongen semantics before another separately locked proposal.
+
+## 2026-11-26: chest guard pushed; entry-vision native mismatch confirmed
+
+Chest fire floor isolation is pushed as81630143a6f31b3531640aa658fc62e276ccdfa3.
+All1,245 tested Git blobs match. Full954 publication receipt SHA:
+4b720de4cbce5f2ca0049835b9ff57c98b5d0e6db81d03816ca6d71cded36c32.
+Current main has no unpublished runtime changes.
+
+The first entry-vision family is sealed source16 at26/36 with zero valid
+setups: it selected da although the new paper actually used b. It also
+incorrectly required a post-key snapshot to catch a one-turn blindness timer.
+Its original evidence is immutable. Source16 seal:
+82ff6f35c09d6da2d4e734af176060ecf7d1de86c5131b7f6ab0aeaedcf0da4d.
+
+The separately named floor-drop family locks db, a fixed feedback suffix and
+source-backed timer accounting before gameplay. It keeps the original seed,
+date, configuration and121-key prefix. Source17 passes34/36, with all21
+producer and6 neutrality checks. Only positive0's two feedback checks fail.
+Both fire cases consume six actual potions and seven floor scrolls. Positive0
+has actual blindness timer1; JS emits smell instead of entry-sighted feedback.
+Both negative rows and ten hashes are fixed. Source17 seal:
+ce9a31539bf8051eb0c58d14e9f612f1ac7d497bd2b90397cd3f4588d2d1d047.
+
+Parent C recorded the three locked cases once,661keys664boundaries8595calls
+and42frames. Original raw SHA:
+26692fb7a2944bf8a6c143dad4a0f29c3a6e5a1cba2ba5cb4cb508f4736881b2.
+All metadata, five fields/presence, keys, integrity, three primary assertions
+and two predeclared visible-paper supplements pass before JS imports.
+Native baseline2/3 on fixed369: positive0 differs only at step210 in28glyph
+cells. All random calls, cursors and animation already match. Both negatives
+are exact. Leibniz owns a minimal isolated entry-time see_it capture and
+replacement of the two later Blind calls, preserving all assertions and
+negative outputs. No main edit or new full run is authorized by this status.
+
+Euclid's corrected giant source47 is sealed66/84, zero complete producers,
+but all four donated acquisitions now reach. A random vampire bat, retained
+innate weapons and unproved fresh selection prevent attribution. Read-only
+caller review and a new proposal are authorized, no new replay yet. Sartre
+continues a separately locked human HP-floor proposal. Original source44
+human failures are sealed with38/189 and zero verified human fire windows.
+
 ## 2026-11-26: chest-fire floor guard verified on full954
 
 Underwater fire is pushed as 56af1da04bd9f60372a3956cae474a1c5d441431.

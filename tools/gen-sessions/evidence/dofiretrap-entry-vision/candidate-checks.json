@@ -1,0 +1,44 @@
+{
+  "runtimeCandidate": true,
+  "runtimePaths": [
+    "js/trap.js"
+  ],
+  "families": [
+    {
+      "name": "floor-drop",
+      "sourceBefore": 34,
+      "sourceAfter": 36,
+      "producers": 3,
+      "neutrality": 6,
+      "nativeBefore": 2,
+      "nativeAfter": 3,
+      "completeNegativeRows": 2,
+      "negativeHashes": 10,
+      "assertionsUnchanged": true,
+      "legacyProbeLabelsPreserved": true
+    },
+    {
+      "name": "healing",
+      "sourceBefore": 46,
+      "sourceAfter": 48,
+      "producers": 4,
+      "neutrality": 8,
+      "nativeBefore": 3,
+      "nativeAfter": 4,
+      "completeNegativeRows": 3,
+      "negativeHashes": 15,
+      "assertionsUnchanged": true,
+      "legacyProbeLabelsPreserved": true
+    }
+  ],
+  "source": "84/84",
+  "producerChecks": "49/49",
+  "neutrality": "14/14",
+  "native": "7/7",
+  "negativeHashes": 25,
+  "completeOrdinaryNegatives": 5,
+  "completeNativeNegatives": 5,
+  "retainedGates": 2,
+  "newCExecutions": 0,
+  "baselineReplays": 0
+}

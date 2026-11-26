@@ -1,0 +1,122 @@
+[
+  {
+    "path": "nethack-c/upstream/src/trap.c",
+    "start": 4233,
+    "end": 4314,
+    "owner": "complete dofiretrap",
+    "fileSHA256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "rangeSHA256": "6d240402756a839d568d28f3a2abf013f65001dbd40abb2f429909b0582159bf"
+  },
+  {
+    "path": "nethack-c/upstream/src/zap.c",
+    "start": 4598,
+    "end": 4658,
+    "owner": "complete burn_floor_objects",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "605cdf1c15943880708655bf3048d149926be82d3cb7cf34d484b052326493a9"
+  },
+  {
+    "path": "nethack-c/upstream/src/zap.c",
+    "start": 5798,
+    "end": 5956,
+    "owner": "complete maybe_destroy_item",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "6083d413bb3197ee160e3d052f694e8127fbdabb3eed7e03e9032975203d534a"
+  },
+  {
+    "path": "nethack-c/upstream/src/zap.c",
+    "start": 5965,
+    "end": 6097,
+    "owner": "complete destroy_items",
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "ec407fb92b51ff4652f4f7f6e211bd24c0965de5c7bc5bfae6de712eae61875b"
+  },
+  {
+    "path": "nethack-c/upstream/src/potion.c",
+    "start": 1932,
+    "end": 2117,
+    "owner": "complete potionbreathe",
+    "fileSHA256": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "rangeSHA256": "02876a52a5782b6fae1da0a78a092071a900bb746484001b264b79ada3b60760"
+  },
+  {
+    "path": "nethack-c/upstream/src/potion.c",
+    "start": 261,
+    "end": 332,
+    "owner": "complete make_blinded",
+    "fileSHA256": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "rangeSHA256": "e53bcbf404b392f609b691ef72e95cd81a91fb01227eecbd28ff7482c70ac5e0"
+  },
+  {
+    "path": "nethack-c/upstream/src/timeout.c",
+    "start": 743,
+    "end": 752,
+    "owner": "blindness expiry arm",
+    "fileSHA256": "779540f647749e0da11109f18a90e11c9e7bc36af44ed6455440b40fc6910596",
+    "rangeSHA256": "5a1aef3a2e03fd1264bbf3974f2ebece4b7e1d87b49afca5384a42a6a85d9843"
+  },
+  {
+    "path": "nethack-c/upstream/include/youprop.h",
+    "start": 88,
+    "end": 103,
+    "owner": "Blind property macros",
+    "fileSHA256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "rangeSHA256": "ff58c92c58cbe8bf5cdb879d8027e4b1a28cb08e2c94d1ad500d48fb22025289"
+  },
+  {
+    "path": "baseline-js/trap.js",
+    "start": 387,
+    "end": 469,
+    "owner": "complete fixed-baseline dofiretrap",
+    "fileSHA256": "d0b741b0e9447395d4a65b56fb296f0e8e88f196dfb174bba7bbc849331329cb",
+    "rangeSHA256": "cef2685a613288bac123fb714fc4d772fc90fb16aa878c450face02f03f9e8ee"
+  },
+  {
+    "path": "baseline-js/zap.js",
+    "start": 3876,
+    "end": 4071,
+    "owner": "complete maybe_destroy_item and destroy_items",
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "671ec0d8228582e47a96c689223e8e61cb7f831988ebd164f44aeb5cb8fe024e"
+  },
+  {
+    "path": "baseline-js/zap.js",
+    "start": 4469,
+    "end": 4520,
+    "owner": "complete burn_floor_objects",
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "b6347f5e4f124d9ec6653923445bff03023e2c184eef6efc9083c16780998bd9"
+  },
+  {
+    "path": "baseline-js/potion.js",
+    "start": 254,
+    "end": 442,
+    "owner": "complete potionbreathe",
+    "fileSHA256": "0a0d548bf771a84121427f9aa6b73b2efb3944e6f99e8ca20c21290f24fa4a1a",
+    "rangeSHA256": "a71bd5eefd7f1d180a893832c5c088e4f24770a77557787eadb616da001b2966"
+  },
+  {
+    "path": "baseline-js/potion.js",
+    "start": 981,
+    "end": 1055,
+    "owner": "complete make_blinded",
+    "fileSHA256": "0a0d548bf771a84121427f9aa6b73b2efb3944e6f99e8ca20c21290f24fa4a1a",
+    "rangeSHA256": "a82036e2b525756697fb7e369a11863d4350a3a938c17c1b4e70eea9ba524916"
+  },
+  {
+    "path": "baseline-js/timeout.js",
+    "start": 1843,
+    "end": 1854,
+    "owner": "blindness expiry arm",
+    "fileSHA256": "17be97f28596702f4e8fca01397ec2483f46f61e8da635ea02114d779d9f5f46",
+    "rangeSHA256": "4ebef13beaf57712c12209e263f6d7672b545d33f006643a46a78af991fb13a3"
+  },
+  {
+    "path": "baseline-js/youprop.js",
+    "start": 45,
+    "end": 66,
+    "owner": "Blind and related readers",
+    "fileSHA256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+    "rangeSHA256": "48649be29887b71c73357155753eb211b2f0e6ace9463ff96d8dcfaaf4455a04"
+  }
+]

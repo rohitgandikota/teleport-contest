@@ -1,0 +1,282 @@
+{
+  "verifiedAt": "2026-11-26T23:02:01.290936+00:00",
+  "composition": {
+    "baselineCommit": "81630143a6f31b3531640aa658fc62e276ccdfa3",
+    "baselineRuntimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+    "candidateSealSHA256": "2ab2865f73fce23954a8ce111bbbc61dae32be334dec6fa47464e5797c442c87",
+    "patchSHA256": "97bfd3733013de9c1622e10a73f3f8f630fae259a46b8c05a0a7b0f10cbc4475",
+    "runtimeSHA256": "29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33",
+    "runtimeChanged": [
+      "js/trap.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279,
+    "completeRuntimeEqualsIsolatedCandidate": true,
+    "extraNativeReplay": false
+  },
+  "nativeCases": 7,
+  "ordinary": [
+    {
+      "family": "floor",
+      "completeReportEqual": true,
+      "reportBytesEqual": true,
+      "portableReportSHA256": "957ee9e4fe2191a5fed81bfee55c180419279a8158e47b235b5ff574dcc399c3",
+      "mainReportSHA256": "957ee9e4fe2191a5fed81bfee55c180419279a8158e47b235b5ff574dcc399c3",
+      "command": {
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/dofiretrap-entry-vision-floor-drop-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-entry-vision-main-floor.json"
+        ],
+        "seconds": 2.171,
+        "exit": 0,
+        "maxHeapMB": 512,
+        "timeoutSeconds": 55,
+        "logSHA256": "eac9b785a7e28610cc2bb62af28d7c0ff8f106fef7f754b724982c0cc26b65ce",
+        "reportSHA256": "957ee9e4fe2191a5fed81bfee55c180419279a8158e47b235b5ff574dcc399c3"
+      }
+    },
+    {
+      "family": "healing",
+      "completeReportEqual": true,
+      "reportBytesEqual": true,
+      "portableReportSHA256": "71740f4c299403b581557508e7046495ed69fe89e3020a7e9e227a45fa8993c6",
+      "mainReportSHA256": "71740f4c299403b581557508e7046495ed69fe89e3020a7e9e227a45fa8993c6",
+      "command": {
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/dofiretrap-entry-vision-healing-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-entry-vision-main-healing.json"
+        ],
+        "seconds": 2.205,
+        "exit": 0,
+        "maxHeapMB": 512,
+        "timeoutSeconds": 55,
+        "logSHA256": "afae41f07e28f1e911739b3b696fb28adfc842179514f21d359a178981ae753f",
+        "reportSHA256": "71740f4c299403b581557508e7046495ed69fe89e3020a7e9e227a45fa8993c6"
+      }
+    }
+  ],
+  "promotionSealSHA256": "5cc5b1e403ab92cf11d39295bf7eabfd760a4a3598aaa6e25117130560ce922b",
+  "installManifestSHA256": "92bc4334140519ccc7298cd2bab7c7932a380cd3a6b7784f74dc4184c85a36dc",
+  "publicInstallSHA256": "236f77ec56162ade1cab11ff67cc35177448da11919c3d971d31852da03be506",
+  "branchRows": 4813,
+  "aggregateCoverageRows": 111,
+  "retained": [
+    {
+      "name": "dofiretrap-chest-floor-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-chest-floor-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.821,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-dofiretrap-chest-floor-gate.log",
+      "sha256": "1182528549381b92a9c757316587ffe0a00fe63f0a975023dc2603e492e72cb3"
+    },
+    {
+      "name": "dofiretrap-underwater-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-underwater-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.642,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-dofiretrap-underwater-gate.log",
+      "sha256": "e5ba77c114ee2cb428f519b66a42f55ae2dbbd1f0a8e93166c1e06ad669604f1"
+    },
+    {
+      "name": "dofiretrap-slime-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-slime-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.099,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-dofiretrap-slime-gate.log",
+      "sha256": "ed43269d3036c44a630816899f4f2209140dd5a54c989b5f2f995f9eb53815fc"
+    },
+    {
+      "name": "dofiretrap-polymorph-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-polymorph-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.922,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-dofiretrap-polymorph-gate.log",
+      "sha256": "83e212dca59289203ff46c6839d9936ef0cfbcd3e2d4e91c8caeea39a3927670"
+    },
+    {
+      "name": "fire-trap-floor-objects-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-floor-objects-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.104,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-fire-trap-floor-objects-state-gate.log",
+      "sha256": "73c19ca17a7410394fa52c3a9a6a9187bf5252e0645e5d56fbfefb716c07d31d"
+    },
+    {
+      "name": "fire-light-source-ignition-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-light-source-ignition-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.652,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-fire-light-source-ignition-state-gate.log",
+      "sha256": "d233e04a410a7a7a4ed6d91ce678695d2bcbf58c1632b94088a3a4b0abcdba11"
+    },
+    {
+      "name": "fire-trap-ice-melting-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-ice-melting-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.633,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-fire-trap-ice-melting-state-gate.log",
+      "sha256": "ff1b22df95d942630a9a6c28ebc292c2217859095bbc9ed74cc22f379c74f69b"
+    },
+    {
+      "name": "stun-chest-attack-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/stun-chest-attack-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.626,
+      "log": ".cache/restart-20261122/dofiretrap-entry-vision-retained-stun-chest-attack-input-gate.log",
+      "sha256": "00c49dda9d80090afb7f8b539e6d325f444563330a878c8ab0b0c086de6a5a31"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/dofiretrap-entry-vision-floor-drop.session.json",
+      "tools/gen-sessions/generated/dofiretrap-entry-vision-healing.session.json"
+    ],
+    "exit": 0,
+    "seconds": 32.645,
+    "targets": 46,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/dofiretrap-entry-vision-public46-strict.log",
+    "sha256": "be758e0e909692b09655b61c22e730e58a7a4b59c54e413e3f1f5f1203842a6a"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T22:58:26.051707+00:00",
+    "sessions": 956,
+    "passed": 956,
+    "failures": [],
+    "totals": {
+      "screens": 952226,
+      "cursors": 952226,
+      "rngCalls": 20875599,
+      "animFrames": 33380
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 956,
+    "allFilesFixed": 1247,
+    "allFilesSHA256": "e2a0d46021abe6affb47b5ad6a072247ce2d6546a31702c18ebcc67dae1bfd5b",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T22:48:05.470459+00:00",
+      "workers": 2,
+      "pid": 3670481,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.17724609375,
+        1.07861328125,
+        1.421875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "e2a0d46021abe6affb47b5ad6a072247ce2d6546a31702c18ebcc67dae1bfd5b"
+    },
+    "logs": {
+      "shard-0.log": "02378653db3b5c90a8bf9ea57684615a53461660473f38cd061da65f83c55bba",
+      "shard-1.log": "25ce26e87e6406e22f028361cc295f994361c5b6bed6298121ff6988f7fb29ec"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "38b748d3b7da59326cfaabb93ce4053724a0d8e6f830353784af4a0eb5f807bd",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-entry-vision-full956-js-20261126",
+  "limits": [
+    "956 recordings establish corpus parity, not whole-port completion or a new held-out score.",
+    "The original failed source family has zero valid producers. Corrected source34/36, healing46/48 and native5/7 baselines remain preserved.",
+    "Only entry-time vision capture and its two later uses change. Human HP-floor handling remains separate work."
+  ]
+}

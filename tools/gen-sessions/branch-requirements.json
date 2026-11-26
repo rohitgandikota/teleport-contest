@@ -5777,6 +5777,55 @@
       "cFile": "src/trap.c",
       "cFunction": "dofiretrap",
       "description": "Looking at the dropped lamp leaves the held chest trapped and the lamp unlit."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.floor-drop-blindness-fire",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Sighted fire entry retains visible paper feedback after real blindness vapor."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.floor-drop-fruit-juice-fire",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Sighted fruit-juice fire keeps visible paper feedback without a vision transition."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.floor-drop-blindness-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Looking leaves the real paper, potions and unseen trap unchanged."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.blind-full-healing-fire",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Blind fire entry retains paper-smell feedback after full-healing vapor restores sight."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.blind-uncursed-healing-fire",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Uncursed ordinary-healing vapor preserves blindness and paper-smell feedback."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.sighted-full-healing-fire",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Sighted full-healing fire retains visible paper feedback."
+    },
+    {
+      "group": "Fire entry vision",
+      "id": "traps.fire.entry-vision.blind-full-healing-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Blind look preserves the stacks and sight with the source time cost."
     }
   ]
 }

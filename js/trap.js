@@ -385,6 +385,7 @@ export async function ignite_items(items) {
 
 // src/trap.c:4233 dofiretrap(), hero and chest form.
 async function dofiretrap(box) {
+    const see_it = !Blind();
     const origDmg = d(2, 4);
     let num = origDmg;
     const source = the(box ? xname(box)
@@ -458,8 +459,8 @@ async function dofiretrap(box) {
         await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDmg);
         await ignite_items(game.invent);
     }
-    if (!box && await burn_floor_objects(game.u.ux, game.u.uy, !Blind(), true)
-        && Blind())
+    if (!box && await burn_floor_objects(game.u.ux, game.u.uy, see_it, true)
+        && !see_it)
         await You('smell paper burning.');
     const { is_ice } = await import('./dbridge.js');
     if (is_ice(game.u.ux, game.u.uy))

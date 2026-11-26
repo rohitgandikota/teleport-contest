@@ -1,0 +1,14 @@
+{
+  "members": 17,
+  "manifestSHA256": "20ac98da981072d61c93e9a0e2ba6de9f0d39bcb15180982fb2a921741fb7576",
+  "inputLockSHA256": "eff27e8e75325f167255db5eb855cc15481555545f5e6de2f2cab20ae8640196",
+  "runtimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+  "sourceOnly": true,
+  "CExecuted": false,
+  "validProducers": 3,
+  "checks": "34/36",
+  "failedSourceIndexes": [
+    0
+  ],
+  "oldSourceSealSHA256": "82ff6f35c09d6da2d4e734af176060ecf7d1de86c5131b7f6ab0aeaedcf0da4d"
+}

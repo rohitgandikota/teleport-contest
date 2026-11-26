@@ -1,0 +1,36 @@
+{
+  "members": 510,
+  "manifestSHA256": "d993620a4e01e17f25ef488d38da8efee6cc9b3aa8406b328e2710b88855b909",
+  "runtimeSHA256": "29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33",
+  "baselineRuntimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+  "patchSHA256": "97bfd3733013de9c1622e10a73f3f8f630fae259a46b8c05a0a7b0f10cbc4475",
+  "sourceSeals": {
+    "floor-drop": "ce9a31539bf8051eb0c58d14e9f612f1ac7d497bd2b90397cd3f4588d2d1d047",
+    "healing": "95e7c6ee5514930dc743876feb4395a2c71b0f275bd8f46a3b1a25aa93c5e557",
+    "initial": "82ff6f35c09d6da2d4e734af176060ecf7d1de86c5131b7f6ab0aeaedcf0da4d"
+  },
+  "nativeReportSHA256": {
+    "floor-drop": "e3cfb3c01b7d8ec2460dd14ebffae9254339eaecb739e599f69ffc1c1506dec7",
+    "healing": "20a79f973ce3a97712fa0903a8c43e341b0757b775f86b278c7320fa05f3d885"
+  },
+  "verification": {
+    "runtimeMembers": 280,
+    "runtimeChanges": [
+      "js/trap.js"
+    ],
+    "source": "84/84",
+    "producerChecks": "49/49",
+    "neutrality": "14/14",
+    "native": "7/7",
+    "negativeHashes": 25,
+    "completeOrdinaryNegatives": 5,
+    "completeNativeNegatives": 5,
+    "retainedGates": 2,
+    "keys": 1619,
+    "boundaries": 1626,
+    "calls": 20125,
+    "frames": 63,
+    "newCExecutions": 0,
+    "baselineReplays": 0
+  }
+}

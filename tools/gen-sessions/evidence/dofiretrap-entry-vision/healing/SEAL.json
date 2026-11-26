@@ -1,0 +1,13 @@
+{
+  "members": 16,
+  "manifestSHA256": "51448f0fb56b86ee9d25fe59a7c3081958369bda3568ee742d431722a5ff2c4b",
+  "inputLockSHA256": "ab82cf3a3aedcd7a02bbc4b23d192bdad889a6e98818e2af244d936cd8484d0a",
+  "runtimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+  "sourceOnly": true,
+  "CExecuted": false,
+  "validProducers": 4,
+  "checks": "46/48",
+  "failedSourceIndexes": [
+    0
+  ]
+}

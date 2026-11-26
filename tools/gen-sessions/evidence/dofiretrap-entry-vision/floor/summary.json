@@ -1,0 +1,18 @@
+{
+  "cases": 3,
+  "setupCases": 3,
+  "checksPassed": 34,
+  "checksTotal": 36,
+  "setupFailedIndexes": [],
+  "sourceFailedIndexes": [
+    0
+  ],
+  "neutrality": 6,
+  "negativeIndexes": [
+    1,
+    2
+  ],
+  "negativeHashes": 10,
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

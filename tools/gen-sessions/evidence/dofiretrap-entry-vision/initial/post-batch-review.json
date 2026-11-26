@@ -1,0 +1,27 @@
+{
+  "createdAt": "2026-11-26T22:30:04.473274+00:00",
+  "originalChecks": "26/36",
+  "validProducers": 0,
+  "sourceBatchSeconds": 2.138,
+  "negativeHashes": 10,
+  "neutrality": 6,
+  "CExecuted": false,
+  "candidate": false,
+  "findings": [
+    "All three setups retain the twelve amnesia scrolls as real inventory letter b, while the recipe tries da. The actual floor is empty. C invent.c694-732 and JS invent.js456-483 assign the next letter from lastinvnr, not the first free letter.",
+    "Both fire cases do reach the actual floor trap. Potion stacks drop20 to15. The zero-paper-after count passes a composite consumption assertion vacuously despite the failed separate initial-floor assertion; it is not paper consumption evidence.",
+    "Positive0 displays It suddenly gets dark and You can see again, with rnd(5)=1 in the saved action calls. No post-key snapshot observes HBlinded>0. C potion.c261-332/make_blinded and timeout.c743-752 permit temporary blindness to start and expire before the next input. The old requirement that a post-key snapshot catches blindness is unsupported.",
+    "Fruit-juice vapor opens the real naming prompt; a new fixed suffix must finish it and all floor feedback before asserting post-action state."
+  ],
+  "nextFamily": "dofiretrap-entry-vision-floor-drop-source-audit",
+  "correctionsBeforeNextGameplay": [
+    "Change only drop selection da to db in each setup. Keep exact seed/date/config and original121-key prefix; no seed search.",
+    "Use a fixed twelve spaces plus two Escape action suffix to complete feedback and cancel any potion naming prompt.",
+    "Verify actual pre-fire floor stack and compare remaining paper against its actual initial count.",
+    "Blindness producer requires real destroyed blindness potions, the dark feedback, and either an observed positive timer or the source timeout recovery feedback. Preserve the original failed post-key timer premise separately."
+  ],
+  "remainingLimits": [
+    "This failed family establishes no paper-burning vision witness.",
+    "A new family can still miss destruction due to the unmodified draws. Preserve such failures, do not adapt inputs."
+  ]
+}

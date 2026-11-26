@@ -1,0 +1,98 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "dofiretrap-entry-vision-healing",
+  "description": "Fire-entry blindness remains the feedback source when real full-healing vapor restores sight; uncursed-healing, sighted and look controls.",
+  "coverage": [
+    "mode.debug",
+    "traps.door-container",
+    "object.tools-containers",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "traps.fire.entry-vision.blind-full-healing-fire",
+    "traps.fire.entry-vision.blind-uncursed-healing-fire",
+    "traps.fire.entry-vision.sighted-full-healing-fire",
+    "traps.fire.entry-vision.blind-full-healing-look"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "blind-full-healing-fire",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b\u001712 uncursed scrolls of amnesia\r   \u001b\u001bdb   \u001b\u001b\u001720 uncursed potions of full healing\r   \u001b\u001b#wizintrinsic\r100i\r   \u001b\u001blh            \u001b\u001b"
+    },
+    {
+      "name": "blind-uncursed-healing-fire",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b\u001712 uncursed scrolls of amnesia\r   \u001b\u001bdb   \u001b\u001b\u001720 uncursed potions of healing\r   \u001b\u001b#wizintrinsic\r100i\r   \u001b\u001blh            \u001b\u001b"
+    },
+    {
+      "name": "sighted-full-healing-fire",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b\u001712 uncursed scrolls of amnesia\r   \u001b\u001bdb   \u001b\u001b\u001720 uncursed potions of full healing\r   \u001b\u001blh            \u001b\u001b"
+    },
+    {
+      "name": "blind-full-healing-look",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017fire trap\r   \u001b\u001b.      \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b\u001712 uncursed scrolls of amnesia\r   \u001b\u001bdb   \u001b\u001b\u001720 uncursed potions of full healing\r   \u001b\u001b#wizintrinsic\r100i\r   \u001b\u001b:            \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "traps.fire.entry-vision.blind-full-healing-fire",
+      "segment": 0,
+      "screenIncludes": [
+        "A tower of flame erupts",
+        "You can see again.",
+        "You smell paper burning."
+      ],
+      "screenExcludes": [
+        "It suddenly gets dark."
+      ]
+    },
+    {
+      "branch": "traps.fire.entry-vision.blind-uncursed-healing-fire",
+      "segment": 1,
+      "screenIncludes": [
+        "A tower of flame erupts",
+        "You smell paper burning."
+      ],
+      "screenExcludes": [
+        "It suddenly gets dark.",
+        "You can see again."
+      ]
+    },
+    {
+      "branch": "traps.fire.entry-vision.sighted-full-healing-fire",
+      "segment": 2,
+      "screenIncludes": [
+        "A tower of flame erupts"
+      ],
+      "screenExcludes": [
+        "It suddenly gets dark.",
+        "You can see again.",
+        "You smell paper burning."
+      ]
+    },
+    {
+      "branch": "traps.fire.entry-vision.blind-full-healing-look",
+      "segment": 3,
+      "screenIncludes": [],
+      "screenExcludes": [
+        "It suddenly gets dark.",
+        "A tower of flame erupts",
+        "You can see again.",
+        "You smell paper burning."
+      ]
+    }
+  ]
+}

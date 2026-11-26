@@ -1,0 +1,227 @@
+[
+  {
+    "segment": 0,
+    "name": "floor-drop-blindness-fire",
+    "boundaries": {
+      "expected": 221,
+      "actual": 221
+    },
+    "frozenScreens": 221,
+    "fullStyleScreens": 221,
+    "matchingStyleCells": 424320,
+    "totalCells": 424320,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 221,
+      "actual": 221,
+      "matched": 221,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2879,
+      "rawActual": 2879,
+      "discardedEntries": 0,
+      "expected": 2879,
+      "actual": 2879,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 221,
+      "actual": 221,
+      "matched": 221,
+      "differences": []
+    },
+    "frames": {
+      "expected": 21,
+      "actual": 21,
+      "expectedSlices": 221,
+      "actualSlices": 221,
+      "countMismatches": [],
+      "fullStyleMatches": 21,
+      "cursorMatches": 21
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "877557252cb72c21d1dd1bf6155afcb11f75f600e6ebddd739b95493bb4d61a7",
+        "cursors": "f4f353e4e0ad91d4d2bb07831f5e97f878fe8e5da0b160566f695d690cc5103f",
+        "calls": "295b07f98652b4e0ca6e75ac30d027d75ad8c36c0617a11de89f26617f10520a",
+        "slices": "016cd3af0cf4c2705cf561d20b5d269872a00fd8a61ec7152bc48cb1c3e96897",
+        "frames": "d84c5038561f372a7bb44a5511fcc1fb1fa177c78af1d40e30a78a2c8fd13d3f"
+      },
+      "js": {
+        "screens": "b8e254c40a2d1395570472272bc8d9338210cd875fabaaf677854f7ea5234dc5",
+        "cursors": "f4f353e4e0ad91d4d2bb07831f5e97f878fe8e5da0b160566f695d690cc5103f",
+        "calls": "001f51e45c9aecff12e4ddb4afec45950436a3862d939990c20855213cfdac39",
+        "slices": "5667c24874fe02f8c2130ab1a9d0ce6ec6c4c3240676b6cfa64be73fd4a071f7",
+        "frames": "3fcf493da12f84335cb5a3a062142d683fdcc8d9daf6bff9b308f3400f8ddaa5"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "001f51e45c9aecff12e4ddb4afec45950436a3862d939990c20855213cfdac39",
+        "slices": "5667c24874fe02f8c2130ab1a9d0ce6ec6c4c3240676b6cfa64be73fd4a071f7"
+      },
+      "js": {
+        "calls": "001f51e45c9aecff12e4ddb4afec45950436a3862d939990c20855213cfdac39",
+        "slices": "5667c24874fe02f8c2130ab1a9d0ce6ec6c4c3240676b6cfa64be73fd4a071f7"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "floor-drop-fruit-juice-fire",
+    "boundaries": {
+      "expected": 223,
+      "actual": 223
+    },
+    "frozenScreens": 223,
+    "fullStyleScreens": 223,
+    "matchingStyleCells": 428160,
+    "totalCells": 428160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 223,
+      "actual": 223,
+      "matched": 223,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2902,
+      "rawActual": 2902,
+      "discardedEntries": 0,
+      "expected": 2902,
+      "actual": 2902,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 223,
+      "actual": 223,
+      "matched": 223,
+      "differences": []
+    },
+    "frames": {
+      "expected": 21,
+      "actual": 21,
+      "expectedSlices": 223,
+      "actualSlices": 223,
+      "countMismatches": [],
+      "fullStyleMatches": 21,
+      "cursorMatches": 21
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "5faf62535d55cfd09dd9f997fbf87a8991031d9dcaedc73cbcb9c36d487a700d",
+        "cursors": "452b2095c5447f2f82d88b3b3e97ac2b16c2954ddfdf6614becdefbcaca0dc85",
+        "calls": "1b2db3a1bb0bafaa13f02af471b0d84c3bf87d66dc3f760c0c8151bf28b19d86",
+        "slices": "7a13c70864f2bbf8bc3b4b88775bd1139e593be869f38c77abd3f16e5806f9da",
+        "frames": "fdf164a128803bec1f8e12bbb33770245dc61bfe8a06598aa06a39d131b87d47"
+      },
+      "js": {
+        "screens": "352a02aeb7f89d2ac0fdcd8e5f89bb6b846348973d9d5306d1a6c016000e5de2",
+        "cursors": "452b2095c5447f2f82d88b3b3e97ac2b16c2954ddfdf6614becdefbcaca0dc85",
+        "calls": "3ce4ad9fa037f4325bbd8c19fe3ceb43b207b99bc559d0b570c8df87c18750c0",
+        "slices": "b0acf112e9c750ad81eaed3458d9092dbc3812ee0e6b8303b5d0c784a49fe499",
+        "frames": "e5e739d36642a0d6c9924f887c2814a8eb0ddd3e55d9791be0ccebc56695150e"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "3ce4ad9fa037f4325bbd8c19fe3ceb43b207b99bc559d0b570c8df87c18750c0",
+        "slices": "b0acf112e9c750ad81eaed3458d9092dbc3812ee0e6b8303b5d0c784a49fe499"
+      },
+      "js": {
+        "calls": "3ce4ad9fa037f4325bbd8c19fe3ceb43b207b99bc559d0b570c8df87c18750c0",
+        "slices": "b0acf112e9c750ad81eaed3458d9092dbc3812ee0e6b8303b5d0c784a49fe499"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "floor-drop-blindness-look",
+    "boundaries": {
+      "expected": 220,
+      "actual": 220
+    },
+    "frozenScreens": 220,
+    "fullStyleScreens": 220,
+    "matchingStyleCells": 422400,
+    "totalCells": 422400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 220,
+      "actual": 220,
+      "matched": 220,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2814,
+      "rawActual": 2814,
+      "discardedEntries": 0,
+      "expected": 2814,
+      "actual": 2814,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 220,
+      "actual": 220,
+      "matched": 220,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 220,
+      "actualSlices": 220,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "87d48b9b4bb063dd469a4caffa22e4f6a4124bf243fd5baa34279a8db8f26c2e",
+        "cursors": "e9d608465af582316b78426f343b74608526049d080a3e5b6c971b333a172af6",
+        "calls": "7ac7c48142c4e0265dd960219f58ff1e2264e8fe2dc5720a7983a9e707b2c301",
+        "slices": "91f435718879f803b9a3651ebded6a6f545101dc21af254e655e1a178893628d",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      },
+      "js": {
+        "screens": "bb797ad77c6d365b21b988061256569a42f32d0886f2ef62494dc30e6df174fa",
+        "cursors": "e9d608465af582316b78426f343b74608526049d080a3e5b6c971b333a172af6",
+        "calls": "1ac49758e642f1eb6a7f750b93f00a58030f836413481f465d4becebbe0606fe",
+        "slices": "c731c570cc744d9a86bcef39066debd131a77b98ad0a542514b7dfcc93f8a25c",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1ac49758e642f1eb6a7f750b93f00a58030f836413481f465d4becebbe0606fe",
+        "slices": "c731c570cc744d9a86bcef39066debd131a77b98ad0a542514b7dfcc93f8a25c"
+      },
+      "js": {
+        "calls": "1ac49758e642f1eb6a7f750b93f00a58030f836413481f465d4becebbe0606fe",
+        "slices": "c731c570cc744d9a86bcef39066debd131a77b98ad0a542514b7dfcc93f8a25c"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

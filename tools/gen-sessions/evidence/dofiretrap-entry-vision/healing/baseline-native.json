@@ -1,0 +1,342 @@
+[
+  {
+    "segment": 0,
+    "name": "blind-full-healing-fire",
+    "boundaries": {
+      "expected": 248,
+      "actual": 248
+    },
+    "frozenScreens": 247,
+    "fullStyleScreens": 247,
+    "matchingStyleCells": 476132,
+    "totalCells": 476160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 28,
+    "screenDifferences": [
+      {
+        "step": 247,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1892,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 28,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "7",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 248,
+      "actual": 248,
+      "matched": 248,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2902,
+      "rawActual": 2902,
+      "discardedEntries": 0,
+      "expected": 2902,
+      "actual": 2902,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 248,
+      "actual": 248,
+      "matched": 248,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 248,
+      "actualSlices": 248,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9a33ffa5a38f6a81f4e33ab4e2f60670ef51a5fa2cc4e6d35e1c0f2cdc3f3cfb",
+        "cursors": "4e060b04371114a4eff31552d6c00ac10746b39583c691766bec5846d760b2a2",
+        "calls": "9d1bd7c24750a8d518d9ee2fe6fb7f6c2de8795782133231bd17502bce08049a",
+        "slices": "8ef437da619239a3009112e947109d7657f94bd74d545dbcbaa420d3609c9475",
+        "frames": "7df5c54207b1dae15c4e83fe5e1e392c1d8805e0f318fe7a24fd7895cccbaa46"
+      },
+      "js": {
+        "screens": "f3d4dcb81f6b45bd2d335810f18ada7ed1015bcfe551e28db34dcb62cf8a5d17",
+        "cursors": "4e060b04371114a4eff31552d6c00ac10746b39583c691766bec5846d760b2a2",
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "efda65bc238a9538bda9ea8d50cb27da61cbc2723b1932e971ff539bffa8789c",
+        "frames": "7df5c54207b1dae15c4e83fe5e1e392c1d8805e0f318fe7a24fd7895cccbaa46"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "efda65bc238a9538bda9ea8d50cb27da61cbc2723b1932e971ff539bffa8789c"
+      },
+      "js": {
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "efda65bc238a9538bda9ea8d50cb27da61cbc2723b1932e971ff539bffa8789c"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "blind-uncursed-healing-fire",
+    "boundaries": {
+      "expected": 243,
+      "actual": 243
+    },
+    "frozenScreens": 243,
+    "fullStyleScreens": 243,
+    "matchingStyleCells": 466560,
+    "totalCells": 466560,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 243,
+      "actual": 243,
+      "matched": 243,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2902,
+      "rawActual": 2902,
+      "discardedEntries": 0,
+      "expected": 2902,
+      "actual": 2902,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 243,
+      "actual": 243,
+      "matched": 243,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 243,
+      "actualSlices": 243,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "fe582646ebf0a288858224fc5f58445d82b9ff187b8efbac0b3d0565caf6a587",
+        "cursors": "50c6b60b1afcc92a99b6f9435e88f6bb871709e65ae527ddc7aa6415332e3b07",
+        "calls": "0b65925430829dbf5d8b4aedfdc872a3f02710c757f3243bbafc233c56561551",
+        "slices": "8baceec2e8dfd312de05b62785565ce869c56d3a63cbaaecc759eff1e60e932c",
+        "frames": "a6f3d4c01b29e0f2b7266b9642120f35cb059a8f8d6bb312455a89aae7dc3e18"
+      },
+      "js": {
+        "screens": "1adc142d8e6b32508e81b37a0a84b7be83bc2529cb38df5635de73f34ce403fa",
+        "cursors": "50c6b60b1afcc92a99b6f9435e88f6bb871709e65ae527ddc7aa6415332e3b07",
+        "calls": "2862a3af1937e88da068e4e6a0ca7ccc29181b38aea9fa32e90b7e021a808ed2",
+        "slices": "2de5299dd3ef2f335a0ec9670245024f0d36d57eb682251399b0e9895bae082a",
+        "frames": "a6f3d4c01b29e0f2b7266b9642120f35cb059a8f8d6bb312455a89aae7dc3e18"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "2862a3af1937e88da068e4e6a0ca7ccc29181b38aea9fa32e90b7e021a808ed2",
+        "slices": "2de5299dd3ef2f335a0ec9670245024f0d36d57eb682251399b0e9895bae082a"
+      },
+      "js": {
+        "calls": "2862a3af1937e88da068e4e6a0ca7ccc29181b38aea9fa32e90b7e021a808ed2",
+        "slices": "2de5299dd3ef2f335a0ec9670245024f0d36d57eb682251399b0e9895bae082a"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "sighted-full-healing-fire",
+    "boundaries": {
+      "expected": 224,
+      "actual": 224
+    },
+    "frozenScreens": 224,
+    "fullStyleScreens": 224,
+    "matchingStyleCells": 430080,
+    "totalCells": 430080,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 224,
+      "actual": 224,
+      "matched": 224,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2902,
+      "rawActual": 2902,
+      "discardedEntries": 0,
+      "expected": 2902,
+      "actual": 2902,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 224,
+      "actual": 224,
+      "matched": 224,
+      "differences": []
+    },
+    "frames": {
+      "expected": 21,
+      "actual": 21,
+      "expectedSlices": 224,
+      "actualSlices": 224,
+      "countMismatches": [],
+      "fullStyleMatches": 21,
+      "cursorMatches": 21
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "ee8264583d3a07f055ae9c13867baf51cf64b9477a2c9f6e54bb8267c1872abf",
+        "cursors": "bf2c6ea98d7384f7d68d61a7a03852d1f0e319de13a1a1160ae7cf7369464160",
+        "calls": "9d1bd7c24750a8d518d9ee2fe6fb7f6c2de8795782133231bd17502bce08049a",
+        "slices": "9f73901176db48f7b321f560e5df01ed3f9d965948818de21d74394906912eed",
+        "frames": "0dba9a5a85dab7c4aaa40d4e1e165745880e9665c32d064d874b39df08cd21c6"
+      },
+      "js": {
+        "screens": "f2a2d1600473f3250d327a09231fc328de8ec217ad6f06c4cdbdbc49648790a7",
+        "cursors": "bf2c6ea98d7384f7d68d61a7a03852d1f0e319de13a1a1160ae7cf7369464160",
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "7403309816c104c8d41fa4c09230bfc02c117717b8c7acc7fccea6b69e4778a4",
+        "frames": "abe4ad68b9801dff6a9ac1e8bef9d9c7127f041a1266987aa24877f007d2b1e7"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "7403309816c104c8d41fa4c09230bfc02c117717b8c7acc7fccea6b69e4778a4"
+      },
+      "js": {
+        "calls": "0ad9021d2b69cfd08c0613d32994642ba8ce4ac94855ac7c311517d4ce518488",
+        "slices": "7403309816c104c8d41fa4c09230bfc02c117717b8c7acc7fccea6b69e4778a4"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "blind-full-healing-look",
+    "boundaries": {
+      "expected": 247,
+      "actual": 247
+    },
+    "frozenScreens": 247,
+    "fullStyleScreens": 247,
+    "matchingStyleCells": 474240,
+    "totalCells": 474240,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 247,
+      "actual": 247,
+      "matched": 247,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2824,
+      "rawActual": 2824,
+      "discardedEntries": 0,
+      "expected": 2824,
+      "actual": 2824,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 247,
+      "actual": 247,
+      "matched": 247,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 247,
+      "actualSlices": 247,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2b53a7ce1677d394edecf32a7144754f16e1e20e0cb769bca06593212414272f",
+        "cursors": "250073ad67f309feadf06dabb32ba2e428362bbb24a95dfac39b872eeba263d1",
+        "calls": "10f13052236c2e897e8afcca38257e9af93c5767ae678015d7d98273ce063b10",
+        "slices": "4ec4d147bb3cca1a77b2067bdbebdf9aef625ea70ebc27aad2927abfd6b4fa00",
+        "frames": "939b181b0a77bc0da44a5ddda50b617f4695d41b72995a644ac63bbbc37030a4"
+      },
+      "js": {
+        "screens": "cece8b251258e2567fd3339043a1d38ec276741738fcde7533fa2f607563a56c",
+        "cursors": "250073ad67f309feadf06dabb32ba2e428362bbb24a95dfac39b872eeba263d1",
+        "calls": "61cddd17c4c600b931ba2c9acc8c39bb2464dfc57290c41dbd52c30f3d22612b",
+        "slices": "ee9f13c93c1282771eb191fc97ae5727b19d747bbf982f20d06f4e74004c3bf2",
+        "frames": "939b181b0a77bc0da44a5ddda50b617f4695d41b72995a644ac63bbbc37030a4"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "61cddd17c4c600b931ba2c9acc8c39bb2464dfc57290c41dbd52c30f3d22612b",
+        "slices": "ee9f13c93c1282771eb191fc97ae5727b19d747bbf982f20d06f4e74004c3bf2"
+      },
+      "js": {
+        "calls": "61cddd17c4c600b931ba2c9acc8c39bb2464dfc57290c41dbd52c30f3d22612b",
+        "slices": "ee9f13c93c1282771eb191fc97ae5727b19d747bbf982f20d06f4e74004c3bf2"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

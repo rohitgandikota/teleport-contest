@@ -1,0 +1,8 @@
+{
+  "nethack-c/upstream/src/trap.c": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+  "nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+  "nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+  "nethack-c/upstream/src/sit.c": "b9c9d7d0eb82b003c984eb1e2868c97edf71c44570b0490ae21e8bd33cfb72e1",
+  "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+  "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+}

@@ -1,0 +1,16 @@
+{
+  "beforeGameplay": true,
+  "visibleSegments": [
+    2
+  ],
+  "noVisibleSegments": [
+    0,
+    1,
+    3
+  ],
+  "screenContainsAny": [
+    " burn.",
+    " burns."
+  ],
+  "reason": "C saves entry sight, including blindness cured by later full-healing vapor."
+}

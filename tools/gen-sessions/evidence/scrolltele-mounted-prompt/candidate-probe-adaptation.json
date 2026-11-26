@@ -1,0 +1,15 @@
+{
+  "sourceProbeSHA256": "bbc5a58efed6e32377705f43fe59cddd54c6d1a845c687d4c6913c2c61dc1554",
+  "candidateProbeSHA256": "4538664fdc4a3815279411a5f4b5a9228eb0c04ef889a0a95ada8d2dc895172b",
+  "assertionAndObserverBodySHA256": "a020f1fcbef3bc2c9500e1292ef32be0f3c3bec3d489c747a6cbe5a0745b6781",
+  "bodyBytes": 8581,
+  "checkGroups": 11,
+  "preservedChecks": 44,
+  "assertionBodyByteIdentical": true,
+  "changes": [
+    "Required original C preflight before runtime imports",
+    "Fixed candidate runtime map",
+    "Exclusive candidate report path and accurate ordinary classification"
+  ],
+  "inputOrPrimaryMetadataChanged": false
+}

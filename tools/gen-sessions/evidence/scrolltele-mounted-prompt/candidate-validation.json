@@ -1,0 +1,32 @@
+{
+  "ordinaryChecks": 44,
+  "ordinaryPassed": 44,
+  "nativeCases": 4,
+  "nativePassed": 4,
+  "nativeBaselinePassed": 2,
+  "keys": 266,
+  "boundaries": 270,
+  "calls": 9998,
+  "frames": 0,
+  "negativeIndexes": [
+    2,
+    3
+  ],
+  "negativeHashes": 10,
+  "completeOrdinaryNegativeRowsUnchanged": 2,
+  "completeNativeNegativeRowsUnchanged": 2,
+  "observedPlainDeferredEqual": true,
+  "fourCasesInEveryMode": true,
+  "assertionBodyProof": "review/probe-adaptation.json",
+  "sourceDiagnosticPreserved": true,
+  "parentBaselineDiagnosticPreserved": true,
+  "sourceMembers": 28,
+  "runtimePinsAfter": 280,
+  "freshBaselineReplay": false,
+  "workerCRecording": false,
+  "rawFixtureCopied": false,
+  "candidateModulesCopied": 1,
+  "unmodifiedModuleLinks": 279,
+  "stasisGuardPreserved": true,
+  "blindnessRefreshUntouched": true
+}

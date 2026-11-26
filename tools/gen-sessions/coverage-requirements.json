@@ -142,6 +142,13 @@
       "id": "src/pray.c:gcrownu",
       "description": "The bounded crowning chronicle family and its uncrowned controls; no complete owner claim",
       "minimumSessions": 1
+    },
+    {
+      "group": "Movement",
+      "id": "movement.mounted",
+      "description": "Ordinary mounted movement and mounted command behavior.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

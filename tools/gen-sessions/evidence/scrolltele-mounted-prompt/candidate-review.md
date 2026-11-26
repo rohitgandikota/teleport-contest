@@ -1,0 +1,9 @@
+# Authorized scope after C confirmation
+
+Source28 contains the complete C/JS owner, naming, caller and producer review, with61 pinned ranges. This candidate re-read C teleport.c849-919, fixed JS scrolltele1137-1200, its existing mon_nam import and the unchanged native comparator. Parent original C confirms all four primary predicates with all five fields/keys/root metadata intact. Its actual fixed68aa baseline is2/4: one39-glyph prompt difference at85 and69; all RNG, cursors, slices and frames already match. Complete negative rows2/3 are exact.
+
+C appends the current steed's mon_nam inside the conscious controlled branch, before pline and before learning the scroll. The existing helper supplies article, saddle and naming semantics. JS should use let whobuf, then append ' and ' plus mon_nam(game.u.usteed) only when a steed exists. Evaluation stays before the existing awaited pline. No import, helper, direct caller or property change is needed. The original early stasis guard remains byte-identical. Reverse the sole replacement to prove the rest of teleport.js unchanged.
+
+The real ordinary state is an unnamed, sober, visible saddled pony, so this family proves both wizard and blessed-scroll explore prompts. Named, invisible and hallucinated mounts are source-grounded helper behavior but unobserved here. The two negatives retain the prior seed7303 context while mounted producers retain seed7401; no same-seed mount intervention is claimed. Blindness refresh and actual destination placement remain separate, as authorized. The full owner was read, but this narrow patch does not claim the entire owner/helper graph closed.
+
+The original44 checks and passive callback must remain byte-identical. Only the candidate harness paths, mandatory native preflight, runtime/report pins and report classification may change. Source42/44 and parent native2/4 failures remain linked intact; no test oracle, input or primary metadata changes are allowed.

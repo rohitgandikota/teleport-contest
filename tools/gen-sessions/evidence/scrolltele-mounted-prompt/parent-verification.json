@@ -1,0 +1,338 @@
+{
+  "verifiedAt": "2026-11-26T20:01:26.182812+00:00",
+  "baselineCommit": "95ffbeef239e3c380c8eee25c427962702dccca2",
+  "composition": {
+    "baselineCommit": "95ffbeef239e3c380c8eee25c427962702dccca2",
+    "baselineRuntimeSHA256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+    "candidateRuntimeSHA256": "85ac2e90e54cf5b2dc9ede556e0821a4429a45af3b5b02f2233d860053ded9fb",
+    "candidateSealSHA256": "759d5fae79b66bbd3c96a956473b6867a8a80e9a3b5bd79d7d3bd258512833e0",
+    "patchSHA256": "5579fc8b831c9addc5b57f2964ad2da501be92adf10a9008d1b654b68ad3a6bd",
+    "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "runtimeChanged": [
+      "js/teleport.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 4,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "initialWholeByteComparison": false,
+    "onlyDifferentField": "runtimeSHA256",
+    "isolatedRuntimeSHA256": "85ac2e90e54cf5b2dc9ede556e0821a4429a45af3b5b02f2233d860053ded9fb",
+    "composedRuntimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "allOtherFieldsExactlyEqual": true,
+    "portableReportSHA256": "7bbb58bcd2be2fc1d48dffc322c036633d03cae19cc9ce3a4d909956b66bcfb2",
+    "mainReportSHA256": "66edeaa112859a9c1068575a2bee428c294ad313632c9d5ac72357ab7313b103",
+    "explanation": "The gate hashes its actual runtime. Parent composition includes the published crown and quest changes. Every result field, ordinary row and negative output remains identical. No report changed and no gameplay replay followed the failed whole-byte comparison."
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T19:56:45.976320+00:00",
+    "payloads": [
+      {
+        "source": "tools/scrolltele-mounted-prompt-gate.mjs",
+        "target": "tools/scrolltele-mounted-prompt-gate.mjs",
+        "sha256": "3df68008a8939b5b9abbc739b9196ee510e8c84c82961c7ecb8735e755ddd407",
+        "bytes": 22703
+      },
+      {
+        "source": "tools/gen-sessions/recipes/scrolltele-mounted-prompt.json",
+        "target": "tools/gen-sessions/recipes/scrolltele-mounted-prompt.json",
+        "sha256": "6262c6c0fd0f998e881e687fa57a248deb4de033ceaa88cd580eb65a40ee3ce3",
+        "bytes": 4652
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/README.md",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/README.md",
+        "sha256": "8ce26d8234c4f55ee0cda66d96733f09b6ed73b453899f4286ec1b5432fa8cb7",
+        "bytes": 2837
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/assertion-body.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/assertion-body.json",
+        "sha256": "2340044064d1f9d202447ffd27bdd71798d5c5af7fc2f3115d1382d12078f8ca",
+        "bytes": 370
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/baseline-native.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/baseline-native.json",
+        "sha256": "88c56ee8230ab7776a940ad5ffde5c8858f2498c5fec6abd511353750f5ae828",
+        "bytes": 11489
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/baseline-ordinary.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/baseline-ordinary.json",
+        "sha256": "7159733c833ae0c1d42b24801d891e4a855b9180f46a8053635a66a2dbf10578",
+        "bytes": 31984
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-native.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-native.json",
+        "sha256": "211e6c75bf1dd5f78286814fcfcc468be4ddd26d5c62e65bf46daf815f9ab2ab",
+        "bytes": 9763
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-ordinary.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-ordinary.json",
+        "sha256": "7bbb58bcd2be2fc1d48dffc322c036633d03cae19cc9ce3a4d909956b66bcfb2",
+        "bytes": 31415
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-probe-adaptation.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-probe-adaptation.json",
+        "sha256": "4a5b3078894cc3ffc6ebb1d59aa9a9305befee6741437a1681b794024e6535f7",
+        "bytes": 629
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-review.md",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-review.md",
+        "sha256": "28a6778ccfc6bb819912c07bd292b3846b091b029c6172783f74eef8471145b7",
+        "bytes": 1962
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-validation.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/candidate-validation.json",
+        "sha256": "fbd7417a5e13a9e4e2beb5b550eed6feea6a3da4b4f0ae1b60825cc9875f2a0d",
+        "bytes": 824
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/input-lock.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/input-lock.json",
+        "sha256": "ee0304f24f9094f8899bd1e9d9f9c133afa507b664217c405ae245632862ca2e",
+        "bytes": 4994
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/native-recording.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/native-recording.json",
+        "sha256": "5a10651fcfc55c8028840e812022728885cf7d663a49e73ebb512bea7facdce2",
+        "bytes": 1649
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/negative-hashes.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/negative-hashes.json",
+        "sha256": "05aa6cc32c2d8adbc3e32a131dc57218ed65c844a32c93284d46a8c4a8293156",
+        "bytes": 1012
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/original-probe.mjs",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/original-probe.mjs",
+        "sha256": "bbc5a58efed6e32377705f43fe59cddd54c6d1a845c687d4c6913c2c61dc1554",
+        "bytes": 12197
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/parent-input-lock.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/parent-input-lock.json",
+        "sha256": "a85a71b8317daaef8582c4b868a50a9a4da1b2376b53bb556d331c64240450fc",
+        "bytes": 451
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/predictions.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/predictions.json",
+        "sha256": "2b6dd896c1f7a9abd96a926b67e8ebb7beb708e86602098f382528d3cb69d1f6",
+        "bytes": 1085
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/producer-origin.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/producer-origin.json",
+        "sha256": "0c4d5f7d3f5de7a9d6237679f0c8d547ff608f45a95277ed7c26535e23f074e9",
+        "bytes": 2279
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/read-scope.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/read-scope.json",
+        "sha256": "3bfc3e98777913e0b62b92ca9bcf9e750cc41176db64ded2b160f2af8a0af0d2",
+        "bytes": 14175
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/scope.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/scope.json",
+        "sha256": "b8257c7971165c134d68d69e52efbaaffc4b3d85458954c984f6072d8e31b6d8",
+        "bytes": 754
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pin-setup-initial.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pin-setup-initial.json",
+        "sha256": "3033fb2b9ad31aafcbc68816f2e7989637e909082de362b40aa835cf1210d4e1",
+        "bytes": 274
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pin-setup-second.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pin-setup-second.json",
+        "sha256": "67050bdbc112af55292bea2171c21dcc670791a6972de54dfb298228f56a7358",
+        "bytes": 318
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pins.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pins.json",
+        "sha256": "0eea395c88c705283690a462c82e00db130a2e43f7da6efbf15d1975dae009bd",
+        "bytes": 4155
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-provenance.json",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-provenance.json",
+        "sha256": "822fff1eb4e1167ae15f1fef06591dbbce1aa825239d411a05506277faa34088",
+        "bytes": 3092
+      },
+      {
+        "source": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-review.md",
+        "target": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-review.md",
+        "sha256": "b4927342eb4631d9263a87495f35a604a7c3b62783e0df6610a2a9d2d146796a",
+        "bytes": 4812
+      }
+    ],
+    "raw": {
+      "sourceLink": "tools/gen-sessions/generated/scrolltele-mounted-prompt.session.json",
+      "target": "tools/gen-sessions/generated/scrolltele-mounted-prompt.session.json",
+      "sha256": "00e4b2257cb728e331561ff7292c3ea54687c109636b11442bd6364d46207de5",
+      "bytes": 569315,
+      "operation": "Reuse parent once-recorded C bytes. Packet link only; accept an existing canonical fixture only at the exact hash."
+    },
+    "registries": [
+      {
+        "path": "tools/gen-sessions/branch-requirements.json",
+        "before": 4760,
+        "added": 4,
+        "after": 4764,
+        "oldSHA256": "2d16f6699f954db8732081c1c2fc5c57505ef8631499ac8eb3bafbc931dc0230",
+        "sha256": "199f5bbc59bd21f51a38cd125a8e869a9c4d1e751371d59a21f478b86af92cd4",
+        "priorBytesPreserved": true
+      },
+      {
+        "path": "tools/gen-sessions/coverage-requirements.json",
+        "before": 110,
+        "added": 1,
+        "after": 111,
+        "oldSHA256": "c4a4fd10c4a634c3400862efad300dfa2bb45a2fe38d83dc084698687abc15bc",
+        "sha256": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197",
+        "priorBytesPreserved": true
+      }
+    ],
+    "promotionSealSHA256": "07ffbd4a8cf8c0975556b61a8b0e7dd52fd8ba15611f4ee26fde9e5a32f14b2c"
+  },
+  "retainedChecks": [
+    {
+      "name": "teleport-property-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/teleport-property-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 6.361,
+      "log": ".cache/restart-20261122/scrolltele-mounted-prompt-retained-teleport-property-state-gate.log",
+      "sha256": "96123250baa865733203e38fd5c922546365f0aa91d92edb30ce1c0792d89a0d"
+    },
+    {
+      "name": "teleport-menu-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/teleport-menu-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.448,
+      "log": ".cache/restart-20261122/scrolltele-mounted-prompt-retained-teleport-menu-state-gate.log",
+      "sha256": "a8535b42e0ee33bf0250309ab8c3b96ae0f9ad079076498c16254b2eb704cfb5"
+    },
+    {
+      "name": "punishment-teleport-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/punishment-teleport-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.814,
+      "log": ".cache/restart-20261122/scrolltele-mounted-prompt-retained-punishment-teleport-state-gate.log",
+      "sha256": "81b338bc314ae7f38e38ed69edb0b1dbefaedc70effb04abd52f3c2a3ac1ff5b"
+    },
+    {
+      "name": "scrolltele-stasis-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/scrolltele-stasis-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.061,
+      "log": ".cache/restart-20261122/scrolltele-mounted-prompt-retained-scrolltele-stasis-input-gate.log",
+      "sha256": "07a2b972538c9d5fdc87fa3397cb8632546e3bd807558e2e0fc090a5de85c86d"
+    }
+  ],
+  "strict": {
+    "exit": 0,
+    "seconds": 30.076,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/scrolltele-mounted-prompt-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T19:59:46.690069+00:00",
+    "sessions": 946,
+    "passed": 946,
+    "failures": [],
+    "totals": {
+      "screens": 945593,
+      "cursors": 945593,
+      "rngCalls": 20740202,
+      "animFrames": 33197
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 946,
+    "allFilesFixed": 1237,
+    "allFilesSHA256": "a8cac59dbc3d2688fcc4c29b4b2d034e95ab7febe78d4fd51cbfe5005c2f0274",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T19:49:18.423677+00:00",
+      "workers": 2,
+      "pid": 3587945,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.35986328125,
+        1.2763671875,
+        1.748046875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "a8cac59dbc3d2688fcc4c29b4b2d034e95ab7febe78d4fd51cbfe5005c2f0274"
+    },
+    "logs": {
+      "shard-0.log": "ce9cd882ccb3abc356119dda2112ce6337b00f16cc13eaf177bfcd38c35c68f5",
+      "shard-1.log": "78bcffb147e0211b7eeae326b979ab5afb90bcc2a075402d51d3d555688c6028"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "evidenceSHA256": {
+    "scrolltele-mounted-prompt-source-audit/SEAL.json": "50c59f41c15c0d11d59fa675e2a9f18debadcea472af97c5d67adae9086b8f9e",
+    "scrolltele-mounted-prompt-candidate/SEAL.json": "759d5fae79b66bbd3c96a956473b6867a8a80e9a3b5bd79d7d3bd258512833e0",
+    "scrolltele-mounted-prompt-promotion/SEAL.json": "07ffbd4a8cf8c0975556b61a8b0e7dd52fd8ba15611f4ee26fde9e5a32f14b2c",
+    "scrolltele-mounted-prompt-promotion/promotion-manifest.json": "97e06576b10f37c68bb44d01cf6cd6102e28f17726e76e4c7cf179378c6c1492",
+    "scrolltele-mounted-prompt-main-ordinary.json": "66edeaa112859a9c1068575a2bee428c294ad313632c9d5ac72357ab7313b103",
+    "scrolltele-mounted-prompt-parent-composed/mounted-native.json": "211e6c75bf1dd5f78286814fcfcc468be4ddd26d5c62e65bf46daf815f9ab2ab",
+    "scrolltele-mounted-prompt-full946-remote/verification.json": "686d31124d14ae110cd0fde23e0a0cd363573b0462aea3fd5085443d05674a07",
+    "scrolltele-mounted-prompt-full946-remote/control/all-files.json": "a8cac59dbc3d2688fcc4c29b4b2d034e95ab7febe78d4fd51cbfe5005c2f0274"
+  },
+  "limits": [
+    "Sober unnamed visible saddled pony and cancelled destination only.",
+    "Blindness refresh, hallucinated/custom/invisible mount names and actual placement remain separate.",
+    "Recorded glyph/style/cursor/random-stream/frame parity does not prove literal serialized bytes or the entire port.",
+    "No new leaderboard or held-out result is inferred."
+  ]
+}

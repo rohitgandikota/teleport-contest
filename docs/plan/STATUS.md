@@ -1,5 +1,63 @@
 # STATUS — live handoff board
 
+## 2026-11-26: crown published; mounted prompt checkpoint verified
+
+Published main is 95ffbeef239e3c380c8eee25c427962702dccca2. All 1,236
+full945 tested Git blobs match the publication. Publication receipt SHA256:
+fafc5c7cb86a9820cda63543898e661a86fb7e1c1acd5499d46ece2e7fe17b1b.
+
+The only current gameplay change is teleport.js: a mounted controlled
+teleport prompt includes the actual steed name, as C does. Candidate313
+and fresh parent composition both pass all four original C cases; their
+complete reports match. The composed graph preserves the crown and stasis
+fixes, with one copied module and 279 fixed links. Runtime-map SHA256:
+54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388.
+The original four-case C raw is installed unchanged. All four retained
+teleport checks, 45 strict workers and the empty source audit pass.
+Full946 passes on NFS with two CPU workers and default 45s limits:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/scrolltele-mounted-prompt-full946-js-20261126.
+PID 3587945 is complete. All 1,237 files are fixed; the 945 prior fixtures are linked.
+All-files SHA256:
+a8cac59dbc3d2688fcc4c29b4b2d034e95ab7febe78d4fd51cbfe5005c2f0274.
+All 946 recordings pass: 945,593 screens/cursors, 20,740,202 random calls
+and 33,197 frames. Verification SHA256:
+686d31124d14ae110cd0fde23e0a0cd363573b0462aea3fd5085443d05674a07.
+Promotion47 is verified and all 25 exact payloads are installed. Branch rows
+total 4,764 and coverage rows 111. The fresh gate passes all 44 checks in
+1.951s. Whole-report equality first failed on runtimeSHA256 alone, correctly
+reflecting the newer composition; every other field and row is identical.
+Both reports and that attribution are retained without another replay.
+Public parent verification SHA256:
+ffe6b3494225dee61f6dcae59da5863257fe1e1853170b99eb5238941682112c.
+Next: verify the 32 intended staged paths, commit and immediately push.
+
+The corrected fire-trap source35 family passes all eight producers and 192
+setup checks. Parent recorded its exact primary recipe once, preserving all
+root metadata, five input fields and every key. Original C raw SHA256:
+f1d26027a6456e8043fa4e5acce9b4aaabbb41712d1361c98e2f8f403e4c2fb3.
+It has 1,154 keys, 1,162 boundaries, 22,506 calls and 21 frames. All eight
+primary C predicates pass before gameplay imports. Baseline native is 3/8:
+only the five nonresistant material/default cases fail, beginning at the
+missing Upolyd random draw. Resistant and look-only controls match fully.
+The sealed candidate327 passes all 192 setup checks, 56 source checks and
+eight C comparisons, with all 15 negative hashes and three complete ordinary
+and native control rows unchanged. Only a 30-line Upolyd arm in trap.js
+changes. A packet-verifier cursor-shape error is preserved and corrected;
+all original C cursors have three fields. No gameplay was repeated.
+Leibniz owns portable promotion. Human HP-floor,
+underwater, slime, blind and chest/floor differences remain separate limits.
+Original failed source36 and corrected source35 remain unchanged.
+
+Euclid owns source-only autoquiver coverage on fixedcf8d. Parent confirmed
+the other stale equipment fields in flees_light and select_hwep, and read
+their complete C/JS owners. Gremlin light messaging is also absent; Sartre
+owns source-only inputs for that lead. Parent Balrog source10 retains its
+failed one-wait setup. A distinct level30/six-wait family reaches all four
+setups, passes eight neutrality checks and preserves ten negative hashes.
+Its two armed cases expose the predicted selection failures; carried-only
+and alternate-only controls pass. Original C confirmation is next. The
+separate S_GIANT versus M2_GIANT predicate mismatch remains untested.
+
 ## 2026-11-26: crown and tune checkpoint verified on full945
 
 Published main remains ad02b5565e569e584b9f80424d94e4a444a6ca80, stasis.

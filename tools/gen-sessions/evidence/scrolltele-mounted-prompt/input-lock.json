@@ -1,0 +1,147 @@
+{
+  "beforeGameplayAndCandidate": true,
+  "sourceOnly": true,
+  "CRecorded": false,
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "mounted-explore-blessed-cancel"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7401
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001b\u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001bra\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "mounted-wizard-blessed-cancel"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7401
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001b\u0017blessed scroll of teleportation\r\u001b\u001bra\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "explore-without-stasis"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b#exploremode\r\u001by\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "wizard-without-stasis"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7303
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of teleportation\r\u001b\u001b.ro\u001b\u001b\u001bi\u001b"
+      }
+    ]
+  ],
+  "tuplesSHA256": "fa57ee01b503213c8132154bab16c8d1855011736587e795addd8ba988e02b8c",
+  "allKeysSHA256": "da698eb991802119e34da681fc249d86677cc92fe740d6b3c06a031677506264",
+  "files": {
+    "recipe.json": "6262c6c0fd0f998e881e687fa57a248deb4de033ceaa88cd580eb65a40ee3ce3",
+    "predictions.json": "2b6dd896c1f7a9abd96a926b67e8ebb7beb708e86602098f382528d3cb69d1f6",
+    "negative-hashes.json": "05aa6cc32c2d8adbc3e32a131dc57218ed65c844a32c93284d46a8c4a8293156",
+    "producer-origin.json": "0c4d5f7d3f5de7a9d6237679f0c8d547ff608f45a95277ed7c26535e23f074e9",
+    "source-pins.json": "0eea395c88c705283690a462c82e00db130a2e43f7da6efbf15d1975dae009bd",
+    "read-scope.json": "3bfc3e98777913e0b62b92ca9bcf9e750cc41176db64ded2b160f2af8a0af0d2",
+    "SOURCE-REVIEW.md": "b4927342eb4631d9263a87495f35a604a7c3b62783e0df6610a2a9d2d146796a",
+    "baseline-runtime.json": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+    "review/assertion-body.json": "2340044064d1f9d202447ffd27bdd71798d5c5af7fc2f3115d1382d12078f8ca"
+  },
+  "probeSHA256": "bbc5a58efed6e32377705f43fe59cddd54c6d1a845c687d4c6913c2c61dc1554",
+  "assertionBodySHA256": "a020f1fcbef3bc2c9500e1292ef32be0f3c3bec3d489c747a6cbe5a0745b6781",
+  "cases": 4,
+  "keys": 266,
+  "boundaries": 270,
+  "negativeIndexes": [
+    2,
+    3
+  ],
+  "negativeHashesAlreadyObservedAndLocked": 10,
+  "negativeHashOrigin": "unchanged maintained stasis negative rows2/3, before this batch",
+  "runtimeCopies": 0
+}

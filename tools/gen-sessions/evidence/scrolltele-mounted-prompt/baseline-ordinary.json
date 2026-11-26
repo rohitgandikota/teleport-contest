@@ -1,0 +1,1149 @@
+{
+  "classification": "source-only ordinary keyboard evidence; original C not run",
+  "recipeSHA256": "6262c6c0fd0f998e881e687fa57a248deb4de033ceaa88cd580eb65a40ee3ce3",
+  "runtimeSHA256": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+  "cases": 4,
+  "checks": 44,
+  "failures": [
+    {
+      "case": "mounted-explore-blessed-cancel",
+      "name": "C controlled prompt includes the actual mounted name",
+      "pass": false,
+      "error": "Where do you and the saddled pony want to be teleported?"
+    },
+    {
+      "case": "mounted-wizard-blessed-cancel",
+      "name": "C controlled prompt includes the actual mounted name",
+      "pass": false,
+      "error": "Where do you and the saddled pony want to be teleported?"
+    }
+  ],
+  "negativeChecks": [
+    {
+      "index": 2,
+      "name": "explore-without-stasis",
+      "pass": true,
+      "expected": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "actual": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      }
+    },
+    {
+      "index": 3,
+      "name": "wizard-without-stasis",
+      "pass": true,
+      "expected": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "actual": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "mounted-explore-blessed-cancel",
+      "checks": [
+        {
+          "name": "real maintained mount producer or unmounted control",
+          "pass": true
+        },
+        {
+          "name": "real wished blessed scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual wizard or explore flag at the read",
+          "pass": true
+        },
+        {
+          "name": "unrestricted conscious sober controlled branch",
+          "pass": true
+        },
+        {
+          "name": "actual steed and naming prerequisites at controlled prompt",
+          "pass": true
+        },
+        {
+          "name": "C controlled prompt includes the actual mounted name",
+          "pass": false,
+          "error": "Where do you and the saddled pony want to be teleported?"
+        },
+        {
+          "name": "read discovers and consumes the scroll once",
+          "pass": true
+        },
+        {
+          "name": "cancel preserves hero and steed destination",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          5
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": null
+      },
+      "mounted": {
+        "step": 28,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "beforeRead": {
+        "step": 82,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 1,
+        "inventoryCount": 1,
+        "scrolls": [
+          {
+            "id": 47,
+            "type": 333,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "promptState": {
+        "step": 85,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 1,
+        "scrolls": [
+          {
+            "id": 47,
+            "type": 333,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "last": {
+        "step": 89,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "prompts": [
+        {
+          "step": 85,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "f7257afefec97718e04e0474282709db4c905c33f3aa3cd5226b2727f3f9b3ce",
+      "hashes": {
+        "screens": "e7d6c4623330822d7595e38ecda0115bc13bc636dae9d563bb7a694f9b013f94",
+        "cursors": "879e996647fd123aa60cafcb85946ecc0f4c76f96b6bd24f565f82eaff65d2d9",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "1fb1a099f3050490ac6a8c2ac8e1f8070bd6b1cee892530aa9d8b87ba1dc5c24",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "plainHashes": {
+        "screens": "e7d6c4623330822d7595e38ecda0115bc13bc636dae9d563bb7a694f9b013f94",
+        "cursors": "879e996647fd123aa60cafcb85946ecc0f4c76f96b6bd24f565f82eaff65d2d9",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "1fb1a099f3050490ac6a8c2ac8e1f8070bd6b1cee892530aa9d8b87ba1dc5c24",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "deferredHashes": {
+        "screens": "e7d6c4623330822d7595e38ecda0115bc13bc636dae9d563bb7a694f9b013f94",
+        "cursors": "879e996647fd123aa60cafcb85946ecc0f4c76f96b6bd24f565f82eaff65d2d9",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "1fb1a099f3050490ac6a8c2ac8e1f8070bd6b1cee892530aa9d8b87ba1dc5c24",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "keys": 89,
+      "boundaries": 90,
+      "calls": 2319,
+      "frames": 0
+    },
+    {
+      "name": "mounted-wizard-blessed-cancel",
+      "checks": [
+        {
+          "name": "real maintained mount producer or unmounted control",
+          "pass": true
+        },
+        {
+          "name": "real wished blessed scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual wizard or explore flag at the read",
+          "pass": true
+        },
+        {
+          "name": "unrestricted conscious sober controlled branch",
+          "pass": true
+        },
+        {
+          "name": "actual steed and naming prerequisites at controlled prompt",
+          "pass": true
+        },
+        {
+          "name": "C controlled prompt includes the actual mounted name",
+          "pass": false,
+          "error": "Where do you and the saddled pony want to be teleported?"
+        },
+        {
+          "name": "read discovers and consumes the scroll once",
+          "pass": true
+        },
+        {
+          "name": "cancel preserves hero and steed destination",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          5
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": null
+      },
+      "mounted": {
+        "step": 28,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "beforeRead": {
+        "step": 66,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 1,
+        "inventoryCount": 1,
+        "scrolls": [
+          {
+            "id": 47,
+            "type": 333,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "promptState": {
+        "step": 69,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 1,
+        "scrolls": [
+          {
+            "id": 47,
+            "type": 333,
+            "quantity": 1,
+            "letter": "a",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "last": {
+        "step": 73,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          40,
+          4
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 0,
+        "scrolls": [],
+        "steed": {
+          "id": 43,
+          "type": 100,
+          "xy": [
+            40,
+            4
+          ],
+          "hp": 9,
+          "tame": 10,
+          "givenName": "",
+          "invisible": false,
+          "appearanceType": 0,
+          "wornSaddle": true,
+          "saddle": true,
+          "rawMapOccupant": null
+        }
+      },
+      "prompts": [
+        {
+          "step": 69,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "b0fcd07f67e5bc12af73992b8f175e4d1118dbe852c7159a19879ccc9a1d2714",
+      "hashes": {
+        "screens": "fc804768946277bb31c06dc9d81e05ceea71b185193b0b4297adff8d41ee27c3",
+        "cursors": "1b3a46cb2c484e54fe77e3dcc5c82fc1007ef5ec48ac6963507eb2aa528a1053",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "3cd47030b701606b246944bbb16365039b5fba91376eb4c4d64e79240b5a27b5",
+        "frames": "fbf087dc3f0110895217ca34739b1713afb131b6388795e7ba814e0cf104d6f3"
+      },
+      "plainHashes": {
+        "screens": "fc804768946277bb31c06dc9d81e05ceea71b185193b0b4297adff8d41ee27c3",
+        "cursors": "1b3a46cb2c484e54fe77e3dcc5c82fc1007ef5ec48ac6963507eb2aa528a1053",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "3cd47030b701606b246944bbb16365039b5fba91376eb4c4d64e79240b5a27b5",
+        "frames": "fbf087dc3f0110895217ca34739b1713afb131b6388795e7ba814e0cf104d6f3"
+      },
+      "deferredHashes": {
+        "screens": "fc804768946277bb31c06dc9d81e05ceea71b185193b0b4297adff8d41ee27c3",
+        "cursors": "1b3a46cb2c484e54fe77e3dcc5c82fc1007ef5ec48ac6963507eb2aa528a1053",
+        "calls": "617dc0ac93676dd8a1e985607e2f24ee31849e0d598c5fe4fdf3f445ae2076a6",
+        "slices": "3cd47030b701606b246944bbb16365039b5fba91376eb4c4d64e79240b5a27b5",
+        "frames": "fbf087dc3f0110895217ca34739b1713afb131b6388795e7ba814e0cf104d6f3"
+      },
+      "keys": 73,
+      "boundaries": 74,
+      "calls": 2319,
+      "frames": 0
+    },
+    {
+      "name": "explore-without-stasis",
+      "checks": [
+        {
+          "name": "real maintained mount producer or unmounted control",
+          "pass": true
+        },
+        {
+          "name": "real wished blessed scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual wizard or explore flag at the read",
+          "pass": true
+        },
+        {
+          "name": "unrestricted conscious sober controlled branch",
+          "pass": true
+        },
+        {
+          "name": "actual steed and naming prerequisites at controlled prompt",
+          "pass": true
+        },
+        {
+          "name": "C controlled prompt includes the actual mounted name",
+          "pass": true
+        },
+        {
+          "name": "read discovers and consumes the scroll once",
+          "pass": true
+        },
+        {
+          "name": "cancel preserves hero and steed destination",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 14,
+        "scrolls": [],
+        "steed": null
+      },
+      "mounted": null,
+      "beforeRead": {
+        "step": 53,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 1,
+        "inventoryCount": 15,
+        "scrolls": [
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": null
+      },
+      "promptState": {
+        "step": 56,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 15,
+        "scrolls": [
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": null
+      },
+      "last": {
+        "step": 60,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": false,
+        "explore": true,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 14,
+        "scrolls": [],
+        "steed": null
+      },
+      "prompts": [
+        {
+          "step": 56,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "15d92515cb9bffa2ce99fade46ce8984b08be648964d17ffdc4bc43dc6b8b988",
+      "hashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "plainHashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "deferredHashes": {
+        "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+        "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "keys": 60,
+      "boundaries": 61,
+      "calls": 2680,
+      "frames": 0
+    },
+    {
+      "name": "wizard-without-stasis",
+      "checks": [
+        {
+          "name": "real maintained mount producer or unmounted control",
+          "pass": true
+        },
+        {
+          "name": "real wished blessed scroll is ready to read",
+          "pass": true
+        },
+        {
+          "name": "actual wizard or explore flag at the read",
+          "pass": true
+        },
+        {
+          "name": "unrestricted conscious sober controlled branch",
+          "pass": true
+        },
+        {
+          "name": "actual steed and naming prerequisites at controlled prompt",
+          "pass": true
+        },
+        {
+          "name": "C controlled prompt includes the actual mounted name",
+          "pass": true
+        },
+        {
+          "name": "read discovers and consumes the scroll once",
+          "pass": true
+        },
+        {
+          "name": "cancel preserves hero and steed destination",
+          "pass": true
+        },
+        {
+          "name": "survival, every key and every random slice",
+          "pass": true
+        },
+        {
+          "name": "passive observation preserves all five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred EOF preserves all five streams",
+          "pass": true
+        }
+      ],
+      "first": {
+        "step": 1,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 0,
+        "inventoryCount": 14,
+        "scrolls": [],
+        "steed": null
+      },
+      "mounted": null,
+      "beforeRead": {
+        "step": 37,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": false,
+        "wishes": 1,
+        "inventoryCount": 15,
+        "scrolls": [
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": null
+      },
+      "promptState": {
+        "step": 40,
+        "turn": 2,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 15,
+        "scrolls": [
+          {
+            "id": 57,
+            "type": 333,
+            "quantity": 1,
+            "letter": "o",
+            "blessed": true,
+            "cursed": false,
+            "seen": true
+          }
+        ],
+        "steed": null
+      },
+      "last": {
+        "step": 44,
+        "turn": 3,
+        "hp": 12,
+        "mortality": 0,
+        "xy": [
+          50,
+          3
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "wizard": true,
+        "explore": false,
+        "naturalNoTeleport": false,
+        "stasisUntil": 0,
+        "restricted": false,
+        "blind": false,
+        "blinded": false,
+        "hallucinating": false,
+        "confused": false,
+        "stunned": false,
+        "unconscious": false,
+        "teleportControl": false,
+        "scrollKnown": true,
+        "wishes": 1,
+        "inventoryCount": 14,
+        "scrolls": [],
+        "steed": null
+      },
+      "prompts": [
+        {
+          "step": 40,
+          "top": "Where do you want to be teleported?\n"
+        }
+      ],
+      "stateTraceSHA256": "50c1c63443af30ccbb0a9e1bcb70cedf2cd2c8eb4d7e540032116f29e882d0bc",
+      "hashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "plainHashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "deferredHashes": {
+        "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+        "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+        "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+        "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+        "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+      },
+      "keys": 44,
+      "boundaries": 45,
+      "calls": 2680,
+      "frames": 0
+    }
+  ]
+}

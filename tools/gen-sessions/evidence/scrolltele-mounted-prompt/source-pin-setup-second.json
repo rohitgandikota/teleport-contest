@@ -1,0 +1,6 @@
+{
+  "phase": "pre-gameplay source pin construction",
+  "pass": false,
+  "error": "AssertionError: maintained mounted input gate range1-109 exceeded actual EOF102",
+  "resolution": "End corrected to102 before input lock. No gameplay, recipe, assertions or runtime changed. Both metadata setup failures are retained."
+}

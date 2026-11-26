@@ -1,0 +1,6 @@
+{
+  "phase": "pre-gameplay source pin construction",
+  "pass": false,
+  "error": "AssertionError: read.c range3137-3412 exceeded the3410-line file",
+  "resolution": "End corrected to actual EOF3410 before lock; no recipe, assertions, runtime or gameplay attempt changed."
+}

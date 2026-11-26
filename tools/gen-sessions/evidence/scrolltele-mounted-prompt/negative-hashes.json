@@ -1,0 +1,24 @@
+[
+  {
+    "index": 2,
+    "name": "explore-without-stasis",
+    "hashes": {
+      "screens": "7eeb612bf8ff4a1db227c096f106f843ec8f353282471d16b96177f779088f7d",
+      "cursors": "e7263da3230453eb741657e4bd6629c9f6da614bfd0ca1433222b5a0f710be1e",
+      "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+      "slices": "f8d9e5ba9190d188710ec5624977e2620e8a878d99e0ce90348c035835fbb7c3",
+      "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+    }
+  },
+  {
+    "index": 3,
+    "name": "wizard-without-stasis",
+    "hashes": {
+      "screens": "4c2b113d3dc4193a70a171971c50a31b8ecc29bef6527238fcc10678d9b4a595",
+      "cursors": "87520b552ef10c67da47fa069842e91902d1359f7bb6cb8bb13a9235ac272071",
+      "calls": "4b1c3893cf1e3c79b68bd15aa05df43196627611e2b06383b72becac30dfc1aa",
+      "slices": "a56e1fbac32476f99e1e8620f87e21b095310bfbbeb8cae0342da2cf9195c7dd",
+      "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+    }
+  }
+]

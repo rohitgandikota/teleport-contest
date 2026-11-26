@@ -1,0 +1,46 @@
+[
+  {
+    "name": "mounted-explore-blessed-cancel",
+    "wizard": false,
+    "mounted": true,
+    "negative": false,
+    "mountStep": 28,
+    "beforeRead": 82,
+    "scrollLetter": "a",
+    "expectedPrompt": "Where do you and the saddled pony want to be teleported?",
+    "last": 89
+  },
+  {
+    "name": "mounted-wizard-blessed-cancel",
+    "wizard": true,
+    "mounted": true,
+    "negative": false,
+    "mountStep": 28,
+    "beforeRead": 66,
+    "scrollLetter": "a",
+    "expectedPrompt": "Where do you and the saddled pony want to be teleported?",
+    "last": 73
+  },
+  {
+    "name": "explore-without-stasis",
+    "wizard": false,
+    "mounted": false,
+    "negative": true,
+    "mountStep": null,
+    "beforeRead": 53,
+    "scrollLetter": "o",
+    "expectedPrompt": "Where do you want to be teleported?",
+    "last": 60
+  },
+  {
+    "name": "wizard-without-stasis",
+    "wizard": true,
+    "mounted": false,
+    "negative": true,
+    "mountStep": null,
+    "beforeRead": 37,
+    "scrollLetter": "o",
+    "expectedPrompt": "Where do you want to be teleported?",
+    "last": 44
+  }
+]

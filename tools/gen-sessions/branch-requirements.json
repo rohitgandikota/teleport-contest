@@ -5439,6 +5439,42 @@
       "description": "Record ACH_TUNE through record_achievement after the second hint at turn29, with LL_MINORAC",
       "segment": 2,
       "verification": "tools/crowning-log-input-gate.mjs supplementary tune check"
+    },
+    {
+      "group": "Mounted teleport scroll prompt",
+      "id": "scrolltele-mounted-prompt.mounted-explore-blessed-cancel",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Include the actual saddled pony in the controlled prompt after a real blessed scroll in explore mode, then cancel placement.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Mounted teleport scroll prompt",
+      "id": "scrolltele-mounted-prompt.mounted-wizard-blessed-cancel",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Include the actual saddled pony in the controlled prompt after a real blessed scroll in wizard mode, then cancel placement.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Mounted teleport scroll prompt",
+      "id": "scrolltele-mounted-prompt.explore-without-stasis",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Preserve the unmounted explore-mode controlled prompt and cancelled placement.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Mounted teleport scroll prompt",
+      "id": "scrolltele-mounted-prompt.wizard-without-stasis",
+      "cFile": "src/teleport.c",
+      "cFunction": "scrolltele",
+      "description": "Preserve the unmounted wizard-mode controlled prompt and cancelled placement.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

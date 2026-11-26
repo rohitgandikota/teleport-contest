@@ -1,0 +1,66 @@
+{
+  "files": {
+    "producers/mounted-movement-owner.json": {
+      "sha256": "7c9b882f45abf37a25e909631f13f245cf43b035eed07dbb651943b04aa32651",
+      "bytes": 13353
+    },
+    "producers/scrolltele-stasis.json": {
+      "sha256": "79e04384ef460142fcc8ba9043915261cd60535c09e5b4e57b0723d9bb3a4785",
+      "bytes": 3697
+    },
+    "producers/stasis-negative-hashes.json": {
+      "sha256": "2f6ffd528cee45fc57641b52bd0fa734fa03a2641d461ee7bb441fad3d9df877",
+      "bytes": 1515
+    },
+    "producers/stasis-ordinary.json": {
+      "sha256": "298405cc1ce735ec72de17977896340d62bc5c40fddeb6f76a74ffc5150d28ad",
+      "bytes": 28095
+    },
+    "producers/teleport-command-seen-traps.json": {
+      "sha256": "c77e0c2d83369dafcc213354fded8b97c291e894cf54ae1b591a1ff51ea0cad6",
+      "bytes": 2203
+    }
+  },
+  "mounted": {
+    "recipe": "producers/mounted-movement-owner.json",
+    "segmentIndex": 0,
+    "seed": 7401,
+    "copiedFields": [
+      "seed",
+      "datetime",
+      "nethackrc"
+    ],
+    "prefixLength": 31,
+    "prefix": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001b",
+    "mountCompleteStep": 28,
+    "publicGate": "tools/mounted-movement-input-gate.mjs",
+    "publicGateSHA256": "62f4289d1399871357c5402a1b8c1587cc36aa8faba5c2417242f7272826d040",
+    "forceMount": "Real #ride wizard y response, not injected u.usteed."
+  },
+  "wish": {
+    "text": "\u0017blessed scroll of teleportation\r\u001b\u001b",
+    "source": "producers/scrolltele-stasis.json",
+    "argumentUnchanged": true,
+    "selectionLetter": "a for original empty pauper inventory; o unchanged in the prior controls"
+  },
+  "explore": {
+    "text": "#exploremode\r\u001by\u001b",
+    "source": "producers/scrolltele-stasis.json",
+    "priorSource": "producers/teleport-command-seen-traps.json"
+  },
+  "negative": {
+    "sourceRecipe": "producers/scrolltele-stasis.json",
+    "sourceIndexes": [
+      2,
+      3
+    ],
+    "targetIndexes": [
+      2,
+      3
+    ],
+    "allFiveValuesAndPresenceUnchanged": true,
+    "hashesLockedBeforeNewBatch": 10
+  },
+  "comparisonLimit": "Mounted positives retain seed7401 and its original RC. Negatives retain seed7303 and their original RC; these are two maintained contexts, not a same-seed mount intervention.",
+  "candidateOrNativeCreated": false
+}

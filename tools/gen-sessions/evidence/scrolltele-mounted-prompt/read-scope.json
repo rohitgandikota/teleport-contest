@@ -1,0 +1,446 @@
+{
+  "ranges": [
+    {
+      "path": "../../../nethack-c/upstream/src/teleport.c",
+      "start": 30,
+      "end": 47,
+      "scope": "complete restriction helper",
+      "rangeSHA256": "44dfc30b06322747c343cad26892678a6f97db015aae7f4181d0ccfd0a6217bf"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/teleport.c",
+      "start": 841,
+      "end": 846,
+      "scope": "complete tele caller",
+      "rangeSHA256": "2b73b6f7f02f78869d88685d35119890137b3b03fa3f73edb15907878f117177"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/teleport.c",
+      "start": 849,
+      "end": 919,
+      "scope": "complete scrolltele",
+      "rangeSHA256": "1d6cdda2a9c4a23546285d5a8cd548565714ef2e6421b6882b9849b10023e11d"
+    },
+    {
+      "path": "js/teleport.js",
+      "start": 1,
+      "end": 110,
+      "scope": "imports",
+      "rangeSHA256": "19af070ec668ebd9e128e511667a416bdb6e7df2c58132d7f58e2e96e49d81c2"
+    },
+    {
+      "path": "js/teleport.js",
+      "start": 675,
+      "end": 703,
+      "scope": "complete restriction helper",
+      "rangeSHA256": "33e2263af4d7c92a8281e35e4aaee54e85bffe6675c887de13406e2cfbbb8463"
+    },
+    {
+      "path": "js/teleport.js",
+      "start": 1137,
+      "end": 1200,
+      "scope": "complete scrolltele",
+      "rangeSHA256": "720b88b6405b7e09293372b4ad27cefbc66f177b17a1dacc00de1365047904e4"
+    },
+    {
+      "path": "js/teleport.js",
+      "start": 1255,
+      "end": 1258,
+      "scope": "complete tele",
+      "rangeSHA256": "136e28605c747132badbb437f2b965b26db0dc987a0e864e1973ae077d961a33"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/do_name.c",
+      "start": 827,
+      "end": 1048,
+      "scope": "complete x_monnam and mon_nam",
+      "rangeSHA256": "88a73a4d864fa1835fee67aec806a59409f52d64642f0f14ef01a01b2c64a1c5"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/do_name.c",
+      "start": 1302,
+      "end": 1318,
+      "scope": "complete pmname and mon_pmname",
+      "rangeSHA256": "9eef63ab941409952d3917287c6dc2261a978e53605b39a33547fc16c9d3ed74"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/do_name.c",
+      "start": 1389,
+      "end": 1420,
+      "scope": "complete rndmonnam and bogon_is_pname; unobserved",
+      "rangeSHA256": "fa05e3cbee27de253f1ceef2550c80cf3ae790557803d089b0808a06959a0b68"
+    },
+    {
+      "path": "js/do_name.js",
+      "start": 132,
+      "end": 315,
+      "scope": "complete random-name, pmname and x_monnam",
+      "rangeSHA256": "0e0fc573445bfca04a46833fbf13f922e05cbc91b8cdfcf98e66b2d7a1600b65"
+    },
+    {
+      "path": "js/do_name.js",
+      "start": 469,
+      "end": 473,
+      "scope": "complete mon_nam",
+      "rangeSHA256": "7537621c504ef73a3475c454b6d4d07de315032d759ff061c1b9508a99ee8369"
+    },
+    {
+      "path": "js/do_name.js",
+      "start": 1194,
+      "end": 1196,
+      "scope": "complete mon_pmname",
+      "rangeSHA256": "ddcfbec7c5f4d10ad9f651cb43e9b60573381bf421ec5ece090f5381d2143d3e"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 58,
+      "end": 76,
+      "scope": "complete learnscrolltyp and learnscroll",
+      "rangeSHA256": "da986a87f4c1d91896406fa90f9682d2393916f4ab932b1244ebd9a7db3b7f04"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 315,
+      "end": 325,
+      "scope": "complete read_ok",
+      "rangeSHA256": "d05c0a5bb4d5c4e76c988e22f7c00ea09454cfbba237e66b3426dd2069215c7d"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 330,
+      "end": 646,
+      "scope": "complete doread",
+      "rangeSHA256": "7fd8a2b977b589697fb8b8198cc2ccea38228b834656c941df8545440c2a7d00"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 2015,
+      "end": 2031,
+      "scope": "complete seffect_teleportation",
+      "rangeSHA256": "784cc44f57ab79a012cb232fdfe65aa9d870667e9d6d5dc634dc9547e3f160d1"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 2194,
+      "end": 2300,
+      "scope": "complete seffects",
+      "rangeSHA256": "af7fc0e1736cafeccf0f52ff0e0d39964c2d064e233a8b950953963dc3623536"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "start": 3137,
+      "end": 3410,
+      "scope": "complete create_particular parse/creation/entry",
+      "rangeSHA256": "acc9f5f87bf5b566b119e713fe1f93cfa33a9a839ee53cd141ee9455cd312713"
+    },
+    {
+      "path": "js/read.js",
+      "start": 311,
+      "end": 582,
+      "scope": "complete doread",
+      "rangeSHA256": "ff1a9304119b7e7937b7079b4b4c02157dee68c43918f11ed44e59cc4f5b2f84"
+    },
+    {
+      "path": "js/read.js",
+      "start": 587,
+      "end": 593,
+      "scope": "complete learnscroll",
+      "rangeSHA256": "6ca88a12570db7949cfbcba8bf595daebb89a979cc65ffa33f0ff487311f34ae"
+    },
+    {
+      "path": "js/read.js",
+      "start": 1233,
+      "end": 1323,
+      "scope": "complete seffects",
+      "rangeSHA256": "f1f2a3ba5e3eb9a1deee91c999ed48bdd562393568055e8aa4b476c4975b54f2"
+    },
+    {
+      "path": "js/read.js",
+      "start": 2719,
+      "end": 2735,
+      "scope": "complete seffect_teleportation",
+      "rangeSHA256": "f4d0212e323e7b8e12c5e4705fe747f6dd5da5c3941eb1380db6ea6b5eea9508"
+    },
+    {
+      "path": "js/read.js",
+      "start": 2861,
+      "end": 3101,
+      "scope": "complete monster producer and wiz_genesis",
+      "rangeSHA256": "1a141cfc6301582135c03eb8dc0ba2fcb20ac1fe9dbbc2291b686b4b5195af01"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/steed.c",
+      "start": 26,
+      "end": 33,
+      "scope": "complete can_saddle",
+      "rangeSHA256": "a758c256537a6ab96b2540e7c2513365dae9cda343d4802cdfe8685b752cd605"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/steed.c",
+      "start": 142,
+      "end": 175,
+      "scope": "complete saddle and can_ride",
+      "rangeSHA256": "3671c9fb53b2187edbb316ae9788d6ab85c06180ff736b18bde52f7c2e1f3ff7"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/steed.c",
+      "start": 178,
+      "end": 384,
+      "scope": "complete doride and mount_steed",
+      "rangeSHA256": "a5f674c996ea3364439ccd1677e0c77b6707a3bebdefeb93648ab58bcd448327"
+    },
+    {
+      "path": "js/steed.js",
+      "start": 152,
+      "end": 159,
+      "scope": "complete can_saddle",
+      "rangeSHA256": "9b464e243cb68a52319f1e98a143bf5883164bc13232cb397f1ebab36404ae4c"
+    },
+    {
+      "path": "js/steed.js",
+      "start": 271,
+      "end": 299,
+      "scope": "complete saddle and can_ride",
+      "rangeSHA256": "b9db2a5bef5619ce737caf7beb4001eaf1500c81859905777bc87ba2b9137bc9"
+    },
+    {
+      "path": "js/steed.js",
+      "start": 301,
+      "end": 346,
+      "scope": "complete doride and maybewakesteed",
+      "rangeSHA256": "21596158d1b96043166bc53bd70e76b66c75df287e09ae4e2652daafa4745b33"
+    },
+    {
+      "path": "js/steed.js",
+      "start": 392,
+      "end": 561,
+      "scope": "complete mount_steed",
+      "rangeSHA256": "665951e2082be7fb886041ba8c5f60a81294c7d533a65ab9f3a2a5305134ce1c"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "start": 32,
+      "end": 46,
+      "scope": "complete wiz_wish",
+      "rangeSHA256": "ed6f6a4972b7d338725ee37f977921ed9351fc54d247218b31d059b926e0af5f"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "start": 203,
+      "end": 216,
+      "scope": "complete wiz_genesis",
+      "rangeSHA256": "4ae14dfa6426c5c46247f9a2d6856c1a3a8bef26286b74db5c35536a09c14ca7"
+    },
+    {
+      "path": "js/wizcmds.js",
+      "start": 98,
+      "end": 110,
+      "scope": "complete wiz_wish",
+      "rangeSHA256": "4dce5631b021bf4976e3d9842b550ce75df1b7263eec494e268f545dae35c368"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/cmd.c",
+      "start": 952,
+      "end": 984,
+      "scope": "complete enter_explore_mode",
+      "rangeSHA256": "2fe27a7f3140dd0d79c13c0bc11f4922ccfa8c616cb1fd0dcd402299b06e8b80"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/cmd.c",
+      "start": 1718,
+      "end": 1723,
+      "scope": "explore registration",
+      "rangeSHA256": "b3891cfba77350ea4f3923b73415c4ab9d0021ff61cfdcdbfc1f8c305d58e749"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/cmd.c",
+      "start": 2000,
+      "end": 2002,
+      "scope": "wish registration",
+      "rangeSHA256": "ce8847ced2b447b96e89b6a944c2e81436952b65801c3e480a95ca7e765db3a9"
+    },
+    {
+      "path": "js/cmd.js",
+      "start": 985,
+      "end": 997,
+      "scope": "complete read_ok",
+      "rangeSHA256": "24ab72268629b9313e91c83101199318209d61b8978a8ca955688c58d43d8829"
+    },
+    {
+      "path": "js/cmd.js",
+      "start": 1158,
+      "end": 1181,
+      "scope": "complete enter_explore_mode",
+      "rangeSHA256": "d3e29aed8c3663f310ce2378a1e1889183b230399181a2be94d7b652045e84f3"
+    },
+    {
+      "path": "js/cmd.js",
+      "start": 1333,
+      "end": 1333,
+      "scope": "read dispatch",
+      "rangeSHA256": "0850231a67e4b6228d622a7f3e0a15f0967d6115d255b8e1a046fce3b066527e"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/zap.c",
+      "start": 6314,
+      "end": 6430,
+      "scope": "complete makewish",
+      "rangeSHA256": "a034aad410f6a221f665e276779d51c8bb9110a6216c64e30a9a510b8f2f7275"
+    },
+    {
+      "path": "js/zap.js",
+      "start": 1969,
+      "end": 2076,
+      "scope": "complete makewish",
+      "rangeSHA256": "edb3bc9c5327215b9b35fb0e346e4190ec712fa0332b01174158057338a5a17b"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/getpos.c",
+      "start": 771,
+      "end": 915,
+      "scope": "entry and ESC, partial owner",
+      "rangeSHA256": "1ab48f9d4649ce9c9f0ab18e24f7f39b10f02bd1a5abf99d8d055e03913fa750"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/getpos.c",
+      "start": 1140,
+      "end": 1167,
+      "scope": "cleanup/return",
+      "rangeSHA256": "771f41e044100ce7ca6400581358fa450d094e7bcaba457de7f3a3afc741ef08"
+    },
+    {
+      "path": "js/getpos.js",
+      "start": 337,
+      "end": 400,
+      "scope": "entry and ESC, partial owner",
+      "rangeSHA256": "a5da8420dc5caad51e818582c5edd8130e477e545cf62f79ab6a6a249445b58d"
+    },
+    {
+      "path": "js/getpos.js",
+      "start": 626,
+      "end": 649,
+      "scope": "cleanup/return",
+      "rangeSHA256": "3e3709079c049ec7992d080d29a2f19401bb12433b9923c5ebf2cba6ea771638"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/trap.c",
+      "start": 6776,
+      "end": 6788,
+      "scope": "complete unconscious",
+      "rangeSHA256": "e3d14fbb2e8cd82619964a1cdc6ace84f12113ad101dabbc166566424e0c4b18"
+    },
+    {
+      "path": "js/trap.js",
+      "start": 1238,
+      "end": 1247,
+      "scope": "complete unconscious",
+      "rangeSHA256": "9db3b4d3d851170f92a5d98cf800a475b5b3f1acecfe5205804780d54803e50f"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/u_init.c",
+      "start": 1300,
+      "end": 1316,
+      "scope": "pauper inventory guard",
+      "rangeSHA256": "1ad1e03e5d007308d6a3064044edfc7ac05644fd34216becb6906419ddd0ec94"
+    },
+    {
+      "path": "js/u_init.js",
+      "start": 344,
+      "end": 351,
+      "scope": "pauper inventory guard",
+      "rangeSHA256": "593de6ac03f238368cacefb2ea4a14503e86ce17efebce62ef529f7f5e4848b1"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/youprop.h",
+      "start": 80,
+      "end": 120,
+      "scope": "perception/control contracts",
+      "rangeSHA256": "18ccf3ba23cd2b038913ad3d2b694717e07b37454013a659c356897765221339"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/youprop.h",
+      "start": 229,
+      "end": 231,
+      "scope": "Teleport_control",
+      "rangeSHA256": "efe0289c034aaee953cdb4ef2df11a94ca9c149530e3ac0dc08ab22b945d94fb"
+    },
+    {
+      "path": "js/youprop.js",
+      "start": 27,
+      "end": 65,
+      "scope": "hallucination and blindness readers",
+      "rangeSHA256": "89f73812803cdbe98cc328c69e2c3b3d91549ae43990bde778e2acea2cb5ec4e"
+    },
+    {
+      "path": "js/youprop.js",
+      "start": 193,
+      "end": 207,
+      "scope": "stun/confusion/control readers",
+      "rangeSHA256": "dc9b220eae75ab2ed20e58835b32cf95f5061aaf5a693f4d33f2fdfdaaada215"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/mextra.h",
+      "start": 218,
+      "end": 227,
+      "scope": "given-name macros",
+      "rangeSHA256": "8c4c503fd6644015fe1a37a3ba799fd13ec895e76381e7558b46a8a93fd422be"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/monst.h",
+      "start": 268,
+      "end": 268,
+      "scope": "Mgender",
+      "rangeSHA256": "fb0686cefb274f5011d934019cf907ed5c4fc33255e984bfae5bf9f630526cad"
+    },
+    {
+      "path": "js/const.js",
+      "start": 3082,
+      "end": 3083,
+      "scope": "given-name helpers",
+      "rangeSHA256": "4630a4e0f5eef04cb281e15f0b4fd5c8ce621e2fb7b61e222889e1138d0efb0c"
+    },
+    {
+      "path": "js/const.js",
+      "start": 3169,
+      "end": 3169,
+      "scope": "Mgender",
+      "rangeSHA256": "e878ac2fd07f6f52b7e3df158e0d602c9954df1d5cfc1bbbb817f9ad518119ce"
+    },
+    {
+      "path": "js/monst_data.js",
+      "start": 6416,
+      "end": 6429,
+      "scope": "pony data",
+      "rangeSHA256": "ca00d9fb96bc4bb6bf898c84b8fbe3a8f8a962e02011db648723ca345f926f31"
+    },
+    {
+      "path": "tools/half-damage-reader-observe.mjs",
+      "start": 1,
+      "end": 72,
+      "scope": "complete retained helper",
+      "rangeSHA256": "c942fbd37edff03be1f450c6169f686c7db3b09dbf821711cf09dc4518ff241c"
+    },
+    {
+      "path": "../../../tools/mounted-movement-input-gate.mjs",
+      "start": 1,
+      "end": 102,
+      "scope": "complete maintained input gate",
+      "rangeSHA256": "62f4289d1399871357c5402a1b8c1587cc36aa8faba5c2417242f7272826d040"
+    }
+  ],
+  "completeOwners": [
+    "C/JS scrolltele",
+    "C/JS mon_nam and x_monnam",
+    "C/JS tele and seffect_teleportation",
+    "C/JS doread/seffects/learnscroll",
+    "C/JS mount/ride and monster creation",
+    "C/JS wish and explore entry"
+  ],
+  "partialContracts": [
+    "getpos entry/ESC/cleanup",
+    "pauper inventory guard",
+    "property and name macros"
+  ],
+  "runtimeChanges": false,
+  "nativeEvidence": false
+}

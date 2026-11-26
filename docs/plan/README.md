@@ -12,16 +12,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Stasis teleport restrictions and shop container coverage are pushed as
-`ad02b556`, with all 1,235 full944 tested files verified against the publication.
-Crowning, quest-grant and castle-tune logs now pass six original C cases,
-46 source checks and all 15 negative hashes. All 945 recordings, six retained
-checks and 45 timeout checks pass. All 77 portable payloads are installed;
-the fresh public gate reproduces the sealed report exactly. The next step is
-immediate verified publication. Mounted teleport feedback passes four C
-cases and awaits composition. The corrected fire-trap producer reaches all
-eight setups; parent C confirmation is next. Autoquiver equipment coverage
-is a separate source investigation.
+Crowning, quest-grant and castle-tune logs are pushed as `95ffbeef`, with all
+1,236 full945 tested files verified against the publication. Six original C
+cases, 46 source checks and 15 negative hashes pass. Mounted teleport feedback
+is composed over that commit and passes four C cases, four retained checks
+and 45 timeout checks. Its 946-session regression passes and publication is
+next. The polymorphed fire fix passes all eight C cases and awaits composition.
+Autoquiver equipment coverage is a separate source investigation. Gremlin
+light fear is a source investigation. Balrog inputs now reproduce the two
+predicted selection failures and await original C confirmation.
 See STATUS for exact evidence, preserved diagnostics and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.

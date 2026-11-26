@@ -1,0 +1,58 @@
+{
+  "sourceSealSHA256": "50c59f41c15c0d11d59fa675e2a9f18debadcea472af97c5d67adae9086b8f9e",
+  "sourceManifestSHA256": "454a4d4537ed78da73276870d04c3f803e86cd590e9f3e0021f1226c36f3a10f",
+  "sourceMembers": 28,
+  "candidateSealSHA256": "759d5fae79b66bbd3c96a956473b6867a8a80e9a3b5bd79d7d3bd258512833e0",
+  "candidateManifestSHA256": "368b70dab245f3ceec72ccb60bb1d9ec6a482ba0295c9c0fd1a4f112b33c2ae7",
+  "candidateMembers": 313,
+  "sourceInputLockSHA256": "ee0304f24f9094f8899bd1e9d9f9c133afa507b664217c405ae245632862ca2e",
+  "sourceProbeSHA256": "bbc5a58efed6e32377705f43fe59cddd54c6d1a845c687d4c6913c2c61dc1554",
+  "recipeSHA256": "6262c6c0fd0f998e881e687fa57a248deb4de033ceaa88cd580eb65a40ee3ce3",
+  "rawSHA256": "00e4b2257cb728e331561ff7292c3ea54687c109636b11442bd6364d46207de5",
+  "sourceBaselineRuntimeSHA256": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+  "candidateRuntimeSHA256": "85ac2e90e54cf5b2dc9ede556e0821a4429a45af3b5b02f2233d860053ded9fb",
+  "runtimePatchSHA256": "5579fc8b831c9addc5b57f2964ad2da501be92adf10a9008d1b654b68ad3a6bd",
+  "runtimeFile": "js/teleport.js",
+  "runtimeOwner": "scrolltele",
+  "CFile": "src/teleport.c",
+  "CRange": [
+    849,
+    919
+  ],
+  "CAppendRange": [
+    877,
+    884
+  ],
+  "change": "Replace const with let and append the existing mon_nam(usteed) in the controlled branch before pline. No imports changed.",
+  "baselineSnapshotRequired": false,
+  "historicalHashesOnly": true,
+  "publicPathsForOriginalLock": {
+    "recipe.json": "tools/gen-sessions/recipes/scrolltele-mounted-prompt.json",
+    "predictions.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/predictions.json",
+    "negative-hashes.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/negative-hashes.json",
+    "producer-origin.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/producer-origin.json",
+    "source-pins.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-pins.json",
+    "read-scope.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/read-scope.json",
+    "SOURCE-REVIEW.md": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/source-review.md",
+    "review/assertion-body.json": "tools/gen-sessions/evidence/scrolltele-mounted-prompt/assertion-body.json"
+  },
+  "historicalLockOnlyFiles": {
+    "baseline-runtime.json": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad"
+  },
+  "ordinaryBaseline": "42/44",
+  "ordinaryCandidate": "44/44",
+  "nativeBaseline": "2/4",
+  "nativeCandidate": "4/4",
+  "nativeProof": "Inherited original C once-recorded raw and candidate313 comparison. This public gate runs fresh observed/plain/deferred ordinary controls, not native replay.",
+  "failedSetups": [
+    "source-pin-setup-initial.json",
+    "source-pin-setup-second.json"
+  ],
+  "unobservedLimits": [
+    "Blindness refresh is a separate omission",
+    "No hallucinated, custom-name or invisible mount witness",
+    "Only cancelled destination placement",
+    "Unmounted negatives retain a different maintained seed/RC context"
+  ],
+  "rawFixtureCopied": false
+}

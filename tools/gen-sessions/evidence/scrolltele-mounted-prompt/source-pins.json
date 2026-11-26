@@ -1,0 +1,118 @@
+{
+  "files": [
+    {
+      "path": "../../../nethack-c/upstream/src/teleport.c",
+      "sha256": "e1d9d4255ac148caa4618dc4f275ddf5417d2a2830beca738c3821cf7678e5c8"
+    },
+    {
+      "path": "js/teleport.js",
+      "sha256": "9d4ea996c0ba003c34cfdd9886a23aefb6fa490dc4f94b0039d80ac45faa8f85"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/do_name.c",
+      "sha256": "64c6cb5e7f4034e9edbd8fac983b313a7df0e029b4812bd3a9327852d12ad9d1"
+    },
+    {
+      "path": "js/do_name.js",
+      "sha256": "42c8f5fd3f816e4ddb8ef45ee8ac8a4c1ffcf01e748f34058fc033205c0aa764"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/read.c",
+      "sha256": "ec15ad773e50f5d466ddc20515b441c9ddb4e99449abd1f34fa43a14e6a8b2c4"
+    },
+    {
+      "path": "js/read.js",
+      "sha256": "e13db8755e1f4c12705bb2d18a51627437ecf7383ee898b9adef822c03bde78f"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/steed.c",
+      "sha256": "cff685476b7cb4654935b231654015336286ad0ad7020294cdb60ca066075fd2"
+    },
+    {
+      "path": "js/steed.js",
+      "sha256": "07aac2d80c52c8d20e769b343a835a7823f1c4fa7852de216bb6250cd1206bcb"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/wizcmds.c",
+      "sha256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f"
+    },
+    {
+      "path": "js/wizcmds.js",
+      "sha256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/cmd.c",
+      "sha256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce"
+    },
+    {
+      "path": "js/cmd.js",
+      "sha256": "bb486a6d082e5a7602923d97450b50ba24ecbe1aa0f0176a06666f14bde777f7"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/zap.c",
+      "sha256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb"
+    },
+    {
+      "path": "js/zap.js",
+      "sha256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/getpos.c",
+      "sha256": "084d58880158ce5b538bec6e334a5c21b8584adda7d39b0393e6502d16b7c646"
+    },
+    {
+      "path": "js/getpos.js",
+      "sha256": "14ecce0dc5d336ec8c2c97e10a9b8e3f53b52d91e2fe0ea1f31f7e78f06ee997"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/trap.c",
+      "sha256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c"
+    },
+    {
+      "path": "js/trap.js",
+      "sha256": "4d5ab9d23eb8efa8682140b47797e30432a0fc419f213070194bdb4b9b729c68"
+    },
+    {
+      "path": "../../../nethack-c/upstream/src/u_init.c",
+      "sha256": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71"
+    },
+    {
+      "path": "js/u_init.js",
+      "sha256": "25804ca237af985a116aa94932393029a12c2179d8c148dc7d579d25386b8625"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/youprop.h",
+      "sha256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f"
+    },
+    {
+      "path": "js/youprop.js",
+      "sha256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/mextra.h",
+      "sha256": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229"
+    },
+    {
+      "path": "../../../nethack-c/upstream/include/monst.h",
+      "sha256": "08e9e2251ac5c3beedb8700dd56287f9f397b506851ceb44a37e41b6d80067a6"
+    },
+    {
+      "path": "js/const.js",
+      "sha256": "5dace7ce5a0a917226ff8b762c7de8fb953dc50867e0cfce9ad2f9bf84b52061"
+    },
+    {
+      "path": "js/monst_data.js",
+      "sha256": "2a18e823fd86a01ac176380ef657be535d555ec6ee7bde6f52f81c5895a9d7cd"
+    },
+    {
+      "path": "tools/half-damage-reader-observe.mjs",
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07"
+    },
+    {
+      "path": "../../../tools/mounted-movement-input-gate.mjs",
+      "sha256": "62f4289d1399871357c5402a1b8c1587cc36aa8faba5c2417242f7272826d040"
+    }
+  ],
+  "runtimeMapSHA256": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+  "rangeManifestSHA256": "3bfc3e98777913e0b62b92ca9bcf9e750cc41176db64ded2b160f2af8a0af0d2"
+}

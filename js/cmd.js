@@ -574,7 +574,7 @@ export async function getdir(s) {
         } else {
             dirsym = await tty_yn_function(
                 (s && s[0] !== '^') ? s : 'In what direction?', null, '\0', false);
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             game._pending_message = '';
             if (cmdbind_get(dirsym.charCodeAt(0) & 0xff)?.cmd?.ef_funct === 'doredraw') {
                 await docrt_flags(docrtRefresh);
@@ -735,7 +735,7 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
             const oldCury = game._topl_cury || 0;
             const newCury = lines.length - 1;
             if (oldCury > newCury)
-                tty_clear_nhwindow_message(oldCury);
+                await tty_clear_nhwindow_message(oldCury);
 
             game._pending_message = lines.join('\n');
             game._topl_cury = newCury;
@@ -772,7 +772,7 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
                 game._msg_maxcol = game._msg_maxrow || 0; /* cw->maxcol = cw->maxrow */
             } else {
                 ttyDisplay.inread--;
-                getlin_cleanup();
+                await getlin_cleanup();
                 if (suppress_history)
                     game._toplines = ''; /* keep this prompt out of history */
                 return '\x1b';
@@ -797,12 +797,12 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
             await doprev_message();
             ttyDisplay.inread = saved;
             doprev = false;
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             game._msg_maxcol = game._msg_maxrow || 0;
             buf = buf.slice(0, pos);
             shown = buf;
         } else if (doprev) {
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             game._msg_maxcol = game._msg_maxrow || 0;
             doprev = false;
             buf = buf.slice(0, pos);
@@ -842,7 +842,7 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
         }
     }
     ttyDisplay.inread--;
-    getlin_cleanup();
+    await getlin_cleanup();
     if (suppress_history) {
         /* prevent next message from pushing current query+answer into
            tty message history */
@@ -916,9 +916,9 @@ export async function paranoid_ynq(beParanoid, prompt, acceptQ = false) {
        clear_nhwindow(WIN_MESSAGE);   / * clean up after ourselves * /
    The prompt (and typed answer) are ERASED the moment the read finishes;
    whatever the caller plines next starts from a blank top line. */
-function getlin_cleanup() {
+async function getlin_cleanup() {
     game._toplin = TOPLINE_SPECIAL_PROMPT; /* non-EMPTY so the erase runs */
-    tty_clear_nhwindow_message(game._topl_cury || 0);
+    await tty_clear_nhwindow_message(game._topl_cury || 0);
     game._pending_message = '';
     game._toplin = TOPLINE_EMPTY;
 }
@@ -1169,10 +1169,10 @@ export async function enter_explore_mode() {
     if (answer === 'y') {
         game.discover = true;
         game.wizard = false;
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
         await You('are now in non-scoring explore mode.');
     } else {
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
         await pline(`Continuing with ${oldmode}.`);
     }
     return ECMD_OK;
@@ -2378,7 +2378,7 @@ export async function rhack(key) {
                    parks at the end of the text (recorded cursor [9,0] for
                    "Count: 20"), the same shape as the other topline
                    prompts. */
-                tty_clear_nhwindow_message(game._topl_cury || 0);
+                await tty_clear_nhwindow_message(game._topl_cury || 0);
                 const ctext = `Count: ${cnt}`;
                 game._pending_message = ctext;
                 game._toplin = TOPLINE_SPECIAL_PROMPT;
@@ -2392,7 +2392,7 @@ export async function rhack(key) {
             ch0 = String.fromCharCode(key);
         }
         if (ch0 === '\x1b') {          /* esc cancels count (TH) */
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             game._pending_message = '';
             game._toplin = TOPLINE_EMPTY;
             game.command_count = 0;
@@ -2409,7 +2409,7 @@ export async function rhack(key) {
        as well as the text; dropping the text alone left toplin at
        TOPLINE_NEED_MORE with nothing behind it. */
     if (clear_before_dispatch) {
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
         game._pending_message = '';
         game._toplin = TOPLINE_EMPTY;
     }
@@ -3317,7 +3317,7 @@ export async function get_count(allowchars, inkey, maxcount, count, gc_flags) {
         }
 
         if (cnt > 9 || backspaced || echoalways) {
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             let qbuf;
             if (backspaced && !cnt && !showzero) {
                 qbuf = 'Count: ';

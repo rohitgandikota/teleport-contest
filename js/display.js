@@ -40,6 +40,7 @@ import { ONAMES, OCLASSES, objects as OBJECTS_DATA } from './objects_data.js';
 import { update_topl, show_topl_nohistory } from './tty/topl.js';
 
 import { xwaitforspace } from './tty/getline.js';
+import { docorner } from './tty/wintty.js';
 
 import { term_start_color } from './tty/termcap.js';
 
@@ -2562,7 +2563,7 @@ export async function cls() {
     if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop) {
         await more();
         game._toplin = TOPLINE_NEED_MORE;   /* more() reset it; force the erase */
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
     }
     game._pending_message = '';
     game._toplin = TOPLINE_EMPTY;
@@ -2672,13 +2673,13 @@ export async function pline(msg) {
        Urgency takes effect only after vision and screen flushing. */
     if (game.pline_flags & URGENT_MESSAGE) {
         if (game._win_stop) {
-            tty_clear_nhwindow_message(game._topl_cury || 0);
+            await tty_clear_nhwindow_message(game._topl_cury || 0);
             game._win_stop = false;
         }
         game._win_nostop = true;
     }
     if (game.pline_flags & SUPPRESS_HISTORY)
-        show_topl_nohistory(msg);
+        await show_topl_nohistory(msg);
     else
         await update_topl(msg);
     game._win_nostop = false; /* tty_putstr: one message only */
@@ -2757,6 +2758,8 @@ export async function more() {
         for (let i = 0; i < defmorestr.length && col + i < CO; i++)
             display.setCell(col + i, row, defmorestr[i], NO_COLOR, 0);
         display.setCursor(Math.min(col + defmorestr.length, CO - 1), row);
+        game._topl_curx = col + defmorestr.length;
+        game._topl_cury = row;
     }
     /* win/tty/topl.c more(): xwaitforspace("\033 "), NOT a bare getch. Only
        space, ESC and newline dismiss the prompt; anything else rings the bell
@@ -2770,29 +2773,27 @@ export async function more() {
     if (game.morc === '\x1b' && !game._win_nostop)
         game._win_stop = true;
 
-    /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE:
-     *
-     *     more();
-     *     ttyDisplay->toplin = TOPLINE_NEED_MORE;   / * more resets this * /
-     *     tty_clear_nhwindow(window);
-     *
-     * The reassignment looks redundant and is not: tty_clear_nhwindow() only
-     * does its home()/cl_end() when toplin != TOPLINE_EMPTY, and more() has
-     * just set it to EMPTY. Forcing it back is what makes the erase happen.
-     *
-     * Clearing only _pending_message left the text already painted into the
-     * grid, so whatever drew next landed on top of it: seed0360's tutorial
-     * prompt starts at column 21 and the first 21 columns still read
-     * "Hello wizard, welcom".
-     */
-    game._toplin = TOPLINE_NEED_MORE;
-    game._pending_message = '';
-    tty_clear_nhwindow_message(row);
+    // win/tty/topl.c:236 more(): the display-window caller clears separately.
+    if (game._toplin && row) {
+        if (display)
+            await docorner(1, row + 1, display);
+        game._topl_curx = game._topl_cury = 0;
+        display?.setCursor(0, 0);
+        game._pending_message = game._topline_physical_prefix = '';
+    } else if (game.morc === '\x1b') {
+        game._topl_curx = game._topl_cury = 0;
+        if (display) {
+            display.setCursor(0, 0);
+            for (let c = 0; c < (display.cols ?? 80); c++)
+                display.setCell(c, 0, ' ', NO_COLOR, 0);
+        }
+        game._pending_message = game._topline_physical_prefix = '';
+    }
     game._toplin = TOPLINE_EMPTY;
 }
 
 // win/tty/wintty.c tty_display_nhwindow(WIN_MESSAGE, FALSE).  A message
-// which still needs acknowledgement blocks and is erased by more().  An
+// which still needs acknowledgement blocks and is then cleared here. An
 // already-seen message is only marked empty, leaving its terminal pixels in
 // place until later output overwrites them.
 export async function display_nhwindow_message() {
@@ -2800,9 +2801,12 @@ export async function display_nhwindow_message() {
        tty_display_nhwindow() guard returns before its NHW_MESSAGE switch. */
     if (game._win_stop)
         return;
-    if (game._toplin === TOPLINE_NEED_MORE)
+    if (game._toplin === TOPLINE_NEED_MORE) {
         await more();
-    else
+        game._toplin = TOPLINE_NEED_MORE; /* more resets this */
+        await tty_clear_nhwindow_message();
+        game._pending_message = '';
+    } else
         game._toplin = TOPLINE_EMPTY;
     game._topl_curx = game._topl_cury = 0;
 }
@@ -2816,32 +2820,22 @@ export async function display_nhwindow_message() {
 //         ttyDisplay->toplin = TOPLINE_EMPTY;
 //     }
 //
-// cl_end() erases to end of line, so the row becomes blanks rather than
-// keeping stale glyphs. cury is non-zero only when the message wrapped, which
-// for more() means the "--More--" suffix went to row 1.
-export function tty_clear_nhwindow_message(cury) {
-    if (game._toplin === TOPLINE_EMPTY)
-        return;
-
-    const display = game?.nhDisplay;
-    if (display) {
-        // win/tty/wintty.c:1080 home() precedes clearing the message.
-        display.setCursor(0, 0);
-        const CO = display.cols ?? 80;
-        /* row 0 is the message window's own row: blank it */
-        for (let c = 0; c < CO; c++)
-            display.setCell(c, 0, ' ', NO_COLOR, 0);
-        /* rows a wrapped message spilled onto belong to the map: C's
-           docorner() repaints them from the glyph buffer */
-        for (let r = 1; r <= (cury || 0); r++) {
+// docorner restores covered rows using numeric glyph identity and real frames.
+export async function tty_clear_nhwindow_message(cury = game._topl_cury || 0) {
+    if (game._toplin !== TOPLINE_EMPTY) {
+        const display = game?.nhDisplay;
+        if (display && !game._erasing_tty_screen) {
+            display.setCursor(0, 0); /* home(); cl_end(); */
+            const CO = display.cols ?? 80;
             for (let c = 0; c < CO; c++)
-                display.setCell(c, r, ' ', NO_COLOR, 0);
-            for (let x = 1; x < COLNO; x++)
-                _paint_map_cell(display, x, r - 1);
+                display.setCell(c, 0, ' ', NO_COLOR, 0);
+            if (cury)
+                await docorner(1, cury + 1, display);
         }
+        game._topline_physical_prefix = '';
+        game._toplin = TOPLINE_EMPTY;
     }
-    game._topline_physical_prefix = '';
-    game._toplin = TOPLINE_EMPTY;
+    game._topl_curx = game._topl_cury = 0;
 }
 
 /* ---- include/display.h vision predicates, and src/display.c is_safemon ----

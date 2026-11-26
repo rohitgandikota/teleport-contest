@@ -1,5 +1,53 @@
 # STATUS — live handoff board
 
+## 2026-11-25: wrapped message clearing verified
+
+The candidate restores rows covered by messages through C's docorner path,
+including its physical cursor movement. Direct more cleanup and the outer
+message-window clear now have their separate C responsibilities. All 31
+direct clear callers await restoration. The fixed 280-file runtime map is
+wrapped-message-clear-parent-composed-runtime.json, SHA256
+`71fc45e6a4f55fa8dc30703afc86216c5c0be1d2c198fec439e0a36c1771d97c`.
+
+All five locked C cases match, versus three: 248 styled boundaries/cursors,
+14,681 random calls and no frames. Three complete negative native reports
+and all fifteen negative output hashes are unchanged. The two portable gates
+pass 34/34 constructed source controls and 15/15 ordinary checks on main,
+with reports byte-identical to the isolated candidate. Source354, promotion45
+and retained-review35 are sealed. Eleven exact payloads, five requirements
+and the original C recording are installed.
+
+All 168 selected/public recordings and 168 strict 8-second workers pass:
+80,144 screens/cursors, 3,069,442 random positions and 2,469 frames. The initial
+93 focused checks had four failures. Three test consumers needed six awaits,
+one VM import rename and one C-derived cursor sequence correction. All 87
+assertion sites remain; no assertion was removed. Original tests pass on the
+old runtime, and corrected tests pass on the candidate and main. The remaining
+billing-disposal 7/8 diagnostic has byte-identical output to its prior run.
+
+Full909 passes all 909 recordings with two CPU workers, default 45-second
+budgets and no retries: 925,297 screens/cursors, 19,971,753 random positions
+and 33,110 frames. Its 1,200 fixed source/fixture/scorer files have map SHA256
+`e3e34bc9b00dbf191cbbe912060779524cff47df11b081f92488cf7a008e05d4`.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wrapped-message-clear-full909-js-20261125.
+Compact public evidence is in tools/gen-sessions/evidence/wrapped-message-clear/verification.json.
+The parent receipt is wrapped-message-clear-main-verification.json. The next
+action is to commit, immediately push, then verify the published tree against
+the tested file map. The prior published checkpoint is 1e15de5e.
+
+Ordinary active-frame and explored-same-symbol reach under this wrapped route
+remain unproven. Whole more rendering/guards, the extra vault prompt and
+getlin's reconstruction flag remain open. Original probe, syntax and runner
+setup failures are retained. This does not establish serialized byte identity
+or a newer held-out result.
+
+Parallel work: corpse-impact source340 changes only uhitm.js, with 25/25
+constructed and 4/4 ordinary checks; native recording is pending. Shared
+plural-corpse naming and ismnum bounds remain explicit gaps. The level-change
+audit now has an ordinary interrupted-trap roundtrip witness, plus cancelled,
+same-level, no-departure and no-trap controls in proposal06. No level-change
+candidate exists yet. Fruit-byte ingress work remains isolated.
+
 ## 2026-11-25: saved monster traits preserve C ownership
 
 The four-file revival change restores shop residency through replmon/replshk.

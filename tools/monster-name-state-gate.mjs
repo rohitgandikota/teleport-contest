@@ -110,13 +110,13 @@ for (const [value, expected] of [[-5, -1], [7, 1], [0, 0], [A_NONE, A_NONE]])
 // C topl_putsym/addtopl: reserve column 79 and clear to the end of the line,
 // including when the final character is a newline or backspace.
 game._win_stop = false;
-show_topl_nohistory('Q'.repeat(80));
+await show_topl_nohistory('Q'.repeat(80));
 assert.equal(game._topline_physical_prefix, 'Q'.repeat(79) + '\nQ');
-show_topl_nohistory('Alpha\n');
+await show_topl_nohistory('Alpha\n');
 assert.equal(game._topline_physical_prefix, 'Alpha\n');
 assert.equal(game._topl_cury, 1);
 assert.equal(game._topl_curx, 0);
-show_topl_nohistory('AB\b');
+await show_topl_nohistory('AB\b');
 assert.equal(game._topline_physical_prefix, 'A');
 
 console.log('monster name state: PASS (27 C scenarios plus source formatting controls)');

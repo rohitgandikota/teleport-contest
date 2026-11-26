@@ -1423,23 +1423,30 @@ suggests. `js/tty/termcap.js` now holds the collapse as `term_start_color()`.
 than by code (hilites[], the symbol sets) can encode "do nothing" as an entry,
 and a port that reimplements the lookup as arithmetic will miss it.
 
-## Clearing a message means erasing the row, not just the buffer
+## Message acknowledgement and covered-row restoration
 
-Our `more()` cleared `game._pending_message` but left the text already painted
-in the grid, so the next thing to draw landed on top of it — seed0360's tutorial
-prompt read `Hello wizard, welcom Do you want a tutorial?`.
-
-The C reaches the erase by a route that looks like a bug and is not:
+C's message-window caller owns the final erase after acknowledgement:
 
     /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE */
     more();
     ttyDisplay->toplin = TOPLINE_NEED_MORE;   /* more resets this */
     tty_clear_nhwindow(window);
 
-`tty_clear_nhwindow` only does its `home(); cl_end();` when `toplin !=
-TOPLINE_EMPTY`, and `more()` has just set it to EMPTY. Forcing it back is the
-whole point of the assignment. Reading `more()` alone tells you the line is
-cleared; only the caller actually erases it.
+`tty_clear_nhwindow` paints only when toplin is nonempty and the screen is
+not already being erased. It resets logical message coordinates even when
+the message is empty. Direct `more()` leaves a single-line space-acknowledged
+message on screen; Escape erases it. Wrapped messages restore covered rows
+through `docorner`, then home the cursor. The outer message-window caller
+sets NEED_MORE again before its own clear.
+
+Use the canonical `docorner` and await it through every caller. It positions
+BASE_WINDOW physically before each row and calls `row_refresh`, which skips
+numeric unexplored glyphs unless a frame or forced refresh requires them.
+Painting every cached character resurrects unexplored symbols under a wrapped
+prompt. A same-character explored glyph and an unknown glyph have different
+semantics. Keep real frame and same-symbol constructed controls separate from
+ordinary keyboard reach. Window-display adapters call
+`display_nhwindow_message`; direct more callers retain their own cleanup.
 
 ## The step-0 `--More--` claim was wrong: it is 3 sessions, not 32
 

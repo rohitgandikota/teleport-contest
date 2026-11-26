@@ -34,8 +34,15 @@ pass. Full NFS verification passes 908/908 recordings: 925,049 screens/cursors,
 retries. One prior billing-disposal diagnostic remains unchanged at 7/8.
 See STATUS and the saved-monster-traits-owner evidence for exact scope.
 
-Fruit UTF8, merged byte caps, wrapped-message clearing and level-departure
-context cleanup remain separate work. Five fruit-byte C inputs establish a
+Wrapped message restoration now passes all five targeted C cases, versus
+three. Its portable source and ordinary gates pass 34/34 and 15/15. All 168
+selected/public recordings and strict workers pass. Full909 passes all 909
+recordings on NFS: 925,297 screens/cursors, 19,971,753 random positions and
+33,110 frames, with default budgets and no retries. See STATUS for the fixed
+runtime and the wrapped-message-clear evidence for the exact scope.
+
+Fruit UTF8, merged byte caps and level-departure context cleanup remain
+separate work. Five fruit-byte C inputs establish a
 1/5 baseline. The next source audit follows the missing cockatrice-corpse
 impact behavior needed for ordinary statue production. The latest leaderboard
 check, 19:21 EST on November 25, still shows rank 7 and 659 unmatched screens;

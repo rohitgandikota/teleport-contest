@@ -1,0 +1,139 @@
+{
+  "status": "SOURCE PROPOSAL ONLY; NOT EXECUTED OR LOCKED; DO NOT NATIVE-RECORD YET",
+  "owner": "tty_clear_nhwindow NHW_MESSAGE and specialized JS clear",
+  "segments": [
+    {
+      "name": "wrapped-getlin-U-escape",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": " #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "wrapped-getlin-space-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "unwrapped-getlin-U-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": " #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "wrapped-welcome-U",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:WrappedMessageControl,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": " "
+    },
+    {
+      "name": "wrapped-welcome-space-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:WrappedMessageControl,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " "
+    }
+  ],
+  "cases": 5,
+  "keys": 246,
+  "proposedBoundaries": 251,
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "predictions": [
+    {
+      "name": "wrapped-getlin-U-escape",
+      "hypothesis": "wrapped unknown cells remain blank in C but current JS redraws U",
+      "primaryChecks": [
+        "actual caller reaches wrapped or unwrapped arm as named",
+        "numeric glyph identity and configured symbol agree with expected branch",
+        "prompt/state/key consumption and next input boundary match C contract"
+      ],
+      "secondaryChecks": [
+        "RNG calls and ordered slices unchanged",
+        "observer versus plain equality of all five outputs",
+        "deferred input and held EOF equality of all five outputs"
+      ]
+    },
+    {
+      "name": "wrapped-getlin-space-negative",
+      "hypothesis": "negative output unchanged",
+      "primaryChecks": [
+        "actual caller reaches wrapped or unwrapped arm as named",
+        "numeric glyph identity and configured symbol agree with expected branch",
+        "prompt/state/key consumption and next input boundary match C contract"
+      ],
+      "secondaryChecks": [
+        "RNG calls and ordered slices unchanged",
+        "observer versus plain equality of all five outputs",
+        "deferred input and held EOF equality of all five outputs"
+      ]
+    },
+    {
+      "name": "unwrapped-getlin-U-negative",
+      "hypothesis": "negative output unchanged",
+      "primaryChecks": [
+        "actual caller reaches wrapped or unwrapped arm as named",
+        "numeric glyph identity and configured symbol agree with expected branch",
+        "prompt/state/key consumption and next input boundary match C contract"
+      ],
+      "secondaryChecks": [
+        "RNG calls and ordered slices unchanged",
+        "observer versus plain equality of all five outputs",
+        "deferred input and held EOF equality of all five outputs"
+      ]
+    },
+    {
+      "name": "wrapped-welcome-U",
+      "hypothesis": "wrapped unknown cells remain blank in C but current JS redraws U",
+      "primaryChecks": [
+        "actual caller reaches wrapped or unwrapped arm as named",
+        "numeric glyph identity and configured symbol agree with expected branch",
+        "prompt/state/key consumption and next input boundary match C contract"
+      ],
+      "secondaryChecks": [
+        "RNG calls and ordered slices unchanged",
+        "observer versus plain equality of all five outputs",
+        "deferred input and held EOF equality of all five outputs"
+      ]
+    },
+    {
+      "name": "wrapped-welcome-space-negative",
+      "hypothesis": "negative output unchanged",
+      "primaryChecks": [
+        "actual caller reaches wrapped or unwrapped arm as named",
+        "numeric glyph identity and configured symbol agree with expected branch",
+        "prompt/state/key consumption and next input boundary match C contract"
+      ],
+      "secondaryChecks": [
+        "RNG calls and ordered slices unchanged",
+        "observer versus plain equality of all five outputs",
+        "deferred input and held EOF equality of all five outputs"
+      ]
+    }
+  ],
+  "mustConfirmBeforeLock": [
+    "getlin first ESC restores row before the second ESC capture",
+    "no tilde-prefix autocomplete changes entered length",
+    "new7/canonical row helper behavior applies to actual unknown cells",
+    "long-name normal welcome does wrap, with exactly one proposed acknowledgement",
+    "negative full outputs unchanged on future candidate"
+  ],
+  "unreachedOrdinaryBranches": [
+    "explored numeric glyph using the same U character under this wrapped prompt",
+    "real active validator/frame during wrapped-message restoration"
+  ],
+  "rejectedHypothesis": {
+    "proposal": "long greeting name while keeping playmode:debug",
+    "reason": "C options.c10134 set_playmode and JS options.js1184 replace the configured name with wizard",
+    "executed": false
+  }
+}

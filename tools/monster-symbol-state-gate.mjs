@@ -48,7 +48,7 @@ function setup({hallu=false, sample=PM.PM_RED_DRAGON, visible=true, sparkle=true
     env.__imports = {
         './display.js':{mon_to_glyph:env.mon_to_glyph, show_glyph_cell:show, newsym:env.newsym,
             cls:async()=>calls.events.push(['cls']), docrt:async()=>calls.events.push(['docrt']),
-            pline:async text=>calls.events.push(['pline',text]), more:async()=>calls.events.push(['more']),
+            pline:async text=>calls.events.push(['pline',text]), display_nhwindow_message:async()=>calls.events.push(['more']),
             canspotmon:()=>true, map_invisible:()=>{throw Error('unexpected invisible marker');}},
         './do_name.js':{noit_mon_nam:()=> 'test monster'},
         './youprop.js':{Hallucination:env.Hallucination},

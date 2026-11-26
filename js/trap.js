@@ -5474,7 +5474,7 @@ export async function climb_pit() {
     } else if (!rn2(2) && sobj_at(ONAMES.BOULDER, u.ux, u.uy)) {
         await Your(`${body_part(LEG)} gets stuck in a crevice.`);
         await display_nhwindow_message(); /* display_nhwindow(WIN_MESSAGE, FALSE) */
-        tty_clear_nhwindow_message(game._topl_cury || 0); /* clear_nhwindow(WIN_MESSAGE) */
+        await tty_clear_nhwindow_message(game._topl_cury || 0); /* clear_nhwindow(WIN_MESSAGE) */
         await You(`free your ${body_part(LEG)}.`);
     } else if ((Flying() || is_clinger(game.youmonst.data)) && !Sokoban()) {
         /* eg fell in pit, then poly'd to a flying monster;

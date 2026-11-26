@@ -141,7 +141,7 @@ test(`clear message state ${state}: home before erasing, without RNG`,async()=>{
     await setup();game._toplin=state;
     game.nhDisplay.setCell(0,0,'X',T.NO_COLOR,0);
     const before=rng();
-    D.tty_clear_nhwindow_message(0);
+    await D.tty_clear_nhwindow_message(0);
     assert.deepEqual(cursor(),[0,0]);
     assert.equal(game._toplin,D.TOPLINE_EMPTY);
     assert.ok(game.nhDisplay.grid[0].every(c=>c.ch===' '));
@@ -151,7 +151,7 @@ test(`clear message state ${state}: home before erasing, without RNG`,async()=>{
 test('empty message guard leaves physical cursor and cells alone',async()=>{
     await setup();game._toplin=D.TOPLINE_EMPTY;
     game.nhDisplay.setCell(0,0,'X',T.NO_COLOR,0);
-    D.tty_clear_nhwindow_message(0);
+    await D.tty_clear_nhwindow_message(0);
     assert.deepEqual(cursor(),[19,0]);
     assert.equal(game.nhDisplay.grid[0][0].ch,'X');
 });
@@ -160,7 +160,7 @@ test('wrapped message clear homes before restoring covered map rows',async()=>{
     const s=await setup();s.showFloor(6,0);
     const moves=[],display=game.nhDisplay,original=display.setCursor;
     display.setCursor=function(x,y){moves.push([x,y]);return original.call(this,x,y);};
-    try{D.tty_clear_nhwindow_message(1);}finally{display.setCursor=original;}
-    assert.deepEqual(moves,[[0,0],[6,1]]);
+    try{await D.tty_clear_nhwindow_message(1);}finally{display.setCursor=original;}
+    assert.deepEqual(moves,[[0,0],[0,0],[0,1],[6,1]]);
     assert.deepEqual(cursor(),[6,1]);
 });

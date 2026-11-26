@@ -1,0 +1,255 @@
+{
+  "baselineCommit": "1e15de5eaa8ea50aacffcc2412a543d3ab0e07a5",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/cmd.js",
+    "js/detect.js",
+    "js/display.js",
+    "js/dogmove.js",
+    "js/dokick.js",
+    "js/eat.js",
+    "js/end.js",
+    "js/fountain.js",
+    "js/getpos.js",
+    "js/invent.js",
+    "js/muse.js",
+    "js/o_init.js",
+    "js/pager.js",
+    "js/pickup.js",
+    "js/plselect.js",
+    "js/save.js",
+    "js/spell.js",
+    "js/trap.js",
+    "js/tty/topl.js",
+    "js/tty/wintty.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "71fc45e6a4f55fa8dc30703afc86216c5c0be1d2c198fec439e0a36c1771d97c",
+  "sourceSeals": {
+    "views/row": {
+      "members": 354,
+      "sha256": "4329db3b0ab8779a302cb9c1b915813b057af8daec5d57217f5656f8fb594101"
+    },
+    "js": {
+      "members": 45,
+      "sha256": "f49ba8e6644434fa6f7fd320d6f32a08d49bc5be1afcdec60d0e51880df4aa2e"
+    },
+    "wrapped-message-clear-parent-retained-review": {
+      "members": 35,
+      "sha256": "833af4ba69844f0bddbaa58729178bb5db2b42d8cdda3854b36c989102a2af35"
+    }
+  },
+  "native": {
+    "recordedAt": "2026-11-26T00:52:08.997142+00:00",
+    "baseline": 3,
+    "candidate": 5,
+    "composed": 5,
+    "cases": 5,
+    "keys": 243,
+    "boundaries": 248,
+    "calls": 14681,
+    "frames": 0,
+    "rawSHA256": "920886535739edb1b616f1014df969d28e3a7b939c99f81628b3f7e84e6322d1",
+    "candidateComposedReportSHA256": "411c64b296585517dfef6d4ba800ef9d0b125679aadb6d04642e3e6d3114528a",
+    "runtimeSHA256": "71fc45e6a4f55fa8dc30703afc86216c5c0be1d2c198fec439e0a36c1771d97c",
+    "unchangedNegativeReports": 3,
+    "unchangedNegativeHashes": 15,
+    "firstDifferences": [
+      {
+        "name": "wrapped-getlin-U-escape",
+        "firstScreen": [
+          {
+            "step": 80,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1841,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 79,
+            "firstFullStyleDifference": {
+              "x": 0,
+              "y": 1,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "U",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 0,
+              "y": 1,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "U",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "cursor": null,
+        "rng": null
+      },
+      {
+        "name": "wrapped-welcome-U",
+        "firstScreen": [
+          {
+            "step": 1,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1841,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 79,
+            "firstFullStyleDifference": {
+              "x": 0,
+              "y": 1,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "U",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 0,
+              "y": 1,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "U",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "cursor": null,
+        "rng": null
+      }
+    ],
+    "review": "Parent read complete patches and pinned C clear/more/docorner/message-display owners. Async propagation and immediate gameplay adapter contracts reviewed; no whole-gameplay-owner closure implied."
+  },
+  "sourceControls": {
+    "constructed": "34/34 versus 13/34",
+    "ordinary": "15/15 versus 12/15"
+  },
+  "portableGates": {
+    "reports": {
+      "tools/wrapped-message-clear-state-gate.mjs": "8704acc539b9dbf2b9788a220160fe2f9076b68cb26f2e2f1855dbdb6298c86c",
+      "tools/wrapped-message-clear-input-gate.mjs": "8f691173eb08c335189a350cfee189bf307fbb5e46921deedc7e0388a2fc508a"
+    },
+    "preflightRejections": 13,
+    "validImportBoundaryControls": 2
+  },
+  "retainedCorrections": {
+    "files": [
+      {
+        "path": "tools/monster-symbol-state-gate.mjs",
+        "originalSHA256": "e1a7d36c943c86aa7f61dd9e403fb0fb5c01b112e331ba1aab22ea05236ed36d",
+        "correctedSHA256": "060f92d8a846ca8b7a80a11c96599375f7ae5181b2c3474224b01498764e5d47",
+        "assertionsBefore": 23,
+        "assertionsAfter": 23
+      },
+      {
+        "path": "tools/projectile-cursor-state-gate.mjs",
+        "originalSHA256": "0592d4333bf3fbe35619fb4c462b47f879a564a9f66bb6c7d3534791a9154a79",
+        "correctedSHA256": "b58d68ee09c6e634a4d685efde0fe51f4ae779dc03afcc669638de1156ed315b",
+        "assertionsBefore": 31,
+        "assertionsAfter": 31
+      },
+      {
+        "path": "tools/monster-name-state-gate.mjs",
+        "originalSHA256": "c920345f78f55f6198e416f771c602bb8b27642c800471f99b5412d78ac37409",
+        "correctedSHA256": "fcc789462f3fe3123d78ffd5e85266dafcebc8adb36010019f8f23de872bb563",
+        "assertionsBefore": 33,
+        "assertionsAfter": 33
+      }
+    ],
+    "assertionSites": {
+      "before": 87,
+      "after": 87,
+      "changedExpectedValues": 1,
+      "removed": 0
+    },
+    "asyncCallsAwaited": 6,
+    "VMImportRenamed": 1,
+    "originalBaseline": "3/3",
+    "originalCandidate": "0/3",
+    "correctedCandidate": "3/3",
+    "correctedMain": "3/3",
+    "originalFailuresPreserved": true
+  },
+  "inputCorrections": [
+    "Three initial leading spaces produced unknown-command boundaries. They were removed before the five-field input lock and the only C recording; both proposals and probe reports are retained.",
+    "Constructed same-symbol and pet-style fixtures needed explicit S_room:U and hilite_pet options. Original failed reports remain unchanged; the assertions were not relaxed.",
+    "The no-argument clear control was strengthened with an explored floor glyph."
+  ],
+  "setupCorrections": [
+    "Initial native wrapper linked a missing frozen directory and failed before gameplay. Fixed links and original failed log are retained.",
+    "The focused runner used a slash in a syntax log label and stopped after 73 checks. Only the unexecuted 20 syntax checks were then run.",
+    "An introduced duplicate display import failed syntax checking in the source packet; the duplicate was removed and the initial failed result retained."
+  ],
+  "selectedPublic": {
+    "passed": 168,
+    "screens": 80144,
+    "cursors": 80144,
+    "rngCalls": 3069442,
+    "animFrames": 2469
+  },
+  "strict8s": {
+    "passed": 168,
+    "total": 168,
+    "timeoutOverride": false
+  },
+  "retainedChecks": {
+    "initialPassed": 89,
+    "passedAfterConsumerCorrections": 92,
+    "total": 93,
+    "unchangedFailure": "billing-disposal-input: 7/8, complete output unchanged from the published shopkeeper checkpoint"
+  },
+  "full909": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wrapped-message-clear-full909-js-20261125",
+    "sessions": 909,
+    "passed": 909,
+    "totals": {
+      "screens": 925297,
+      "cursors": 925297,
+      "rngCalls": 19971753,
+      "animFrames": 33110
+    },
+    "allFilesFixed": 1200,
+    "allFilesSHA256": "e3e34bc9b00dbf191cbbe912060779524cff47df11b081f92488cf7a008e05d4",
+    "verificationSHA256": "5a3587d098834ee52eb4dad9c924ec645a921247984f335c0fc88813b3476199",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Full styled cells, cursors, ordered RNG and frames are compared; serialized byte identity and whole-port closure are not established.",
+    "Ordinary active-frame and explored-same-symbol reach remain unproved for this wrapped route; their controls are constructed.",
+    "Whole more rendering and guards, the extra vault prompt and the getlin reconstruction flag remain outside this patch.",
+    "Metadata preflight rejects changed bytes before semantic assertions; it does not establish independent bypass coverage of later checks.",
+    "No new held-out result is inferred."
+  ]
+}

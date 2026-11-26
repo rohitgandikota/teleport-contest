@@ -475,7 +475,7 @@ async function select_menu_pick_one(win) {
     {
         const c0 = tty_get_nhwindow(win);
         if (c0 && !(c0.offx === 10 || c0.maxrow >= 24))
-            tty_clear_nhwindow_message(0);
+            await tty_clear_nhwindow_message(0);
     }
     await tty_display_nhwindow(win);
     const cw = tty_get_nhwindow(win);

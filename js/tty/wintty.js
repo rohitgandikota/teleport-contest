@@ -31,7 +31,7 @@ const repad_with_dashes = (b) => botl_fns.repad_with_dashes(b);
 const status_initialize = (r) => botl_fns.status_initialize(r);
 import { critically_low_hp } from './../pray.js';
 import { impossible } from './../pline.js';
-import { TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT, more } from './../display.js';
+import { TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT, more, display_nhwindow_message } from './../display.js';
 import { tty_clear_nhwindow_message, row_refresh, bot,
          docrt, flush_screen } from './../display.js';
 import { nhgetch } from './../input.js';
@@ -712,7 +712,7 @@ export async function tty_display_nhwindow(window) {
        previous --More-- the pending message is neither prompted for nor
        acknowledged: the menu's own clearing below simply erases it. */
     if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop)
-        await more();
+        await display_nhwindow_message();
 
     // win/tty/wintty.c:1971: height and menu_overlay choose the clear extent.
     game._pending_message = '';
@@ -728,7 +728,7 @@ export async function tty_display_nhwindow(window) {
         }
         game._toplin = TOPLINE_EMPTY;
     } else {
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
     }
 
     /* wintty.c:1944 — `if (cw->data || !cw->maxrow)` picks the text renderer;
@@ -761,7 +761,7 @@ export async function tty_message_menu(letter, how, mesg) {
     if (game._toplin === TOPLINE_NEED_MORE) {
         await more();
         game._toplin = TOPLINE_NEED_MORE; /* more resets this */
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
         game._pending_message = '';
         const { TOPLINE_EMPTY } = await import('./../display.js');
         game._toplin = TOPLINE_EMPTY;
@@ -1133,7 +1133,7 @@ export async function tty_next_page(window) {
 // win/tty/wintty.c:4210 docorner() — blank the columns a corner window
 // occupied, refresh the map underneath from the glyph buffer (row_refresh),
 // and redraw the status rows if the window overlapped them.
-async function docorner(xmin, ymax, display, ystart_between_menu_pages = 0) {
+export async function docorner(xmin, ymax, display, ystart_between_menu_pages = 0) {
     let y = ystart_between_menu_pages || 0;
     const screenX = Math.max(0, xmin - 1);
     for (; y < Math.min(ymax, ROWS); y++) {
@@ -1142,6 +1142,7 @@ async function docorner(xmin, ymax, display, ystart_between_menu_pages = 0) {
            second "Who are you?" after 'a' on the confirmation menu lands on the
            row below the dismissed menu because of exactly this. */
         tty_curs_base(xmin, y);
+        display.setCursor(screenX, y);
         if (!ystart_between_menu_pages)
             for (let x = screenX; x < COLS; x++)
                 display.setCell(x, y, ' ', NO_COLOR, 0);

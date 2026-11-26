@@ -4573,6 +4573,11 @@
     {"group":"saved-monster-traits-owner","id":"saved-monster-traits.revived-resident-stock","cFile":"src/shk.c","cFunction":"replshk","description":"Revived shopkeeper resumes residency and bills stock pickup."},
     {"group":"saved-monster-traits-owner","id":"saved-monster-traits.dead-resident-no-revival","cFile":"src/mkobj.c","cFunction":"mkcorpstat","description":"Dead shopkeeper remains absent when its corpse is not revived."},
     {"group":"saved-monster-traits-owner","id":"saved-monster-traits.saved-cyclops-revival","cFile":"src/zap.c","cFunction":"montraits","description":"Revive the saved Cyclops record without shop residency."},
-    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.unsaved-newt-revival","cFile":"src/zap.c","cFunction":"revive","description":"Revive a newt corpse without a saved monster record."}
+    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.unsaved-newt-revival","cFile":"src/zap.c","cFunction":"revive","description":"Revive a newt corpse without a saved monster record."},
+    {"group":"wrapped-message-clear","id":"wrapped-message.wrapped-getlin-U-escape","cFile":"win/tty/wintty.c","cFunction":"tty_clear_nhwindow","description":"Cancel a wrapped extended command and skip cached numeric unexplored U cells."},
+    {"group":"wrapped-message-clear","id":"wrapped-message.wrapped-getlin-space-negative","cFile":"win/tty/wintty.c","cFunction":"tty_clear_nhwindow","description":"Cancel the same wrapped command with default unexplored spaces unchanged."},
+    {"group":"wrapped-message-clear","id":"wrapped-message.unwrapped-getlin-U-negative","cFile":"win/tty/wintty.c","cFunction":"tty_clear_nhwindow","description":"Cancel a command that never wrapped, preserving unexplored U cells."},
+    {"group":"wrapped-message-clear","id":"wrapped-message.wrapped-welcome-U","cFile":"win/tty/topl.c","cFunction":"more","description":"Acknowledge a wrapped normal welcome and restore covered rows through docorner."},
+    {"group":"wrapped-message-clear","id":"wrapped-message.wrapped-welcome-space-negative","cFile":"win/tty/topl.c","cFunction":"more","description":"Acknowledge the same wrapped welcome with default spaces unchanged."}
   ]
 }

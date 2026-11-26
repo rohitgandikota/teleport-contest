@@ -1,0 +1,1014 @@
+{
+  "classification": "ordinary JS discovery only",
+  "results": [
+    {
+      "name": "wrapped-getlin-U-escape",
+      "keys": 82,
+      "error": null,
+      "boundaries": 83,
+      "calls": 3029,
+      "hashes": {
+        "screens": "2992f0d78419283b6abff782ebc7a6673a5b21d183c11a4d3b71fa44027f2fb7",
+        "cursors": "b09c72511d2d05472fa7baeca1e8baac54713044e234de6e7386ad50fcbc7fac",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "1de8d002a354b26c646467ba910ed7e3ba7b4ea5922f4da2f125acdfa06ea281",
+        "frames": "b4a35e45b0f8066f5d0bbc13c537c1607c381fbb46824ecbe850262111cf34ed"
+      },
+      "slicesExact": true,
+      "states": [
+        {
+          "step": 0,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            0,
+            0
+          ],
+          "pending": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.         ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 1,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Unknown command ' '.                                                            ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 2,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 78,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            78,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 79,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            79,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 80,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            1
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ",
+          "mapTop": "~                                                                               ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 78,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "step": 81,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 82,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "                                                                                ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrapped-getlin-space-negative",
+      "keys": 82,
+      "error": null,
+      "boundaries": 83,
+      "calls": 3029,
+      "hashes": {
+        "screens": "ab33b81aac8db874435eff787bfe354269d49378fe58197fa3f638df117c68bc",
+        "cursors": "b09c72511d2d05472fa7baeca1e8baac54713044e234de6e7386ad50fcbc7fac",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "1de8d002a354b26c646467ba910ed7e3ba7b4ea5922f4da2f125acdfa06ea281",
+        "frames": "b4a35e45b0f8066f5d0bbc13c537c1607c381fbb46824ecbe850262111cf34ed"
+      },
+      "slicesExact": true,
+      "states": [
+        {
+          "step": 0,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            0,
+            0
+          ],
+          "pending": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.         ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 1,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Unknown command ' '.                                                            ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 2,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 78,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            78,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 79,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            79,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 80,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            1
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ",
+          "mapTop": "~                                                                               ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 78,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "step": 81,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 82,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "                                                                                ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unwrapped-getlin-U-negative",
+      "keys": 80,
+      "error": null,
+      "boundaries": 81,
+      "calls": 3029,
+      "hashes": {
+        "screens": "85c8b2376e51a91b7d3d12144f6ab6a7ba58536a030d61a4207b28a9321b1a6e",
+        "cursors": "9b5b1737e1b62777dd443beb3c0a3e2341bc1771534afd93aa2e8f06168a0a81",
+        "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+        "slices": "11d51988aec947f3511fa07e3d73dd8872dddb165f5fa1a7ec4ed5f0672be4b1",
+        "frames": "47c4fe8b1bc42b97a057d845e0a0afa95df533d679cf7f1981389b602f86de3b"
+      },
+      "slicesExact": true,
+      "states": [
+        {
+          "step": 0,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            0,
+            0
+          ],
+          "pending": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.         ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 1,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Unknown command ' '.                                                            ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        },
+        {
+          "step": 2,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 76,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            76,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 77,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            77,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 78,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            78,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 79,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 3,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "# ",
+          "inread": 1,
+          "name": null,
+          "frame": 8,
+          "top": "#                                                                               ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            2,
+            0,
+            1
+          ]
+        },
+        {
+          "step": 80,
+          "xy": [
+            8,
+            12
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            20,
+            0
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "                                                                                ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            7,
+            13,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrapped-welcome-U",
+      "keys": 1,
+      "error": null,
+      "boundaries": 2,
+      "calls": 2797,
+      "hashes": {
+        "screens": "41ec2f2c19a1fcd27ee823b9f68a5bbfd8b1388c3d36d113d892e7cad791490d",
+        "cursors": "cfd9cdb1bc514f963337487c142389a2f44f88f09947d6d225143e0ba75823ab",
+        "calls": "9431858e86134dc56570c8e45b1505ca7188b05f4ffad13141e02bb6749ee31c",
+        "slices": "262befe91722db6986d968c0a42346f937e78949b5a44dbaf2965daad939f4d0",
+        "frames": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+      },
+      "slicesExact": true,
+      "states": [
+        {
+          "step": 0,
+          "xy": [
+            64,
+            7
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            0,
+            1
+          ],
+          "pending": "Hello WrappedMessageControl, welcome to NetHack!  You are a neutral male human\nWizard.",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Hello WrappedMessageControl, welcome to NetHack!  You are a neutral male human  ",
+          "mapTop": "Wizard.--More--                                                                 ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 64,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            15,
+            1,
+            1
+          ]
+        },
+        {
+          "step": 1,
+          "xy": [
+            64,
+            7
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            0,
+            1
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "                                                                                ",
+          "mapTop": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU ",
+          "unknownCount": 79,
+          "unknownU": 79,
+          "unknownBlank": 0,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": "U"
+          },
+          "cursor": [
+            63,
+            8,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wrapped-welcome-space-negative",
+      "keys": 1,
+      "error": null,
+      "boundaries": 2,
+      "calls": 2797,
+      "hashes": {
+        "screens": "63138d98e4120d105ba0e5cee6f28c3b227745e5df131b70cc1715cf9b7478c5",
+        "cursors": "cfd9cdb1bc514f963337487c142389a2f44f88f09947d6d225143e0ba75823ab",
+        "calls": "9431858e86134dc56570c8e45b1505ca7188b05f4ffad13141e02bb6749ee31c",
+        "slices": "262befe91722db6986d968c0a42346f937e78949b5a44dbaf2965daad939f4d0",
+        "frames": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+      },
+      "slicesExact": true,
+      "states": [
+        {
+          "step": 0,
+          "xy": [
+            64,
+            7
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 1,
+          "curxy": [
+            0,
+            1
+          ],
+          "pending": "Hello WrappedMessageControl, welcome to NetHack!  You are a neutral male human\nWizard.",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "Hello WrappedMessageControl, welcome to NetHack!  You are a neutral male human  ",
+          "mapTop": "Wizard.--More--                                                                 ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 64,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            15,
+            1,
+            1
+          ]
+        },
+        {
+          "step": 1,
+          "xy": [
+            64,
+            7
+          ],
+          "hp": 12,
+          "turn": 1,
+          "toplin": 0,
+          "curxy": [
+            0,
+            1
+          ],
+          "pending": "",
+          "inread": 0,
+          "name": null,
+          "frame": 8,
+          "top": "                                                                                ",
+          "mapTop": "                                                                                ",
+          "unknownCount": 79,
+          "unknownU": 0,
+          "unknownBlank": 79,
+          "cell70": {
+            "x": 70,
+            "num": 9622,
+            "char": " "
+          },
+          "cursor": [
+            63,
+            8,
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

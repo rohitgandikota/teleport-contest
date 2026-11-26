@@ -580,7 +580,7 @@ export async function getpos(ccp, force, goal) {
                                     c.x = tx;
                                     c.y = ty;
                                     if (msg_given) {
-                                        tty_clear_nhwindow_message(
+                                        await tty_clear_nhwindow_message(
                                             game._topl_cury || 0);
                                         game._pending_message = '';
                                         game._toplin = TOPLINE_EMPTY;
@@ -634,7 +634,7 @@ export async function getpos(ccp, force, goal) {
     }
 
     if (msg_given) {
-        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await tty_clear_nhwindow_message(game._topl_cury || 0);
         game._pending_message = '';
         game._toplin = TOPLINE_EMPTY;
     }

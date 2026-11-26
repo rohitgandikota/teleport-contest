@@ -1,0 +1,267 @@
+{
+  "name": "wrapped-message-clear",
+  "description": "Ordinary wrapped extended-command cancellation and long welcome acknowledgement. C docorner/row_refresh predictions fixed before candidate; native evidence belongs to parent.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "wrapped-message.wrapped-getlin-U-escape",
+    "wrapped-message.wrapped-getlin-space-negative",
+    "wrapped-message.unwrapped-getlin-U-negative",
+    "wrapped-message.wrapped-welcome-U",
+    "wrapped-message.wrapped-welcome-space-negative"
+  ],
+  "segments": [
+    {
+      "name": "wrapped-getlin-U-escape",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "wrapped-getlin-space-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "unwrapped-getlin-U-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": "#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b\u001b"
+    },
+    {
+      "name": "wrapped-welcome-U",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:WrappedMessageControl,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_unexplored:U\n",
+      "moves": " "
+    },
+    {
+      "name": "wrapped-welcome-space-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:WrappedMessageControl,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "wrapped-message.wrapped-getlin-U-escape",
+      "segment": 0,
+      "screenIncludes": [
+        "# ~~~~~"
+      ],
+      "screenExcludes": [
+        "Unknown command"
+      ],
+      "screenCells": [
+        {
+          "step": 79,
+          "x": 0,
+          "y": 1,
+          "equals": "~"
+        },
+        {
+          "step": 80,
+          "x": 69,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "wrapped-message.wrapped-getlin-space-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "# ~~~~~"
+      ],
+      "screenExcludes": [
+        "Unknown command"
+      ],
+      "screenCells": [
+        {
+          "step": 79,
+          "x": 0,
+          "y": 1,
+          "equals": "~"
+        },
+        {
+          "step": 80,
+          "x": 69,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "wrapped-message.unwrapped-getlin-U-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "# ~~~~~"
+      ],
+      "screenExcludes": [
+        "Unknown command"
+      ],
+      "screenCells": [
+        {
+          "step": 78,
+          "x": 69,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "wrapped-message.wrapped-welcome-U",
+      "segment": 3,
+      "screenIncludes": [
+        "WrappedMessageControl",
+        "--More--"
+      ],
+      "screenExcludes": [
+        "Unknown command"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "W"
+        },
+        {
+          "step": 1,
+          "x": 69,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "wrapped-message.wrapped-welcome-space-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "WrappedMessageControl",
+        "--More--"
+      ],
+      "screenExcludes": [
+        "Unknown command"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "W"
+        },
+        {
+          "step": 1,
+          "x": 69,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "wrapped-getlin-U-escape",
+      "negative": false,
+      "producer": "getlin-escape",
+      "wrapped": true,
+      "beforeStep": 79,
+      "afterStep": 80,
+      "unknownSymbol": "U",
+      "expectedAfter": " ",
+      "finalXY": [
+        8,
+        12
+      ]
+    },
+    {
+      "name": "wrapped-getlin-space-negative",
+      "negative": true,
+      "producer": "getlin-escape",
+      "wrapped": true,
+      "beforeStep": 79,
+      "afterStep": 80,
+      "unknownSymbol": " ",
+      "expectedAfter": " ",
+      "finalXY": [
+        8,
+        12
+      ]
+    },
+    {
+      "name": "unwrapped-getlin-U-negative",
+      "negative": true,
+      "producer": "getlin-escape",
+      "wrapped": false,
+      "beforeStep": 77,
+      "afterStep": 78,
+      "unknownSymbol": "U",
+      "expectedAfter": "U",
+      "finalXY": [
+        8,
+        12
+      ]
+    },
+    {
+      "name": "wrapped-welcome-U",
+      "negative": false,
+      "producer": "welcome-more",
+      "wrapped": true,
+      "beforeStep": 0,
+      "afterStep": 1,
+      "unknownSymbol": "U",
+      "expectedAfter": " ",
+      "finalXY": [
+        64,
+        7
+      ]
+    },
+    {
+      "name": "wrapped-welcome-space-negative",
+      "negative": true,
+      "producer": "welcome-more",
+      "wrapped": true,
+      "beforeStep": 0,
+      "afterStep": 1,
+      "unknownSymbol": " ",
+      "expectedAfter": " ",
+      "finalXY": [
+        64,
+        7
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "wrapped-getlin-space-negative": {
+      "screens": "f928ee3cd3a0ee6f6c019883272f1392230ed263848acba86e7ee668a32764b8",
+      "cursors": "fa16e84a564a0d3761d94211fe211ba30a31b22005eb65088f9df3988c914fc2",
+      "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+      "slices": "b9dd526bad21b59e0074a8ee17e9c5a2d39434f7672fbaf143c21243725e3508",
+      "frames": "56ef76ae9604a1e028d3b84db576750c52129db11a9f185155f959a1d97adce5"
+    },
+    "unwrapped-getlin-U-negative": {
+      "screens": "11272b91df99b80f258cb19dccd9309641270281aac496c9cde8168460de56a6",
+      "cursors": "213a60b00835f8582e932527f717cd6b1793250289e778910829aa4abbde45e0",
+      "calls": "9409eef20266997b3f3728bd71605f628ca0a9ad9e7729915e3b8de17324760d",
+      "slices": "65df5af963813982ccecefb5bddfdcefa2ae5d2532e6a2ddc83362a2f297636c",
+      "frames": "eb76a891e7bbf373a155259f461cc74228a7a11f4adb9a1e3095777155bd7a98"
+    },
+    "wrapped-welcome-space-negative": {
+      "screens": "63138d98e4120d105ba0e5cee6f28c3b227745e5df131b70cc1715cf9b7478c5",
+      "cursors": "cfd9cdb1bc514f963337487c142389a2f44f88f09947d6d225143e0ba75823ab",
+      "calls": "9431858e86134dc56570c8e45b1505ca7188b05f4ffad13141e02bb6749ee31c",
+      "slices": "262befe91722db6986d968c0a42346f937e78949b5a44dbaf2965daad939f4d0",
+      "frames": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+    }
+  },
+  "recordingNote": "Five final tuples locked after two bounded fixed352 probes and before candidate. Initial leading-space assumption failed and remains in probe01. No native run performed by worker."
+}

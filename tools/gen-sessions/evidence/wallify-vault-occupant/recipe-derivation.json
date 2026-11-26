@@ -1,0 +1,27 @@
+{
+  "originalRecipeSHA256": "3e4941a0a8cb8f9dfa4b0843e201013ebc65145eab802f956e2a249b705c3e28",
+  "canonicalRecipeSHA256": "dd9b54853d3ec190ad8f35416d9cce8e0eb45b5b2e3a450cebe41c4432ec2d1c",
+  "onlyAddedRootFields": [
+    "coverage"
+  ],
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.map-memory-vision"
+  ],
+  "strippingOnlyCoverageRecoversOriginal": true,
+  "originalAssertionBodySHA256": "d053939adda1dfafd2275d54b7f7e7ffe85e2aa3a939356906c1bd96144f00c9",
+  "originalWholeToolSHA256": "0bbd95fc22d8c2fa56bf4ec5c85fbd559c78e8d94d8f528f792f0c92b379244c",
+  "fiveFieldsAndPresenceUnchanged": true,
+  "all773KeysUnchanged": true,
+  "requirementsUnchanged": true,
+  "primaryBranchesAndAssertionsUnchanged": true,
+  "all10NegativeHashesUnchanged": true,
+  "historicalPendingNativeLabels": "Retained verbatim from the source recipe. The exact parent recording and native-validation receipts provide the subsequent result.",
+  "portableChanges": [
+    "Inline canonical C/raw/recipe/input/branch preflight",
+    "Normal current-repository imports",
+    "All original ordinary assertions unchanged",
+    "Report classification only; default no writes, optional new report path"
+  ]
+}

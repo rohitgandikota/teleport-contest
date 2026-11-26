@@ -1,0 +1,138 @@
+{
+  "final": true,
+  "candidateExisted": false,
+  "recipeSHA256": "322026dec878b81ba70f1132cff3e4105c07372a047304441712f86e6a9ffc06",
+  "sourceProposalSHA256": "77462d608c1db7b6c66233f58fe539d48e596a056534a5c1b80881cf8be979f4",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "name": {
+        "present": true,
+        "value": "entry-nondiggable-bars"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0017undiggable iron bars\r  \u001b\u001b\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001bzol  \u001b\u001bl"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "entry-unmodified-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001bzol  \u001b\u001bl"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "bars-outside-fakecorr-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001b\u0017undiggable iron bars\r  \u001b\u001bzol  \u001b\u001bl"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "entry-bars-before-cleanup-negative"
+      },
+      "seed": {
+        "present": true,
+        "value": 7303
+      },
+      "datetime": {
+        "present": true,
+        "value": "20000115090000"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0017undiggable iron bars\r  \u001b\u001b"
+      }
+    }
+  ],
+  "tupleSHA256": "e02857d11d46b99ad0714ef97e9401dd2d3e9d8f07ab615afd02c7bd0ea8168a",
+  "cases": 4,
+  "keys": 759,
+  "boundaries": 763,
+  "branches": [
+    "vault.fakecorr.restore-nondiggable-entry",
+    "vault.fakecorr.unmodified-entry-negative",
+    "vault.fakecorr.outside-entry-mutation-negative",
+    "vault.fakecorr.before-cleanup-negative"
+  ],
+  "negativeHashes": {
+    "entry-unmodified-negative": {
+      "screens": "8faeb844a9fd58bd61aea27ba67f59acb9aea149ca1fe7f6352af52a467c8a5a",
+      "cursors": "0ad11e12d888be156cbbca87237d745e4464c9c2c40d5900b5f575f2dbafdc6d",
+      "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+      "slices": "ddaf5950992648b56c2747e42a19fa88317d9e76ba5b63a353e1f4a7838fae47",
+      "frames": "d8da09c38ef327ee0319171687b283953a539af2bca3036e53cc070e15ffe9fd"
+    },
+    "bars-outside-fakecorr-negative": {
+      "screens": "1466702ec66bf48b8c52365c6526f052c0619cdff94fe96d3e8c26e2b50278fa",
+      "cursors": "b3e9c73cbb8c39540e8a8715eacc8d0562a0cbe36859426ac821addbfd00daf9",
+      "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+      "slices": "538467fc8f9060a2549377a22286799c3ebf461c4303b0d5a30abd352d466583",
+      "frames": "5c14791766c0639ac4dbee842233c32792db2d4969b345624796b516bfd0e3b9"
+    },
+    "entry-bars-before-cleanup-negative": {
+      "screens": "f7f81f04917cbb24369fee356c27b10037bc5957b057500c6e899bbac1108812",
+      "cursors": "ab22ce1a64e36d9387c6d9f256b6286c8c064a663e75a4866a34e7ed7ce88a89",
+      "calls": "5ea831136fd1b647371e8ac16790945131bbd2134fc94fc39cf25856ffa14be4",
+      "slices": "c2b7f34aab2c434852a9e29cd3d2ccb39949e1e10bd480640ca4a2cb9d45b1ba",
+      "frames": "f64e5a9a7839e91b65c9a2b7a071f1d9dfe91025de9c63a3973c06dafa62e40e"
+    }
+  },
+  "native": "Pending parent original-C recording; no candidate before parent evidence.",
+  "runtimeMapSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34"
+}

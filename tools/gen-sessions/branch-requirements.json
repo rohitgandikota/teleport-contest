@@ -4649,6 +4649,13 @@
     {"group":"vault.invault","id":"vault.invault.nonwall-entry","cFile":"vault.c","cFunction":"invault","description":"C vault.c590-618 and clear_fcorr48-119. Former right wall must be restored; final attempted east move is blocked. Source prediction, native pending parent."},
     {"group":"vault.invault","id":"vault.invault.intact-entry-negative","cFile":"vault.c","cFunction":"invault","description":"Original wall bypasses reconstruction; same clear_fcorr and movement block."},
     {"group":"vault.invault","id":"vault.invault.before-summon-negative","cFile":"vault.c","cFunction":"invault","description":"C dig.c1548-1753 opens the wall, but invault arrival has not run."},
-    {"group":"vault.invault","id":"vault.invault.croesus-negative","cFile":"vault.c","cFunction":"invault","description":"C vault.c521-557 Croesus early return occurs before fakecorr[0] initialization."}
+    {"group":"vault.invault","id":"vault.invault.croesus-negative","cFile":"vault.c","cFunction":"invault","description":"C vault.c521-557 Croesus early return occurs before fakecorr[0] initialization."},
+    {"group":"vault.fakecorr","id":"vault.fakecorr.restore-nondiggable-entry","cFile":"vault.c","cFunction":"clear_fcorr","description":"C vault.c89-90 restores the saved rm flags2, which also restores wall_info. C hack.c923 may_dig then permits zap_dig to open the entry and the final east move to25,5."},
+    {"group":"vault.fakecorr","id":"vault.fakecorr.unmodified-entry-negative","cFile":"vault.c","cFunction":"clear_fcorr","description":"No intervening typed-field mutation. Original saved2 remains; same cleanup and subsequent digging succeed."},
+    {"group":"vault.fakecorr","id":"vault.fakecorr.outside-entry-mutation-negative","cFile":"vault.c","cFunction":"clear_fcorr","description":"The nondiggable terrain wish occurs at24,5 only after cleanup. Saved entry25,5 is unaffected; subsequent digging and east movement succeed."},
+    {"group":"vault.fakecorr","id":"vault.fakecorr.before-cleanup-negative","cFile":"vault.c","cFunction":"clear_fcorr","description":"The terrain wish occurs at25,5, but no cleanup or digging occurs yet. The guard still owns fakecorr and the hero stays on the bars."},
+    {"group":"Vault wall restoration","id":"vault.wallify.audible-tame","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An awake tame dog eating a real corpse yelps before relocation and vault restoration feedback."},
+    {"group":"Vault wall restoration","id":"vault.wallify.silent-tame","cFile":"src/vault.c","cFunction":"wallify_vault","description":"A silent tame blue jelly relocates during wall restoration without pet feedback, preserving all five output channels."},
+    {"group":"Vault wall restoration","id":"vault.wallify.empty","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An empty damaged vault boundary restores without pet feedback, preserving all five output channels."}
   ]
 }

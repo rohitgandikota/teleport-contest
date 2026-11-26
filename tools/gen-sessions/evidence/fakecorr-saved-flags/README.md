@@ -1,0 +1,9 @@
+# Fakecorr saved wall-field evidence
+
+The supported debug terrain wish changes an active saved entry to undiggable iron bars. C clear_fcorr restores saved rm.flags, which also stores wall_info. The fixed baseline leaves the temporary nondiggable bit. The one-line candidate restores wall_info before map readers and later digging. Ordinary27 controls improve25/27 to27/27; linked original C comparison improves3/4 to4/4. Three native negative rows and15 ordinary negative hashes remain unchanged.
+
+The gate uses fresh passive observation, plain replay and deferred/exhausted replay of its installed runtime. Saved candidate rows are expected evidence, never substitutes for live observations. The unchanged original control body contains historical source-only classification text; the portable entry updates that label outside the preserved body. Native output comparison is retained separately; gate preflight validates the original C recording and primary branch assertions.
+
+Original recipe/input locks and proposal history are unchanged. There was no failed gameplay proposal. The two failing source controls and the baseline primary failure remain evidence. inspection-failures.json retains source tooling failures. The candidate preflight's accidental27254call expectation and its correction are preserved; no game ran before the corrected21254 count passed. No raw, input or assertion was changed.
+
+All paths in source coverage, recording receipt and provenance are historical metadata. Public execution needs only these tracked evidence files, the maintained three helper files and the exact canonical raw. It never opens historical C/build/cache paths. Source35 and candidate320 stay sealed. No ordinary non-debug terrain mutation, warning restoration, other typed aliases or whole-vault completeness is claimed.

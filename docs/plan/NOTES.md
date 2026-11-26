@@ -11,6 +11,15 @@ Newest first within each section.
 
 ---
 
+## Visual assertions and stored terminal commands
+
+The recorder can encode repeated spaces as ANSI cursor moves. screenIncludes
+searches the stored string, so a literal spaced phrase can fail even when the
+decoded row is correct. For column layout, use screenCells with positions and
+characters derived from C's formatting. The menu-alias audit exposed this at
+the Select row. Preserve original failed predicates when correcting this
+representation mismatch; do not change gameplay inputs or the expected row.
+
 ## Replay fixture links, November 26, 2026
 
 Link new runs directly to each fixture's resolved regular file on NFS. Linking

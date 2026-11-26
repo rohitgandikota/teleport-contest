@@ -1,0 +1,252 @@
+{
+  "baselineCommit": "4e09c7d5679db7c8fac2c6f511dc0d3a72a72b44",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "addedLines": 3,
+  "removedLines": 0,
+  "scopedPatchSHA256": "3ed450cc439e02029ca8fb7f75ccef07cc9384898e7ffa616130a96b4f24d487",
+  "sealedEvidence": {
+    "source35SealSHA256": "e79749d61347eae6e009eeae423b500e31a7fd7b4df5b1126eb7a48d2a460b23",
+    "candidate320SealSHA256": "ec7ded1d1914017a5c8af770ab9298744705976564c3cae8e20105380023140d",
+    "source36SealSHA256": "3bf0fdfc8492d1ad7a30e4d8f8da914ab4423624cfc7192fff99ffaa4240bca1",
+    "candidate326SealSHA256": "4974f9f78c3d8811a578e1173471e18ce18c44979de48e16a9ea343e04cc39cb"
+  },
+  "portablePayloads": 33,
+  "newRequirements": 7,
+  "coverageLabelCorrection": {
+    "reason": "Final registry validation rejected terrain.digging because it is not a registered coverage id. Remove that root label only.",
+    "initialFailure": "verify-vault-flags-feedback-parent.py line48: coverage subset assertion",
+    "changes": [
+      {
+        "path": "tools/gen-sessions/recipes/fakecorr-saved-flags.json",
+        "beforeSHA256": "322026dec878b81ba70f1132cff3e4105c07372a047304441712f86e6a9ffc06",
+        "beforeBytes": 5357,
+        "sha256": "85ee6bc1294863c9919697f351948dbd4f61fe12c658087e9b1c776ba3529f85",
+        "bytes": 5334
+      },
+      {
+        "path": "tools/fakecorr-saved-flags-input-gate.mjs",
+        "beforeSHA256": "26bb1d0916c0ccaecb3aabb4b01f4eb221bd4a100eceadc0d74ec889ed92f3ff",
+        "beforeBytes": 16384,
+        "sha256": "275826594a1f2e3de7a5f30ea935c97ab987c1cc476891caa7078e7bff8ce147",
+        "bytes": 16714
+      }
+    ],
+    "rootCoverageBefore": [
+      "mode.debug",
+      "social.vault-guard",
+      "terrain.digging"
+    ],
+    "rootCoverageAfter": [
+      "mode.debug",
+      "social.vault-guard"
+    ],
+    "allOtherRecipeBytesUnchanged": true,
+    "inputAndAssertionsUnchanged": true,
+    "gateChange": "Pin corrected recipe and verify exact original recipe bytes by restoring only the removed label.",
+    "originalPromotionUnchanged": true,
+    "originalCUnchanged": true,
+    "runtimeUnchanged": true
+  },
+  "promotionSeals": [
+    "676ddc5b9895ca68231259a43a58fbf1432b56f9f8ee110f5d4b8a27bd4326de",
+    "8804a8f8c86bab5562dcba713c86460245d207f2ff0abefabc4393036473e226"
+  ],
+  "ordinary": {
+    "savedFlagsChecks": 27,
+    "petFeedbackCases": 3,
+    "negativeHashesUnchanged": 25,
+    "checks": [
+      {
+        "exit": 0,
+        "passed": 27,
+        "total": 27,
+        "report": ".cache/restart-20261122/fakecorr-saved-flags-main-ordinary.json",
+        "reportSHA256": "fea04ac7b72800188940ee6cd4b4443300a15793c22e965fc0551c8a5220f8ab",
+        "priorReport": ".cache/restart-20261122/fakecorr-saved-flags-promotion/review/composed-ordinary.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/fakecorr-saved-flags-main-ordinary.log",
+        "logSHA256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+      },
+      {
+        "exit": 0,
+        "passed": 3,
+        "total": 3,
+        "report": ".cache/restart-20261122/wallify-vault-occupant-main-ordinary.json",
+        "reportSHA256": "9ab6356acceb7de71b19ad86949bfdc2a0524504145879a1db825ff37d092446",
+        "priorReport": ".cache/restart-20261122/wallify-vault-occupant-promotion/reports/ordinary.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/wallify-vault-occupant-main-ordinary.log",
+        "logSHA256": "8a0d80cb13db6386d0be7a31e13de8bb7b7f387d2c9887847795ccc65d02ee90"
+      }
+    ],
+    "correctedMetadataCheck": {
+      "exit": 0,
+      "passed": 27,
+      "total": 27,
+      "report": ".cache/restart-20261122/fakecorr-saved-flags-corrected-main-ordinary.json",
+      "reportSHA256": "fea04ac7b72800188940ee6cd4b4443300a15793c22e965fc0551c8a5220f8ab",
+      "priorReport": ".cache/restart-20261122/fakecorr-saved-flags-main-ordinary.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/fakecorr-saved-flags-corrected-main-ordinary.log",
+      "logSHA256": "f26e767b76bf7fab920014259a03cdc61f2133c0c3520ee3f7d1c2318031a007"
+    }
+  },
+  "native": {
+    "sourceBaseline": 5,
+    "candidate": 7,
+    "cases": 7,
+    "negativeCompleteReportsUnchanged": 5,
+    "boundaries": 1539,
+    "calls": 41536,
+    "frames": 27,
+    "repairedBoundaries": 7,
+    "checks": [
+      {
+        "name": "fakecorr-saved-flags",
+        "exit": 0,
+        "cases": 4,
+        "exact": 4,
+        "report": ".cache/restart-20261122/vault-flags-feedback-parent-fakecorr-saved-flags-native.json",
+        "reportSHA256": "b2190f309ff2de8686924862c3db4c821a730a7d0ce2efeccff2f906bb0cf64e",
+        "priorReport": ".cache/restart-20261122/fakecorr-saved-flags-candidate-audit/review/candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-parent-fakecorr-saved-flags-native.log",
+        "logSHA256": "72ad1d649d3f12896760ae825a9ef54c9c3affc5e24bda5f2e089131cc6e9258"
+      },
+      {
+        "name": "wallify-vault-occupant",
+        "exit": 0,
+        "cases": 3,
+        "exact": 3,
+        "report": ".cache/restart-20261122/vault-flags-feedback-parent-wallify-vault-occupant-native.json",
+        "reportSHA256": "2f1d880b17a6c1dc7e5ed1ebcaf538300572f05c7f095c7def93b1316e392950",
+        "priorReport": ".cache/restart-20261122/wallify-vault-occupant-candidate/reports/candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-parent-wallify-vault-occupant-native.log",
+        "logSHA256": "1f0da464d413b5e0ee91b63b53dce0579a5ac2cbfbcff6c340acbffff2f54931"
+      }
+    ]
+  },
+  "retained": {
+    "passed": 49,
+    "total": 49,
+    "receiptSHA256": "0f09ded1c314973e350df1e29afd570ebe028312c977b179d1e9708a438b13f9"
+  },
+  "retainedNative": {
+    "passed": 29,
+    "total": 29,
+    "completeReportsUnchanged": true,
+    "checks": [
+      {
+        "name": "guard-hallucinated-name",
+        "exit": 0,
+        "cases": 6,
+        "exact": 6,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-guard-hallucinated-name-native.json",
+        "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-hallucinated-name-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-guard-hallucinated-name-native.log",
+        "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e"
+      },
+      {
+        "name": "guard-cleanup-prompt",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-guard-cleanup-prompt-native.json",
+        "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-cleanup-prompt-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-guard-cleanup-prompt-native.log",
+        "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84"
+      },
+      {
+        "name": "guard-restored-entry",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-guard-restored-entry-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-restored-entry-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-guard-restored-entry-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      },
+      {
+        "name": "guard-door-engraving",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-guard-door-engraving-native.json",
+        "reportSHA256": "7cdcd1cd464b467ce008fc8e380ab654477dedd38dc95c9de96a4d355a408854",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-retained-guard-door-engraving-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-guard-door-engraving-native.log",
+        "logSHA256": "393029221a3f52922ec70b056b37adbbdd19c14cd00bf9229f70186283c862c9"
+      },
+      {
+        "name": "wallify-vault",
+        "exit": 0,
+        "cases": 4,
+        "exact": 4,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-wallify-vault-native.json",
+        "reportSHA256": "3d0a827996621a294578e8ee7db489383ad51c2225a8ef0bcac22a2f50bb38c9",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-retained-wallify-vault-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-wallify-vault-native.log",
+        "logSHA256": "fa35ed05c1fb3acdce06f1dd9ae2d189054ec5e93efeee6f4fc960d37144b112"
+      },
+      {
+        "name": "invault-nonwall-entry",
+        "exit": 0,
+        "cases": 4,
+        "exact": 4,
+        "report": ".cache/restart-20261122/vault-flags-feedback-retained-invault-nonwall-entry-native.json",
+        "reportSHA256": "46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9",
+        "priorReport": ".cache/restart-20261122/invault-nonwall-entry-parent-composed-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/vault-flags-feedback-retained-invault-nonwall-entry-native.log",
+        "logSHA256": "51a7461c89aaf3ec6eb413c7480d95d8fa13e1f9bc368293a88516997d12fdde"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 101,
+    "total": 101
+  },
+  "strict8s": {
+    "passed": 101,
+    "total": 101
+  },
+  "full926": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/vault-flags-feedback-full926-js-20261126",
+    "passed": 926,
+    "sessions": 926,
+    "totals": {
+      "screens": 934415,
+      "cursors": 934415,
+      "rngCalls": 20346275,
+      "animFrames": 33179
+    },
+    "files": 1217,
+    "allFilesSHA256": "748780883db1d2ded67b31e7713a73fd76acba4cbfb0e4f626ef6b8e8697ccae",
+    "verificationSHA256": "890b1b405d23fd3646f7ddc08857d0a3c1a2749bd815cf5bde578969ae185463",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0,
+    "linkedPriorFixtures": 924,
+    "newFixtures": 2
+  },
+  "limits": [
+    "Saved-flags reach uses supported debug terrain wishing. Other restoration arms and typed fields remain open.",
+    "Pet-helper branches, wall modes, debris disposal and trap cleanup remain separate wallify gaps.",
+    "Native comparison checks decoded styled cells, cursors, ordered normalized random calls and animation frames.",
+    "No literal serialized-byte, whole-module or new held-out result is claimed."
+  ]
+}

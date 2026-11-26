@@ -1,0 +1,1058 @@
+{
+  "classification": "Fresh keyboard reach and original C source predictions; no candidate or native comparison",
+  "passed": 25,
+  "total": 27,
+  "results": [
+    {
+      "name": "entry-nondiggable-bars: complete input and observer",
+      "pass": true
+    },
+    {
+      "name": "entry-nondiggable-bars: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "entry-nondiggable-bars: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "entry-nondiggable-bars: real snapshot and typed-field producer",
+      "pass": true
+    },
+    {
+      "name": "entry-nondiggable-bars: C saved wall flags restoration or pending-cleanup control",
+      "pass": false,
+      "error": "C flags assignment restores wall_info, not temporary terrain flags\n\n8 !== 2\n"
+    },
+    {
+      "name": "entry-nondiggable-bars: C post-cleanup digging and move or stopped-before-cleanup control",
+      "pass": false,
+      "error": "restored original wall is diggable\n\n1 !== 23\n"
+    },
+    {
+      "name": "entry-unmodified-negative: complete input and observer",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: real snapshot and typed-field producer",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: C saved wall flags restoration or pending-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: C post-cleanup digging and move or stopped-before-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "entry-unmodified-negative: five original negative hashes",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: complete input and observer",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: real snapshot and typed-field producer",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: C saved wall flags restoration or pending-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: C post-cleanup digging and move or stopped-before-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "bars-outside-fakecorr-negative: five original negative hashes",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: complete input and observer",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: real snapshot and typed-field producer",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: C saved wall flags restoration or pending-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: C post-cleanup digging and move or stopped-before-cleanup control",
+      "pass": true
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative: five original negative hashes",
+      "pass": true
+    }
+  ],
+  "rows": [
+    {
+      "name": "entry-nondiggable-bars",
+      "keys": 211,
+      "boundaries": 212,
+      "calls": 5327,
+      "hashes": {
+        "screens": "05c9cfab11898e1a62b0374ab52f6232fa43f9809632282b99bc42e5be0d5696",
+        "cursors": "504803959aa26c1bc5250a0b623d86534f4ff3c5a3ba7dfa39d440f3f0552a15",
+        "calls": "583e26e2a20bb2ef79e1978d3c64604fa6a869d2dc075f5b557789f99f89afc6",
+        "slices": "60a9c593b1814fb81b499ee91b999cda0a6fc6e67d309c85d2daefeba1f8d892",
+        "frames": "0eb768fb954e8d4f3451236d81ccf7854c1a35b7458fd4a6bf18bbb4d9820202"
+      },
+      "deferredHashes": {
+        "screens": "05c9cfab11898e1a62b0374ab52f6232fa43f9809632282b99bc42e5be0d5696",
+        "cursors": "504803959aa26c1bc5250a0b623d86534f4ff3c5a3ba7dfa39d440f3f0552a15",
+        "calls": "583e26e2a20bb2ef79e1978d3c64604fa6a869d2dc075f5b557789f99f89afc6",
+        "slices": "60a9c593b1814fb81b499ee91b999cda0a6fc6e67d309c85d2daefeba1f8d892",
+        "frames": "0eb768fb954e8d4f3451236d81ccf7854c1a35b7458fd4a6bf18bbb4d9820202"
+      },
+      "milestones": [
+        {
+          "step": 118,
+          "key": " ",
+          "turn": 3,
+          "hero": [
+            23,
+            5
+          ],
+          "uinvault": 31,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 1,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "\"Please drop that gold and follow me.\""
+        },
+        {
+          "step": 126,
+          "key": "l",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": ""
+        },
+        {
+          "step": 148,
+          "key": "\r",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "Iron bars."
+        },
+        {
+          "step": 203,
+          "key": "\u001b",
+          "turn": 9,
+          "hero": [
+            24,
+            5
+          ],
+          "uinvault": 1,
+          "entry": {
+            "typ": 1,
+            "flags": 2,
+            "wall": 8,
+            "door": 0,
+            "seen": 247
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": null,
+          "top": ""
+        },
+        {
+          "step": 211,
+          "key": "l",
+          "turn": 10,
+          "hero": [
+            24,
+            5
+          ],
+          "uinvault": 2,
+          "entry": {
+            "typ": 1,
+            "flags": 2,
+            "wall": 8,
+            "door": 0,
+            "seen": 247
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 7
+          },
+          "guard": null,
+          "top": ""
+        }
+      ]
+    },
+    {
+      "name": "entry-unmodified-negative",
+      "keys": 185,
+      "boundaries": 186,
+      "calls": 5353,
+      "hashes": {
+        "screens": "8faeb844a9fd58bd61aea27ba67f59acb9aea149ca1fe7f6352af52a467c8a5a",
+        "cursors": "0ad11e12d888be156cbbca87237d745e4464c9c2c40d5900b5f575f2dbafdc6d",
+        "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+        "slices": "ddaf5950992648b56c2747e42a19fa88317d9e76ba5b63a353e1f4a7838fae47",
+        "frames": "d8da09c38ef327ee0319171687b283953a539af2bca3036e53cc070e15ffe9fd"
+      },
+      "deferredHashes": {
+        "screens": "8faeb844a9fd58bd61aea27ba67f59acb9aea149ca1fe7f6352af52a467c8a5a",
+        "cursors": "0ad11e12d888be156cbbca87237d745e4464c9c2c40d5900b5f575f2dbafdc6d",
+        "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+        "slices": "ddaf5950992648b56c2747e42a19fa88317d9e76ba5b63a353e1f4a7838fae47",
+        "frames": "d8da09c38ef327ee0319171687b283953a539af2bca3036e53cc070e15ffe9fd"
+      },
+      "milestones": [
+        {
+          "step": 118,
+          "key": " ",
+          "turn": 3,
+          "hero": [
+            23,
+            5
+          ],
+          "uinvault": 31,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 1,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "\"Please drop that gold and follow me.\""
+        },
+        {
+          "step": 126,
+          "key": "l",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": ""
+        },
+        {
+          "step": 177,
+          "key": "\u001b",
+          "turn": 9,
+          "hero": [
+            24,
+            5
+          ],
+          "uinvault": 1,
+          "entry": {
+            "typ": 1,
+            "flags": 2,
+            "wall": 2,
+            "door": 0,
+            "seen": 247
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": null,
+          "top": ""
+        },
+        {
+          "step": 185,
+          "key": "l",
+          "turn": 11,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 3,
+          "entry": {
+            "typ": 23,
+            "flags": 2,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 2,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 7
+          },
+          "guard": null,
+          "top": ""
+        }
+      ]
+    },
+    {
+      "name": "bars-outside-fakecorr-negative",
+      "keys": 211,
+      "boundaries": 212,
+      "calls": 5353,
+      "hashes": {
+        "screens": "1466702ec66bf48b8c52365c6526f052c0619cdff94fe96d3e8c26e2b50278fa",
+        "cursors": "b3e9c73cbb8c39540e8a8715eacc8d0562a0cbe36859426ac821addbfd00daf9",
+        "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+        "slices": "538467fc8f9060a2549377a22286799c3ebf461c4303b0d5a30abd352d466583",
+        "frames": "5c14791766c0639ac4dbee842233c32792db2d4969b345624796b516bfd0e3b9"
+      },
+      "deferredHashes": {
+        "screens": "1466702ec66bf48b8c52365c6526f052c0619cdff94fe96d3e8c26e2b50278fa",
+        "cursors": "b3e9c73cbb8c39540e8a8715eacc8d0562a0cbe36859426ac821addbfd00daf9",
+        "calls": "aec2e58004dfa16c045cee8d9f520d0598b49dc1b39b657ae7751f93fc08f8d8",
+        "slices": "538467fc8f9060a2549377a22286799c3ebf461c4303b0d5a30abd352d466583",
+        "frames": "5c14791766c0639ac4dbee842233c32792db2d4969b345624796b516bfd0e3b9"
+      },
+      "milestones": [
+        {
+          "step": 118,
+          "key": " ",
+          "turn": 3,
+          "hero": [
+            23,
+            5
+          ],
+          "uinvault": 31,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 1,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "\"Please drop that gold and follow me.\""
+        },
+        {
+          "step": 126,
+          "key": "l",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": ""
+        },
+        {
+          "step": 199,
+          "key": "\r",
+          "turn": 9,
+          "hero": [
+            24,
+            5
+          ],
+          "uinvault": 1,
+          "entry": {
+            "typ": 1,
+            "flags": 2,
+            "wall": 2,
+            "door": 0,
+            "seen": 247
+          },
+          "here": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": null,
+          "top": "Iron bars."
+        },
+        {
+          "step": 203,
+          "key": "\u001b",
+          "turn": 9,
+          "hero": [
+            24,
+            5
+          ],
+          "uinvault": 1,
+          "entry": {
+            "typ": 1,
+            "flags": 2,
+            "wall": 2,
+            "door": 0,
+            "seen": 247
+          },
+          "here": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": null,
+          "top": ""
+        },
+        {
+          "step": 211,
+          "key": "l",
+          "turn": 11,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 3,
+          "entry": {
+            "typ": 23,
+            "flags": 2,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 2,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 7
+          },
+          "guard": null,
+          "top": ""
+        }
+      ]
+    },
+    {
+      "name": "entry-bars-before-cleanup-negative",
+      "keys": 152,
+      "boundaries": 153,
+      "calls": 5195,
+      "hashes": {
+        "screens": "f7f81f04917cbb24369fee356c27b10037bc5957b057500c6e899bbac1108812",
+        "cursors": "ab22ce1a64e36d9387c6d9f256b6286c8c064a663e75a4866a34e7ed7ce88a89",
+        "calls": "5ea831136fd1b647371e8ac16790945131bbd2134fc94fc39cf25856ffa14be4",
+        "slices": "c2b7f34aab2c434852a9e29cd3d2ccb39949e1e10bd480640ca4a2cb9d45b1ba",
+        "frames": "f64e5a9a7839e91b65c9a2b7a071f1d9dfe91025de9c63a3973c06dafa62e40e"
+      },
+      "deferredHashes": {
+        "screens": "f7f81f04917cbb24369fee356c27b10037bc5957b057500c6e899bbac1108812",
+        "cursors": "ab22ce1a64e36d9387c6d9f256b6286c8c064a663e75a4866a34e7ed7ce88a89",
+        "calls": "5ea831136fd1b647371e8ac16790945131bbd2134fc94fc39cf25856ffa14be4",
+        "slices": "c2b7f34aab2c434852a9e29cd3d2ccb39949e1e10bd480640ca4a2cb9d45b1ba",
+        "frames": "f64e5a9a7839e91b65c9a2b7a071f1d9dfe91025de9c63a3973c06dafa62e40e"
+      },
+      "milestones": [
+        {
+          "step": 118,
+          "key": " ",
+          "turn": 3,
+          "hero": [
+            23,
+            5
+          ],
+          "uinvault": 31,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 25,
+            "flags": 0,
+            "wall": 0,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              25,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 1,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "\"Please drop that gold and follow me.\""
+        },
+        {
+          "step": 126,
+          "key": "l",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 23,
+            "flags": 0,
+            "wall": 2,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": ""
+        },
+        {
+          "step": 148,
+          "key": "\r",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": "Iron bars."
+        },
+        {
+          "step": 152,
+          "key": "\u001b",
+          "turn": 6,
+          "hero": [
+            25,
+            5
+          ],
+          "uinvault": 34,
+          "entry": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0,
+            "seen": 255
+          },
+          "here": {
+            "typ": 22,
+            "flags": 0,
+            "wall": 8,
+            "door": 0
+          },
+          "wand": {
+            "letter": "o",
+            "charges": 8
+          },
+          "guard": {
+            "id": 124,
+            "xy": [
+              27,
+              5
+            ],
+            "hp": 54,
+            "peaceful": 1,
+            "begin": 0,
+            "end": 3,
+            "done": 0,
+            "warn": 1,
+            "corridor": [
+              {
+                "fx": 25,
+                "fy": 5,
+                "ftyp": 1,
+                "flags": 2,
+                "doormask": 0
+              },
+              {
+                "fx": 26,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              },
+              {
+                "fx": 27,
+                "fy": 5,
+                "ftyp": 0,
+                "flags": 0,
+                "doormask": 0
+              }
+            ]
+          },
+          "top": ""
+        }
+      ]
+    }
+  ]
+}

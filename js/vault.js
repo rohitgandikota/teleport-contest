@@ -162,6 +162,7 @@ async function clear_fcorr(guard, forceshow = false) {
             sawcorridor = true;
         loc.typ = fc.ftyp;
         loc.flags = fc.flags || 0;
+        loc.wall_info = loc.flags; // C rm.flags also stores wall_info.
         if (fc.doormask !== undefined)
             loc.doormask = fc.doormask;
         if (IS_STWALL(loc.typ)) {
@@ -263,6 +264,8 @@ async function wallify_vault(guard) {
 
             const occupant = game.level.monAt?.get(`${x},${y}`);
             if (occupant && occupant !== guard) {
+                if (occupant.mtame)
+                    await yelp(occupant);
                 const { rloc } = await import('./teleport.js');
                 if (!await rloc(occupant, RLOC_MSG))
                     await m_into_limbo(occupant);

@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T05:14:00.296318+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/fakecorr-saved-flags-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/fakecorr-saved-flags-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/fakecorr-saved-flags-parent-minimal.session.json",
+  "inputSHA256": "b1abe42709284650de4840d94d4d714cc3bba1a1dbeead6373d7b82aa840a359",
+  "primaryRecipeSHA256": "322026dec878b81ba70f1132cff3e4105c07372a047304441712f86e6a9ffc06",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/fakecorr-saved-flags-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T05:14:00.923572+00:00",
+  "log": ".cache/restart-20261122/fakecorr-saved-flags-parent-native-recording.log",
+  "logSHA256": "aa04961b7b18d793c2f751e55e72fa6fa5c288a3305276d5f81c32c4cf55c730",
+  "rawSha256": "e2297e8ec282afb08f1d7391c178b8627dcd13ba866363d8e67063fe78bd7ca1",
+  "bytes": 3175731,
+  "segments": 4,
+  "boundaries": 763,
+  "keys": 759,
+  "calls": 21254,
+  "frames": 27,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

@@ -1,0 +1,26 @@
+{
+  "sourcePacket": "fakecorr-saved-flags-source-audit",
+  "sourceMembers": 35,
+  "sourceSealSHA256": "e79749d61347eae6e009eeae423b500e31a7fd7b4df5b1126eb7a48d2a460b23",
+  "candidatePacket": "fakecorr-saved-flags-candidate-audit",
+  "candidateMembers": 320,
+  "candidateSealSHA256": "ec7ded1d1914017a5c8af770ab9298744705976564c3cae8e20105380023140d",
+  "inputLockSHA256": "5ba2481b8d7224375bf6d063e881d38db5921cd1a90ede2dcd55e4d7a0507d90",
+  "sourceCoverageSHA256": "40ebaf96c8ff9b267ed16ff042bfcd364f302c5bdb8d46d22d122335f09b1e2e",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "sourceRanges": 57,
+  "baselineMapSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34",
+  "candidateMapSHA256": "3eb29279f791f017d1589e28d5140c60b681f1963e90bfc4f7d6ec05416dd3db",
+  "candidateVaultSHA256": "02604eb738043e978f7081a968ec14ed9bc674b25428653a2f046749958164ea",
+  "patchSHA256": "37f1090ab8ca100665b311b1765b66ef308fc435bdd3506717999124cb7354fd",
+  "candidateNativeReportSHA256": "b2190f309ff2de8686924862c3db4c821a730a7d0ce2efeccff2f906bb0cf64e",
+  "candidateOrdinaryReportSHA256": "f4702a246e69e782b5f13f0c02665818b23cd0cb74a0d354eed3b3e88a457b20",
+  "historicalPathsAreProvenanceOnly": true,
+  "publicNeedsHistoricalCOrCache": false,
+  "CRecordedBy": "parent once",
+  "candidateNativeComparison": "bounded JS comparison against unchanged parent C raw",
+  "limits": [
+    "Supported debug terrain wish is the ordinary producer; non-debug mutation unproven.",
+    "Warning/direct restoration, other typed aliases and saved terrain types remain outside this patch."
+  ]
+}

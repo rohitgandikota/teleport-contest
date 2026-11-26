@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/fakecorr-saved-flags-candidate-audit/tools/native-preflight.mjs"
+  ],
+  "classification": "One fixed candidate; preflight executes before all runtime checks. Original source control body and historical classification string unchanged.",
+  "exit": 1,
+  "seconds": 0.208,
+  "maxOldSpaceMB": 512,
+  "wallSeconds": 55,
+  "stdout": "",
+  "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n21254 !== 27254\n\n    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/fakecorr-saved-flags-candidate-audit/tools/native-preflight.mjs:28:8\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:646:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 21254,\n  expected: 27254,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.3.0\n"
+}

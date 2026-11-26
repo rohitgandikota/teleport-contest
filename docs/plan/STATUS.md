@@ -1,6 +1,39 @@
 # STATUS — live handoff board
 
-## 2026-11-26: entrance restoration passes all 924 recordings
+## 2026-11-26: saved wall flags and pet feedback verified for publication
+
+Current checkpoint: three added lines in js/vault.js, composed from independently
+verified fakecorr source35/candidate320 and occupant source36/candidate326.
+Main now equals vault-flags-feedback-parent-composed-runtime.json, SHA256
+9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131.
+clear_fcorr copies saved flags into wall_info; wallify awaits existing yelp before
+relocation of a tame occupant. All 279 other runtime files remain unchanged.
+Parent fresh native comparisons pass 4/4 and 3/3, each complete report identical
+to the isolated candidate. The five negative reports and 25 ordinary negative
+hashes are unchanged. No original C recording was rerun.
+
+The two exact raw recordings are installed as fakecorr-saved-flags.session.json
+and wallify-vault-tame-occupant.session.json. Portable payloads and their seven
+requirements are installed, preserving all 4,631 previous registry entries.
+All 49 retained commands, 101 selected/public replays, 101 strict eight-second
+workers and 29 retained native cases pass. The six retained native reports are
+unchanged. Both fresh portable gates pass their original assertions.
+Full926 passes all 926 recordings on NFS, completed PID3404628, two CPU workers:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/vault-flags-feedback-full926-js-20261126.
+All 1,217 files are fixed, all-files SHA256
+748780883db1d2ded67b31e7713a73fd76acba4cbfb0e4f626ef6b8e8697ccae.
+The 924 prior recordings are linked directly to resolved verified files. Only
+293 source/new-raw files were uploaded. No full corpus copy or retry is used.
+Totals: 934,415 screens/cursors, 20,346,275 random calls and 33,179 frames.
+Verification SHA256:
+890b1b405d23fd3646f7ddc08857d0a3c1a2749bd815cf5bde578969ae185463.
+The final registry check caught an unregistered terrain.digging coverage label.
+Only that root label and the public gate's recipe pin were corrected. The gate
+reconstructs and verifies the exact original recipe bytes; all input, branch
+assertions, runtime and C recordings remain fixed. Original promotion evidence
+and the failed validation are retained in coverage-label-correction.json.
+Next: complete the final index check, commit and push, verify every tested Git
+blob against origin/main, then continue menu-binding and wall-mode audits.
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -272,16 +305,24 @@ fixture sources before linking. Do not rerun prepare or record C again.
 Totals: 932,876 screens/cursors, 20,304,739 random calls and 33,152 frames.
 Verification SHA256:
 e257a990ab69898a61402e55661228bc458ff042964f78e65e9d7dd6b7b2d3fe.
-Next: finish parent verification, stage exact paths, commit and push immediately.
-Do not repeat the completed local/native/full checks.
+Published as 4e09c7d5679db7c8fac2c6f511dc0d3a72a72b44 and confirmed on
+origin/main. All 1,215 tested files match the public tree. Publication receipt
+SHA256: 46c5242a1d33126d9f12fd0cd6ac5cbe9a9fd477890b123ee380298694c1f587.
+Parent proof SHA256:
+a01e1bd4346a7a9b606fa8d0240fabee4a2ea1d4f9bf038ca15ea380f4ea1b91.
+Do not repeat the completed local/native/full/publication checks. The next
+checkpoint can compose the independent clear_fcorr saved-wall assignment and
+wallify tame-occupant feedback after their separate source/native checks.
 
 Next source work remains isolated:
 - Euclid: config-menu-bindings-source-audit, fixed parser map9a92, 24 fixed
   handoff members. Five locked inputs were recorded in C once. All fields/keys
   and integrity pass, but two primary help-text predicates fail on the exact
   literal "Select     ;". Preserve the original recipes, source assertions,
-  failed preflight and C raw. Review the C help layout before any corrected
-  companion or candidate. Character-selection and capacity diagnostics remain
+  failed preflight and C raw. Parent independently decoded the C row: the visual
+  expectation is correct, but the raw screen encodes its spaces as cursor moves.
+  A separate companion replaces only those raw-substring checks with exact
+  decoded row cells. No input or visual expectation changes. Character-selection and capacity diagnostics remain
   named source/native prerequisites. Raw SHA256
   403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554,
   31 keys, 36 boundaries, 15,520 calls, zero frames. Prefix config-menu-bindings-parent.

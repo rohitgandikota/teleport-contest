@@ -1,0 +1,520 @@
+{
+  "runtimeMapSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "ranges": [
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 21,
+      "last": 42,
+      "kind": "full owners",
+      "note": "newegd/free_egd",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "fa0bf3f82fccf293cc62d14a12a1b9aab4971f841158f16607c39f7349035dd6"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 44,
+      "last": 201,
+      "kind": "full owners",
+      "note": "clear_fcorr/blackout/restfakecorr/parkguard/grddead/in_fcorridor",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "ef9fd322a451cbbdef4deea308210274ba0954ff70d10f54bee04e39c84c10d3"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 202,
+      "last": 315,
+      "kind": "full owners",
+      "note": "findgd/vault_summon_gd/vault_occupied/uleftvault/find_guard_dest",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "c0b1aab425a88b4c09b004c9b7555f29215f118b682cd25872e27e74f68120a7"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 317,
+      "last": 629,
+      "kind": "full owner",
+      "note": "invault, first fakecorr snapshot before door conversion",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "2a9988c179e932893ad7b1b8acdae7cd31902da3a4d2fea77f3e90ec4d1fc165"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 646,
+      "last": 732,
+      "kind": "full owner",
+      "note": "wallify_vault exclusion and typed wall writes",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "475a5a05c120275b918ac058ac3bcbe2ec8c4fcbd5a299eb9716bc0dd8692415"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 836,
+      "last": 885,
+      "kind": "full owners",
+      "note": "gd_move_cleanup/gd_letknow",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "65d743f308e887deedb2ac4e715c79acaf28b62716b3bea0ba7c26cff4a52e46"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 888,
+      "last": 1202,
+      "kind": "full owner",
+      "note": "gd_move: warning/gold restoration and subsequent snapshot order",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "ad8150479cb640727d1b867d3419c922adbfcfc8bf74cb5a0dbba62895562ff7"
+    },
+    {
+      "path": "nethack-c/upstream/src/vault.c",
+      "first": 1205,
+      "last": 1250,
+      "kind": "full owner",
+      "note": "paygd disappearance caller",
+      "fileSHA256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "rangeSHA256": "c38cd4bd7825267f9b93f93c9902e0785c1eb6c2a0d8885b59e901a041bd9e68"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 65,
+      "last": 127,
+      "kind": "full owners",
+      "note": "vault_occupied/findgd/uleftvault/in_fcorridor",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "46760012c4a6eeb65568254877468b2d64d565c3fa7001daf1696a6bd98839b2"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 128,
+      "last": 225,
+      "kind": "full owners",
+      "note": "clear_fcorr/blackout/restfakecorr/parkguard",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "ce5a536168c3e7f47b02ead9080c46cd483bbd79c0efddf8bba170cf00443c6b"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 239,
+      "last": 315,
+      "kind": "full owner",
+      "note": "wallify_vault on fixed19946",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "a49c1f623a51a21593de9d1e7e1f86069552d0bf7524ebd33b3e8402e074f055"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 395,
+      "last": 442,
+      "kind": "full owners",
+      "note": "gd_letknow/gd_move_cleanup/grddead",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "7743d60a56853d9c022ddc6a5e206a78045b4cea680d6864307e33bc64d17a2e"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 443,
+      "last": 550,
+      "kind": "full owners",
+      "note": "find_guard_dest/guard_entry/finish_guard_corridor",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "33f1d902c25af55d2784f817d3be8e4f9860d5c043309c5a8c50a9d85e601591"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 551,
+      "last": 832,
+      "kind": "full owner",
+      "note": "gd_move complete, including warning restore and subsequent snapshots",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "b9a3fe53764174ac1b2192d9d03313022cd8585acb90df2778fb5c56f1f6749b"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 834,
+      "last": 875,
+      "kind": "full owner",
+      "note": "paygd",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "6f30050930c81d9405871f260aa67490fee0157c995b474e8d0b9ff6d42c4e17"
+    },
+    {
+      "path": "js/vault.js",
+      "first": 877,
+      "last": 1063,
+      "kind": "full owners",
+      "note": "invault/vault_summon_gd/gd_sound",
+      "fileSHA256": "adfe9659798ad6f1ac4b134fa64487196784aba8e293b4545e21de4539e3fe99",
+      "rangeSHA256": "3edb4d5e78a0e9365bf79ab405aeee91e63c649be9269452dd5758e25981f704"
+    },
+    {
+      "path": "nethack-c/upstream/include/mextra.h",
+      "first": 64,
+      "last": 91,
+      "kind": "declarations",
+      "note": "fakecorridor and egd: one saved flags byte",
+      "fileSHA256": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229",
+      "rangeSHA256": "faeaacb337ae442a25ef1029c88ab2a73892bec86499bcd0939d16c05ad84dbc"
+    },
+    {
+      "path": "nethack-c/upstream/include/rm.h",
+      "first": 159,
+      "last": 231,
+      "kind": "declarations",
+      "note": "five-bit flags plus aliased terrain fields",
+      "fileSHA256": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+      "rangeSHA256": "97dc1801ce606c3880887228479fdc526bc1355c976b51ee5fa7ab5d78f435ec"
+    },
+    {
+      "path": "nethack-c/upstream/include/rm.h",
+      "first": 297,
+      "last": 306,
+      "kind": "constants",
+      "note": "WM_MASK/W_NONDIGGABLE/W_NONPASSWALL",
+      "fileSHA256": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+      "rangeSHA256": "bca0b2907d715b1152a8dba5cf93bac335279fde2011d0511d5eae46f157da94"
+    },
+    {
+      "path": "nethack-c/upstream/include/rm.h",
+      "first": 356,
+      "last": 366,
+      "kind": "constants",
+      "note": "vertical wall modes",
+      "fileSHA256": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+      "rangeSHA256": "dc5c8246a5def7a9d32341d944020e11e69cc77e9f87a11233439638a5258289"
+    },
+    {
+      "path": "js/game.js",
+      "first": 1,
+      "last": 48,
+      "kind": "full owner and caller head",
+      "note": "makeLocation creates separate flags/doormask/wall_info fields",
+      "fileSHA256": "fd2a573012937673c960c32b01afc692c250408fbdb9867a0639e24357af7788",
+      "rangeSHA256": "c75fcaf70501c6664e1e6012d6809093ef608e58c00641c05a35e669c4cd74d0"
+    },
+    {
+      "path": "nethack-c/upstream/src/objnam.c",
+      "first": 3538,
+      "last": 3917,
+      "kind": "full owners",
+      "note": "set_wallprop_from_str/wizterrainwish, selected real typed mutation producer",
+      "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+      "rangeSHA256": "627405576b0374f3418513968a3f6d06e30901587b0db24ada01796bbb176565"
+    },
+    {
+      "path": "nethack-c/upstream/src/objnam.c",
+      "first": 4910,
+      "last": 5000,
+      "kind": "caller branch",
+      "note": "readobjnam normal parse fallback to wizard terrain, not WIZKIT",
+      "fileSHA256": "445d0b8697ceeb93f1249599b16caffb101a832ee425d76f9eb3fd65088f1dd3",
+      "rangeSHA256": "d67f1b3f4d5d637feae97c914bb39af50cdfa3ad5006b1dd9fb2c7f88a7680d1"
+    },
+    {
+      "path": "js/objnam.js",
+      "first": 2845,
+      "last": 3206,
+      "kind": "full owners",
+      "note": "wiztrapwish/set_wallprop_from_str/wizterrainwish",
+      "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+      "rangeSHA256": "80ce66e6a7d04681c09d75d6b803f4aa14f542deeaea385062e2c89263775bb7"
+    },
+    {
+      "path": "js/objnam.js",
+      "first": 3207,
+      "last": 3310,
+      "kind": "caller branch",
+      "note": "readobjnam parser and wizard terrain dispatch",
+      "fileSHA256": "8cff9960898b3a9f6d4d407158b98bc63ad1f8ee36a478440be06008f1918cc4",
+      "rangeSHA256": "d65d084a43a70f221e6edfe834c5e582e9e6e29e51df8ceb966510972f578861"
+    },
+    {
+      "path": "nethack-c/upstream/src/wizcmds.c",
+      "first": 30,
+      "last": 45,
+      "kind": "full owner",
+      "note": "wiz_wish returns ECMD_OK",
+      "fileSHA256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+      "rangeSHA256": "b9ca69eb829c9f6545a8ee53e8ace685fd6951cc42e4d7e606d857e9e293a143"
+    },
+    {
+      "path": "js/wizcmds.js",
+      "first": 97,
+      "last": 112,
+      "kind": "full owner",
+      "note": "awaited makewish and no time cost",
+      "fileSHA256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+      "rangeSHA256": "53a8163a481a666a9b39baddc7e5b585210621c6469cc6a496bdad4df0531ea3"
+    },
+    {
+      "path": "nethack-c/upstream/src/zap.c",
+      "first": 6314,
+      "last": 6430,
+      "kind": "full owner",
+      "note": "makewish including hands_obj terrain early return",
+      "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+      "rangeSHA256": "a034aad410f6a221f665e276779d51c8bb9110a6216c64e30a9a510b8f2f7275"
+    },
+    {
+      "path": "js/zap.js",
+      "first": 1968,
+      "last": 2086,
+      "kind": "full owner",
+      "note": "makewish including terrain early return",
+      "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+      "rangeSHA256": "e096423f4dc1b4ec8081c579c3a42a0f24cf9bd276f8f708636a9adb623f4322"
+    },
+    {
+      "path": "nethack-c/upstream/src/dig.c",
+      "first": 1548,
+      "last": 1754,
+      "kind": "full owner",
+      "note": "zap_dig, later ordinary wall reader",
+      "fileSHA256": "d90579058c1ff69bcbc882601a433fb8d5e34fdad418aedb0cebefce9ac6cf97",
+      "rangeSHA256": "7285635bcf3a24e38060e7fb8ed268101de8c9cf0070923eeccaa2b6bb80d06d"
+    },
+    {
+      "path": "js/dig.js",
+      "first": 1656,
+      "last": 1873,
+      "kind": "full owner",
+      "note": "zap_dig, later ordinary wall reader",
+      "fileSHA256": "5f972425516aaf64538895acdd5a2db95a0ffcc05b9760e10fde964cff8bdcf5",
+      "rangeSHA256": "86e0bf7e4bf18f09be759e538f46065c9a838edf52122d5afc13ba7a6ece2453"
+    },
+    {
+      "path": "nethack-c/upstream/src/hack.c",
+      "first": 921,
+      "last": 938,
+      "kind": "full owners",
+      "note": "may_dig/may_passwall",
+      "fileSHA256": "547cab9e7aaa922aa5bb8b5ad38696f9f74e3e1e31c264509a9448a689cb4665",
+      "rangeSHA256": "552e7dd6e4a3254b4d6d7f84256c0e8855b87a0d37f2f81b11345c5d3917b742"
+    },
+    {
+      "path": "js/hack.js",
+      "first": 490,
+      "last": 513,
+      "kind": "full owners",
+      "note": "may_dig/may_passwall",
+      "fileSHA256": "6e2c92c94c8e24e16da68d9bcbf595620f454476a5590294f2451208641675c5",
+      "rangeSHA256": "1b68e9afa14eb0c821cb008ec796187ebdb2853c8d9e268d91732572f6089f59"
+    },
+    {
+      "path": "js/hack.js",
+      "first": 3110,
+      "last": 3140,
+      "kind": "producer arm",
+      "note": "boulder plugging a hole only clears nondiggable bit",
+      "fileSHA256": "6e2c92c94c8e24e16da68d9bcbf595620f454476a5590294f2451208641675c5",
+      "rangeSHA256": "274deda2c9a6b3b780c44d8f879f69faafc4671fe6804b74a36de89fb6fb724d"
+    },
+    {
+      "path": "nethack-c/upstream/src/display.c",
+      "first": 3129,
+      "last": 3328,
+      "kind": "full helper family",
+      "note": "wall mode producers, xy_set_wall_state preserves high bits",
+      "fileSHA256": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+      "rangeSHA256": "c48baaa5d6926c081c9ecde27ce42d908c9e69fc91ceaee62932c9b49d7a68cf"
+    },
+    {
+      "path": "nethack-c/upstream/src/display.c",
+      "first": 3588,
+      "last": 3647,
+      "kind": "reader arms",
+      "note": "wall_angle VWALL/HWALL modes",
+      "fileSHA256": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+      "rangeSHA256": "4cfc3cb045ceda9ba682a06d29ef229db86a2b0611b949f0a98f7aa7083c096d"
+    },
+    {
+      "path": "js/display.js",
+      "first": 249,
+      "last": 388,
+      "kind": "full helper family",
+      "note": "wall mode producers",
+      "fileSHA256": "05cfa403c623422d57cd47a13d9b0ccd56568bdde64aaa2a195d5ddd26588c2a",
+      "rangeSHA256": "581a3104ca107e39a4fd0e2c0d0dbfc47e1de202064fd1938bb07e40a1e2bf1c"
+    },
+    {
+      "path": "js/display.js",
+      "first": 675,
+      "last": 706,
+      "kind": "full helpers",
+      "note": "vwall_angle/hwall_angle/wall_glyph head",
+      "fileSHA256": "05cfa403c623422d57cd47a13d9b0ccd56568bdde64aaa2a195d5ddd26588c2a",
+      "rangeSHA256": "56ed5c75c3fa72dd1c694a7a0d7d53890334aeda626c5b592431f40d368c407b"
+    },
+    {
+      "path": "js/detect.js",
+      "first": 657,
+      "last": 688,
+      "kind": "full owners",
+      "note": "Sokoban premap clears secret-door wall field",
+      "fileSHA256": "665db7a901e295bf43ef41faca7fd6c7677e6c12f53c73fae1330b60ecdcedbc",
+      "rangeSHA256": "d80dd3f283a878990d248b7e788ad85d28561327da39035416982bb86762b2b1"
+    },
+    {
+      "path": "js/detect.js",
+      "first": 720,
+      "last": 833,
+      "kind": "full owner",
+      "note": "reveal_terrain_getglyph saves/restores temporary wall_info",
+      "fileSHA256": "665db7a901e295bf43ef41faca7fd6c7677e6c12f53c73fae1330b60ecdcedbc",
+      "rangeSHA256": "c82951ebd80fd37c3efcc1964115b47e40a94b9b104d8d1e13e1275b07d5d8b5"
+    },
+    {
+      "path": "nethack-c/upstream/src/makemon.c",
+      "first": 1230,
+      "last": 1248,
+      "kind": "allocation caller",
+      "note": "MM_EGD invokes newegd",
+      "fileSHA256": "04bb46b793cb7a724544ed5860f57116e4661ce5d052a1321d90dc0167d3ffc3",
+      "rangeSHA256": "5d6ba2cd4aa1b5322dc0e16d0ab2bbb2d02af017663f9bf22978d7a2f01681a4"
+    },
+    {
+      "path": "js/makemon.js",
+      "first": 2290,
+      "last": 2312,
+      "kind": "allocation caller",
+      "note": "MM_EGD creates egd object",
+      "fileSHA256": "7c70082fb1e1f53adfae8f0f285b4db3905d521f3eb058f35436ae1d37c70379",
+      "rangeSHA256": "47643538f64fde93c990c868199595a21fc5b3a4eb1065fc98949bf1eaeedf9f"
+    },
+    {
+      "path": "nethack-c/upstream/src/mon.c",
+      "first": 1210,
+      "last": 1248,
+      "kind": "caller contract",
+      "note": "parked guard movement",
+      "fileSHA256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+      "rangeSHA256": "b9987373b5d21cea4e595b6a9f6dd94157cebd15f9e63a5dcab6ab0e3c738559"
+    },
+    {
+      "path": "nethack-c/upstream/src/mon.c",
+      "first": 3091,
+      "last": 3122,
+      "kind": "caller contract",
+      "note": "mondead guard disposal after lifesaving",
+      "fileSHA256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+      "rangeSHA256": "6fa17bf34e122b4f8024b81aa371b8708ed8fda7cabd8a9c0430a87e3c7f4b29"
+    },
+    {
+      "path": "nethack-c/upstream/src/mon.c",
+      "first": 3266,
+      "last": 3286,
+      "kind": "full owner",
+      "note": "mongone guard cleanup before detachment",
+      "fileSHA256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+      "rangeSHA256": "d9bae8c5a0e72a10f7af321d9edbd2ed0a279e73460110d9c620766a0df77a98"
+    },
+    {
+      "path": "js/mon.js",
+      "first": 426,
+      "last": 445,
+      "kind": "caller contract",
+      "note": "parked guard awaits gd_move",
+      "fileSHA256": "dc2799f4c6cc3b33f49f5f34b6ccb585fc9328cf1ce8b95eec4c2fc2f4ab43c1",
+      "rangeSHA256": "1d31040d1a49e2dcde330fc11cb77a7c55ef2aefd9b416802724e3404538a22d"
+    },
+    {
+      "path": "js/mon.js",
+      "first": 2306,
+      "last": 2323,
+      "kind": "caller contract",
+      "note": "mongone awaits grddead",
+      "fileSHA256": "dc2799f4c6cc3b33f49f5f34b6ccb585fc9328cf1ce8b95eec4c2fc2f4ab43c1",
+      "rangeSHA256": "310f128e91dd78aebfb18694b2f9fe26e6ddadc5265841ae7180abba9161e3b1"
+    },
+    {
+      "path": "js/mon.js",
+      "first": 3677,
+      "last": 3696,
+      "kind": "caller contract",
+      "note": "mondead after lifesaving",
+      "fileSHA256": "dc2799f4c6cc3b33f49f5f34b6ccb585fc9328cf1ce8b95eec4c2fc2f4ab43c1",
+      "rangeSHA256": "234b2b17f0e1a38e0bbf7e409da20e74359c590a215d6fe6419eaa53c61e359c"
+    },
+    {
+      "path": "nethack-c/upstream/src/monmove.c",
+      "first": 1797,
+      "last": 1822,
+      "kind": "caller contract",
+      "note": "gd_move dispatch and return contract",
+      "fileSHA256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+      "rangeSHA256": "a0a49ef23f395a76cf4b40311382fac3ca656682ac14eed97f79ccb7fae74295"
+    },
+    {
+      "path": "js/monmove.js",
+      "first": 1785,
+      "last": 1811,
+      "kind": "caller contract",
+      "note": "awaited guard dispatch",
+      "fileSHA256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+      "rangeSHA256": "929084d2509e8733fd88326b91465582085ce9564c5544f5a16370d9cc8086c3"
+    },
+    {
+      "path": "nethack-c/upstream/src/teleport.c",
+      "first": 500,
+      "last": 573,
+      "kind": "caller contract",
+      "note": "teleds departure ordering; only gold invokes early guard move",
+      "fileSHA256": "e1d9d4255ac148caa4618dc4f275ddf5417d2a2830beca738c3821cf7678e5c8",
+      "rangeSHA256": "3f18ad225114626650c3566c72e90555e2664b535742e3668214c554f522133d"
+    },
+    {
+      "path": "js/teleport.js",
+      "first": 1048,
+      "last": 1128,
+      "kind": "caller contract",
+      "note": "teleds departure and awaited vault callback",
+      "fileSHA256": "c346e6433d5a179e16196e14a572d077ef0f4175ac20272b324c97e685c2196d",
+      "rangeSHA256": "f34f83c435bb167d0e43559ff9ef4bcb111b97279db46d99fbd4605f7b8d7d37"
+    },
+    {
+      "path": "nethack-c/upstream/src/sp_lev.c",
+      "first": 926,
+      "last": 958,
+      "kind": "full owner",
+      "note": "flip_vault_guard changes only coordinates",
+      "fileSHA256": "91c684ab995f82d4775dcc83576abf36c25be5b2c205cddfaa46445328f4ce25",
+      "rangeSHA256": "6943959140f9e543c6660940a5f693857ba3a32fa2f83a81dadeaf09c1f42f12"
+    },
+    {
+      "path": "js/sp_lev.js",
+      "first": 2893,
+      "last": 2928,
+      "kind": "full owner",
+      "note": "flip_vault_guard changes only coordinates",
+      "fileSHA256": "3cc9153b728d92a1e8a90ed1fe8add73795116137ef8692fcf5d3c17b32bd08b",
+      "rangeSHA256": "89f5f4d6d4e40801358e027ee29590af0f73db3a98ac917630e89fc9b5457f65"
+    },
+    {
+      "path": "nethack-c/upstream/src/sfbase.c",
+      "first": 911,
+      "last": 915,
+      "kind": "full owner",
+      "note": "no pointer normalization in fakecorr record",
+      "fileSHA256": "984ef87792e37213205a9cf9bf477fc863ac2629370d827962563df8d117cae2",
+      "rangeSHA256": "b495968c2549345cc439d0484e17b099541a6ebe6af094d44c3c89f1b114a620"
+    },
+    {
+      "path": "nethack-c/upstream/src/allmain.c",
+      "first": 343,
+      "last": 362,
+      "kind": "caller contract",
+      "note": "once-per-turn invault",
+      "fileSHA256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+      "rangeSHA256": "e55fb3b60d4f1de84766773d0f939108c6af76abf5f832590f0397b8196f0e92"
+    },
+    {
+      "path": "js/allmain.js",
+      "first": 945,
+      "last": 961,
+      "kind": "caller contract",
+      "note": "awaited once-per-turn invault",
+      "fileSHA256": "ea9ee7cc9590888deb87c11fabd32514832a5cd637b219ff10ccda5caf34c372",
+      "rangeSHA256": "857ced6c83c1c892ab8c900a4030de792827b327369a3dd337614863a5c0c50b"
+    }
+  ],
+  "limits": "Full storage/restoration owners and selected real terrain producer read. Caller branches are labelled as branches, not full giant-owner audits. Global wall_info census below is text-reference evidence, not whole-module completeness."
+}

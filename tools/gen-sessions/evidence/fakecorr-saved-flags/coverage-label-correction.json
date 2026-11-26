@@ -1,0 +1,35 @@
+{
+  "reason": "Final registry validation rejected terrain.digging because it is not a registered coverage id. Remove that root label only.",
+  "initialFailure": "verify-vault-flags-feedback-parent.py line48: coverage subset assertion",
+  "changes": [
+    {
+      "path": "tools/gen-sessions/recipes/fakecorr-saved-flags.json",
+      "beforeSHA256": "322026dec878b81ba70f1132cff3e4105c07372a047304441712f86e6a9ffc06",
+      "beforeBytes": 5357,
+      "sha256": "85ee6bc1294863c9919697f351948dbd4f61fe12c658087e9b1c776ba3529f85",
+      "bytes": 5334
+    },
+    {
+      "path": "tools/fakecorr-saved-flags-input-gate.mjs",
+      "beforeSHA256": "26bb1d0916c0ccaecb3aabb4b01f4eb221bd4a100eceadc0d74ec889ed92f3ff",
+      "beforeBytes": 16384,
+      "sha256": "275826594a1f2e3de7a5f30ea935c97ab987c1cc476891caa7078e7bff8ce147",
+      "bytes": 16714
+    }
+  ],
+  "rootCoverageBefore": [
+    "mode.debug",
+    "social.vault-guard",
+    "terrain.digging"
+  ],
+  "rootCoverageAfter": [
+    "mode.debug",
+    "social.vault-guard"
+  ],
+  "allOtherRecipeBytesUnchanged": true,
+  "inputAndAssertionsUnchanged": true,
+  "gateChange": "Pin corrected recipe and verify exact original recipe bytes by restoring only the removed label.",
+  "originalPromotionUnchanged": true,
+  "originalCUnchanged": true,
+  "runtimeUnchanged": true
+}

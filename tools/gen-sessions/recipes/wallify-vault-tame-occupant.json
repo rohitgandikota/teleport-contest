@@ -1,0 +1,144 @@
+{
+  "name": "wallify-vault-tame-occupant",
+  "classification": "source-only ordinary C-predicted yelp omission; native pending parent",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "awake-dog-before-guard-exit",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhhhhk\u0017throne\r  \u0017floor\r  \u0017gray dragon corpse\r  k\u0007tame little dog\r  ljjh................................... intruder\r  \u001b\u001bd$lll    \u001b\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "silent-tame-before-guard-exit",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhhhhk\u0017throne\r  \u0017floor\r  \u0017gray dragon corpse\r  k\u0007tame blue jelly\r  ljjh................................... intruder\r  \u001b\u001bd$lll    \u001b\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "empty-before-guard-exit",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhhhhk\u0017throne\r  \u0017floor\r  \u0017gray dragon corpse\r  kljjh................................... intruder\r  \u001b\u001bd$lll    \u001b\u001b"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "awake-dog-before-guard-exit",
+      "target": [
+        23,
+        4
+      ],
+      "kind": "audible-tame",
+      "expectedYelp": true,
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411"
+    },
+    {
+      "name": "silent-tame-before-guard-exit",
+      "target": [
+        23,
+        4
+      ],
+      "kind": "silent-tame",
+      "expectedYelp": false,
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411"
+    },
+    {
+      "name": "empty-before-guard-exit",
+      "target": [
+        23,
+        4
+      ],
+      "kind": "empty",
+      "expectedYelp": false,
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411"
+    }
+  ],
+  "negativeOutputHashes": {
+    "silent-tame-before-guard-exit": {
+      "screens": "c0408813a9b8eb235d116bdcb9cc424743ab523c8f983a5b09143340b2bbb753",
+      "cursors": "94ccf05503b7450989ada7fabb937a67925aae22481adaeb798e989619cfe5b3",
+      "calls": "32505a1ccbae10d076565412e097d6d69891b1f0e5d0ab35ea98a02c428659eb",
+      "slices": "69f6913e6cd0681f14b10d45b09610f6ed174bb138db79896bf9ba687a002eb8",
+      "frames": "bbf8feed5d00f8d3f3b5e338e3cd81293bfcf92e116fada4d5148dec70759f50"
+    },
+    "empty-before-guard-exit": {
+      "screens": "4e657c631f9a779318b57bc17428e5fd580f8a4fed96422a4c875450fc83ebc1",
+      "cursors": "c8de32fca908d907a30f09e52ce05d2914cb5d3169de6d6bc634c4b13992b20f",
+      "calls": "4cec99defb2937387de2f8bd701c9f0dfbee87eaf2bc63e2e7b3c6150b19a21a",
+      "slices": "b30426a0699af40311388828c144118e15259772d3dd1b0a5d34f77a4f372798",
+      "frames": "30a2b2310820a6f2d93a7205a7cb8380bdbabb76fbb07870b08d66720179b9e4"
+    }
+  },
+  "branches": [
+    "vault.wallify.audible-tame",
+    "vault.wallify.silent-tame",
+    "vault.wallify.empty"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.wallify.audible-tame",
+      "segment": 0,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!",
+        "Your little dog eats a gray dragon corpse.",
+        "yelps!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update"
+      ],
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411; C predictions, not yet recorded."
+    },
+    {
+      "branch": "vault.wallify.silent-tame",
+      "segment": 1,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!",
+        "A blue jelly appears next to you."
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update",
+        "yelps!",
+        "yowls!",
+        "squeals!"
+      ],
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411; C predictions, not yet recorded."
+    },
+    {
+      "branch": "vault.wallify.empty",
+      "segment": 2,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update",
+        "yelps!",
+        "yowls!",
+        "squeals!"
+      ],
+      "source": "C vault.c646-731, sounds.c427-476, monst.h251; producer dogmove.c154-342 and read.c3137-3411; C predictions, not yet recorded."
+    }
+  ],
+  "provenance": {
+    "baselineSHA256": "f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5",
+    "inputSource": "proposal-04.json exact five fields and every key; no post-lock tuning",
+    "nativeComparison": "pending parent; no runtime candidate"
+  },
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.map-memory-vision"
+  ]
+}

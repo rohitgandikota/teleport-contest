@@ -1,0 +1,9 @@
+{
+  "classification": "Actual baseline JS screens, not native evidence",
+  "definitionErrors": [],
+  "errors": [
+    "vault.fakecorr.restore-nondiggable-entry: segment 0 step 211 cell (24,6) is \"│\", expected \"@\""
+  ],
+  "primaryBranches": 4,
+  "allFourOutputHashSetsUnchanged": true
+}

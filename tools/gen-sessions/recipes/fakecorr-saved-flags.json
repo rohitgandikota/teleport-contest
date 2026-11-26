@@ -1,0 +1,120 @@
+{
+  "name": "fakecorr-saved-flags",
+  "description": "Ordinary wizard keyboard terrain wish mutates a temporary guard entry before cleanup; source-predicted restoration and subsequent digging, with three paired controls. No candidate or native evidence yet.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard"
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "entry-nondiggable-bars",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0017undiggable iron bars\r  \u001b\u001b\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001bzol  \u001b\u001bl"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "entry-unmodified-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001bzol  \u001b\u001bl"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "bars-outside-fakecorr-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001b\u0014hhhhkkkkkkkkkkkkk.  \u001b\u001b\u0017undiggable iron bars\r  \u001b\u001bzol  \u001b\u001bl"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "entry-bars-before-cleanup-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed wand of digging (0:8)\r  \u001b\u001b\u0017cursed tin whistle\r  \u001b\u001bap  intruder\r    \u001b\u001bd$ll\u0017undiggable iron bars\r  \u001b\u001b"
+    }
+  ],
+  "branches": [
+    "vault.fakecorr.restore-nondiggable-entry",
+    "vault.fakecorr.unmodified-entry-negative",
+    "vault.fakecorr.outside-entry-mutation-negative",
+    "vault.fakecorr.before-cleanup-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.fakecorr.restore-nondiggable-entry",
+      "segment": 0,
+      "source": "C vault.c89-90 restores the saved rm flags2, which also restores wall_info. C hack.c923 may_dig then permits zap_dig to open the entry and the final east move to25,5.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "Iron bars.",
+        "confused, disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 211,
+          "x": 24,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "vault.fakecorr.unmodified-entry-negative",
+      "segment": 1,
+      "source": "No intervening typed-field mutation. Original saved2 remains; same cleanup and subsequent digging succeed.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "confused, disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 185,
+          "x": 24,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "vault.fakecorr.outside-entry-mutation-negative",
+      "segment": 2,
+      "source": "The nondiggable terrain wish occurs at24,5 only after cleanup. Saved entry25,5 is unaffected; subsequent digging and east movement succeed.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "Iron bars.",
+        "confused, disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 211,
+          "x": 24,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "vault.fakecorr.before-cleanup-negative",
+      "segment": 3,
+      "source": "The terrain wish occurs at25,5, but no cleanup or digging occurs yet. The guard still owns fakecorr and the hero stays on the bars.",
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "Iron bars."
+      ],
+      "screenCells": [
+        {
+          "step": 152,
+          "x": 24,
+          "y": 6,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "confused, disappears."
+      ]
+    }
+  ]
+}

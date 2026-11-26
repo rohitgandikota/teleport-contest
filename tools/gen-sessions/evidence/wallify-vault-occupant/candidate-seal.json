@@ -1,0 +1,30 @@
+{
+  "kind": "minimal wallify yelp candidate",
+  "members": 326,
+  "manifestSHA256": "a26e56c07432388c356c34f1cc7909119a32e8d3ce67c55614f2c1e56c72ca08",
+  "runtimePatch": "scoped.patch",
+  "patchSHA256": "b8b5376d97b5b9e3f5436e1f7d32b4a2ac3f36407324fcebc9d176b502d01dc3",
+  "runtimeChanges": [
+    "js/vault.js"
+  ],
+  "addedLines": 2,
+  "removedLines": 0,
+  "existingImportUnchanged": true,
+  "sourceSealSHA256": "3bf0fdfc8492d1ad7a30e4d8f8da914ab4423624cfc7192fff99ffaa4240bca1",
+  "baselineSHA256": "f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5",
+  "candidateSHA256": "13a5fc222700f4232a52b0bfad578a9e2e418f85761b32b0bda7d324db6be0c9",
+  "recipeSHA256": "3e4941a0a8cb8f9dfa4b0843e201013ebc65145eab802f956e2a249b705c3e28",
+  "parentRawSHA256": "32e6861d010437146682a1fa6bbaaf4db4685b6a77f34e76ab5ec2a7efe7e553",
+  "ordinary": "3/3 versus2/3",
+  "native": "3/3 versus2/3",
+  "nativeReportSHA256": "2f1d880b17a6c1dc7e5ed1ebcaf538300572f05c7f095c7def93b1316e392950",
+  "negativeOrdinaryHashesExact": 10,
+  "negativeNativeRowsExact": 2,
+  "assertionBodySHA256": "d053939adda1dfafd2275d54b7f7e7ffe85e2aa3a939356906c1bd96144f00c9",
+  "nextAction": "Parent composes only two-line wallify hunk with published19946 and any separately reviewed fakecorr change; portable companion follows.",
+  "mandatoryNativePreflightBeforeGameImports": true,
+  "reverseExact": true,
+  "nativeBoundaries": 776,
+  "nativeCalls": 20282,
+  "nativeFrames": 0
+}

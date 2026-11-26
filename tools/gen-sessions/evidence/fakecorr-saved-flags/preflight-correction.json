@@ -1,0 +1,10 @@
+{
+  "initial": "review/native-preflight-initial.mjs",
+  "initialSHA256": "527b7314c13167e81043f160ccfa12b9ddcc3f3fb100e12fb264690fd5a4153e",
+  "failureReceipt": "review/native-preflight-command.json",
+  "cause": "Text adaptation of the old21-frame count also replaced the leading21 in21254, producing incorrect expected27254.",
+  "correctedCalls": 21254,
+  "parentRecordedCalls": 21254,
+  "rawOrRecipeChanged": false,
+  "runtimeChecksBeforeCorrection": 0
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "immutable source-only wallify tame-occupant handoff",
+  "members": 36,
+  "manifestSHA256": "16693679e25c2ac15299fae2cdde89db4127fbddd0fab3c5a01e78fefc37e41e",
+  "baselineSHA256": "f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5",
+  "runtimeFiles": 280,
+  "sourceRanges": 152,
+  "recipeSHA256": "3e4941a0a8cb8f9dfa4b0843e201013ebc65145eab802f956e2a249b705c3e28",
+  "inputFieldsSHA256": "9334c72f2224abb9a7075396e6c01c7bb3877f29a97101d4818c0f7d7f3d63db",
+  "ordinaryReach": "3/3",
+  "CSourcePredicatesOnJS": "2/3; required positive yelp missing",
+  "observerDeferred": "3/3 each; all5 channels",
+  "negativeHashes": 10,
+  "runtimePatchPaths": [],
+  "nativeComparison": "pending parent",
+  "priorSeals": {
+    "wallify-vault-source-audit": "eaf3356e5076892ba1291b5c2b9aee1893aad9bf4cf297c83193f74edf13a2ee",
+    "wallify-vault-redraw-candidate": "68f30e8cf046744457b8d947103b2405c2fcb45929dabf8af3d8174a0af7cd79",
+    "wallify-vault-promotion": "54f6ff3a1ae2ada64e8c29205a6bced94ae12f4c7fd4dc7e4c6b2eb76860b43a",
+    "wallify-vault-promotion-composed-check": "be83a38578a324aad138f296cff3aefc1170fe5adb1d83fa001f008deef52ace"
+  }
+}

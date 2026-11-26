@@ -1,0 +1,106 @@
+{
+  "ordinary": {
+    "baseline": "25/27",
+    "candidate": "27/27",
+    "allOriginal27BodiesPreserved": true,
+    "freshObserverPlainDeferredEqual": true,
+    "negativeHashes": 15
+  },
+  "native": {
+    "baseline": "3/4 parent report",
+    "candidate": "4/4 bounded JS comparison",
+    "cases": 4,
+    "keys": 759,
+    "boundaries": 763,
+    "calls": 21254,
+    "frames": 27,
+    "negativeRowsUnchanged": 3,
+    "baselineReportSHA256": "90f6d9fd2b2d5203419e9b7ca1150aed7c36adb49698cfed5f305fb44a856dfb",
+    "candidateReportSHA256": "b2190f309ff2de8686924862c3db4c821a730a7d0ce2efeccff2f906bb0cf64e",
+    "rawSHA256": "e2297e8ec282afb08f1d7391c178b8627dcd13ba866363d8e67063fe78bd7ca1",
+    "firstBaselineScreenDifference": {
+      "step": 206,
+      "frozenEqual": false,
+      "fullStyleEqual": false,
+      "totalCells": 1920,
+      "matchingStyleCells": 1919,
+      "blankStyleMismatches": 0,
+      "nonblankStyleMismatches": 0,
+      "glyphMismatches": 1,
+      "firstFullStyleDifference": {
+        "x": 24,
+        "y": 6,
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "firstFrozenDifference": {
+        "x": 24,
+        "y": 6,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    "firstBaselineRngDifference": {
+      "index": 5327,
+      "c": "rn2(5)=0",
+      "js": null
+    },
+    "firstBaselineSliceDifference": {
+      "step": 211,
+      "expected": 26,
+      "actual": 0,
+      "first": {
+        "index": 0,
+        "c": "rn2(5)=0",
+        "js": null
+      }
+    },
+    "repairedStyledBoundaries": 6,
+    "baselineFrames": {
+      "expected": 9,
+      "actual": 1,
+      "expectedSlices": 212,
+      "actualSlices": 212,
+      "countMismatches": [
+        {
+          "step": 206,
+          "expected": 9,
+          "actual": 1
+        }
+      ],
+      "fullStyleMatches": 1,
+      "cursorMatches": 1
+    },
+    "workerCRecording": false,
+    "workerBaselineNativeReplay": false
+  },
+  "graph": {
+    "baselineMapSHA256": "19946bb0dd7d375a2c726572868a2e427b61bbb9fe35e94ed6b07c0367da4b34",
+    "candidateMapSHA256": "3eb29279f791f017d1589e28d5140c60b681f1963e90bfc4f7d6ec05416dd3db",
+    "candidateVaultSHA256": "02604eb738043e978f7081a968ec14ed9bc674b25428653a2f046749958164ea",
+    "patchSHA256": "37f1090ab8ca100665b311b1765b66ef308fc435bdd3506717999124cb7354fd",
+    "changedRuntime": [
+      "js/vault.js"
+    ],
+    "addedLines": 1,
+    "both280FixedAfterChecks": true
+  },
+  "metadataCorrection": "review/preflight-correction.json preserves initial failed preflight; no game import or runtime check preceded corrected metadata pass."
+}

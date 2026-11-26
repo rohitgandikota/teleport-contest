@@ -42,8 +42,7 @@ published tree. The doorway-engraving fix is pushed as `5345c4d3`. It passes fiv
 ordinary controls, 38 retained checks, 93 selected/public and 93 strict replays.
 Full919 passes all 919 recordings on NFS: 931,345 screens/cursors, 20,225,162
 random calls and 33,131 frames, with default limits and no retries. All 1,210
-tested Git files match the published tree. Wall redraw, entrance reconstruction and configuration
-byte limits remain isolated follow-up work.
+tested Git files match the published tree.
 The parser byte-limit correction is pushed as `b4c2c9ae`. It passes all 15 C cases. All
 148 selected/public recordings and 148 strict workers pass. Retained checks pass
 with one documented Unicode-to-byte expectation correction. All 922 recordings
@@ -56,12 +55,22 @@ compositions. Wall redraw is pushed as `cecda9a9`, with four passing ordinary ca
 retained native cases preserve their reports. All 923 recordings pass on NFS,
 covering 932,279 screens/cursors, 20,284,036 random calls and 33,131 frames,
 with default limits and no retries. All 1,214 tested files match the published
-tree. Entrance reconstruction passes 28 ordinary controls, 48 retained checks,
+tree. Entrance reconstruction is pushed as `4e09c7d5`. It passes 28 ordinary
+controls, 48 retained checks,
 99 selected/public and 99 strict replays. Twenty-five retained native cases are
 unchanged. All 924 recordings pass on NFS, covering 932,876 screens/cursors,
-20,304,739 random calls and 33,152 frames, with default limits and no retries. The new
-run links directly to existing recordings after setup exposed the OS symlink
+20,304,739 random calls and 33,152 frames, with default limits and no retries.
+All 1,215 tested files match the published tree. The run links directly to
+existing recordings after setup exposed the OS symlink
 limit; no corpus was duplicated and no test had started before that repair.
+The next checkpoint adds three vault lines for saved wall flags and pet yelps.
+Its seven targeted C cases pass on the combined runtime, with five complete
+negative reports unchanged. All 926 recordings pass on NFS, covering 934,415
+screens/cursors, 20,346,275 random calls and 33,179 frames. All 49 retained
+checks, 101 selected/public and 101 strict replays pass. Twenty-nine retained
+native cases are unchanged. The portable gates and seven new requirements are
+installed. One unregistered coverage label was removed, preserving the exact
+input and assertion bytes. Final publication checks are in progress.
 See STATUS for the fixed runtime and exact next action.
 
 The latest official recheck at 2026-11-26T05:18:51Z returned the 21:05 EST feed: agentic rank 7,

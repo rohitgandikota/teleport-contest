@@ -1,0 +1,16 @@
+{
+  "kind": "immutable source-only wallify_vault ordinary proof; runtime untouched",
+  "members": 38,
+  "manifestSHA256": "712df2c85fdeece0b8cae36c6d418b9ca8254e9696c8e6a910fe3774a77654bb",
+  "baselineSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b",
+  "runtimeFiles": 280,
+  "sourceRanges": 96,
+  "recipeSHA256": "98aea767f3b70c05bb6f9dcd8533b28dff67e1b609d28d9da307b54fe740d1cb",
+  "inputFieldsSHA256": "0193360ff7d343cbc9c92cfa0e517f102cdbef19a357a6beaad071ccc997d344",
+  "ordinaryReach": "4/4",
+  "CSourcePredicatesOnJS": "3/4; positive retained-object redraw failure preserved",
+  "observerDeferred": "4/4 each, five channels",
+  "runtimePatchPaths": [],
+  "nativeComparison": "pending parent",
+  "priorFeelSealSHA256": "a6c53f029a7c7679b66c2ea3bd4d5bcf5e6585d37da387bb4452898e84559cda"
+}

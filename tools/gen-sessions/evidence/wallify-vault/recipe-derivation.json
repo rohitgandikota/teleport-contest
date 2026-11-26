@@ -1,0 +1,17 @@
+{
+  "originalRecipeSHA256": "98aea767f3b70c05bb6f9dcd8533b28dff67e1b609d28d9da307b54fe740d1cb",
+  "canonicalRecipeSHA256": "0f3896ba2f1d3473f1f25ee1ae10f7d3ddece85c029f80dc8a7cbc194e1abb82",
+  "onlyAddedField": "coverage",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.map-memory-vision"
+  ],
+  "strippingCoverageRestoresOriginal": true,
+  "fiveFieldsAndEveryKeyUnchanged": true,
+  "requirementsAndPrimaryAssertionsUnchanged": true,
+  "negativeHashesUnchanged": true,
+  "originalAssertionBodySHA256": "428da18e97493cbe9a55bdfad45fb6b9e8aba0c97542719a55ec66a552a0c01d",
+  "sourceSealSHA256": "eaf3356e5076892ba1291b5c2b9aee1893aad9bf4cf297c83193f74edf13a2ee",
+  "candidateSealSHA256": "68f30e8cf046744457b8d947103b2405c2fcb45929dabf8af3d8174a0af7cd79"
+}

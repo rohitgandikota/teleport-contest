@@ -1,0 +1,205 @@
+{
+  "name": "wallify-vault-retained-object",
+  "classification": "source-only ordinary C-predicted redraw difference; native comparison pending parent",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "retained-food-north-wall",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017throne\r  \u0017floor\r  \u0017food ration\rdo  jllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "empty-north-wall",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017throne\r  \u0017floor\r  jllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "rock-north-wall",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017throne\r  \u0017floor\r  \u0017rock\rdo  jllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "intact-wall-food-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017floor\r  \u0017food ration\rdo  jllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "retained-food-north-wall",
+      "target": [
+        23,
+        4
+      ],
+      "restored": true,
+      "retainedFood": true,
+      "expectedMemoryKind": "obj",
+      "expectedPrimaryVisibleText": "The damaged vault's walls are magically restored!",
+      "source": "vault.c646-731; display.c454-483,917-1099; include/display.h218-222",
+      "expectedScreenChar": "%",
+      "terminalStep": 227
+    },
+    {
+      "name": "empty-north-wall",
+      "target": [
+        23,
+        4
+      ],
+      "restored": true,
+      "retainedFood": false,
+      "expectedMemoryKind": "cmap",
+      "expectedPrimaryVisibleText": "The damaged vault's walls are magically restored!",
+      "source": "vault.c646-731; display.c454-483,917-1099; include/display.h218-222",
+      "expectedScreenChar": "─",
+      "terminalStep": 210
+    },
+    {
+      "name": "rock-north-wall",
+      "target": [
+        23,
+        4
+      ],
+      "restored": true,
+      "retainedFood": false,
+      "expectedMemoryKind": "cmap",
+      "expectedPrimaryVisibleText": "The damaged vault's walls are magically restored!",
+      "source": "vault.c646-731; display.c454-483,917-1099; include/display.h218-222",
+      "expectedScreenChar": "─",
+      "terminalStep": 220
+    },
+    {
+      "name": "intact-wall-food-negative",
+      "target": [
+        23,
+        4
+      ],
+      "restored": false,
+      "retainedFood": true,
+      "expectedMemoryKind": "obj",
+      "expectedPrimaryVisibleText": "Suddenly, the guard disappears.",
+      "source": "wallify_vault eligibility excludes intact wall without gold, rock or boulder",
+      "expectedScreenChar": "%",
+      "terminalStep": 219
+    }
+  ],
+  "negativeOutputHashes": {
+    "empty-north-wall": {
+      "screens": "9d4fe6b066a7ce99992d7e43d8fab4d14bd621178eb25f1176d6395cb78afb31",
+      "cursors": "5173d8b8c1011b69cf78d106d6045aa725b63b4a85abd5dc0b0a9dc39d7b373b",
+      "calls": "66ef8fb280825f77df165980c132088cf0d9b4d675df4533be30ce0ec6a5a1a5",
+      "slices": "71407072e05097657a3b0c0453aa078e2d211341582247dbcdcab70b767984b9",
+      "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+    },
+    "rock-north-wall": {
+      "screens": "ca2b18b20b7d5ed93e35f0235106a73e7bd7020c00c748c2f788511a0af37af4",
+      "cursors": "54965d794fb986d798e57e59dc4858cbd62bb84ca1c152013436b4a3715fcda4",
+      "calls": "debfec3913f79ddd9f03d43a0084992549a0815f8314de802590e079564cc5b7",
+      "slices": "b29ada7b1b8b3c1c8ed5c44542739e8ded6d2b0c9a0253f0f68786a2a1511f1f",
+      "frames": "6bc07bf008078f83c792c965b5fb80a94d30aec398ef0f34c3a0e37f2ab6eacb"
+    },
+    "intact-wall-food-negative": {
+      "screens": "e7eb5b4ce64eb8e7793352fdb2fa13644215af487a2d20efc83a6d458840255c",
+      "cursors": "2c9438fc18ec49511d3f11494e3269a00422368989991b5ac4912c9a0bc27ef2",
+      "calls": "80f9d5dfda936bc43b8cfc454063e4dc2d43e5631831ec7617fbf643c30178be",
+      "slices": "929364db3cf6b7a893f4cf4d44ce5cfeeebb58cc588cef26bd605b545ae1d3ee",
+      "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+    }
+  },
+  "branches": [
+    "vault.wallify.retained-food-north-wall",
+    "vault.wallify.empty-north-wall",
+    "vault.wallify.rock-north-wall",
+    "vault.wallify.intact-wall-food-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.wallify.retained-food-north-wall",
+      "segment": 0,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenCells": [
+        {
+          "step": 227,
+          "x": 22,
+          "y": 5,
+          "equals": "%"
+        }
+      ],
+      "source": "C vault.c646-731, display.c448-477,917-1099, display.h218-222. Source-predicted glyph, JS keyboard positions; no native execution."
+    },
+    {
+      "branch": "vault.wallify.empty-north-wall",
+      "segment": 1,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenCells": [
+        {
+          "step": 210,
+          "x": 22,
+          "y": 5,
+          "equals": "─"
+        }
+      ],
+      "source": "C vault.c646-731, display.c448-477,917-1099, display.h218-222. Source-predicted glyph, JS keyboard positions; no native execution."
+    },
+    {
+      "branch": "vault.wallify.rock-north-wall",
+      "segment": 2,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenCells": [
+        {
+          "step": 220,
+          "x": 22,
+          "y": 5,
+          "equals": "─"
+        }
+      ],
+      "source": "C vault.c646-731, display.c448-477,917-1099, display.h218-222. Source-predicted glyph, JS keyboard positions; no native execution."
+    },
+    {
+      "branch": "vault.wallify.intact-wall-food-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "Suddenly, the guard disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 219,
+          "x": 22,
+          "y": 5,
+          "equals": "%"
+        }
+      ],
+      "source": "C vault.c646-731, display.c448-477,917-1099, display.h218-222. Source-predicted glyph, JS keyboard positions; no native execution.",
+      "screenExcludes": [
+        "The damaged vault's walls are magically restored!"
+      ]
+    }
+  ],
+  "provenance": {
+    "inputs": "proposal-04.json unchanged five fields and every key",
+    "nativeComparison": "pending parent; C-derived assertions are not native evidence",
+    "baselineSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b",
+    "restoredEntryDependencyUsed": false
+  }
+}

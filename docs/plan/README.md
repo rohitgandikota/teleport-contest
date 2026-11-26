@@ -10,7 +10,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-11-25
+## Current focus, 2026-11-26
 
 Fruit and text bytes are pushed as `5569e6a4`. All 916 maintained recordings
 pass, covering 928,624 screens/cursors, 20,137,721 random calls and 33,131 frames.
@@ -44,14 +44,19 @@ Full919 passes all 919 recordings on NFS: 931,345 screens/cursors, 20,225,162
 random calls and 33,131 frames, with default limits and no retries. All 1,210
 tested Git files match the published tree. Wall redraw, entrance reconstruction and configuration
 byte limits remain isolated follow-up work.
-The parser byte-limit correction passes all 15 C cases on current main. All
+The parser byte-limit correction is pushed as `b4c2c9ae`. It passes all 15 C cases. All
 148 selected/public recordings and 148 strict workers pass. Retained checks pass
 with one documented Unicode-to-byte expectation correction. All 922 recordings
 pass on NFS: 931,399 screens/cursors, 20,258,571 random calls and 33,131 frames.
 The six portable gates preserve 80 source assertions, 15 ordinary cases and
-45 negative hashes. Publication follows exact staging checks. Wall redraw and
-entrance reconstruction each pass four C cases on their current compositions;
-their portable gates are ready for the next two checkpoints.
+45 negative hashes. All 1,213 tested Git files match the published tree.
+Wall redraw and entrance reconstruction each pass four C cases on their current
+compositions. Wall redraw is now installed, with four passing ordinary cases,
+47 retained checks, 98 selected/public replays and 98 strict workers. Twenty-one
+retained native cases preserve their reports. All 923 recordings pass on NFS,
+covering 932,279 screens/cursors, 20,284,036 random calls and 33,131 frames,
+with default limits and no retries. Entrance reconstruction's
+portable gate is ready for the following checkpoint.
 See STATUS for the fixed runtime and exact next action.
 
 The last official recheck at 23:43 EST returned the 21:05 feed: agentic rank 7,

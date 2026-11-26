@@ -9,7 +9,7 @@ import {
 import { PMNAMES } from './monst_data.js';
 import { g_at, hidden_gold, money_cnt, obj_extract_self, sobj_at,
          stackobj } from './invent.js';
-import { canspotmon, map_background, map_invisible, map_location, mon_visible,
+import { canspotmon, map_invisible, map_location, mon_visible,
          newsym, pline, unset_seenv } from './display.js';
 import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
@@ -39,7 +39,7 @@ import {
     ROOM, STONE, CORR, SCORR, HWALL, VWALL, DOOR, D_NODOOR, IS_WALL,
     IS_STWALL, IS_POOL, IS_ROOM, ACCESSIBLE, ARTICLE_A, BLCORNER,
     BRCORNER, RLOC_MSG, TLCORNER, TRCORNER, M_AP_TYPE, M_AP_OBJECT,
-    NEED_HTH_WEAPON, IS_OBSTRUCTED, Upolyd,
+    NEED_HTH_WEAPON, IS_OBSTRUCTED, Upolyd, IN_SIGHT, COULD_SEE,
 } from './const.js';
 import { relobj } from './steal.js';
 import { m_into_limbo } from './mon.js';
@@ -291,7 +291,10 @@ async function wallify_vault(guard) {
             const engraving = engr_at(x, y);
             if (engraving)
                 del_engr(engraving);
-            map_background(x, y, true);
+            const tmp_viz = game.viz_array[y][x];
+            game.viz_array[y][x] = IN_SIGHT | COULD_SEE;
+            newsym(x, y);
+            game.viz_array[y][x] = tmp_viz;
             block_point(x, y);
             fixed = true;
         }

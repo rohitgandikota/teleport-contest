@@ -1,0 +1,61 @@
+{
+  "baselineExact": 3,
+  "candidateExact": 4,
+  "total": 4,
+  "boundaries": 880,
+  "calls": 25465,
+  "frames": 0,
+  "allCursorsStylesRNGSlicesFramesExact": true,
+  "negativeFullNativeRowsIdentical": 3,
+  "negativeFullOrdinaryRowsIdentical": 3,
+  "negativeOrdinaryHashesIdentical": 15,
+  "positiveBaseline": {
+    "fullRngExact": true,
+    "animationExact": true,
+    "fullStyleScreens": 226,
+    "glyphMismatches": 2,
+    "firstFullStyle": {
+      "step": 226,
+      "frozenEqual": false,
+      "fullStyleEqual": false,
+      "totalCells": 1920,
+      "matchingStyleCells": 1919,
+      "blankStyleMismatches": 0,
+      "nonblankStyleMismatches": 0,
+      "glyphMismatches": 1,
+      "firstFullStyleDifference": {
+        "x": 22,
+        "y": 5,
+        "c": {
+          "ch": "%",
+          "color": 3,
+          "attr": 0
+        },
+        "js": {
+          "ch": "─",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "firstFrozenDifference": {
+        "x": 22,
+        "y": 5,
+        "kind": "ch",
+        "c": {
+          "ch": "%",
+          "color": 3,
+          "attr": 0
+        },
+        "js": {
+          "ch": "─",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    }
+  },
+  "sourceBaselineRuntimeSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b",
+  "candidateRuntimeSHA256": "1b1adc9a2d3bf4b20734a612043b833a7ad48a3b2c3f35a52a07c883d17bc412",
+  "originalInputsAndAssertionsUnchanged": true,
+  "noNativeRecordingExecuted": true
+}

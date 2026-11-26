@@ -4641,6 +4641,10 @@
     {"group":"config-merged-cap-partial-contract","id":"config-merged-literal-partial-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config merged literal partial negative"},
     {"group":"config-merged-cap-partial-contract","id":"config-merged-quoted-fit-negative","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config merged quoted fit negative"},
     {"group":"config-binding-param-contract","id":"config-cap-binding-byte-param-negative","cFile":"src/cmd.c","cFunction":"bind_key","description":"config cap binding byte param negative"},
-    {"group":"config-binding-param-contract","id":"config-cap-binding-ASCII-param-negative","cFile":"src/cmd.c","cFunction":"bind_key","description":"config cap binding ASCII param negative"}
+    {"group":"config-binding-param-contract","id":"config-cap-binding-ASCII-param-negative","cFile":"src/cmd.c","cFunction":"bind_key","description":"config cap binding ASCII param negative"},
+    {"group":"Vault wall restoration","id":"vault.wallify.retained-food-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Restore a damaged vault wall while retaining the embedded food object glyph through the source visibility redraw."},
+    {"group":"Vault wall restoration","id":"vault.wallify.empty-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Restore a damaged empty vault wall with the complete existing output unchanged."},
+    {"group":"Vault wall restoration","id":"vault.wallify.rock-north-wall","cFile":"src/vault.c","cFunction":"wallify_vault","description":"Subsume a floor rock at a damaged vault wall and preserve the complete negative output; disposal semantics remain outside this coverage."},
+    {"group":"Vault wall restoration","id":"vault.wallify.intact-wall-food-negative","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An intact vault wall containing only food is ineligible for restoration and preserves the remembered object and complete output."}
   ]
 }

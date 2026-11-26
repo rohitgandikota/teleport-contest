@@ -1,0 +1,22 @@
+{
+  "kind": "immutable isolated wallify redraw candidate on fixed309",
+  "members": 318,
+  "manifestSHA256": "41dbb8abcbc156f7e21c955797b1862b097def6986b4cbdd2a96bc5ada544461",
+  "sourceMembersUnchanged": 38,
+  "sourceSealSHA256": "eaf3356e5076892ba1291b5c2b9aee1893aad9bf4cf297c83193f74edf13a2ee",
+  "baselineRuntimeSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b",
+  "candidateRuntimeSHA256": "1b1adc9a2d3bf4b20734a612043b833a7ad48a3b2c3f35a52a07c883d17bc412",
+  "runtimeFiles": 280,
+  "changedRuntimePaths": [
+    "js/vault.js"
+  ],
+  "patchSHA256": "77ddb4bf3be9811676fe5bed2816424f265d77f235670c240d05be8ef0cd5d59",
+  "ordinary": "4/4 vs3/4",
+  "native": "4/4 vs3/4",
+  "negativeFullReportRowsExact": 3,
+  "negativeOrdinaryHashesExact": 15,
+  "originalRecipeSHA256": "98aea767f3b70c05bb6f9dcd8533b28dff67e1b609d28d9da307b54fe740d1cb",
+  "parentRawSHA256": "a6950b5b46dbf3331891d441bc6c9388bc4ae7bef1fde855b05fa4e7c66b4915",
+  "CRecordingExecuted": false,
+  "reverseExact": true
+}

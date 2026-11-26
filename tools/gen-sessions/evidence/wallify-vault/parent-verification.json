@@ -1,0 +1,146 @@
+{
+  "baselineCommit": "b4c2c9ae0eba7cceb201e509be47bfae8e0ebad6",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5",
+  "source38SealSHA256": "eaf3356e5076892ba1291b5c2b9aee1893aad9bf4cf297c83193f74edf13a2ee",
+  "candidate318SealSHA256": "68f30e8cf046744457b8d947103b2405c2fcb45929dabf8af3d8174a0af7cd79",
+  "promotion41SealSHA256": "54f6ff3a1ae2ada64e8c29205a6bced94ae12f4c7fd4dc7e4c6b2eb76860b43a",
+  "portablePayloads": 11,
+  "newRequirements": 4,
+  "ordinary": {
+    "passed": 4,
+    "total": 4,
+    "negativeStreamHashesUnchanged": 15,
+    "check": {
+      "exit": 0,
+      "passed": 4,
+      "total": 4,
+      "report": ".cache/restart-20261122/wallify-vault-main-ordinary.json",
+      "reportSHA256": "f09bb6319b9811a7e78de233c37eb9d19420e8ba96d14ed6adc59bac258bb90c",
+      "priorReport": ".cache/restart-20261122/wallify-vault-promotion-composed-check/ordinary.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/wallify-vault-main-ordinary.log",
+      "logSHA256": "f91dc7aa15ed6e68b04e041dc046dc7dd7d16e6cba0df5c34c8210724218c0e6"
+    }
+  },
+  "native": {
+    "sourceBaseline": 3,
+    "candidate": 4,
+    "cases": 4,
+    "boundaries": 880,
+    "calls": 25465,
+    "frames": 0,
+    "repairedBoundaries": 2,
+    "negativeCompleteReportsUnchanged": 3,
+    "check": {
+      "exit": 0,
+      "cases": 4,
+      "exact": 4,
+      "runtimeMapSHA256": "f5ba1cfce94028c1c24a790b54020eb82a058dbc2af5eb2328b0bf2478564ee5",
+      "raw": ".cache/restart-20261122/wallify-vault-parent-native.session.json",
+      "rawSHA256": "a6950b5b46dbf3331891d441bc6c9388bc4ae7bef1fde855b05fa4e7c66b4915",
+      "recipeSHA256": "98aea767f3b70c05bb6f9dcd8533b28dff67e1b609d28d9da307b54fe740d1cb",
+      "report": ".cache/restart-20261122/wallify-vault-redraw-parent-composed-native.json",
+      "reportSHA256": "3d0a827996621a294578e8ee7db489383ad51c2225a8ef0bcac22a2f50bb38c9",
+      "priorReport": ".cache/restart-20261122/wallify-vault-redraw-candidate/reports/candidate-native.json",
+      "priorReportSHA256": "3d0a827996621a294578e8ee7db489383ad51c2225a8ef0bcac22a2f50bb38c9",
+      "reportsUnchanged": true,
+      "log": ".cache/restart-20261122/wallify-vault-redraw-parent-composed-native.log",
+      "logSHA256": "fa35ed05c1fb3acdce06f1dd9ae2d189054ec5e93efeee6f4fc960d37144b112"
+    }
+  },
+  "retained": {
+    "passed": 47,
+    "total": 47,
+    "receiptSHA256": "c6e367e32b89496f360f3b5d035c111e387b5aa39d12604b371e7ba1dc65be26"
+  },
+  "retainedNative": {
+    "passed": 21,
+    "total": 21,
+    "completeReportsUnchanged": true,
+    "checks": [
+      {
+        "name": "guard-hallucinated-name",
+        "exit": 0,
+        "cases": 6,
+        "exact": 6,
+        "report": ".cache/restart-20261122/wallify-vault-retained-guard-hallucinated-name-native.json",
+        "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "priorReport": ".cache/restart-20261122/guard-door-engraving-retained-guard-hallucinated-name-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/wallify-vault-retained-guard-hallucinated-name-native.log",
+        "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e"
+      },
+      {
+        "name": "guard-cleanup-prompt",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/wallify-vault-retained-guard-cleanup-prompt-native.json",
+        "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+        "priorReport": ".cache/restart-20261122/guard-door-engraving-retained-guard-cleanup-prompt-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/wallify-vault-retained-guard-cleanup-prompt-native.log",
+        "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84"
+      },
+      {
+        "name": "guard-restored-entry",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/wallify-vault-retained-guard-restored-entry-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "priorReport": ".cache/restart-20261122/guard-door-engraving-retained-guard-restored-entry-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/wallify-vault-retained-guard-restored-entry-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      },
+      {
+        "name": "guard-door-engraving",
+        "exit": 0,
+        "cases": 5,
+        "exact": 5,
+        "report": ".cache/restart-20261122/wallify-vault-retained-guard-door-engraving-native.json",
+        "reportSHA256": "7cdcd1cd464b467ce008fc8e380ab654477dedd38dc95c9de96a4d355a408854",
+        "priorReport": ".cache/restart-20261122/guard-door-engraving-parent-candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/wallify-vault-retained-guard-door-engraving-native.log",
+        "logSHA256": "393029221a3f52922ec70b056b37adbbdd19c14cd00bf9229f70186283c862c9"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 98,
+    "total": 98
+  },
+  "strict8s": {
+    "passed": 98,
+    "total": 98
+  },
+  "full923": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wallify-vault-full923-js-20261125",
+    "passed": 923,
+    "sessions": 923,
+    "totals": {
+      "screens": 932279,
+      "cursors": 932279,
+      "rngCalls": 20284036,
+      "animFrames": 33131
+    },
+    "files": 1214,
+    "allFilesSHA256": "2466a44a06b086fafc8b81e05bf1e196caf362b29550eb3e427070e05419fcdc",
+    "verificationSHA256": "907c6ea0331271f3458b94c97223a6fa6952393762af61f31472feca4fa44c4a",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Temporary visibility and object redraw order only. Wall mode, pet yelp, debris disposal, trap cleanup, gold and relocation branches remain separate.",
+    "Native compares decoded styles, cursors, normalized ordered RNG and frames. No whole-owner or literal serialized-byte completion claim.",
+    "Local tests do not establish a newer held-out result."
+  ]
+}

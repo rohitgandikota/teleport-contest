@@ -1,6 +1,6 @@
 # STATUS — live handoff board
 
-## 2026-11-25: doorway engraving919 pushed, parser composition in verification
+## 2026-11-26: vault redraw passes all 923 recordings
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -203,7 +203,16 @@ portable payloads and 11 requirements are installed, bringing the registry to
 final pinned evidence count, 55 versus 50 before five provenance files were
 added. All other fields and assertion rows match. The final clean-root checks
 also use 55. Original reports and the first parent comparison failure remain.
-Next: final parent proof, exact 86-path staging, commit and immediate push.
+Published as b4c2c9ae0eba7cceb201e509be47bfae8e0ebad6 and confirmed on origin/main.
+All 1,213 tested Git blobs match the public tree. Publication verification
+completed at 23:54 EST. Receipt SHA256:
+caf24f0ad25a529a210d24d343c1a4a5387f45cefe14dfb15da251646bbd9fc4.
+Parent proof SHA256:
+aff5ec5d2acb77cce3278ade72d6916888cd9f1388062cef5c6a43f47b7ad366.
+The 86-path staging receipt verifies the three new raws too. The promotion
+marked them accept-only-exact because parent had installed them before sealing;
+that status does not mean they were already tracked. Do not omit them from Git.
+Full922, final parent verification and publication checks are complete.
 
 Both following vault candidates are independently source-reviewed and verified:
 wallify source38/candidate318 and invault source43/candidate323. Isolated current
@@ -219,30 +228,46 @@ Wallify report SHA256:
 Invault report SHA256:
 46b791cdfa6affe8111c5726bc5c84ed71702d26e215b529b5ff8e3899744ab9.
 Main vault stayed at the published engraving version throughout full922.
-After parser publication, install wallify's exact 11 payloads and original raw,
-append its four requirements, apply its composed vault file and verify broadly.
-Invault's 22 payloads and four requirements follow after wallify publication.
+Wallify's exact 11 payloads, original raw and four requirements are installed.
+The registry now has 4,627 entries. Only vault.js changes from b4c2c9ae, to
+the composed f5ba map. Fresh installed ordinary controls pass 4/4; the full
+report equals the promotion report, SHA256
+f09bb6319b9811a7e78de233c37eb9d19420e8ba96d14ed6adc59bac258bb90c.
+Install receipt SHA256:
+edbc42fa2f4553fd4bc9ee99292bea07a43bf7131505552c8f375788dd627b4e.
+Local verification passes all 47 retained commands, 98 selected/public recordings
+and 98 strict eight-second workers. Twenty-one retained native cases preserve
+their four complete reports. Full923 passes all 923 recordings on NFS, completed
+PID3385931, two CPU workers, default
+45-second limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wallify-vault-full923-js-20261125.
+It links 922 prior fixtures, uploads 292 source/new-raw files, and pins all
+1,214 files by SHA256 2466a44a06b086fafc8b81e05bf1e196caf362b29550eb3e427070e05419fcdc.
+Totals: 932,279 screens/cursors, 20,284,036 random calls and 33,131 frames.
+Verification SHA256:
+907c6ea0331271f3458b94c97223a6fa6952393762af61f31472feca4fa44c4a.
+Original raw and all prior recordings remain unchanged. Do not rerun full923.
+Next: finish final parent proof, stage exact paths, then commit and push.
+Invault's 22 payloads and four
+requirements follow after wallify publication. Do not install that runtime yet.
 
 Next source work remains isolated:
-- Euclid: sealed568 config merged-byte-cap candidate, four owners including
-  cmd.bind_key raw parameter copying. Source28+symbol52 and13native cases pass;
-  all45negative hashes and retainedfruit/glyph gates stay fixed. Parent recorded
-  the two additional binding controls once; primary2/2pass. RawSHA
-  b81f77beac4f7e70192e4b2e10f69fe3b4199620e39cdd151c51d5e10d747793,
-  16keys/18bounds/6,058calls. He is preparing a separate native2/promotion packet.
-- Leibniz: sealed38 wallify retained-object redraw audit,96ranges verified.
-  Baseline source predicates3/4, neutral ordinary reach4/4,15negative hashes.
-  Parent recorded four cases once; primary4/4pass. RawSHA
-  a6950b5b46dbf3331891d441bc6c9388bc4ae7bef1fde855b05fa4e7c66b4915,
-  876keys/880bounds/25,465calls. Candidate scope is temporary visibility/newsym
-  order; disposal, yelp, trap and wall-mode gaps remain separate.
-- Sartre: sealed43 invault nonwall-entry reconstruction audit,40ranges verified.
-  Baseline25/28 has three source failures with all15negative hashes retained.
-  Parent recorded four cases once; primary4/4pass. RawSHA
-  e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af,
-  593keys/597bounds/20,703calls/21frames. A separate candidate must reconstruct
-  the wall before saving fakecorr, preserving the split flags/wall_info contract.
-  Its six row-metadata corrections preceded recording; originals remain intact.
+- Euclid: config-menu-bindings-source-audit, using the published parser map9a92.
+  Read C's menu alias dispatch and TTY input owners before locking an ordinary
+  keyboard witness. No candidate or locked input exists yet.
+- Leibniz: wallify trap cleanup or pet yelp, using mapf5ba after the redraw fix.
+  Choose one reachable source gap and lock an ordinary witness plus negative
+  controls before proposing a candidate.
+- Sartre: fakecorr-saved-flags-source-audit, using composed map19946 after the
+  entrance fix. Trace C's aliased flags and JS's split fields through ordinary
+  producers and restoration. No runtime patch or input lock exists yet.
+
+The invault source43/candidate323/promotion45 packets are already sealed and
+independently verified. The one original C raw has SHA256
+e1dc36a677bdf89e203f04b27b6018f68ade3e49bc460257aea208ea5004f7af,
+593 keys, 597 boundaries, 20,703 calls and 21 frames. The gate improves 25/28
+to 28/28 and preserves all 15 negative hashes. Native improves 3/4 to 4/4.
+Its six row-metadata corrections preceded recording; originals remain intact.
 
 Do not rerecord these originals or alter the sealed source packets. Prefixes are
 config-binding-param-parent, wallify-vault-parent and invault-nonwall-entry-parent.

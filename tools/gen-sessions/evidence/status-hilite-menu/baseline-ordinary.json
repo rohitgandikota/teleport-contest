@@ -1,0 +1,1414 @@
+{
+  "classification": "Fresh ordinary JS controls against pinned C source; no native comparison",
+  "passed": 33,
+  "total": 34,
+  "results": [
+    {
+      "name": "percent-bare-commit: all keys, fresh observer/plain/deferred outputs and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: fresh rule lifetime and real hitpoints option route",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: actual line-input producer",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: C comparison suffix or empty-input return",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'a - Less than 50',\n+   'b - 50 or less',\n+   'c - Exactly 50',\n+   'd - 50 or more',\n+   'e - More than 50'\n-   'a - Less than 50%',\n-   'b - 50% or less',\n-   'c - Exactly 50%',\n-   'd - 50% or more',\n-   'e - More than 50%'\n  ]\n"
+    },
+    {
+      "name": "percent-bare-commit: color and attribute feedback or cancellation bypass",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: exact inserted rule or no insertion",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: real acknowledgement and field-menu ordering",
+      "pass": true
+    },
+    {
+      "name": "percent-bare-commit: exit cleanup and stored-rule enablement",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: all keys, fresh observer/plain/deferred outputs and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: fresh rule lifetime and real hitpoints option route",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: actual line-input producer",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: C comparison suffix or empty-input return",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: color and attribute feedback or cancellation bypass",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: exact inserted rule or no insertion",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: real acknowledgement and field-menu ordering",
+      "pass": true
+    },
+    {
+      "name": "percent-explicit-commit: exit cleanup and stored-rule enablement",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: all keys, fresh observer/plain/deferred outputs and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: fresh rule lifetime and real hitpoints option route",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: actual line-input producer",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: C comparison suffix or empty-input return",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: color and attribute feedback or cancellation bypass",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: exact inserted rule or no insertion",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: real acknowledgement and field-menu ordering",
+      "pass": true
+    },
+    {
+      "name": "absolute-number-commit: exit cleanup and stored-rule enablement",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: all keys, fresh observer/plain/deferred outputs and negative hashes",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: fresh rule lifetime and real hitpoints option route",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: actual line-input producer",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: C comparison suffix or empty-input return",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: color and attribute feedback or cancellation bypass",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: exact inserted rule or no insertion",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: real acknowledgement and field-menu ordering",
+      "pass": true
+    },
+    {
+      "name": "percent-empty-cancel: exit cleanup and stored-rule enablement",
+      "pass": true
+    },
+    {
+      "name": "Bare and explicit percentage paths converge after choosing the comparison",
+      "pass": true
+    },
+    {
+      "name": "All four menu paths preserve the complete startup RNG stream",
+      "pass": true
+    }
+  ],
+  "rows": [
+    {
+      "name": "percent-bare-commit",
+      "keys": 17,
+      "boundaries": 18,
+      "calls": 4029,
+      "frames": 0,
+      "hashes": {
+        "screens": "6dac7c34912dca7a27c35978d0643123803638d89b91ce1d4157c1aa419bc5d0",
+        "cursors": "6e2b1a7529e49196562624e7896f562b0ec0c7a4b7f58a185f1b4496931697d9",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "plainHashes": {
+        "screens": "6dac7c34912dca7a27c35978d0643123803638d89b91ce1d4157c1aa419bc5d0",
+        "cursors": "6e2b1a7529e49196562624e7896f562b0ec0c7a4b7f58a185f1b4496931697d9",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "deferredHashes": {
+        "screens": "6dac7c34912dca7a27c35978d0643123803638d89b91ce1d4157c1aa419bc5d0",
+        "cursors": "6e2b1a7529e49196562624e7896f562b0ec0c7a4b7f58a185f1b4496931697d9",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "states": [
+        {
+          "step": 0,
+          "key": null,
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 1,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 2,
+          "key": "m",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 3,
+          "key": "O",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 4,
+          "key": "|",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 5,
+          "key": "l",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 6,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 7,
+          "key": "r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Select hitpoints field hilite behavior:"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "key": "p",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold:"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "key": "5",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold: 5"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "key": "0",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold: 50"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 2,
+              "text": "a - Less than 50"
+            },
+            {
+              "row": 3,
+              "text": "b - 50 or less"
+            },
+            {
+              "row": 4,
+              "text": "c - Exactly 50"
+            },
+            {
+              "row": 5,
+              "text": "d - 50 or more"
+            },
+            {
+              "row": 6,
+              "text": "e - More than 50"
+            }
+          ]
+        },
+        {
+          "step": 12,
+          "key": "c",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose a color for when hitpoints is 50%:"
+            }
+          ]
+        },
+        {
+          "step": 13,
+          "key": "b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose attribute for when hitpoints is 50%:"
+            }
+          ]
+        },
+        {
+          "step": 14,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Added hilite hitpoints/=50%/red&normal--More--"
+            }
+          ]
+        },
+        {
+          "step": 15,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Current hitpoints hilites:"
+            },
+            {
+              "row": 2,
+              "text": "a - hitpoints/=50%/red&normal"
+            }
+          ]
+        },
+        {
+          "step": 16,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 17,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": 0,
+          "hiliteDelta": 3,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": []
+        }
+      ]
+    },
+    {
+      "name": "percent-explicit-commit",
+      "keys": 18,
+      "boundaries": 19,
+      "calls": 4029,
+      "frames": 0,
+      "hashes": {
+        "screens": "3f08fb6f84e1a67cee8f75cecf5093efb61f588f7c9a4697260c36211dc0ab2c",
+        "cursors": "53b7fc66f8c470eb007384cd78f9feb9866f96b1c9ff91b7b40fc743c9029fe1",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "354cac6ed4f859eafbe2ca9e566119d20b2274c485ab96f45f0c2a0c6aff8da9",
+        "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+      },
+      "plainHashes": {
+        "screens": "3f08fb6f84e1a67cee8f75cecf5093efb61f588f7c9a4697260c36211dc0ab2c",
+        "cursors": "53b7fc66f8c470eb007384cd78f9feb9866f96b1c9ff91b7b40fc743c9029fe1",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "354cac6ed4f859eafbe2ca9e566119d20b2274c485ab96f45f0c2a0c6aff8da9",
+        "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+      },
+      "deferredHashes": {
+        "screens": "3f08fb6f84e1a67cee8f75cecf5093efb61f588f7c9a4697260c36211dc0ab2c",
+        "cursors": "53b7fc66f8c470eb007384cd78f9feb9866f96b1c9ff91b7b40fc743c9029fe1",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "354cac6ed4f859eafbe2ca9e566119d20b2274c485ab96f45f0c2a0c6aff8da9",
+        "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+      },
+      "states": [
+        {
+          "step": 0,
+          "key": null,
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 1,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 2,
+          "key": "m",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 3,
+          "key": "O",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 4,
+          "key": "|",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 5,
+          "key": "l",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 6,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 7,
+          "key": "r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Select hitpoints field hilite behavior:"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "key": "p",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold:"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "key": "5",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold: 5"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "key": "0",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold: 50"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "key": "%",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold: 50%"
+            }
+          ]
+        },
+        {
+          "step": 12,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 2,
+              "text": "a - Less than 50%"
+            },
+            {
+              "row": 3,
+              "text": "b - 50% or less"
+            },
+            {
+              "row": 4,
+              "text": "c - Exactly 50%"
+            },
+            {
+              "row": 5,
+              "text": "d - 50% or more"
+            },
+            {
+              "row": 6,
+              "text": "e - More than 50%"
+            }
+          ]
+        },
+        {
+          "step": 13,
+          "key": "c",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose a color for when hitpoints is 50%:"
+            }
+          ]
+        },
+        {
+          "step": 14,
+          "key": "b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose attribute for when hitpoints is 50%:"
+            }
+          ]
+        },
+        {
+          "step": 15,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Added hilite hitpoints/=50%/red&normal--More--"
+            }
+          ]
+        },
+        {
+          "step": 16,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Current hitpoints hilites:"
+            },
+            {
+              "row": 2,
+              "text": "a - hitpoints/=50%/red&normal"
+            }
+          ]
+        },
+        {
+          "step": 17,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 18,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": 0,
+          "hiliteDelta": 3,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 100,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": []
+        }
+      ]
+    },
+    {
+      "name": "absolute-number-commit",
+      "keys": 17,
+      "boundaries": 18,
+      "calls": 4029,
+      "frames": 0,
+      "hashes": {
+        "screens": "ded94068740c703c7233e0c6dc5c2bb51f1e7f3e8351476988de54e589a6e091",
+        "cursors": "35a7b3e0796d1299f98cbf1d1724a3629a7a3346853966f05cded7761855cba7",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "plainHashes": {
+        "screens": "ded94068740c703c7233e0c6dc5c2bb51f1e7f3e8351476988de54e589a6e091",
+        "cursors": "35a7b3e0796d1299f98cbf1d1724a3629a7a3346853966f05cded7761855cba7",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "deferredHashes": {
+        "screens": "ded94068740c703c7233e0c6dc5c2bb51f1e7f3e8351476988de54e589a6e091",
+        "cursors": "35a7b3e0796d1299f98cbf1d1724a3629a7a3346853966f05cded7761855cba7",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+        "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+      },
+      "states": [
+        {
+          "step": 0,
+          "key": null,
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 1,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 2,
+          "key": "m",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 3,
+          "key": "O",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 4,
+          "key": "|",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 5,
+          "key": "l",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 6,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 7,
+          "key": "r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Select hitpoints field hilite behavior:"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "key": "n",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter value for hitpoints threshold:"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "key": "5",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter value for hitpoints threshold: 5"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "key": "0",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter value for hitpoints threshold: 50"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 2,
+              "text": "a - Less than 50"
+            },
+            {
+              "row": 3,
+              "text": "b - 50 or less"
+            },
+            {
+              "row": 4,
+              "text": "c - Exactly 50"
+            },
+            {
+              "row": 5,
+              "text": "d - 50 or more"
+            },
+            {
+              "row": 6,
+              "text": "e - More than 50"
+            }
+          ]
+        },
+        {
+          "step": 12,
+          "key": "c",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose a color for when hitpoints is 50:"
+            }
+          ]
+        },
+        {
+          "step": 13,
+          "key": "b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Choose attribute for when hitpoints is 50:"
+            }
+          ]
+        },
+        {
+          "step": 14,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 101,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Added hilite hitpoints/=50/red&normal--More--"
+            }
+          ]
+        },
+        {
+          "step": 15,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 101,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Current hitpoints hilites:"
+            },
+            {
+              "row": 2,
+              "text": "a - hitpoints/=50/red&normal"
+            }
+          ]
+        },
+        {
+          "step": 16,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 101,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 17,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": 0,
+          "hiliteDelta": 3,
+          "rules": [
+            {
+              "field": 18,
+              "set": true,
+              "fld": 18,
+              "behavior": 101,
+              "rel": 0,
+              "value": 50,
+              "textmatch": "",
+              "coloridx": 257,
+              "anytype": 4
+            }
+          ],
+          "conditions": [],
+          "lines": []
+        }
+      ]
+    },
+    {
+      "name": "percent-empty-cancel",
+      "keys": 11,
+      "boundaries": 12,
+      "calls": 4029,
+      "frames": 0,
+      "hashes": {
+        "screens": "e2dd909a23f7bfbd037b9bddb90f0d353d2b6e9910e4a7227798890cddc3419e",
+        "cursors": "b758d8e8faf8244e63c0332acb309ec8c6c5a01f1431a121338916c65883ee5d",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "548299a3437eddf76c3687502ca7a326c781a3267c81859a558170ec15f6414e",
+        "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+      },
+      "plainHashes": {
+        "screens": "e2dd909a23f7bfbd037b9bddb90f0d353d2b6e9910e4a7227798890cddc3419e",
+        "cursors": "b758d8e8faf8244e63c0332acb309ec8c6c5a01f1431a121338916c65883ee5d",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "548299a3437eddf76c3687502ca7a326c781a3267c81859a558170ec15f6414e",
+        "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+      },
+      "deferredHashes": {
+        "screens": "e2dd909a23f7bfbd037b9bddb90f0d353d2b6e9910e4a7227798890cddc3419e",
+        "cursors": "b758d8e8faf8244e63c0332acb309ec8c6c5a01f1431a121338916c65883ee5d",
+        "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+        "slices": "548299a3437eddf76c3687502ca7a326c781a3267c81859a558170ec15f6414e",
+        "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+      },
+      "states": [
+        {
+          "step": 0,
+          "key": null,
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 1,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 2,
+          "key": "m",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 3,
+          "key": "O",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 4,
+          "key": "|",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 5,
+          "key": "l",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        },
+        {
+          "step": 6,
+          "key": " ",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 7,
+          "key": "r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": null,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Select hitpoints field hilite behavior:"
+            }
+          ]
+        },
+        {
+          "step": 8,
+          "key": "p",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 1,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Enter percentage value for hitpoints threshold:"
+            }
+          ]
+        },
+        {
+          "step": 9,
+          "key": "\r",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Select hitpoints field hilite behavior:"
+            }
+          ]
+        },
+        {
+          "step": 10,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": true,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": [
+            {
+              "row": 0,
+              "text": "Status hilites:"
+            }
+          ]
+        },
+        {
+          "step": 11,
+          "key": "\u001b",
+          "turn": 1,
+          "botDisabled": false,
+          "inGetlin": 0,
+          "hiliteDelta": null,
+          "rules": [],
+          "conditions": [],
+          "lines": []
+        }
+      ]
+    }
+  ],
+  "primary": {
+    "definitionErrors": [],
+    "errors": [
+      "status.hilite-menu.percent-suffix: segment 0 lacks screen text \"Less than 50%\"",
+      "status.hilite-menu.percent-suffix: segment 0 lacks screen text \"50% or less\"",
+      "status.hilite-menu.percent-suffix: segment 0 lacks screen text \"Exactly 50%\"",
+      "status.hilite-menu.percent-suffix: segment 0 lacks screen text \"50% or more\"",
+      "status.hilite-menu.percent-suffix: segment 0 lacks screen text \"More than 50%\""
+    ],
+    "integrityErrors": [],
+    "branches": 4
+  }
+}

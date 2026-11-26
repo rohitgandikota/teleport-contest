@@ -1,0 +1,8 @@
+{
+  "source": "options.c:8047 illegal_menu_cmd_key, defsym.h default VENOM_SYM dot",
+  "oldGateSHA256": "5b2f68c9125a62c5eee2fabca7a3fc4168b2fec3466be35ab500054656f4d60d",
+  "newGateSHA256": "fd7f568fa165f221a18ea7c6d2ead8bf7338755c6b0584c4acb3f7273dbc9f1c",
+  "retainedReport": "reports/source-candidate-attempt1.json",
+  "retainedResult": "39/40",
+  "correction": "The constructed nonrecursive chain used reserved object-class key dot. Keep the right-to-left duplicate check with its two valid aliases. Use legal at-sign for the second mapping and require both parser results error-free. Same semantic assertions, no runtime change; all ordinary inputs/assertions/negative hashes unchanged."
+}

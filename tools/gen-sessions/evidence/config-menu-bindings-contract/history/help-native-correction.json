@@ -1,0 +1,38 @@
+{
+  "rawSHA256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+  "source": "c",
+  "version": 5,
+  "originalPrimaryErrors": [
+    "menu-bind-select-and-help-positive: segment 0 lacks screen text \"Select     ;\"",
+    "menu-option-select-and-help-positive: segment 1 lacks screen text \"Select     ;\""
+  ],
+  "correctedPrimaryErrors": [],
+  "integrityErrors": [],
+  "cases": 5,
+  "primaryAssertions": 5,
+  "keys": 31,
+  "boundaries": 36,
+  "calls": 15520,
+  "frames": 0,
+  "allFiveFieldsAndEveryKeyExact": true,
+  "originalGameplayGateUnchanged": true,
+  "evidence": [
+    {
+      "segment": 0,
+      "step": 7,
+      "row": 4,
+      "serialized": "  Select\u001b[5C;\u001b[6C,",
+      "decodedPrefix": "  Select     ;      ,",
+      "originalSemanticCheck": true
+    },
+    {
+      "segment": 1,
+      "step": 7,
+      "row": 4,
+      "serialized": "  Select\u001b[5C;\u001b[6C,",
+      "decodedPrefix": "  Select     ;      ,",
+      "originalSemanticCheck": true
+    }
+  ],
+  "classification": "Metadata predicate correction only; no runtime candidate or new C recording."
+}

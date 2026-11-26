@@ -1,0 +1,333 @@
+{
+  "classification": "Isolated candidate, unchanged prerequisite eight gameplay assertions",
+  "recipeSHA256": "02302150b4bf9d53ee34720c7bdf5cb5e84b24a78b843e906fe133864c6bd439",
+  "total": 8,
+  "passed": 8,
+  "rows": [
+    {
+      "name": "chargen-bound-search-positive",
+      "family": "character-selection",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "typed search reaches its real input prompt",
+          "pass": true
+        },
+        {
+          "name": "Wizard selection reaches the C confirmation caller",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "f925c04b5f80f113288f924ffd99a5ad053465c05f0e56e847aeddfda35416e0",
+        "cursors": "a1e8f6ec093e2e1291c51f26d02dd47032fce34256652ebb69a1667569b0224a",
+        "calls": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "slices": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 0,
+      "frames": 0
+    },
+    {
+      "name": "chargen-bound-filter-all-positive",
+      "family": "character-selection",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "real filter menu applies the source selection branch",
+          "pass": true
+        },
+        {
+          "name": "filter ESC returns to the role menu without applying filters",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "0b567ea4d6308c4e0debd99f8453200be20f7be27dd7df2429cf08e85ccd4bbe",
+        "cursors": "05d001ce2167af1b9133c55842811050576e370e0910c71398b4e0fa2a9a1b49",
+        "calls": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "slices": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 0,
+      "frames": 0
+    },
+    {
+      "name": "chargen-default-search-negative",
+      "family": "character-selection",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "typed search reaches its real input prompt",
+          "pass": true
+        },
+        {
+          "name": "Wizard selection reaches the C confirmation caller",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "f925c04b5f80f113288f924ffd99a5ad053465c05f0e56e847aeddfda35416e0",
+        "cursors": "a1e8f6ec093e2e1291c51f26d02dd47032fce34256652ebb69a1667569b0224a",
+        "calls": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "slices": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 0,
+      "frames": 0
+    },
+    {
+      "name": "chargen-explicit-role-negative",
+      "family": "character-selection",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "Wizard selection reaches the C confirmation caller",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "40b572f5ceff8d9bcce221ff14f70c91463a4d826c9d02587b18245e512f2238",
+        "cursors": "a7d5abc50ce22555b3d2ed951b051696622c50411d2bb398daf9c69cc86bd739",
+        "calls": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "slices": "5ae1625b488b3935122d8dd627fe575b388a5aa360378fa4407aad08baaed1e2",
+        "frames": "5ae1625b488b3935122d8dd627fe575b388a5aa360378fa4407aad08baaed1e2"
+      },
+      "boundaries": 3,
+      "calls": 0,
+      "frames": 0
+    },
+    {
+      "name": "chargen-explicit-filter-negative",
+      "family": "character-selection",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "real filter menu applies the source selection branch",
+          "pass": true
+        },
+        {
+          "name": "filter ESC returns to the role menu without applying filters",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "dcf54292f9a119a957a519a2c6b1cd69cf1d64991ece6b6e944e7e5902ac91be",
+        "cursors": "05d001ce2167af1b9133c55842811050576e370e0910c71398b4e0fa2a9a1b49",
+        "calls": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "slices": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 0,
+      "frames": 0
+    },
+    {
+      "name": "menu-capacity-32-search-positive",
+      "family": "capacity",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "typed search reaches its real input prompt",
+          "pass": true
+        },
+        {
+          "name": "early output is absent at recorded boundaries without an acknowledgement key",
+          "pass": true
+        },
+        {
+          "name": "capacity probes leave the actual inventory and turn fixed",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "d7444b912e5f137a94ec29e7cfe2fcfef1112248fb9623dd37fe67d84da7a862",
+        "cursors": "68ef5b9f0f90487a6bf0ef37be7566d58fee6d0698ec21aed1a4de28137855a7",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9700e55f96e454d4b84a7706d2957fa5876575df3b668dad56c5258f3b88c82e",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-capacity-33-reject-positive",
+      "family": "capacity",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "early output is absent at recorded boundaries without an acknowledgement key",
+          "pass": true
+        },
+        {
+          "name": "capacity probes leave the actual inventory and turn fixed",
+          "pass": true
+        },
+        {
+          "name": "unmapped hash is ignored before any selection",
+          "pass": true
+        },
+        {
+          "name": "earlier alias still selects after capacity rejection",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "9cefd2acc97c25cd415fcbad3aa03acc0898f757fb161a97b5008a73cd28ced0",
+        "cursors": "3d50d8c27dfa8a64f5cc9b8502375824504206cb1eb9f9c94c6a1d41e4f8173c",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9db1100f7018a7c2dd6c66715b7b43a2fbdb454e0ce3d2ce2676d00f1bf6da77",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-capacity-unbound-negative",
+      "family": "capacity",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred preserve all five streams and every boundary",
+          "pass": true
+        },
+        {
+          "name": "valid C configuration has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "role filters remain unchanged through the actual caller",
+          "pass": true
+        },
+        {
+          "name": "early output is absent at recorded boundaries without an acknowledgement key",
+          "pass": true
+        },
+        {
+          "name": "capacity probes leave the actual inventory and turn fixed",
+          "pass": true
+        },
+        {
+          "name": "unmapped hash is ignored before any selection",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "231996879ad682e96972bcabfd2a6f0b641e279ed577228bada739908f6f7686",
+        "cursors": "ccce5c9d17620f4b386cc7ed3489ccd1d81bf8b127c661fe41a3b009f0b0a4ce",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9700e55f96e454d4b84a7706d2957fa5876575df3b668dad56c5258f3b88c82e",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3104,
+      "frames": 0
+    }
+  ],
+  "provenance": {
+    "sourceSHA256": "e81050a9a50f30343d5eb9f3403f2f9d96e65837377a09fd74ec7a45d800a678",
+    "omittedRowFields": [
+      "relevantScreens",
+      "states",
+      "firstState"
+    ],
+    "assertionsHashesAndCountsUnchanged": true
+  }
+}

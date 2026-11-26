@@ -1,0 +1,11 @@
+{
+  "cases": 5,
+  "branches": 5,
+  "branchErrors": [
+    "menu-bind-select-and-help-positive: segment 0 lacks screen text \"Select     ;\"",
+    "menu-option-select-and-help-positive: segment 1 lacks screen text \"Select     ;\""
+  ],
+  "integrityErrors": [],
+  "source": "c",
+  "version": 5
+}

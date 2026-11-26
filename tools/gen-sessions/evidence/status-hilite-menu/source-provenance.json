@@ -1,0 +1,22 @@
+{
+  "sourceSealSHA256": "4b977a46222c8607a33aee089e8296b253fe190157e3a2d81c277d5e9e310e0a",
+  "sourceManifestSHA256": "d2f27368a7a38a4b670c034de3442561f8e8ba8ed305ed0e4ce52b3ce73c655a",
+  "sourceMembers": 329,
+  "sourceCoverageSHA256": "a4602063c4db13e8e4d4d990a37f5117f0aaf71bfce3cef1bc2acd7e19a5da26",
+  "sourceRanges": 60,
+  "baselineRuntimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "candidateSealSHA256": "322173a0a4344a50d9afe32112f018c915a58653e60e2be7b5f5167d66190e77",
+  "candidateManifestSHA256": "6ff3814c77d66413414f1ff19470699fb1e9d8b2be7dab7f86d72afc7c1297f9",
+  "candidateMembers": 324,
+  "candidateRuntimeSHA256": "1e9df95eece3190417a08ff770b17fe2b723230083a73d7cd753c48b30fb7897",
+  "candidateBotlSHA256": "a487fd8138595e55b8e2be64ca4fb945fbb1b08eb1bb1e3eb93081feaa846343",
+  "patchSHA256": "d2e8e59a3e23bd362995537f2dfc23215a8d72968016b9f175222269c1a44478",
+  "originalBodySHA256": "010a0d6308de9d19b05774f2e55e2caa79df825068a9748b69a0b006ffdc278d",
+  "inputLockSHA256": "d0624cad0d5d2a3680ba8be093679c23fe0aa92b8f7feb8ff4465c6406e9797f",
+  "recipeSHA256": "f4fafd3678b1bbc3112a52f31b2a487bd7d199eae920552869667a12884b0e6d",
+  "rawSHA256": "92f1b7874b112c686022d871664f161a0e3445fc5e0ce152b3a82eb517c7e7d8",
+  "publicNeedsHistoricalCOrCache": false,
+  "runtimePayload": [],
+  "historicalCBuildPins": "Provenance only; public preflight requires tracked recipe, raw and compact evidence only.",
+  "baselineCorrection": "First baseline rate was retracted after a loader failure. Subsequent parent verification establishes3/4. Both the failure and corrected confirmation are retained."
+}

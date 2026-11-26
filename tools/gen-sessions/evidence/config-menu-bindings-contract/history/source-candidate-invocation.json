@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/tools/source-gate.mjs",
+    ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/source-candidate.json"
+  ],
+  "exit": 0,
+  "seconds": 1.0761668682098389
+}

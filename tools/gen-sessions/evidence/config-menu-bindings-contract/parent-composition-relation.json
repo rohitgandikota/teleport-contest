@@ -1,0 +1,17 @@
+{
+  "runtimeMapSHA256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "runtimeFiles": 280,
+  "classification": "Read-only parent comparison receipts, no worker replay on this composition",
+  "families": {
+    "original5": {
+      "parentReportSHA256": "3afd41e153149b6655393103e7f6a4789010d5876ab1c9ed28a6b6fe2b2cb301",
+      "isolatedReportSHA256": "3afd41e153149b6655393103e7f6a4789010d5876ab1c9ed28a6b6fe2b2cb301",
+      "byteIdentical": true
+    },
+    "prerequisite8": {
+      "parentReportSHA256": "1dd199186ac7a838e70ec11d90534f496bf400762c86edc39d645375287fc96f",
+      "isolatedReportSHA256": "1dd199186ac7a838e70ec11d90534f496bf400762c86edc39d645375287fc96f",
+      "byteIdentical": true
+    }
+  }
+}

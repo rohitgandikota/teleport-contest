@@ -1,0 +1,492 @@
+{
+  "baselineCommit": "dadb52c9dee9da8610b1609727e88df95a0e3271",
+  "composition": {
+    "parent": "dadb52c9dee9da8610b1609727e88df95a0e3271",
+    "runtimeChanged": [
+      "js/botl.js",
+      "js/const.js",
+      "js/display.js",
+      "js/gstate.js",
+      "js/jsmain.js",
+      "js/options.js",
+      "js/plselect.js",
+      "js/tty/wintty.js"
+    ],
+    "runtimeFiles": 280,
+    "runtimeSHA256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+    "patchSHA256": "6a8b8e99d9c655da0c86be5cf09c28ecda0f5f1e3794887f61328f6cbeecbba9",
+    "sourceCandidateSeals": [
+      "ddce7cc55c75425fc67991b245cdcbb0d10a9da8fe4e06157a172d04d634b61e",
+      "322173a0a4344a50d9afe32112f018c915a58653e60e2be7b5f5167d66190e77"
+    ]
+  },
+  "payloads": 91,
+  "newRequirements": 17,
+  "originalAndPassingRaws": [
+    {
+      "path": "tools/gen-sessions/generated/config-menu-bindings.session.json",
+      "sha256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+      "bytes": 660835
+    },
+    {
+      "path": "tools/gen-sessions/generated/config-menu-bindings-prerequisite.session.json",
+      "sha256": "78b87fc7ae98a26b308587b8656baa04a89d00bbf49b53ef2944a93cbed2891c",
+      "bytes": 275061
+    },
+    {
+      "path": "tools/gen-sessions/generated/status-hilite-menu.session.json",
+      "sha256": "92f1b7874b112c686022d871664f161a0e3445fc5e0ce152b3a82eb517c7e7d8",
+      "bytes": 711816
+    }
+  ],
+  "fullDiagnosticRawSHA256": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+  "partition": {
+    "classification": "Explicit authorized passing-corpus partition. Full8 remains mandatory diagnostic evidence; no raw normalization or C rerecord.",
+    "sourceRaw": "tools/gen-sessions/evidence/config-menu-bindings-contract/prerequisite8/parent-native.session.json",
+    "sourceRawSHA256": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+    "sourceRawBytes": 407122,
+    "sourceCounts": {
+      "segments": 8,
+      "keys": 28,
+      "boundaries": 36,
+      "calls": 9312,
+      "frames": 0
+    },
+    "targetRaw": "tools/gen-sessions/generated/config-menu-bindings-prerequisite.session.json",
+    "targetRawSHA256": "78b87fc7ae98a26b308587b8656baa04a89d00bbf49b53ef2944a93cbed2891c",
+    "targetRawBytes": 275061,
+    "targetCounts": {
+      "segments": 7,
+      "keys": 24,
+      "boundaries": 31,
+      "calls": 6208,
+      "frames": 0
+    },
+    "keepSourceIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7
+    ],
+    "segments": [
+      {
+        "sourceIndex": 0,
+        "targetIndex": 0,
+        "name": "chargen-bound-search-positive",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "559e9f96205e15c73b4c648aeffa743e148966ebd2610081f9eac0e544ac9d76",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 1,
+        "targetIndex": 1,
+        "name": "chargen-bound-filter-all-positive",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "6c7c72eeb5a0da8efc5b3f708057843426aa3944218fc499bdf6fd41745d8d8b",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 2,
+        "targetIndex": 2,
+        "name": "chargen-default-search-negative",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "f814e8758e8a46ae8852b070381f8b0abdac636b5553dcf9b906f428c15ff2e9",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 3,
+        "targetIndex": 3,
+        "name": "chargen-explicit-role-negative",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "8c2e76b52b0411cf38bc200354d84d5192a6fb86a4c9ca8bb58a10dc90ad22a7",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 4,
+        "targetIndex": 4,
+        "name": "chargen-explicit-filter-negative",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "97684c732d39a997e19ef66ee307743e304d6547f451234b1157b436bed0a6a3",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 5,
+        "targetIndex": 5,
+        "name": "menu-capacity-32-search-positive",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "7b896a1eb5761559741729deca871fdcab5d9c8e5bfd2301d62d0ccc5e64fa38",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      },
+      {
+        "sourceIndex": 7,
+        "targetIndex": 6,
+        "name": "menu-capacity-unbound-negative",
+        "segmentJSONValuesUnchanged": true,
+        "segmentJSONTextSHA256": "7f2e79ca80312dfcc75edfd94a18b796a03f7e60f79eb5fc13eb28d51f225139",
+        "fiveFieldPresenceUnchanged": true,
+        "stepKeysExact": true
+      }
+    ],
+    "omitted": {
+      "sourceIndex": 6,
+      "name": "menu-capacity-33-reject-positive",
+      "reason": "Installed/canonical recorder raw-active cursor survives startup screen clear.",
+      "unresolvedCursors": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ]
+      ],
+      "boundaries": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "fullNativeResult": "7/8; exit 1 required",
+      "everyOtherNativeStreamExact": true
+    },
+    "fullPrimaryRecipeSHA256": "f69b8be31171e4506b0b571e8d4dc1d1f2b8a917613994cc2f2ca63d38ede45b",
+    "targetRecipe": "tools/gen-sessions/recipes/config-menu-bindings-prerequisite.json",
+    "targetRecipeSHA256": "b48a817f5eb39bda5fa9e6c406c62b88e36bde1ec6a7a283008487e9e764f4ac",
+    "recipeDerivation": {
+      "omittedSourceIndex": 6,
+      "selectedArrays": [
+        "segments",
+        "expectations",
+        "branches",
+        "branchAssertions"
+      ],
+      "branchAssertionIndexMap": {
+        "0": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "7": 6
+      },
+      "onlyAdditionalRootMetadata": {
+        "name": "config-menu-bindings-prerequisite",
+        "coverage": []
+      }
+    },
+    "sourcePacketManifestSHA256": "19be80e4ad24cf72916c54ab5890515ad3dd5c53d6e0b1c44dd47edd55b234e1",
+    "sourcePacketSealSHA256": "ddce7cc55c75425fc67991b245cdcbb0d10a9da8fe4e06157a172d04d634b61e"
+  },
+  "native": {
+    "cases": 17,
+    "exact": 16,
+    "checks": [
+      {
+        "name": "config-menu-bindings",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          ".cache/restart-20261122/config-menu-bindings-parent-native.session.json",
+          ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.json"
+        ],
+        "exit": 0,
+        "seconds": 0.58,
+        "cases": 5,
+        "passed": 5,
+        "report": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.json",
+        "reportSHA256": "3afd41e153149b6655393103e7f6a4789010d5876ab1c9ed28a6b6fe2b2cb301",
+        "priorReport": ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/initial-candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.log",
+        "logSHA256": "ee80efba8663e75f738d67f3b03999f9e8a1b12c8abfd2062fff1fa3c7fe14e5"
+      },
+      {
+        "name": "config-menu-bindings-prerequisite",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          ".cache/restart-20261122/config-menu-bindings-prerequisite-parent-native.session.json",
+          ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.json"
+        ],
+        "exit": 1,
+        "seconds": 0.41,
+        "cases": 8,
+        "passed": 7,
+        "report": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.json",
+        "reportSHA256": "1dd199186ac7a838e70ec11d90534f496bf400762c86edc39d645375287fc96f",
+        "priorReport": ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/prerequisite-candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.log",
+        "logSHA256": "dbe36d8a6f5d2708bbdfe3fdd69347956f9fb3a594915fd47b1417df4077767e"
+      },
+      {
+        "name": "status-hilite-menu",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          ".cache/restart-20261122/status-hilite-menu-parent-native.session.json",
+          ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.json"
+        ],
+        "exit": 0,
+        "seconds": 0.89,
+        "cases": 4,
+        "passed": 4,
+        "report": ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.json",
+        "reportSHA256": "597ed654ec518cdd0ae3aa052fef7ca90bbbdb128b25d34030ec4573a975eefd",
+        "priorReport": ".cache/restart-20261122/status-hilite-menu-candidate-audit/review/candidate-native.json",
+        "completeReportUnchanged": true,
+        "log": ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.log",
+        "logSHA256": "3aa1ad68a795f4011f4ad76a96fbb4a507f1e01bb783914ae3220d899c6afbf7"
+      }
+    ],
+    "unresolved": "Five recorder cursors in capacity33, retained as a full eight-case diagnostic with exit1."
+  },
+  "sourceControls": 40,
+  "ordinaryCases": 17,
+  "statusChecks": 34,
+  "negativeStreamHashes": 50,
+  "ordinaryChecks": [
+    {
+      "name": "source",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/config-menu-bindings-source-gate.mjs",
+        ".cache/restart-20261122/menu-input-menu-main-source.json"
+      ],
+      "exit": 0,
+      "seconds": 0.51,
+      "report": ".cache/restart-20261122/menu-input-menu-main-source.json",
+      "reportSHA256": "4a1cb1402be5e26369466e1bffab022afcd75a99489fdb47842903ecfad96594",
+      "log": ".cache/restart-20261122/menu-input-menu-main-source.log",
+      "logSHA256": "d09527c26299e819226230474e06822de60715467903aeb5ee519c79099c04f7"
+    },
+    {
+      "name": "input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/config-menu-bindings-input-gate.mjs",
+        ".cache/restart-20261122/menu-input-menu-main-input.json"
+      ],
+      "exit": 0,
+      "seconds": 0.56,
+      "report": ".cache/restart-20261122/menu-input-menu-main-input.json",
+      "reportSHA256": "217bb42ddb01f21fda0ed1e38ca98bb89c7caa9c608a0d967918821648b8a30a",
+      "log": ".cache/restart-20261122/menu-input-menu-main-input.log",
+      "logSHA256": "08e16cee309531e94d25303ec6082ad9436db12a094e119343fdfea0daa1cc65"
+    },
+    {
+      "name": "prerequisite-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/config-menu-bindings-prerequisite-input-gate.mjs",
+        ".cache/restart-20261122/menu-input-menu-main-prerequisite-input.json"
+      ],
+      "exit": 0,
+      "seconds": 0.72,
+      "report": ".cache/restart-20261122/menu-input-menu-main-prerequisite-input.json",
+      "reportSHA256": "bc325ec9f7a6a45a7c0d3c3922792788c9982d12b444363fcdc955c4e7e0ae4e",
+      "log": ".cache/restart-20261122/menu-input-menu-main-prerequisite-input.log",
+      "logSHA256": "361e2b7af07d5ff2e6eb5b55d8d7be58118affa054ec760e053f45cce416b22e"
+    }
+  ],
+  "statusReportAttribution": {
+    "reason": "Initial parent comparison used the isolated report instead of the portable report. Only classification and added nativePreflight metadata differ; every original assertion, fresh row, hash and primary result is identical.",
+    "initialCheck": "menu-input-status-main-ordinary-command.json",
+    "gameExit": 0,
+    "originalReportSHA256": "b688937bac693c686afbb2624929bd4fec09831dbf36bfbdf05566fdfa253677",
+    "portableReportSHA256": "c944e083a41b5e408a09b150357102cc463739dc53752c0c2ac7dcdc2b6acce2",
+    "currentReportSHA256": "c944e083a41b5e408a09b150357102cc463739dc53752c0c2ac7dcdc2b6acce2",
+    "wholePortableReportIdentical": true,
+    "originalGameplayFieldsIdentical": true,
+    "metadataOnlyDifferences": [
+      "classification",
+      "nativePreflight"
+    ],
+    "passed": 34,
+    "total": 34,
+    "negativeHashesUnchanged": 15,
+    "newReplay": false
+  },
+  "retained": {
+    "initialPassed": 28,
+    "total": 29,
+    "correctedPassed": 29,
+    "correctedInvocation": {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/tty-menu-cancellation-input-gate.mjs",
+        "tools/gen-sessions/generated/tty-menu-cancellation-callers.session.json",
+        ".cache/restart-20261122/menu-input-tty-cancellation-corrected.json"
+      ],
+      "exit": 0,
+      "seconds": 0.57,
+      "logSHA256": "6996bdaf63549917a28bf26ba333d4d038f5047c9e3c4ed1f2b3abba853a4796",
+      "reportSHA256": "ea5c9027b642a79cd62254e676980793846abe3bfd0d91e4418a8a9b63105136",
+      "initialInvocation": "menu-input-retained-tty-menu-cancellation-input.log",
+      "correction": "Pass the required existing fixture and new report path; no source/test/input assertion changed."
+    }
+  },
+  "strictPublicAndNew": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/config-menu-bindings.session.json",
+      "tools/gen-sessions/generated/config-menu-bindings-prerequisite.session.json",
+      "tools/gen-sessions/generated/status-hilite-menu.session.json"
+    ],
+    "exit": 0,
+    "seconds": 31.89,
+    "targets": 47,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/menu-input-public47-strict.log",
+    "sha256": "07eaa04722bebc4d6cd99d15f89d29eb68c3c47523305f2ab6ec3fe0552a0e58",
+    "runtimeSHA256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a"
+  },
+  "scopeImportFindings": 0,
+  "unawaitedReview": {
+    "totalSites": 39,
+    "newSite": "options.add_menu_cmd_alias calls pline before windows; the reached raw branch completes synchronously before any await.",
+    "remainingSitesNotNewlyReviewed": true
+  },
+  "full930": {
+    "verifiedAt": "2026-11-26T06:43:07.750364+00:00",
+    "sessions": 930,
+    "passed": 930,
+    "failures": [],
+    "totals": {
+      "screens": 934828,
+      "cursors": 934828,
+      "rngCalls": 20401823,
+      "animFrames": 33179
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 930,
+    "allFilesFixed": 1221,
+    "allFilesSHA256": "9c308975a631efc1abf250e8b89a6c0ab1cca37fdb6720f2894a7b26a8cd0aec",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T06:25:43.879111+00:00",
+      "workers": 2,
+      "pid": 3424599,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.80419921875,
+        1.359375,
+        1.60400390625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "9c308975a631efc1abf250e8b89a6c0ab1cca37fdb6720f2894a7b26a8cd0aec"
+    },
+    "logs": {
+      "shard-1.log": "ded46e02604c00730edc58d75b0015ca2caaa4911f562c000db4f0651aace462",
+      "shard-0.log": "55fcb06953f37695bbfeb3e22da2c4b856750d9f6114bc5fb73a92268772debc"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "9ca3618f92466823d580714e90dd7bae68bf16fd78a256fd5bc8d7d1a60f20d0",
+  "promotionSeals": {
+    "status": "32828c83c7700361d4904a9ddd050321e51e3706db67a41571cddea7604ad8f0",
+    "menu": "10eb6714d3dac4f3fd99a7050cd3109377ed05aff1b6255d5d0c6acad473693d"
+  },
+  "limits": [
+    "The original overflow capture defect remains visible in the diagnostic.",
+    "Source-reviewed status buffer edges are not all separately covered by the four native witnesses.",
+    "No literal serialized-byte, whole-port, or new held-out result is inferred from local replay."
+  ]
+}

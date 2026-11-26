@@ -1,0 +1,37 @@
+[
+  {
+    "family": "initial",
+    "name": "menu-default-select-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "initial",
+    "name": "menu-explicit-item-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "initial",
+    "name": "menu-extended-command-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "prerequisite",
+    "name": "chargen-default-search-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "prerequisite",
+    "name": "chargen-explicit-role-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "prerequisite",
+    "name": "chargen-explicit-filter-negative",
+    "completeNativeReportUnchanged": true
+  },
+  {
+    "family": "prerequisite",
+    "name": "menu-capacity-unbound-negative",
+    "completeNativeReportUnchanged": true
+  }
+]

@@ -1,0 +1,296 @@
+{
+  "originalPrimaryRecipeSHA256": "24e20c27b5faae09053cf1e524631d7433743e5cbc4110562b72b7791c3f46df",
+  "correctedPrimaryRecipeSHA256": "ad994d6249a03a48a3a9c04f9402680c9a2ad769459b8088f9da1914b4418c47",
+  "originalRawSHA256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+  "allOriginalInputFieldsAndExpectationsUnchanged": true,
+  "originalSelectionCellsUnchanged": true,
+  "otherThreeAssertionsUnchanged": true,
+  "originalGameplayGateUnchanged": true,
+  "corrections": [
+    {
+      "segment": 0,
+      "originalPredicate": {
+        "screenIncludes": "Select     ;"
+      },
+      "replacementPredicate": {
+        "screenCells": [
+          {
+            "step": 7,
+            "x": 0,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 1,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 2,
+            "y": 4,
+            "equals": "S"
+          },
+          {
+            "step": 7,
+            "x": 3,
+            "y": 4,
+            "equals": "e"
+          },
+          {
+            "step": 7,
+            "x": 4,
+            "y": 4,
+            "equals": "l"
+          },
+          {
+            "step": 7,
+            "x": 5,
+            "y": 4,
+            "equals": "e"
+          },
+          {
+            "step": 7,
+            "x": 6,
+            "y": 4,
+            "equals": "c"
+          },
+          {
+            "step": 7,
+            "x": 7,
+            "y": 4,
+            "equals": "t"
+          },
+          {
+            "step": 7,
+            "x": 8,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 9,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 10,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 11,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 12,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 13,
+            "y": 4,
+            "equals": ";"
+          },
+          {
+            "step": 7,
+            "x": 14,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 15,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 16,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 17,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 18,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 19,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 20,
+            "y": 4,
+            "equals": ","
+          }
+        ]
+      },
+      "reason": "The recorder compresses space runs of length >=5 into CSI cursor-forward. The original raw substring predicate is not a visual-text predicate. C show_menu_controls mc_fmt places this unchanged semantic text on row 4."
+    },
+    {
+      "segment": 1,
+      "originalPredicate": {
+        "screenIncludes": "Select     ;"
+      },
+      "replacementPredicate": {
+        "screenCells": [
+          {
+            "step": 7,
+            "x": 0,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 1,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 2,
+            "y": 4,
+            "equals": "S"
+          },
+          {
+            "step": 7,
+            "x": 3,
+            "y": 4,
+            "equals": "e"
+          },
+          {
+            "step": 7,
+            "x": 4,
+            "y": 4,
+            "equals": "l"
+          },
+          {
+            "step": 7,
+            "x": 5,
+            "y": 4,
+            "equals": "e"
+          },
+          {
+            "step": 7,
+            "x": 6,
+            "y": 4,
+            "equals": "c"
+          },
+          {
+            "step": 7,
+            "x": 7,
+            "y": 4,
+            "equals": "t"
+          },
+          {
+            "step": 7,
+            "x": 8,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 9,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 10,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 11,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 12,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 13,
+            "y": 4,
+            "equals": ";"
+          },
+          {
+            "step": 7,
+            "x": 14,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 15,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 16,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 17,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 18,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 19,
+            "y": 4,
+            "equals": " "
+          },
+          {
+            "step": 7,
+            "x": 20,
+            "y": 4,
+            "equals": ","
+          }
+        ]
+      },
+      "reason": "The recorder compresses space runs of length >=5 into CSI cursor-forward. The original raw substring predicate is not a visual-text predicate. C show_menu_controls mc_fmt places this unchanged semantic text on row 4."
+    }
+  ],
+  "source": "src/options.c:9090 mc_fmt and 9120 select row; scripts/record-session.mjs:43 compressAnsiLine and 65 encodeScreenAnsiRle; tools/gen-sessions/assertions.mjs raw screenIncludes versus decoded screenCells.",
+  "strongerPlacementConstraint": {
+    "step": 7,
+    "row": 4,
+    "columns": [
+      0,
+      20
+    ],
+    "text": "  Select     ;      ,"
+  },
+  "originalRawFailureRetained": "source/parent-native-primary-check.json"
+}

@@ -1,0 +1,18 @@
+{
+  "reason": "Initial parent comparison used the isolated report instead of the portable report. Only classification and added nativePreflight metadata differ; every original assertion, fresh row, hash and primary result is identical.",
+  "initialCheck": "menu-input-status-main-ordinary-command.json",
+  "gameExit": 0,
+  "originalReportSHA256": "b688937bac693c686afbb2624929bd4fec09831dbf36bfbdf05566fdfa253677",
+  "portableReportSHA256": "c944e083a41b5e408a09b150357102cc463739dc53752c0c2ac7dcdc2b6acce2",
+  "currentReportSHA256": "c944e083a41b5e408a09b150357102cc463739dc53752c0c2ac7dcdc2b6acce2",
+  "wholePortableReportIdentical": true,
+  "originalGameplayFieldsIdentical": true,
+  "metadataOnlyDifferences": [
+    "classification",
+    "nativePreflight"
+  ],
+  "passed": 34,
+  "total": 34,
+  "negativeHashesUnchanged": 15,
+  "newReplay": false
+}

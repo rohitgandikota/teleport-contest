@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "requirements": [
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-bind-select-and-help-positive",
+      "cFile": "src/options.c",
+      "cFunction": "parsebindings",
+      "description": "menu bind select and help positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-option-select-and-help-positive",
+      "cFile": "src/options.c",
+      "cFunction": "shared_menu_optfn",
+      "description": "menu option select and help positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-default-select-negative",
+      "cFile": "win/tty/wintty.c",
+      "cFunction": "process_menu_window",
+      "description": "menu default select negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-explicit-item-negative",
+      "cFile": "win/tty/wintty.c",
+      "cFunction": "process_menu_window",
+      "description": "menu explicit item negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-extended-command-negative",
+      "cFile": "src/cmd.c",
+      "cFunction": "bind_key",
+      "description": "menu extended command negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-bound-search-positive",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen bound search positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-bound-filter-all-positive",
+      "cFile": "src/role.c",
+      "cFunction": "reset_role_filtering",
+      "description": "chargen bound filter all positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-default-search-negative",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen default search negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-explicit-role-negative",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen explicit role negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-explicit-filter-negative",
+      "cFile": "src/role.c",
+      "cFunction": "reset_role_filtering",
+      "description": "chargen explicit filter negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-32-search-positive",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "menu capacity 32 search positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-33-reject-positive",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "Capacity 33 emits the early diagnostic synchronously and retains 32 aliases. C primary and ordinary control pass; full8 native remains 7/8, exit 1, with five confirmed recorder cursor defects.",
+      "nativeStatus": "diagnostic",
+      "maintainedPassingCorpus": false,
+      "evidence": "tools/gen-sessions/evidence/config-menu-bindings-contract/prerequisite8/parent-native.session.json"
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-unbound-negative",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "menu capacity unbound negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    }
+  ],
+  "diagnosticPolicy": "All 13 IDs retained. Overflow is ordinary/source/C-primary coverage, not maintained passing native corpus."
+}

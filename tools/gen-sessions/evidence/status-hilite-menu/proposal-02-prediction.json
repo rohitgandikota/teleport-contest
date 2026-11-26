@@ -1,0 +1,13 @@
+{
+  "beforeRuntimeProbe": true,
+  "candidateExists": false,
+  "CNativeEvidence": false,
+  "recipeSHA256": "abc819bde7d3bc2c50128733eb203aefb9c045c9f7a40cb190c458c3901a95c1",
+  "positive": "Bare percentage comparison lacks restored % in JS only; color/attribute and committed hitpoints/=50%/red should be consistent.",
+  "controls": [
+    "Explicit50% uses percent in comparison and committed rule.",
+    "Absolute50 has no percent in comparison or rule.",
+    "Empty percentage value returns behavior, then exits with no rule."
+  ],
+  "lifetime": "Two ESCs after commit exit current-field and status menus; existing rule survives, hilite_delta becomes3. Each fresh game must start empty."
+}

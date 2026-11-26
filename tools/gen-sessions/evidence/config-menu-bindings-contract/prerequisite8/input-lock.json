@@ -1,0 +1,97 @@
+{
+  "recipeSHA256": "02302150b4bf9d53ee34720c7bdf5cb5e84b24a78b843e906fe133864c6bd439",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "ed04dfdbdc02f8aaea6c5fec015260b1e799bddd5b00b9c57f688b92ed8748bc",
+  "segments": [
+    {
+      "name": "chargen-bound-search-positive",
+      "keys": 4,
+      "keyCodePoints": [
+        110,
+        59,
+        119,
+        10
+      ],
+      "inputSHA256": "e5abd2c748d192899713c19cb7414d15cedff647056143e5d15b50bec28b85ba"
+    },
+    {
+      "name": "chargen-bound-filter-all-positive",
+      "keys": 4,
+      "keyCodePoints": [
+        110,
+        126,
+        59,
+        27
+      ],
+      "inputSHA256": "79057e0d94d58e53f98cfe2e851afb441739dd7df8fa1ae527727c3118667d63"
+    },
+    {
+      "name": "chargen-default-search-negative",
+      "keys": 4,
+      "keyCodePoints": [
+        110,
+        58,
+        119,
+        10
+      ],
+      "inputSHA256": "3c6ace7a9b13ab0d79a5402efdc22587d814637ef4e13f210d371f5a4829f0eb"
+    },
+    {
+      "name": "chargen-explicit-role-negative",
+      "keys": 2,
+      "keyCodePoints": [
+        110,
+        119
+      ],
+      "inputSHA256": "82dc2d3b39f39c491caaddc7abc387051f9bd256a83c7511d583a0d39d299602"
+    },
+    {
+      "name": "chargen-explicit-filter-negative",
+      "keys": 4,
+      "keyCodePoints": [
+        110,
+        126,
+        97,
+        27
+      ],
+      "inputSHA256": "c0ec463fea8e3671c03812ad31451848c38896f2ccffb1fe16584249d6371150"
+    },
+    {
+      "name": "menu-capacity-32-search-positive",
+      "keys": 3,
+      "keyCodePoints": [
+        32,
+        68,
+        35
+      ],
+      "inputSHA256": "073b3a04dac0983c6804005f2f928c54bfaf53c26a0c7cc6a7b162fd8719de35"
+    },
+    {
+      "name": "menu-capacity-33-reject-positive",
+      "keys": 4,
+      "keyCodePoints": [
+        32,
+        68,
+        35,
+        59
+      ],
+      "inputSHA256": "70eb3abd59e5e4b75ebc6bd3266a978e9856436180dd844139d69c2177666229"
+    },
+    {
+      "name": "menu-capacity-unbound-negative",
+      "keys": 3,
+      "keyCodePoints": [
+        32,
+        68,
+        35
+      ],
+      "inputSHA256": "fba5b36190bd0d93a4942c5a27dbe082a4805140d28748e4ccbd17590d1086ea"
+    }
+  ]
+}

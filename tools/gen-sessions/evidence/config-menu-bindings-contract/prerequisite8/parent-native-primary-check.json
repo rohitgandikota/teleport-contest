@@ -1,0 +1,230 @@
+{
+  "cases": 8,
+  "branches": 8,
+  "source": "c",
+  "version": 5,
+  "branchErrors": [],
+  "integrityErrors": [],
+  "cursorRows": [
+    {
+      "name": "chargen-bound-search-positive",
+      "cursors": [
+        [
+          60,
+          0,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ],
+        [
+          12,
+          0,
+          1
+        ],
+        [
+          13,
+          0,
+          1
+        ],
+        [
+          47,
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "chargen-bound-filter-all-positive",
+      "cursors": [
+        [
+          60,
+          0,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "chargen-default-search-negative",
+      "cursors": [
+        [
+          60,
+          0,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ],
+        [
+          12,
+          0,
+          1
+        ],
+        [
+          13,
+          0,
+          1
+        ],
+        [
+          47,
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "chargen-explicit-role-negative",
+      "cursors": [
+        [
+          60,
+          0,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ],
+        [
+          47,
+          7,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "chargen-explicit-filter-negative",
+      "cursors": [
+        [
+          60,
+          0,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          47,
+          20,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "menu-capacity-32-search-positive",
+      "cursors": [
+        [
+          7,
+          13,
+          1
+        ],
+        [
+          7,
+          13,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          12,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "menu-capacity-33-reject-positive",
+      "cursors": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "menu-capacity-unbound-negative",
+      "cursors": [
+        [
+          7,
+          13,
+          1
+        ],
+        [
+          7,
+          13,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ],
+        [
+          9,
+          23,
+          1
+        ]
+      ]
+    }
+  ]
+}

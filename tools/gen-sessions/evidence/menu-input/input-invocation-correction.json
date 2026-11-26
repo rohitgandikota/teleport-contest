@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "tools/tty-menu-cancellation-input-gate.mjs",
+    "tools/gen-sessions/generated/tty-menu-cancellation-callers.session.json",
+    ".cache/restart-20261122/menu-input-tty-cancellation-corrected.json"
+  ],
+  "exit": 0,
+  "seconds": 0.57,
+  "logSHA256": "6996bdaf63549917a28bf26ba333d4d038f5047c9e3c4ed1f2b3abba853a4796",
+  "reportSHA256": "ea5c9027b642a79cd62254e676980793846abe3bfd0d91e4418a8a9b63105136",
+  "initialInvocation": "menu-input-retained-tty-menu-cancellation-input.log",
+  "correction": "Pass the required existing fixture and new report path; no source/test/input assertion changed."
+}

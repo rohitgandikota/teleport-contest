@@ -1,0 +1,38 @@
+{
+  "recipeSHA256": "571b9bc80ebcadb24a0486739396a6101e2315b73cc1b631e35a245389b8ee34",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "508512ba33354f8bcb337c25b81c1b21071285810288e51556481b4c94ff0bac",
+  "segments": [
+    {
+      "name": "menu-bind-select-and-help-positive",
+      "keys": 9,
+      "inputSHA256": "fb1ee40af310de7d58fa93467080521ddfdc463f793bd0bb0f748e10fb83de89"
+    },
+    {
+      "name": "menu-option-select-and-help-positive",
+      "keys": 9,
+      "inputSHA256": "28f13a18af53915f757325ff2afa141136b27ae2ae8b14e4917f57e5b109b0a0"
+    },
+    {
+      "name": "menu-default-select-negative",
+      "keys": 5,
+      "inputSHA256": "e56b8d44dfd3e7b7cc755b171dc47b71274f4a9a245eb1377dfbe546f9676212"
+    },
+    {
+      "name": "menu-explicit-item-negative",
+      "keys": 4,
+      "inputSHA256": "cc373a6cfe1b725f685d11cb95e1acc6624dd9cd4593dc689c592662d6e3a3a6"
+    },
+    {
+      "name": "menu-extended-command-negative",
+      "keys": 4,
+      "inputSHA256": "9e0f62de1a7488357361dbd28a7443ad30b0c6e048a5b8082337f50836bcf287"
+    }
+  ]
+}

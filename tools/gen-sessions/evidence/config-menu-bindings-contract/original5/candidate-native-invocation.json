@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/config-menu-bindings-runtime-source-audit/tools/native-gate.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/config-menu-bindings-runtime-source-audit/source/original-native.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/initial-candidate-native.json"
+  ],
+  "exit": 0,
+  "seconds": 0.5611000061035156
+}

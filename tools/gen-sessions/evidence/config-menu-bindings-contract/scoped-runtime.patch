@@ -1,0 +1,503 @@
+--- a/js/const.js
++++ b/js/const.js
+@@ -1074,6 +1074,9 @@
+ export const MENU_UNSELECT_PAGE = '\\';
+ export const MENU_INVERT_PAGE = '~';
+ export const MENU_SEARCH = ':';
++// include/wintype.h:155-156, persistent-inventory pan commands.
++export const MENU_SHIFT_RIGHT = '}';
++export const MENU_SHIFT_LEFT = '{';
+ export const MENU_ITEMFLAGS_NONE = 0x0000000;
+ export const MENU_ITEMFLAGS_SELECTED = 0x0000001;
+ export const MENU_ITEMFLAGS_SKIPINVERT = 0x0000002;
+--- a/js/display.js
++++ b/js/display.js
+@@ -40,7 +40,7 @@
+ import { update_topl, show_topl_nohistory } from './tty/topl.js';
+ 
+ import { xwaitforspace } from './tty/getline.js';
+-import { docorner } from './tty/wintty.js';
++import { docorner, tty_raw_print } from './tty/wintty.js';
+ 
+ import { term_start_color } from './tty/termcap.js';
+ 
+@@ -2648,6 +2648,12 @@
+     /* src/pline.c:162-173: save this message's location before earlier
+        queued notices set and consume their own locations. */
+     msg = message_with_location(msg);
++    // src/pline.c:237 vpline(), raw output completes before any await.
++    if (msg && !game.iflags?.window_inited) {
++        tty_raw_print(msg);
++        (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
++        return;
++    }
+     /* a monster notice queued by a synchronous docrt() (window erase) is
+        an earlier pline in C; deliver it before this message */
+     await notice_all_mons_flush();
+--- a/js/gstate.js
++++ b/js/gstate.js
+@@ -11,6 +11,8 @@
+         lastinvnr: 51,
+         // src/decl.c:411: each process starts with an empty inventory chain.
+         invent: [],
++        // src/decl.c:534-535,560: ordered menu aliases, fresh per process.
++        mapped_menu_cmds: '', mapped_menu_op: '', n_menu_mapped: 0,
+         // src/decl.c:903,1117: each game starts with a zeroed kinfo owner.
+         killer: { next: null, id: 0, format: 0, name: '' },
+         // src/decl.c:820, include/optlist.h:196: tty targeting defaults.
+--- a/js/jsmain.js
++++ b/js/jsmain.js
+@@ -144,6 +144,15 @@
+         // src/options.c initoptions_init(): seed before reading the rc.
+         initRng(this._seed);
+         enableRngLog();
++        // Early config pline() uses raw output before game windows exist.
++        // Keep the display for a fresh game and an in-segment restart.
++        if (this._pendingDisplay) {
++            this._display = this._pendingDisplay;
++            this._pendingDisplay = null;
++        }
++        if (this._display)
++            g.nhDisplay = this._display;
++
+         const rc = parseNethackrc(this._nethackrc);
+         g.rc = rc;
+         /* src/options.c optfn_boulder() and initoptions_finish(). The active
+@@ -255,15 +264,6 @@
+         g.urole = { name: { m: 'Rambler', f: 'Rambler' } };
+         g.urace = { adj: 'human' };
+ 
+-        // Install display; keep a handle so an in-segment restart can
+-        // rewire the same display into the fresh game object.
+-        if (this._pendingDisplay) {
+-            this._display = this._pendingDisplay;
+-            this._pendingDisplay = null;
+-        }
+-        if (this._display)
+-            g.nhDisplay = this._display;
+-
+         /* cross-segment persistence: bones, save files, the record file.
+            Web-Storage-shaped (getItem/setItem/removeItem). */
+         g.storage = this._storage;
+--- a/js/options.js
++++ b/js/options.js
+@@ -18,6 +18,10 @@
+     tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
+     tty_add_menu_str, tty_end_menu, tty_display_nhwindow, tty_select_menu, tty_wait_synch } from './tty/wintty.js';
+ import {
++    MENU_NEXT_PAGE, MENU_PREVIOUS_PAGE, MENU_FIRST_PAGE, MENU_LAST_PAGE,
++    MENU_SELECT_ALL, MENU_UNSELECT_ALL, MENU_INVERT_ALL, MENU_SELECT_PAGE,
++    MENU_UNSELECT_PAGE, MENU_INVERT_PAGE, MENU_SEARCH, MENU_SHIFT_RIGHT,
++    MENU_SHIFT_LEFT, MAX_MENU_MAPPED_CMDS,
+     MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_SKIPINVERT,
+     MENU_ITEMFLAGS_SKIPMENUCOLORS, MENU_BEHAVE_STANDARD, BUFSZ, QBUFSZ,
+     PICK_NONE, PICK_ONE, PICK_ANY, ECMD_OK,
+@@ -49,7 +53,7 @@
+ import { reassign, update_inventory, inv_order } from './invent.js';
+ import { def_oc_syms } from './drawing_data.js';
+ import { choose_disco_sort, get_sortdisco } from './o_init.js';
+-import { mungspaces, strNsubst, trimspaces, strncmpi } from './hacklib.js';
++import { mungspaces, strNsubst, trimspaces, strncmpi, letter } from './hacklib.js';
+ import {
+     regex_init, regex_compile, regex_error_desc, regex_free,
+ } from './posixregex.js';
+@@ -71,6 +75,23 @@
+ import { Is_rogue_level, H_MAC } from './const.js';
+ import { There } from './pline.js';
+ 
++// src/options.c:314 default_menu_cmd_info.
++const default_menu_cmd_info = [
++    { name: 'menu_next_page', cmd: MENU_NEXT_PAGE, desc: 'Go to next page' },
++    { name: 'menu_previous_page', cmd: MENU_PREVIOUS_PAGE, desc: 'Go to previous page' },
++    { name: 'menu_first_page', cmd: MENU_FIRST_PAGE, desc: 'Go to first page' },
++    { name: 'menu_last_page', cmd: MENU_LAST_PAGE, desc: 'Go to last page' },
++    { name: 'menu_select_all', cmd: MENU_SELECT_ALL, desc: 'Select all items in entire menu' },
++    { name: 'menu_invert_all', cmd: MENU_INVERT_ALL, desc: 'Invert selection for all items' },
++    { name: 'menu_deselect_all', cmd: MENU_UNSELECT_ALL, desc: 'Unselect all items in entire menu' },
++    { name: 'menu_select_page', cmd: MENU_SELECT_PAGE, desc: 'Select all items on current page' },
++    { name: 'menu_invert_page', cmd: MENU_INVERT_PAGE, desc: "Invert current page's selections" },
++    { name: 'menu_deselect_page', cmd: MENU_UNSELECT_PAGE, desc: 'Unselect all items on current page' },
++    { name: 'menu_search', cmd: MENU_SEARCH, desc: 'Search and invert matching items' },
++    { name: 'menu_shift_right', cmd: MENU_SHIFT_RIGHT, desc: 'Pan current page to right (perm_invent only)' },
++    { name: 'menu_shift_left', cmd: MENU_SHIFT_LEFT, desc: 'Pan current page to left (perm_invent only)' },
++];
++
+ function note_unported_options(what) {
+     (game.unported ||= new Set()).add('options:' + what);
+ }
+@@ -245,6 +266,17 @@
+            up yet, and we want to see it. */
+         config_error_add(`Unknown option '${opts}'`);
+         return false;
++    }
++
++    if (default_menu_cmd_info.some(entry => entry.name === opt.name)) {
++        // src/options.c:628,2051: these config-only options share one setter.
++        if (negated) {
++            config_error_add(`The ${opt.name} option may not both have a value and be negated.`);
++            return false;
++        }
++        if (!shared_menu_optfn(opts, fromBytes)) return false;
++        (result.optSetInConfig ||= {})[opt.name] = true;
++        return retval;
+     }
+ 
+     if (negated && opt.negateok === 'No') {
+@@ -869,6 +901,35 @@
+     return Math.min(c, e);
+ }
+ 
++// src/options.c:694 check_misc_menu_command(), complete name, ASCII case.
++function check_misc_menu_command(opts) {
++    const sep = firstSeparator(opts);
++    const name = (sep < 0 ? opts : opts.slice(0, sep)).replace(/[ \t\r\n\f\v]+$/, '');
++    return default_menu_cmd_info.findIndex(entry => name.length === entry.name.length
++        && !strncmpi(entry.name, name, name.length));
++}
++
++// src/options.c:2051 shared_menu_optfn(), do_set for the 13 config options.
++function shared_menu_optfn(opts, fromBytes) {
++    const midx = check_misc_menu_command(opts);
++    if (midx < 0) return false;
++    return spcfn_misc_menu_cmd(midx, opts, fromBytes);
++}
++
++// src/options.c:5452 spcfn_misc_menu_cmd(), string_for_opt() then txt2key().
++function spcfn_misc_menu_cmd(midx, opts, fromBytes) {
++    const sep = firstSeparator(opts);
++    const op = sep < 0 ? '' : opts.slice(sep + 1);
++    if (!op) {
++        config_error_add(`Missing parameter for '${opts}'`);
++        return true;
++    }
++    const key = txt2key(fromBytes ? Uint8Array.from(op, c => c.charCodeAt(0)) : op);
++    if (illegal_menu_cmd_key(key)) return false;
++    add_menu_cmd_alias(String.fromCharCode(key), default_menu_cmd_info[midx].cmd);
++    return true;
++}
++
+ // src/cfgfiles.c:1544 config_erradd() — while an rc or an option string is
+ // being parsed the messages collect on the parse result (C's
+ // config_error_data, set up by config_error_init()); otherwise the player
+@@ -1092,7 +1153,7 @@
+ }
+ 
+ // src/options.c:7596 parsebindings(), command-key bindings.
+-// Special, mouse and menu bindings still need their separate consumers.
++// Special and mouse bindings still need their separate consumers.
+ export function parsebindings(bindings) {
+     const fromBytes = bindings instanceof Uint8Array;
+     if (fromBytes)
+@@ -1120,11 +1181,61 @@
+         config_error_add(`Unknown key binding key '${keytxt}'`);
+         return false;
+     }
++    for (const entry of default_menu_cmd_info) {
++        if (entry.name !== command) continue;
++        if (illegal_menu_cmd_key(key)) {
++            config_error_add(`Bad menu key ${visctrl(String.fromCharCode(key))}:${command}`);
++            return false;
++        }
++        add_menu_cmd_alias(String.fromCharCode(key), entry.cmd);
++        return ret;
++    }
+     if (!bind_key(key, fromBytes ? Uint8Array.from(command, c => c.charCodeAt(0)) : command)) {
+         config_error_add(`Unknown key binding command '${command}'`);
+         return false;
+     }
+     return ret;
++}
++
++// src/options.c:8037 illegal_menu_cmd_key().
++function illegal_menu_cmd_key(key) {
++    const c = String.fromCharCode(key);
++    if (!key || c === '\r' || c === '\n' || c === '\x1b' || c === ' '
++        || (c >= '0' && c <= '9') || (letter(c) && c !== '@')) {
++        config_error_add(`Reserved menu command key '${visctrl(c)}'`);
++        return true;
++    }
++    for (let j = 1; j < def_oc_syms.length; j++) {
++        if (c === def_oc_syms[j]) {
++            config_error_add(`Menu command key '${visctrl(c)}' is an object class`);
++            return true;
++        }
++    }
++    return false;
++}
++
++// src/options.c:8080 add_menu_cmd_alias(). Config callers run before windows.
++export function add_menu_cmd_alias(from_ch, to_ch) {
++    if (game.n_menu_mapped >= MAX_MENU_MAPPED_CMDS) {
++        // The pre-window pline branch completes raw output synchronously.
++        pline('out of menu map space.');
++    } else {
++        game.mapped_menu_cmds += from_ch;
++        game.mapped_menu_op += to_ch;
++        game.n_menu_mapped++;
++    }
++}
++
++// src/options.c:8094 get_menu_cmd_key(), the first reverse alias for help.
++export function get_menu_cmd_key(ch) {
++    const idx = game.mapped_menu_op.indexOf(ch);
++    return idx < 0 ? ch : game.mapped_menu_cmds[idx];
++}
++
++// src/options.c:8111 map_menu_cmd(), one lookup, preserving insertion order.
++export function map_menu_cmd(ch) {
++    const idx = game.mapped_menu_cmds.indexOf(ch);
++    return idx < 0 ? ch : game.mapped_menu_op[idx];
+ }
+ 
+ // Convenience accessors over the parsed table, so callers do not each
+@@ -1348,21 +1459,10 @@
+     if (dolist) {
+         /* key bindings help: '?j' — default_menu_cmd_info (options.c:314)
+            in table order; the menu_shift pair is skipped for tty */
+-        const dmci = [
+-            ['>', 'Go to next page'],
+-            ['<', 'Go to previous page'],
+-            ['^', 'Go to first page'],
+-            ['|', 'Go to last page'],
+-            ['.', 'Select all items in entire menu'],
+-            ['@', 'Invert selection for all items'],
+-            ['-', 'Unselect all items in entire menu'],
+-            [',', 'Select all items on current page'],
+-            ['~', "Invert current page's selections"],
+-            ['\\', 'Unselect all items on current page'],
+-            [':', 'Search and invert matching items'],
+-        ];
+-        for (const [ch, desc] of dmci)
+-            putline(ch.padEnd(7) + ' ' + desc);
++        for (const {cmd, desc} of default_menu_cmd_info) {
++            if (cmd === MENU_SHIFT_RIGHT || cmd === MENU_SHIFT_LEFT) continue;
++            putline(visctrl(get_menu_cmd_key(cmd)).padEnd(7) + ' ' + desc);
++        }
+         fmt = (k, d) => k.padEnd(7) + ' ' + d;
+         for (const [k, d] of hardcoded)
+             putline(fmt(k, d));
+@@ -1371,16 +1471,19 @@
+         putline('');
+         putline(mc_altfmt('', 'Whole', 'Current'));
+         putline(mc_altfmt('', ' Menu', ' Page'));
+-        putline(mc_fmt('Select', '.', ','));
+-        putline(mc_fmt('Invert', '@', '~'));
+-        putline(mc_fmt('Deselect', '-', '\\'));
++        putline(mc_fmt('Select', visctrl(get_menu_cmd_key(MENU_SELECT_ALL)),
++                       visctrl(get_menu_cmd_key(MENU_SELECT_PAGE))));
++        putline(mc_fmt('Invert', visctrl(get_menu_cmd_key(MENU_INVERT_ALL)),
++                       visctrl(get_menu_cmd_key(MENU_INVERT_PAGE))));
++        putline(mc_fmt('Deselect', visctrl(get_menu_cmd_key(MENU_UNSELECT_ALL)),
++                       visctrl(get_menu_cmd_key(MENU_UNSELECT_PAGE))));
+         putline('');
+-        putline(mc_fmt('Go to', '>', 'Next page'));
+-        putline(mc_fmt('', '<', 'Previous page'));
+-        putline(mc_fmt('', '^', 'First page'));
+-        putline(mc_fmt('', '|', 'Last page'));
++        putline(mc_fmt('Go to', visctrl(get_menu_cmd_key(MENU_NEXT_PAGE)), 'Next page'));
++        putline(mc_fmt('', visctrl(get_menu_cmd_key(MENU_PREVIOUS_PAGE)), 'Previous page'));
++        putline(mc_fmt('', visctrl(get_menu_cmd_key(MENU_FIRST_PAGE)), 'First page'));
++        putline(mc_fmt('', visctrl(get_menu_cmd_key(MENU_LAST_PAGE)), 'Last page'));
+         putline('');
+-        putline(mc_fmt('Search', ':',
++        putline(mc_fmt('Search', visctrl(get_menu_cmd_key(MENU_SEARCH)),
+             'Exter a target string and invert all matching entries'));
+         putline('');
+         arg = 'Other ';
+--- a/js/plselect.js
++++ b/js/plselect.js
+@@ -1,5 +1,5 @@
+-import { PL_NSIZ, PICK_ONE } from './const.js';
+-import { pmatchi, trimspaces } from './hacklib.js';
++import { PL_NSIZ, PICK_ONE, PICK_ANY } from './const.js';
++import { trimspaces } from './hacklib.js';
+ // plselect.js — interactive character selection.
+ // C ref: src/role.c genl_player_setup() (:2206) and tty_askname().
+ //
+@@ -18,7 +18,7 @@
+ // that fires when the RACE menu opens.
+ 
+ import { game } from './gstate.js';
+-import { tty_clear_nhwindow_message, pline } from './display.js';
++import { pline } from './display.js';
+ import { nhgetch } from './input.js';
+ import {
+     ROLE_NONE, ROLE_RANDOM, rigid_role_checks, ok_role, ok_race, ok_gend,
+@@ -39,8 +39,8 @@
+ import {
+     tty_curs_base, tty_putstr_base, tty_putch_base, tty_base_cursor,
+     tty_base_pos, tty_create_nhwindow, tty_destroy_nhwindow,
+-    tty_get_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
+-    tty_end_menu, tty_display_nhwindow, set_item_state, menu_page_items,
++    tty_start_menu, tty_add_menu, tty_add_menu_str,
++    tty_end_menu,
+     NHW_MENU, ATR_NONE, tty_select_menu } from './tty/wintty.js';
+ import { tty_cl_end_base } from './tty/wintty.js';
+ import { NO_COLOR } from './terminal.js';
+@@ -455,108 +455,19 @@
+ // RACE, human", and only then the role menu it started on, Monk.
+ const RS_NAME = 0, RS_ROLE = 1, RS_RACE = 2, RS_GENDER = 3, RS_ALGNMNT = 4;
+ 
+-// win/tty/wintty.c tty_select_menu(win, PICK_ONE) — draws the menu, blocks in
+-// dmore() until a key arrives, and finishes as soon as a selector matches.
+-//
+-// The recorder captures the frame at that blocking read, so the window must be
+-// on screen BEFORE the key is consumed. Returns the chosen entry's identifier,
+-// which the caller decodes exactly as role.c does:
+-//
+-//   n == -1  <escape>            -> ROLE_NONE
+-//   n ==  1  <space>/<return>    -> the preselected entry
+-//   otherwise                    -> the entry whose selector was typed
++// src/role.c:2324 genl_player_setup(), shared TTY selection result.
+ async function select_menu_pick_one(win) {
+-    /* win/tty/wintty.c tty_display_nhwindow(), NHW_MENU: a menu that OVERLAYS
+-       clears the message window first; only one that takes the whole screen
+-       clears the screen instead. Without this the previous prompt stays
+-       painted on row 0 under the menu -- seed0004 showed "Shall I pick
+-       character's race, role, gen" still there beneath "Is this ok? [ynaq]".
+-       Row 0 is scored, so it failed every screen from that step onward. */
+-    {
+-        const c0 = tty_get_nhwindow(win);
+-        if (c0 && !(c0.offx === 10 || c0.maxrow >= 24))
+-            await tty_clear_nhwindow_message(0);
+-    }
+-    await tty_display_nhwindow(win);
+-    const cw = tty_get_nhwindow(win);
+-    for (;;) {
+-        const c = String.fromCharCode(await nhgetch());
+-        if (c === '\x1b') return ROLE_NONE;
+-        if (c === ' ' || c === '\n' || c === '\r') {
+-            for (let it = cw.mlist; it; it = it.next)
+-                if (it.identifier && it.selected) return it.identifier;
+-            /* src/role.c:2341 — select_menu() returned n == 0 (nothing
+-               chosen): "choice = (n == 0) ? ROLE_RANDOM : ROLE_NONE" */
+-            return ROLE_RANDOM;
+-        }
+-        if (c === ':') {
+-            /* win/tty/wintty.c MENU_SEARCH: prompt on the top line, then
+-               the first entry whose text matches *pattern* is chosen
+-               (toggle_menu_curr, and PICK_ONE finishes); an empty or
+-               escaped line leaves the menu waiting */
+-            const { hooked_tty_getlin } = await import('./cmd.js');
+-            const tmpbuf = await hooked_tty_getlin('Search for:', null);
+-            /* back to the menu: dmore() parks the cursor after the footer */
+-            {
+-                const items = menu_page_items(win, cw.curr_page || 0);
+-                const morestr = (cw.npages > 1)
+-                    ? `(${cw.curr_page + 1} of ${cw.npages})` : cw.morestr;
+-                game?.nhDisplay?.setCursor(cw.offx + 1 + morestr.length,
+-                                           cw.offy + items.length);
+-            }
+-            if (!tmpbuf || tmpbuf[0] === '\x1b') continue;
+-            const searchbuf = `*${tmpbuf}*`;
+-            for (let it = cw.mlist; it; it = it.next)
+-                if (it.identifier && pmatchi(searchbuf, it.str))
+-                    return it.identifier;
+-            continue;
+-        }
+-        for (let it = cw.mlist; it; it = it.next)
+-            if (it.identifier && it.selector === c) return it.identifier;
+-        /* win/tty/wintty.c:1348 — group accelerators (the capital letters
+-           setup_*menu() pass as gch) are accepted for PICK_ONE only when
+-           they match exactly one entry; invert_all() then selects it and
+-           the menu finishes */
+-        let match = null, nmatch = 0;
+-        for (let it = cw.mlist; it; it = it.next)
+-            if (it.identifier && it.gselector && it.gselector !== it.selector
+-                && it.gselector === c) {
+-                match = it;
+-                nmatch++;
+-            }
+-        if (nmatch === 1) return match.identifier;
+-        /* anything else is ignored and the menu waits for another key */
+-    }
+-}
+-
+-// win/tty/wintty.c tty_select_menu(win, PICK_ANY) — the player toggles entries
+-// with their selector letters and commits with <return>/<space>.
+-//
+-// Toggling repaints only that one line through set_item_state(), which writes
+-// '+' where the initial full-page draw writes '*'. Returns the list of selected
+-// identifiers, or null for <escape>.
++    const selected = await tty_select_menu(win, PICK_ONE);
++    if (selected.cancelled) return ROLE_NONE;
++    if (!selected.length) return ROLE_RANDOM;
++    return selected.length > 1 && selected[0] === ROLE_RANDOM
++        ? selected[1] : selected[0];
++}
++
++// src/role.c:2760 reset_role_filtering(), cancellation keeps the old filter.
+ async function select_menu_pick_any(win) {
+-    await tty_display_nhwindow(win);
+-    const cw = tty_get_nhwindow(win);
+-    for (;;) {
+-        const c = String.fromCharCode(await nhgetch());
+-        if (c === '\x1b') return null;
+-        if (c === '\n' || c === '\r' || c === ' ') {
+-            const out = [];
+-            for (let it = cw.mlist; it; it = it.next)
+-                if (it.identifier && it.selected) out.push(it.identifier);
+-            return out;
+-        }
+-        const page = menu_page_items(win, cw.curr_page || 0);
+-        const idx = page.findIndex(it => it.identifier && it.selector === c);
+-        if (idx >= 0) {
+-            /* wintty.c toggle_menu_curr(): flip, then repaint that line */
+-            const it = page[idx];
+-            it.selected = !it.selected;
+-            it.count = -1;
+-            set_item_state(win, idx, it);
+-        }
+-    }
++    const selected = await tty_select_menu(win, PICK_ANY);
++    return selected.cancelled ? null : selected;
+ }
+ 
+ // src/role.c:2728 reset_role_filtering() — the '~' menu.
+--- a/js/tty/wintty.js
++++ b/js/tty/wintty.js
+@@ -44,6 +44,7 @@
+          MENU_ITEMFLAGS_SKIPINVERT, MENU_NEXT_PAGE, MENU_PREVIOUS_PAGE,
+          MENU_SEARCH, PICK_ONE, PICK_ANY, GOLD_SYM, ROWNO, COLNO } from './../const.js';
+ import { pmatchi } from './../hacklib.js';
++import { map_menu_cmd } from './../options.js';
+ import { get_menu_coloring } from './../windows.js';
+ import { term_start_color as tty_color } from './termcap.js';
+ import { notice_all_mons_flush } from './../hack.js';
+@@ -920,7 +921,7 @@
+     let finished = !cw.mlist || cw.data.length > 0;
+     while (!finished) {
+         const c = await nhgetch();
+-        const morc = String.fromCharCode(c);
++        let morc = String.fromCharCode(c);
+         const explicitItems = menu_page_items(window, cw.curr_page);
+         const explicitIndex = explicitItems.findIndex(
+             item => item.identifier && item.selector === morc);
+@@ -937,9 +938,14 @@
+                   || /^[0-9]$/.test(morc) || morc === '\x1b'
+                   || morc === '\n' || morc === '\r' || c === 0
+                   || '^|><.-@,\\~:'.includes(morc)
++                  || game.mapped_menu_cmds.includes(morc)
+                   || (dm && morc === dm) || (dm === '\n' && morc === '\r')))
+                 continue;
+         }
++
++        // win/tty/wintty.c:1555, explicit choices precede one alias lookup.
++        if (explicitIndex < 0 && !(how === PICK_ONE && gacc.includes(morc)))
++            morc = map_menu_cmd(morc);
+ 
+         if (/^[0-9]$/.test(morc) && explicitIndex < 0
+             && !(!counting && gacc.includes(morc))) {
+@@ -1223,10 +1229,11 @@
+ export function reset_windows() {
+     windows = [];
+     nextWinId = 1;
++    base.curx = base.cury = 0;
+ }
+ 
+ // win/tty/wintty.c tty_raw_print() — text straight to the terminal, used
+-// after the game windows are gone (topten's wizard-mode notice).
++// before the windows exist or after they are gone.
+ export function tty_raw_print(str) {
+     tty_putstr_base(str ?? '');
+ }

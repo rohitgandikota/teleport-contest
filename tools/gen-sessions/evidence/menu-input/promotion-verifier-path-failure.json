@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    ".cache/restart-20261122/config-menu-bindings-promotion/verify-promotion.py"
+  ],
+  "exit": 1,
+  "verifierSHA256": "95ec096170274ad1269f7630364e0a686d11ec25da91f1c27038d1b7a3b46efc",
+  "draftManifestSHA256": "b6c947f3395701a4dfd057672e82eb3bc26e1724cffabc6fb3b4bba70489592c",
+  "draftSealSHA256": "a646ed5b818f37b143f21129e02ce62287c03e0e16580ed2c0344d52ed1cf212",
+  "error": "FileNotFoundError: source349/reports/initial-baseline.json",
+  "cause": "Verifier used source349 for both baseline and candidate reports. Baseline evidence belongs to original source24/prerequisite36.",
+  "correction": "Read baseline via the immutable source/original-audit or source/prerequisite-audit link. Public payloads and all assertion bodies remain unchanged.",
+  "gameplayReplayed": false
+}

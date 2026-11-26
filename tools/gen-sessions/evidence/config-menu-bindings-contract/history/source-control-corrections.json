@@ -1,0 +1,12 @@
+{
+  "classification": "Constructed control setup corrections before any runtime edit. Original gate and 7/40 baseline retained.",
+  "source": "options.c:6971-7068 txt2key, read in full",
+  "corrections": [
+    "Literal unescaped UTF8 \u00e9 is two bytes, so txt2key rejects it; use the actual backslash escape path to test first UTF8 byte without double encoding.",
+    "<enter> returns LF (^J), not CR (^M).",
+    "Single quotes are explicitly unimplemented in C txt2key; use backslash-comma, which escapes handles.",
+    "Await the real pending early pline in finally, even when its immediate observation fails."
+  ],
+  "originalSHA256": "f3591c42ce3b15a13eff053d10de4a2d787d9c154f155c1a8297f8a987cd459b",
+  "correctedSHA256": "5b2f68c9125a62c5eee2fabca7a3fc4168b2fec3466be35ab500054656f4d60d"
+}

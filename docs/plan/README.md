@@ -12,7 +12,16 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Inventory action context is verified and ready to push. Identified oil now
+Menu key bindings and status threshold editing are verified and ready to push.
+The eight-file change preserves C alias order, shared character-selection
+menus, early output and percentage-buffer behavior. All 930 recordings pass,
+with 934,828 screens/cursors, 20,401,823 random calls and 33,179 frames. All
+47 public/new strict workers and 29 retained checks pass. Fresh portable checks
+pass 40 source controls and 17 ordinary cases; 50 negative hashes are unchanged.
+The full native diagnostic is 16/17, preserving five known recorder cursor
+failures in the overflow case. See the menu-input evidence and STATUS.
+
+Inventory action context is pushed as `dadb52c9`. Identified oil now
 lights or snuffs through its inventory action, and the tin-opener phrase follows
 C order. Eight native cases pass versus five before the change. All 927
 maintained recordings, 75 selected/public replays, and 45 strict public/new
@@ -81,10 +90,11 @@ installed. One unregistered coverage label was removed, preserving the exact
 input and assertion bytes. All 1,217 tested Git files match the published tree.
 See STATUS for the fixed runtime and exact next action.
 
-The latest official recheck at 2026-11-26T05:18:51Z returned the 21:05 EST feed: agentic rank 7,
-812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
-row predates these pushes and identifies no exact commit. The official site
-lists six-hour scoring cycles. Local tests establish no newer held-out result.
+The official recheck at 2026-11-26T15:33:01Z reports agentic rank 7,
+659 unmatched screens, 44/44 public and 43/56 held-out passes. The previous
+row had 812 unmatched and 42/56 held-out passes. The new 13:37:55Z scored row
+postdates the recent pushes but identifies no exact commit. Rank 1 remains
+unmet; local tests do not establish additional held-out results.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets

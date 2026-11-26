@@ -1,0 +1,550 @@
+{
+  "baselineRuntimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "CNativeExecuted": false,
+  "ranges": [
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 668,
+      "last": 741,
+      "owner": "initblstats",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "748adc8e2690f59020623131ac16c8b2880c1d64ba30fd5a4568293c552eef7e"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 749,
+      "last": 813,
+      "owner": "conditions/aliases",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "a4ddd85fd6258014c8eb19957bfd77756a8ff28b360f550eddddd731032ff67f"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 1683,
+      "last": 1790,
+      "owner": "status_initialize/finish/init_blstats",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "a129402e65896228c834745b05e5b1733e25ed782bc06a0767a4015c014364d8"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 1930,
+      "last": 1972,
+      "owner": "s_to_anything",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "722fdd11dc577a3bca2dc191efe9044e86e9f221def1840359ddd3e363853b61"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 2321,
+      "last": 2333,
+      "owner": "reset_status_hilites",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "7fdaf73c8a5c38660f2699e997aef71fb70746799369de4ba988e9622de14092"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 2364,
+      "last": 2572,
+      "owner": "get_hilite",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "21fc64c35649b34f1d002520a76aa0871b1b0eb93f0793652cfa291c3464ad6a"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 2747,
+      "last": 2812,
+      "owner": "query_arrayvalue/add_threshold",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "104e07460b05d5b890296ab28c300f541fae3d5462176e9dfe074ad54ec34f8e"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3109,
+      "last": 3168,
+      "owner": "query_conditions/conditionbitmask2str",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "b7d767c1cad9188d9f3991b3e048026866ec434070f7661d9360273c627e19e3"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3351,
+      "last": 3366,
+      "owner": "clear_status_hilites",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "3900946719e3bf677dd626738ef5c32c24019585d29c9993c166a34a97d7576f"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3369,
+      "last": 3414,
+      "owner": "hlattr2attrname/list declarations",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "4aa94aba87ff32e95b9b050150dac24942b1ba796238cd57429fffb54aad737d"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3417,
+      "last": 3669,
+      "owner": "line-list and rule formatting helpers",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "e244f558195f3dcf6e6ea803c863e82b7d406318d5db1d911f817bc1e78ee78e"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3672,
+      "last": 3810,
+      "owner": "choose_field/behavior",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "03c3a60438c454bac15077be1453aa6ac1644206c8540763cf37daa6dbfe8a16"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3811,
+      "last": 3887,
+      "owner": "choose_updownboth",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "a108876dfc6d638959643fe2c075a762a00a5ab172f5db171bffc94632d26a2b"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 3890,
+      "last": 4302,
+      "owner": "status_hilite_menu_add",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "80e1a48e03122b3de0216166ff674bfcf3d0f3eb7b40de68efaf86768a45ac5a"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 4305,
+      "last": 4354,
+      "owner": "status_hilite_remove",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "fb3290dd00b410082a708941fefb30c2e229571a26bd44fa186f183409f2a522"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 4357,
+      "last": 4453,
+      "owner": "status_hilite_menu_fld",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "df3d3a0683ce7f76f135882dc7547655de6b10f3dabe247e7951ef8bd43f50c5"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 4456,
+      "last": 4495,
+      "owner": "viewall/all_options_statushilites",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "257e8c1c81bd5b222e278240ab4b08dcdfa59f18b4f33d7056eb96532d574d21"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 4498,
+      "last": 4578,
+      "owner": "status_hilite_menu",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "13988c753e7e1ea4a815aec5460753fb21a9094d24fb231dd49de8d3f99dd984"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 454,
+      "last": 549,
+      "owner": "initblstats/conditions/aliases",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "dd5178b129d66cdb6a708572ce474c0883477957db93bf010ef3cfdecac980db"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 550,
+      "last": 1032,
+      "owner": "storage/conversion/reset/list/format and all three pickers",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "51e66224c74b16aba4cdc18c351c4890cf0cf4686b682792b459fd987f821dce"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 1033,
+      "last": 1417,
+      "owner": "status_hilite_menu_add",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "dadfb336a6671b2e373f30f93dded5f88827dc0278a66c4acebd71f60b485c08"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 1419,
+      "last": 1446,
+      "owner": "status_hilite_remove",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "5f0a4b0a08589a42e749ac64e6dde8b0fb95092c61d42fce7ed32b31d5a293cc"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 1448,
+      "last": 1605,
+      "owner": "menu_fld/viewall/menu",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "fcb2b8a9b2aa71396f0146fe749cf3be64a3c0f204013f1772a442eb102e530a"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 2194,
+      "last": 2260,
+      "owner": "status_initialize/init_blstats",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "f0c29116ab57492a706fd63605f20268628a0b3d6fabc480897756cba53f43d5"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 2490,
+      "last": 2730,
+      "owner": "hilite_reset_needed/status_eval_next_unhilite/noneoftheabove/get_hilite",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "1cf8d17130059c8f75f26edc929d26444659fe33f2c3f0a241ada06579808e75"
+    },
+    {
+      "path": "js/botl.js",
+      "first": 3249,
+      "last": 3262,
+      "owner": "clear_status_hilites",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "79d0f1d85cf70d09686dc640c8f26dc6fba3b4b3d1485046cf31e89cd85fef95",
+      "rangeSHA256": "560455b10d76c05dfe93072fdcd6b712d49f155881bbb78763e8130e27ef6783"
+    },
+    {
+      "path": "nethack-c/upstream/src/coloratt.c",
+      "first": 12,
+      "last": 62,
+      "owner": "color/attribute tables",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "07801e3bc98de30768fcb31ff0a2cd593c1d1e9e3159dba7cbbf97d5fc383a9b",
+      "rangeSHA256": "a5161b2515eb5c4f604bfa81c77c029d8486e288389762f92fcb873eb4f7504b"
+    },
+    {
+      "path": "nethack-c/upstream/src/coloratt.c",
+      "first": 338,
+      "last": 346,
+      "owner": "clr2colorname",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "07801e3bc98de30768fcb31ff0a2cd593c1d1e9e3159dba7cbbf97d5fc383a9b",
+      "rangeSHA256": "68f8aa8d9dfffdb12ad99e2fdfd840375c417705a9b6cc14b641812e9806b9ae"
+    },
+    {
+      "path": "nethack-c/upstream/src/coloratt.c",
+      "first": 396,
+      "last": 524,
+      "owner": "query_attr/query_color",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "07801e3bc98de30768fcb31ff0a2cd593c1d1e9e3159dba7cbbf97d5fc383a9b",
+      "rangeSHA256": "c6f9e5edc16b4186b321b853015795355fdcea0b0c43c60f4fdba50133caf832"
+    },
+    {
+      "path": "nethack-c/upstream/src/coloratt.c",
+      "first": 529,
+      "last": 580,
+      "owner": "basic_menu_colors",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "07801e3bc98de30768fcb31ff0a2cd593c1d1e9e3159dba7cbbf97d5fc383a9b",
+      "rangeSHA256": "f39c87b1cfc39f31ea4e804b64889c7d51a424446155991dc61f13be6c987331"
+    },
+    {
+      "path": "nethack-c/upstream/src/coloratt.c",
+      "first": 585,
+      "last": 613,
+      "owner": "add_menu_coloring_parsed",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "07801e3bc98de30768fcb31ff0a2cd593c1d1e9e3159dba7cbbf97d5fc383a9b",
+      "rangeSHA256": "9db16180b436fd1574eea846909318fe3d62284e041f201b2b1075689475663c"
+    },
+    {
+      "path": "js/coloratt.js",
+      "first": 1,
+      "last": 335,
+      "owner": "color/attribute tables/converters/selectors/basic_menu_colors/add_menu_coloring_parsed",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "f9063e219cdef74aa3a8f495cce493db653f5c0217c4407c24f084805a670237",
+      "rangeSHA256": "73fe12b69a0f351cdafbca52d0b39c75cb3fdcd166bcfe508552dcf7afe36851"
+    },
+    {
+      "path": "nethack-c/upstream/src/hacklib.c",
+      "first": 164,
+      "last": 176,
+      "owner": "trimspaces",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "9f9710dcd8fe0b3735c0b319eb7c26b7fb4148d32a5851ffe72ed94c3bbfeae2",
+      "rangeSHA256": "4bf56dfe577d0f1b2e561e3734a2eb24196e5f7ba8a8dcb26354c2315f3e3e1a"
+    },
+    {
+      "path": "nethack-c/upstream/include/botl.h",
+      "first": 40,
+      "last": 150,
+      "owner": "data: field/relationship/condition identifiers",
+      "kind": "data declaration",
+      "fileSHA256": "c26c637bcb8b2615e82fbc0804175cd8c87f63a3caf35c742e0a6fa410a31009",
+      "rangeSHA256": "a6897ed1c8bc78be849fab8ceeaf74e99b84796f71e6613ba40ed44f5b24e3a7"
+    },
+    {
+      "path": "nethack-c/upstream/include/botl.h",
+      "first": 261,
+      "last": 274,
+      "owner": "data: MAXVALWIDTH/hilite_s",
+      "kind": "data declaration",
+      "fileSHA256": "c26c637bcb8b2615e82fbc0804175cd8c87f63a3caf35c742e0a6fa410a31009",
+      "rangeSHA256": "2012591372af4e45bfa4aa968a5f1e36643b35a4b71ed872ce1ea4841e8697a0"
+    },
+    {
+      "path": "js/const.js",
+      "first": 573,
+      "last": 664,
+      "owner": "data: status identifiers",
+      "kind": "data declaration",
+      "fileSHA256": "8d8d42c398cbe055af5fed48a855a563d1f3511d3668935987d2abdba2ac0042",
+      "rangeSHA256": "d12bdedb5848baa5187e51194441243d518a091dda59184b9b4ece7a1d9a70aa"
+    },
+    {
+      "path": "nethack-c/upstream/src/decl.c",
+      "first": 205,
+      "last": 243,
+      "owner": "slice: initial blstats/condition declarations",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "4855daf7884706b74e694aff3e8373418706793265084727bd78abe44693d96e",
+      "rangeSHA256": "288a776b046e4865d470fcb2cca88d7b087728d58957d9b74df3f0b5eea54917"
+    },
+    {
+      "path": "nethack-c/upstream/src/windows.c",
+      "first": 1868,
+      "last": 1903,
+      "owner": "getlin",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "d731d0edab36e7331987fa2ab6c751a91cec3d0de4edddb52ec27a40d03711df",
+      "rangeSHA256": "0db414a11558546cc3a3361db57929f63d979fa63a4b1aaad1a7adfe12b2d55a"
+    },
+    {
+      "path": "nethack-c/upstream/win/tty/getline.c",
+      "first": 29,
+      "last": 227,
+      "owner": "tty_getlin/hooked_tty_getlin",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "43abddf287e558949bb7bd17d0d7fa42201eb6f86a84146e9ee5889bc7f66afc",
+      "rangeSHA256": "299a1dafe5b5fd1cb97165e1b1dd9cdca5082d8184fc46e88afeca49911ac9b3"
+    },
+    {
+      "path": "js/cmd.js",
+      "first": 668,
+      "last": 882,
+      "owner": "hooked_tty_getlin/getlin",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "b3777bed37c6ed2f7866c2ce820bbed3044e016ea9d488f0a5581c5587e973ed",
+      "rangeSHA256": "bffa1446a523181001980af562aae78ea0e4ede3e228fcb3b9a4edcd79ecaaa2"
+    },
+    {
+      "path": "js/cmd.js",
+      "first": 919,
+      "last": 927,
+      "owner": "getlin_cleanup",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "b3777bed37c6ed2f7866c2ce820bbed3044e016ea9d488f0a5581c5587e973ed",
+      "rangeSHA256": "34b0ba83e3cf438d2d2f728ea3482073b4d40d2bd0912d2d021bc7c68727b591"
+    },
+    {
+      "path": "nethack-c/upstream/win/tty/wintty.c",
+      "first": 850,
+      "last": 970,
+      "owner": "tty_create_nhwindow",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5",
+      "rangeSHA256": "315c0b025429185fddda302f25bae36df0016f6874bbf3f962f83a34fd2e6877"
+    },
+    {
+      "path": "nethack-c/upstream/win/tty/wintty.c",
+      "first": 2009,
+      "last": 2033,
+      "owner": "tty_destroy_nhwindow",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5",
+      "rangeSHA256": "4fe9df93f2cd3a0b4c50c80be590acc538c85eabf8b7bf6a3c8c0cbdb00fb286"
+    },
+    {
+      "path": "nethack-c/upstream/win/tty/wintty.c",
+      "first": 2519,
+      "last": 2815,
+      "owner": "tty_start/add/reverse/end/select_menu",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5",
+      "rangeSHA256": "ca56c752ea629da15f015af5f0af471f130a208ae80dc30f08d5b602784d418c"
+    },
+    {
+      "path": "js/tty/wintty.js",
+      "first": 166,
+      "last": 378,
+      "owner": "create/get/destroy/clear/start/add/addstr/end",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "e24cd0f9f19d1927887b0193d53d9706d9635a493d121888e523465f7f793455",
+      "rangeSHA256": "4ed174f09189887303e986c35ba52db897296f88c4388a51b2e905b8a0eed3a1"
+    },
+    {
+      "path": "js/tty/wintty.js",
+      "first": 887,
+      "last": 1144,
+      "owner": "tty_select_menu",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "e24cd0f9f19d1927887b0193d53d9706d9635a493d121888e523465f7f793455",
+      "rangeSHA256": "6ce08a18bc969bb8b94bfeb465c77b6586bfe249a35334caf3819088c499cad6"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 8445,
+      "last": 8476,
+      "owner": "optfn_o_status_hilites",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "3331bcf8186be0d54d6961519e0fc6c5308b53a00f146a071c76b67888d783e9"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 8536,
+      "last": 8735,
+      "owner": "doset_simple_menu/doset_simple",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "b4ec5cc79006f1f5450cff9df6319fbe08e38e43cad74a1e8cb81ef03b6fd3b1"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 8758,
+      "last": 8799,
+      "owner": "slice: doset dispatch",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "58279fc1de1aadcbe60a3d2b67c1c471dcf581034efbc208c8a4703cc57c595e"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 8930,
+      "last": 8975,
+      "owner": "slice: doset handler/cleanup",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "b6b7ca1703ef6535ad98583594303c24ae565512022e91882d44bfec94340c86"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 1840,
+      "last": 1880,
+      "owner": "slice: config rule setup/clear",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "35194f24db01a4c2e4e19a5b43a5c1374771f4dd2a546e5cb9eb0aadd5ba3bee"
+    },
+    {
+      "path": "nethack-c/upstream/src/options.c",
+      "first": 4005,
+      "last": 4050,
+      "owner": "slice: statushilites reset option",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+      "rangeSHA256": "af1855d97abb97513ea9478977a2b922f3d29eff7f596df0d7e0b1c89bede4e0"
+    },
+    {
+      "path": "js/options.js",
+      "first": 1930,
+      "last": 2206,
+      "owner": "option value tail/doset_simple_menu/doset_simple",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+      "rangeSHA256": "17eecfb04c4e217f2b3fc1327d51c47d599fe874354c3fe24c7a0bded0fad1e3"
+    },
+    {
+      "path": "js/options.js",
+      "first": 2592,
+      "last": 2625,
+      "owner": "slice: doset prefix",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+      "rangeSHA256": "1aedc75d686e1909c2701bbcb4ca6b998f9a1cf897647a9cc05b95f3d1389b33"
+    },
+    {
+      "path": "js/options.js",
+      "first": 2650,
+      "last": 2826,
+      "owner": "slice: doset handler loop",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+      "rangeSHA256": "e17dc2c53feb22dc1f805eae3cf795dc1a2c1b5d52d826f42f993073a1698859"
+    },
+    {
+      "path": "js/options.js",
+      "first": 381,
+      "last": 424,
+      "owner": "slice: config/reset status options",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+      "rangeSHA256": "865681ae212776fb53aa39a345fd1831d8dcacc98842f803a24495f018d78cd1"
+    },
+    {
+      "path": "js/gstate.js",
+      "first": 1,
+      "last": 21,
+      "owner": "resetGame/live game binding",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "626cd9f0f93c4b5c373557c8667da16b1e52eccbfd28004e7a456641bbaf4c49",
+      "rangeSHA256": "626cd9f0f93c4b5c373557c8667da16b1e52eccbfd28004e7a456641bbaf4c49"
+    },
+    {
+      "path": "js/jsmain.js",
+      "first": 95,
+      "last": 163,
+      "owner": "slice: start/_start reset/config preparation",
+      "kind": "caller/declaration slice",
+      "fileSHA256": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b",
+      "rangeSHA256": "a70e48879556363b3493da131caf30b7e4d3a04b8aa82753288f7907d6a64709"
+    },
+    {
+      "path": "js/jsmain.js",
+      "first": 377,
+      "last": 425,
+      "owner": "runSegment",
+      "kind": "complete owner/helper group",
+      "fileSHA256": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b",
+      "rangeSHA256": "d7ee525c05c4f134c34c624f22d764e24c27e4c3588df463a16b5ee77b7fee04"
+    },
+    {
+      "path": "nethack-c/upstream/src/botl.c",
+      "first": 2333,
+      "last": 2345,
+      "owner": "noneoftheabove",
+      "kind": "complete helper",
+      "fileSHA256": "765fe13d7ee604c606c6920bce9bcb2a8a82299dbd56073b2b90101409409360",
+      "rangeSHA256": "826fd9423713011f8d370cffec8f12d9ea5c3223fd3da26c8bd6c2063a7fead7"
+    }
+  ],
+  "limits": [
+    "No full options.c/doset or tty_process_menu audit is claimed. Exact caller/window contracts are marked by range.",
+    "General regex backends, all status formatting, platform integer overflow and complete save/restore are outside this bounded owner audit."
+  ]
+}

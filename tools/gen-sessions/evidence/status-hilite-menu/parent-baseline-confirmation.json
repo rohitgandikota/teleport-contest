@@ -1,0 +1,16 @@
+{
+  "source": "Parent subsequent message confirms corrected baseline provenance on exact901.",
+  "reportSHA256": "6da034b986da42986c5d0fef8d582462f8fb6e271fba5d8e2c6abb17999c92bd",
+  "baselinePassed": 3,
+  "cases": 4,
+  "positive": "percent-bare-commit",
+  "failedBoundaries": [
+    11
+  ],
+  "glyphDifferences": 20,
+  "allOtherStreamsExact": true,
+  "allThreeNegativeCompleteReportsUnchanged": true,
+  "initialLoaderFailureSHA256": "0946bc2763dd3d27a68fb8af3be19bf61370bb2a68c7d079f770aa0b3c0e817b",
+  "initialInferenceRetractionPreserved": true,
+  "newWorkerReplayExecuted": false
+}

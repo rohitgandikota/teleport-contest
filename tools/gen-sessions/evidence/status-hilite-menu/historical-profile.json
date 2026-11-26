@@ -1,0 +1,19 @@
+{
+  "path": ".cache/restart-20261122/linux-coverage-half-damage-levitation-union-compact.json",
+  "sha256": "cb0a4d0acb146465276cbeb4b17974987ecd96394b0dba99e8af7b0d2420595c",
+  "generatedAt": "2026-11-25T06:22:08.458Z",
+  "sourceCommit": "e450407144f4c129e9cc2f05b27c0bb4e497d959",
+  "binarySHA256": "9113de25aea729bf3721b4143aa54d327760b91e635a31cc749759a4f764da82",
+  "creditedInputs": 851,
+  "owner": {
+    "file": "src/botl.c",
+    "name": "status_hilite_menu_add",
+    "line": 3891,
+    "calls": 1,
+    "outcomes": 246,
+    "covered": 4
+  },
+  "current926Coverage": false,
+  "proofOfBug": false,
+  "note": "Historical851 profile only. No coverage recollection or current branch-rate claim."
+}

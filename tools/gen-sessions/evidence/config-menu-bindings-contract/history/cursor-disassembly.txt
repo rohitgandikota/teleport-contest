@@ -1,0 +1,128 @@
+
+nethack-c/recorder/install/games/lib/nethackdir/nethack:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000100388b08 <_nomux_clear_screen>:
+100388b08: d10043ff    	sub	sp, sp, #0x10
+100388b0c: b9000fff    	str	wzr, [sp, #0xc]
+100388b10: 14000001    	b	0x100388b14 <_nomux_clear_screen+0xc>
+100388b14: b9400fe8    	ldr	w8, [sp, #0xc]
+100388b18: 71006108    	subs	w8, w8, #0x18
+100388b1c: 5400064a    	b.ge	0x100388be4 <_nomux_clear_screen+0xdc>
+100388b20: 14000001    	b	0x100388b24 <_nomux_clear_screen+0x1c>
+100388b24: b9000bff    	str	wzr, [sp, #0x8]
+100388b28: 14000001    	b	0x100388b2c <_nomux_clear_screen+0x24>
+100388b2c: b9400be8    	ldr	w8, [sp, #0x8]
+100388b30: 71014108    	subs	w8, w8, #0x50
+100388b34: 540004ea    	b.ge	0x100388bd0 <_nomux_clear_screen+0xc8>
+100388b38: 14000001    	b	0x100388b3c <_nomux_clear_screen+0x34>
+100388b3c: b9800fe8    	ldrsw	x8, [sp, #0xc]
+100388b40: d280280a    	mov	x10, #0x140             ; =320
+100388b44: 9b0a7d0b    	mul	x11, x8, x10
+100388b48: d0000d88    	adrp	x8, 0x10053a000 <_nomux_buf>
+100388b4c: 91000108    	add	x8, x8, #0x0
+100388b50: aa0803e9    	mov	x9, x8
+100388b54: 8b0b0129    	add	x9, x9, x11
+100388b58: b9800beb    	ldrsw	x11, [sp, #0x8]
+100388b5c: 8b0b092b    	add	x11, x9, x11, lsl #2
+100388b60: 52800409    	mov	w9, #0x20               ; =32
+100388b64: 39000169    	strb	w9, [x11]
+100388b68: b9800fe9    	ldrsw	x9, [sp, #0xc]
+100388b6c: 9b0a7d2b    	mul	x11, x9, x10
+100388b70: aa0803e9    	mov	x9, x8
+100388b74: 8b0b0129    	add	x9, x9, x11
+100388b78: b9800beb    	ldrsw	x11, [sp, #0x8]
+100388b7c: 8b0b092b    	add	x11, x9, x11, lsl #2
+100388b80: 528000e9    	mov	w9, #0x7                ; =7
+100388b84: 39000569    	strb	w9, [x11, #0x1]
+100388b88: b9800fe9    	ldrsw	x9, [sp, #0xc]
+100388b8c: 9b0a7d2b    	mul	x11, x9, x10
+100388b90: aa0803e9    	mov	x9, x8
+100388b94: 8b0b0129    	add	x9, x9, x11
+100388b98: b9800beb    	ldrsw	x11, [sp, #0x8]
+100388b9c: 8b0b0929    	add	x9, x9, x11, lsl #2
+100388ba0: 3900093f    	strb	wzr, [x9, #0x2]
+100388ba4: b9800fe9    	ldrsw	x9, [sp, #0xc]
+100388ba8: 9b0a7d29    	mul	x9, x9, x10
+100388bac: 8b090108    	add	x8, x8, x9
+100388bb0: b9800be9    	ldrsw	x9, [sp, #0x8]
+100388bb4: 8b090908    	add	x8, x8, x9, lsl #2
+100388bb8: 39000d1f    	strb	wzr, [x8, #0x3]
+100388bbc: 14000001    	b	0x100388bc0 <_nomux_clear_screen+0xb8>
+100388bc0: b9400be8    	ldr	w8, [sp, #0x8]
+100388bc4: 11000508    	add	w8, w8, #0x1
+100388bc8: b9000be8    	str	w8, [sp, #0x8]
+100388bcc: 17ffffd8    	b	0x100388b2c <_nomux_clear_screen+0x24>
+100388bd0: 14000001    	b	0x100388bd4 <_nomux_clear_screen+0xcc>
+100388bd4: b9400fe8    	ldr	w8, [sp, #0xc]
+100388bd8: 11000508    	add	w8, w8, #0x1
+100388bdc: b9000fe8    	str	w8, [sp, #0xc]
+100388be0: 17ffffcd    	b	0x100388b14 <_nomux_clear_screen+0xc>
+100388be4: 910043ff    	add	sp, sp, #0x10
+100388be8: d65f03c0    	ret
+
+000000010038964c <_nomux_reset_raw_mode>:
+10038964c: 90000b68    	adrp	x8, 0x1004f5000 <_nomux_out+0xe662>
+100389650: b90b211f    	str	wzr, [x8, #0xb20]
+100389654: d65f03c0    	ret
+
+000000010038995c <_nomux_get_cursor>:
+10038995c: d10083ff    	sub	sp, sp, #0x20
+100389960: f9000fe0    	str	x0, [sp, #0x18]
+100389964: f9000be1    	str	x1, [sp, #0x10]
+100389968: 90000b68    	adrp	x8, 0x1004f5000 <_nomux_out+0xe662>
+10038996c: b94b2108    	ldr	w8, [x8, #0xb20]
+100389970: 350000e8    	cbnz	w8, 0x10038998c <_nomux_get_cursor+0x30>
+100389974: 14000001    	b	0x100389978 <_nomux_get_cursor+0x1c>
+100389978: d0000d88    	adrp	x8, 0x10053b000 <_nomux_buf+0x1000>
+10038997c: 91382108    	add	x8, x8, #0xe08
+100389980: f9400108    	ldr	x8, [x8]
+100389984: b5000168    	cbnz	x8, 0x1003899b0 <_nomux_get_cursor+0x54>
+100389988: 14000001    	b	0x10038998c <_nomux_get_cursor+0x30>
+10038998c: 90000b68    	adrp	x8, 0x1004f5000 <_nomux_out+0xe662>
+100389990: b94b2908    	ldr	w8, [x8, #0xb28]
+100389994: f9400fe9    	ldr	x9, [sp, #0x18]
+100389998: b9000128    	str	w8, [x9]
+10038999c: 90000b68    	adrp	x8, 0x1004f5000 <_nomux_out+0xe662>
+1003899a0: b94b2508    	ldr	w8, [x8, #0xb24]
+1003899a4: f9400be9    	ldr	x9, [sp, #0x10]
+1003899a8: b9000128    	str	w8, [x9]
+1003899ac: 14000024    	b	0x100389a3c <_nomux_get_cursor+0xe0>
+1003899b0: d0000d88    	adrp	x8, 0x10053b000 <_nomux_buf+0x1000>
+1003899b4: 91382108    	add	x8, x8, #0xe08
+1003899b8: f9400108    	ldr	x8, [x8]
+1003899bc: b4000108    	cbz	x8, 0x1003899dc <_nomux_get_cursor+0x80>
+1003899c0: 14000001    	b	0x1003899c4 <_nomux_get_cursor+0x68>
+1003899c4: d0000d88    	adrp	x8, 0x10053b000 <_nomux_buf+0x1000>
+1003899c8: 91382108    	add	x8, x8, #0xe08
+1003899cc: f9400108    	ldr	x8, [x8]
+1003899d0: 79c00908    	ldrsh	w8, [x8, #0x4]
+1003899d4: b9000fe8    	str	w8, [sp, #0xc]
+1003899d8: 14000004    	b	0x1003899e8 <_nomux_get_cursor+0x8c>
+1003899dc: 52800008    	mov	w8, #0x0                ; =0
+1003899e0: b9000fe8    	str	w8, [sp, #0xc]
+1003899e4: 14000001    	b	0x1003899e8 <_nomux_get_cursor+0x8c>
+1003899e8: b9400fe8    	ldr	w8, [sp, #0xc]
+1003899ec: f9400fe9    	ldr	x9, [sp, #0x18]
+1003899f0: b9000128    	str	w8, [x9]
+1003899f4: d0000d88    	adrp	x8, 0x10053b000 <_nomux_buf+0x1000>
+1003899f8: 91382108    	add	x8, x8, #0xe08
+1003899fc: f9400108    	ldr	x8, [x8]
+100389a00: b4000108    	cbz	x8, 0x100389a20 <_nomux_get_cursor+0xc4>
+100389a04: 14000001    	b	0x100389a08 <_nomux_get_cursor+0xac>
+100389a08: d0000d88    	adrp	x8, 0x10053b000 <_nomux_buf+0x1000>
+100389a0c: 91382108    	add	x8, x8, #0xe08
+100389a10: f9400108    	ldr	x8, [x8]
+100389a14: 79c00d08    	ldrsh	w8, [x8, #0x6]
+100389a18: b9000be8    	str	w8, [sp, #0x8]
+100389a1c: 14000004    	b	0x100389a2c <_nomux_get_cursor+0xd0>
+100389a20: 52800008    	mov	w8, #0x0                ; =0
+100389a24: b9000be8    	str	w8, [sp, #0x8]
+100389a28: 14000001    	b	0x100389a2c <_nomux_get_cursor+0xd0>
+100389a2c: b9400be8    	ldr	w8, [sp, #0x8]
+100389a30: f9400be9    	ldr	x9, [sp, #0x10]
+100389a34: b9000128    	str	w8, [x9]
+100389a38: 14000001    	b	0x100389a3c <_nomux_get_cursor+0xe0>
+100389a3c: 910083ff    	add	sp, sp, #0x20
+100389a40: d65f03c0    	ret

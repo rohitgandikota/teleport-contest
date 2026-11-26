@@ -1,0 +1,190 @@
+{
+  "classification": "Isolated candidate, original five unchanged assertions and certified decoded primary",
+  "recipeSHA256": "571b9bc80ebcadb24a0486739396a6101e2315b73cc1b631e35a245389b8ee34",
+  "total": 5,
+  "passed": 5,
+  "rows": [
+    {
+      "name": "menu-bind-select-and-help-positive",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "menu cancellation leaves actual inventory and turn unchanged",
+          "pass": true
+        },
+        {
+          "name": "real drop menu applies C-predicted selections",
+          "pass": true
+        },
+        {
+          "name": "menu help reads the same alias store",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "0f3da876e1c57322f62eb9b82244dad3d93bd5046bff74cf9d0ec198c9daad76",
+        "cursors": "052f48bba8923b58c4c14798376ea372dfd5a634603dc9ea51d06184a2ce9f02",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "b78295390939d345df3169e4fb0a1f60b240189f97fdcfbe444f9cb887621ada",
+        "frames": "4d417efac51835eb0795550275c95bc7001c6e50f0c37e7ff381af198cfb7a8a"
+      },
+      "boundaries": 10,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-option-select-and-help-positive",
+      "positive": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "menu cancellation leaves actual inventory and turn unchanged",
+          "pass": true
+        },
+        {
+          "name": "real drop menu applies C-predicted selections",
+          "pass": true
+        },
+        {
+          "name": "menu help reads the same alias store",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "0f3da876e1c57322f62eb9b82244dad3d93bd5046bff74cf9d0ec198c9daad76",
+        "cursors": "052f48bba8923b58c4c14798376ea372dfd5a634603dc9ea51d06184a2ce9f02",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "b78295390939d345df3169e4fb0a1f60b240189f97fdcfbe444f9cb887621ada",
+        "frames": "4d417efac51835eb0795550275c95bc7001c6e50f0c37e7ff381af198cfb7a8a"
+      },
+      "boundaries": 10,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-default-select-negative",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "menu cancellation leaves actual inventory and turn unchanged",
+          "pass": true
+        },
+        {
+          "name": "real drop menu applies C-predicted selections",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "3e91680ecfea5ddd5d1f55544747637b7b89be3e5dc54951d49d907cca34a362",
+        "cursors": "571636dfea97ba98c9cf6591d90708dd990e327b5f85f4b23c552be30bb1586d",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "18f00e3a3029da0a86493d902655bbf663c163628914f321f9de5262322d9c22",
+        "frames": "2512cce3fee33a347bbb2519e16d29b883c5daadc74609224cb68215c50f3593"
+      },
+      "boundaries": 6,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-explicit-item-negative",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "menu cancellation leaves actual inventory and turn unchanged",
+          "pass": true
+        },
+        {
+          "name": "real drop menu applies C-predicted selections",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "a6ee32c0e4ff563c5ea3242b14ae6f35273aadb393b543f53be168ef1b2d563e",
+        "cursors": "b61c3511afb034388076b231ab2dc20c8cacec3563df2edb146ae5cd4b53da03",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9db1100f7018a7c2dd6c66715b7b43a2fbdb454e0ce3d2ce2676d00f1bf6da77",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 3104,
+      "frames": 0
+    },
+    {
+      "name": "menu-extended-command-negative",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no parser errors or unhandled statements",
+          "pass": true
+        },
+        {
+          "name": "menu cancellation leaves actual inventory and turn unchanged",
+          "pass": true
+        },
+        {
+          "name": "unrelated ordinary command binding still opens inventory",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "fce8bad51bb9adad7c4fb341557e7c597792ae3fe4b0539b2b567c012a96ee62",
+        "cursors": "5661b5daee546aa32789905514a325d7315ae81deafee4f105545673876b90a8",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9db1100f7018a7c2dd6c66715b7b43a2fbdb454e0ce3d2ce2676d00f1bf6da77",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 3104,
+      "frames": 0
+    }
+  ],
+  "provenance": {
+    "sourceSHA256": "0b3441bbd1c438155f26781d3bec19406f473ddf26f5d69979ebb3a0ad513d74",
+    "omittedRowFields": [
+      "relevantScreens",
+      "states",
+      "firstState"
+    ],
+    "assertionsHashesAndCountsUnchanged": true
+  }
+}

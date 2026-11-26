@@ -1,0 +1,25 @@
+{
+  "classification": "Only portable preflight, imports and optional report formatting changed. All assertion bodies fixed.",
+  "gates": [
+    {
+      "kind": "source40",
+      "originalFile": "source-gate-fixed.mjs",
+      "publicFile": "tools/config-menu-bindings-source-gate.mjs",
+      "identicalBodySHA256": "14085c48e32ff8d8b9e082b5db9aa6f5a07c3528738f53b3302abcb9b7736c3f"
+    },
+    {
+      "kind": "initial",
+      "originalFile": "original5/original-gate.mjs",
+      "publicFile": "tools/config-menu-bindings-input-gate.mjs",
+      "identicalBodySHA256": "40007b5af5060879161570df5534d4ea5489c4afd292ff0327e68c207b550d67",
+      "negativeHashCount": 15
+    },
+    {
+      "kind": "prerequisite",
+      "originalFile": "prerequisite8/original-gate.mjs",
+      "publicFile": "tools/config-menu-bindings-prerequisite-input-gate.mjs",
+      "identicalBodySHA256": "52739bae2eff19275960cfd43df2a44325a73cc288787767f485962ddc7ef00f",
+      "negativeHashCount": 20
+    }
+  ]
+}

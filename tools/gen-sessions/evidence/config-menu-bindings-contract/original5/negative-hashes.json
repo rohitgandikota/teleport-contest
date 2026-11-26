@@ -1,0 +1,35 @@
+{
+  "recipeSHA256": "571b9bc80ebcadb24a0486739396a6101e2315b73cc1b631e35a245389b8ee34",
+  "controls": [
+    {
+      "name": "menu-default-select-negative",
+      "hashes": {
+        "screens": "3e91680ecfea5ddd5d1f55544747637b7b89be3e5dc54951d49d907cca34a362",
+        "cursors": "571636dfea97ba98c9cf6591d90708dd990e327b5f85f4b23c552be30bb1586d",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "18f00e3a3029da0a86493d902655bbf663c163628914f321f9de5262322d9c22",
+        "frames": "2512cce3fee33a347bbb2519e16d29b883c5daadc74609224cb68215c50f3593"
+      }
+    },
+    {
+      "name": "menu-explicit-item-negative",
+      "hashes": {
+        "screens": "a6ee32c0e4ff563c5ea3242b14ae6f35273aadb393b543f53be168ef1b2d563e",
+        "cursors": "b61c3511afb034388076b231ab2dc20c8cacec3563df2edb146ae5cd4b53da03",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9db1100f7018a7c2dd6c66715b7b43a2fbdb454e0ce3d2ce2676d00f1bf6da77",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      }
+    },
+    {
+      "name": "menu-extended-command-negative",
+      "hashes": {
+        "screens": "fce8bad51bb9adad7c4fb341557e7c597792ae3fe4b0539b2b567c012a96ee62",
+        "cursors": "5661b5daee546aa32789905514a325d7315ae81deafee4f105545673876b90a8",
+        "calls": "668a8ffb2a5b050247136094c3b8bf534f8fc6a2085d8174346bdd86af702df3",
+        "slices": "9db1100f7018a7c2dd6c66715b7b43a2fbdb454e0ce3d2ce2676d00f1bf6da77",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      }
+    }
+  ]
+}

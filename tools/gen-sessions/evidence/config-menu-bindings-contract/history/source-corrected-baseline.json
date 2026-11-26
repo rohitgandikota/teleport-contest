@@ -1,0 +1,236 @@
+{
+  "classification": "Constructed source controls, separate from ordinary reach",
+  "nativePreflight": [
+    {
+      "family": "initial",
+      "rawSHA256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+      "cases": 5,
+      "keys": 31,
+      "boundaries": 36,
+      "calls": 15520,
+      "frames": 0,
+      "fieldsPresenceKeys": true,
+      "integrityErrors": [],
+      "branchErrors": []
+    },
+    {
+      "family": "prerequisite",
+      "rawSHA256": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+      "cases": 8,
+      "keys": 28,
+      "boundaries": 36,
+      "calls": 9312,
+      "frames": 0,
+      "fieldsPresenceKeys": true,
+      "integrityErrors": [],
+      "branchErrors": []
+    }
+  ],
+  "legacyPrimaryErrors": [
+    "menu-bind-select-and-help-positive: segment 0 lacks screen text \"Select     ;\"",
+    "menu-option-select-and-help-positive: segment 1 lacks screen text \"Select     ;\""
+  ],
+  "total": 40,
+  "passed": 7,
+  "rows": [
+    {
+      "name": "producer/both/menu_next_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_next_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_previous_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_previous_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_first_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_first_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_last_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_last_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_select_all",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_select_all'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_invert_all",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_invert_all'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_deselect_all",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_deselect_all'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_select_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_select_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_invert_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_invert_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_deselect_page",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_deselect_page'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_search",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_search'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_shift_right",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_shift_right'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/both/menu_shift_left",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_shift_left'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/byte-key-not-reencoded",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_select_all'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/ordered-duplicates-and-first-reverse",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nundefined !== 3\n"
+    },
+    {
+      "name": "producer/right-to-left-and-no-recursive-map",
+      "pass": false,
+      "error": "O.map_menu_cmd is not a function"
+    },
+    {
+      "name": "producer/OPTIONS-full-name-ASCII-case",
+      "pass": false,
+      "error": "O.map_menu_cmd is not a function"
+    },
+    {
+      "name": "producer/BINDINGS-case-sensitive",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nundefined !== 0\n"
+    },
+    {
+      "name": "producer/reserved-key-errors-and-no-output",
+      "pass": false,
+      "error": "a\n\nundefined !== 0\n"
+    },
+    {
+      "name": "producer/object-class-reservations",
+      "pass": false,
+      "error": "]\n\nundefined !== 0\n"
+    },
+    {
+      "name": "producer/legal-punctuation-control-and-meta",
+      "pass": false,
+      "error": ";\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_search'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "producer/unknown-key-preserves-error-owner",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nundefined !== 0\n"
+    },
+    {
+      "name": "producer/OPTIONS-missing-empty-and-invalid-key",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   \"Missing value for 'menu_search'\"\n-   \"Missing parameter for 'menu_search'\"\n  ]\n"
+    },
+    {
+      "name": "producer/unrelated-config-error-collection-unchanged",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nundefined !== 0\n"
+    },
+    {
+      "name": "state/reset-clears-store-and-base-position",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\nundefined !== 0\n"
+    },
+    {
+      "name": "help/first-alias-visctrl-both-formats",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(compact.includes('^A      Select all items in entire menu'))\n"
+    },
+    {
+      "name": "early/32-append-33-synchronous-raw-no-parser-error",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all'\",\n+   \"Unknown key binding command 'menu_select_all"
+    },
+    {
+      "name": "early/no-MSGTYPE-stop-or-suppression-before-windows",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'out of menu map space.'\n"
+    },
+    {
+      "name": "consumer/alias-select-invert-deselect-reuses-actions",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   1,\n-   2\n- ]\n"
+    },
+    {
+      "name": "consumer/explicit-selector-before-alias",
+      "pass": true
+    },
+    {
+      "name": "consumer/PICK_ONE-group-before-alias",
+      "pass": true
+    },
+    {
+      "name": "consumer/PICK_ANY-alias-before-group",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    1,\n-   2\n  ]\n"
+    },
+    {
+      "name": "consumer/invalid-input-preserves-count",
+      "pass": true
+    },
+    {
+      "name": "consumer/cancel-count-then-cancel-menu",
+      "pass": true
+    },
+    {
+      "name": "consumer/preselected-PICK_ONE-return-contract",
+      "pass": true
+    },
+    {
+      "name": "consumer/default-and-explicit-negatives",
+      "pass": true
+    },
+    {
+      "name": "consumer/pagination-and-page-actions",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   1,\n+   2,\n+   3,\n+   4,\n+   5,\n+   6,\n+   7,\n+   8,\n+   9,\n+   10,\n+   11,\n+   12,\n+   13,\n+   14,\n+   15,\n+   16,\n+   17,\n+   18,\n+   19,\n+   20,\n+   21,\n+   22,\n+   23,\n    24,\n    25\n  ]\n"
+    },
+    {
+      "name": "consumer/skipinvert-preserved",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   2\n- ]\n"
+    },
+    {
+      "name": "consumer/search-alias-uses-actual-line-reader",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   2\n- ]\n"
+    },
+    {
+      "name": "consumer/pan-alias-has-no-standard-TTY-action",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "sourceSHA256": "66394aa876424f0fce4128535560120204801e5691e49367b128ee31d90a1024",
+    "runtimeMapSHA256": "9a92db5a26cd23ad059a077aec4ccbad2cec685594f9302957cd34dd7479e3d4",
+    "onlyOmittedField": "runtime",
+    "assertionRowsUnchanged": true
+  }
+}

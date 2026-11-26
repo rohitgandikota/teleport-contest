@@ -1,0 +1,9 @@
+{
+  "sourcePrimarySHA256": "ad994d6249a03a48a3a9c04f9402680c9a2ad769459b8088f9da1914b4418c47",
+  "targetPrimarySHA256": "37877b2338643785f93e0d1172cc7df2b7a08c64b2348409d238e1cf9a26fbd9",
+  "onlyRootMetadata": {
+    "name": "config-menu-bindings",
+    "coverage": []
+  },
+  "allOtherValuesUnchanged": true
+}

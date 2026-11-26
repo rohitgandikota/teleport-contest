@@ -1,0 +1,62 @@
+[
+  {
+    "name": "config-menu-bindings",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/config-menu-bindings-parent-native.session.json",
+      ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.58,
+    "cases": 5,
+    "passed": 5,
+    "report": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.json",
+    "reportSHA256": "3afd41e153149b6655393103e7f6a4789010d5876ab1c9ed28a6b6fe2b2cb301",
+    "priorReport": ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/initial-candidate-native.json",
+    "completeReportUnchanged": true,
+    "log": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-native.log",
+    "logSHA256": "ee80efba8663e75f738d67f3b03999f9e8a1b12c8abfd2062fff1fa3c7fe14e5"
+  },
+  {
+    "name": "config-menu-bindings-prerequisite",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/config-menu-bindings-prerequisite-parent-native.session.json",
+      ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.41,
+    "cases": 8,
+    "passed": 7,
+    "report": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.json",
+    "reportSHA256": "1dd199186ac7a838e70ec11d90534f496bf400762c86edc39d645375287fc96f",
+    "priorReport": ".cache/restart-20261122/config-menu-bindings-runtime-source-audit/reports/prerequisite-candidate-native.json",
+    "completeReportUnchanged": true,
+    "log": ".cache/restart-20261122/menu-input-parent-config-menu-bindings-prerequisite-native.log",
+    "logSHA256": "dbe36d8a6f5d2708bbdfe3fdd69347956f9fb3a594915fd47b1417df4077767e"
+  },
+  {
+    "name": "status-hilite-menu",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/status-hilite-menu-parent-native.session.json",
+      ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.89,
+    "cases": 4,
+    "passed": 4,
+    "report": ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.json",
+    "reportSHA256": "597ed654ec518cdd0ae3aa052fef7ca90bbbdb128b25d34030ec4573a975eefd",
+    "priorReport": ".cache/restart-20261122/status-hilite-menu-candidate-audit/review/candidate-native.json",
+    "completeReportUnchanged": true,
+    "log": ".cache/restart-20261122/menu-input-parent-status-hilite-menu-native.log",
+    "logSHA256": "3aa1ad68a795f4011f4ad76a96fbb4a507f1e01bb783914ae3220d899c6afbf7"
+  }
+]

@@ -1,0 +1,203 @@
+{
+  "classification": "Constructed source controls, separate from ordinary reach",
+  "nativePreflight": [
+    {
+      "family": "initial",
+      "rawSHA256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+      "cases": 5,
+      "keys": 31,
+      "boundaries": 36,
+      "calls": 15520,
+      "frames": 0,
+      "fieldsPresenceKeys": true,
+      "integrityErrors": [],
+      "branchErrors": []
+    },
+    {
+      "family": "prerequisite",
+      "rawSHA256": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+      "cases": 8,
+      "keys": 28,
+      "boundaries": 36,
+      "calls": 9312,
+      "frames": 0,
+      "fieldsPresenceKeys": true,
+      "integrityErrors": [],
+      "branchErrors": []
+    }
+  ],
+  "legacyPrimaryErrors": [
+    "menu-bind-select-and-help-positive: segment 0 lacks screen text \"Select     ;\"",
+    "menu-option-select-and-help-positive: segment 1 lacks screen text \"Select     ;\""
+  ],
+  "total": 40,
+  "passed": 40,
+  "rows": [
+    {
+      "name": "producer/both/menu_next_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_previous_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_first_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_last_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_select_all",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_invert_all",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_deselect_all",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_select_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_invert_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_deselect_page",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_search",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_shift_right",
+      "pass": true
+    },
+    {
+      "name": "producer/both/menu_shift_left",
+      "pass": true
+    },
+    {
+      "name": "producer/byte-key-not-reencoded",
+      "pass": true
+    },
+    {
+      "name": "producer/ordered-duplicates-and-first-reverse",
+      "pass": true
+    },
+    {
+      "name": "producer/right-to-left-and-no-recursive-map",
+      "pass": true
+    },
+    {
+      "name": "producer/OPTIONS-full-name-ASCII-case",
+      "pass": true
+    },
+    {
+      "name": "producer/BINDINGS-case-sensitive",
+      "pass": true
+    },
+    {
+      "name": "producer/reserved-key-errors-and-no-output",
+      "pass": true
+    },
+    {
+      "name": "producer/object-class-reservations",
+      "pass": true
+    },
+    {
+      "name": "producer/legal-punctuation-control-and-meta",
+      "pass": true
+    },
+    {
+      "name": "producer/unknown-key-preserves-error-owner",
+      "pass": true
+    },
+    {
+      "name": "producer/OPTIONS-missing-empty-and-invalid-key",
+      "pass": true
+    },
+    {
+      "name": "producer/unrelated-config-error-collection-unchanged",
+      "pass": true
+    },
+    {
+      "name": "state/reset-clears-store-and-base-position",
+      "pass": true
+    },
+    {
+      "name": "help/first-alias-visctrl-both-formats",
+      "pass": true
+    },
+    {
+      "name": "early/32-append-33-synchronous-raw-no-parser-error",
+      "pass": true
+    },
+    {
+      "name": "early/no-MSGTYPE-stop-or-suppression-before-windows",
+      "pass": true
+    },
+    {
+      "name": "consumer/alias-select-invert-deselect-reuses-actions",
+      "pass": true
+    },
+    {
+      "name": "consumer/explicit-selector-before-alias",
+      "pass": true
+    },
+    {
+      "name": "consumer/PICK_ONE-group-before-alias",
+      "pass": true
+    },
+    {
+      "name": "consumer/PICK_ANY-alias-before-group",
+      "pass": true
+    },
+    {
+      "name": "consumer/invalid-input-preserves-count",
+      "pass": true
+    },
+    {
+      "name": "consumer/cancel-count-then-cancel-menu",
+      "pass": true
+    },
+    {
+      "name": "consumer/preselected-PICK_ONE-return-contract",
+      "pass": true
+    },
+    {
+      "name": "consumer/default-and-explicit-negatives",
+      "pass": true
+    },
+    {
+      "name": "consumer/pagination-and-page-actions",
+      "pass": true
+    },
+    {
+      "name": "consumer/skipinvert-preserved",
+      "pass": true
+    },
+    {
+      "name": "consumer/search-alias-uses-actual-line-reader",
+      "pass": true
+    },
+    {
+      "name": "consumer/pan-alias-has-no-standard-TTY-action",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "sourceSHA256": "35507d9d3306bd7352c25503e15b1fd7a5f6902f79ae862fa6724e516a09aa02",
+    "runtimeMapSHA256": "a1df91835ea64233a49bd9a0cc68f8bd38b8376b41e9257d91fdc9be9c249ed2",
+    "onlyOmittedField": "runtime",
+    "assertionRowsUnchanged": true
+  }
+}

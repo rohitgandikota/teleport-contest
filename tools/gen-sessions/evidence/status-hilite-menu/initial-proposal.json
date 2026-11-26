@@ -1,0 +1,11 @@
+{
+  "segments": [
+    {
+      "name": "percent-bare-value-menu",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp50\r"
+    }
+  ]
+}

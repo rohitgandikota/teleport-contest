@@ -9827,3 +9827,20 @@ every scorer metric but takes over ten seconds on both tested runtimes, beyond
 the optional expanded eight-second run. The required 44 public fixtures plus
 the new inventory recording pass that strict limit. Preserve the expanded
 74/75 result; do not raise its budget or count it as 75/75.
+
+## Early raw output can leave a stale recorded cursor, 2026-11-26
+
+The menu-alias capacity-33 diagnostic prints through raw output before window
+initialization. The installed C recorder and canonical patch006 set raw-active
+on this output, but startup clearing does not reset that state. Captured
+cursors then remain (0,1), even while C draws ordinary menus. Source review
+and installed-binary disassembly confirm this capture defect. Every other
+output stream matches. Preserve the complete eight-case diagnostic and its
+7/8 result with exit 1. The maintained seven-case fixture keeps each unaffected
+segment exactly; it omits only the defective capture. Do not reproduce the
+recorder cursor state in gameplay code or normalize the expected output.
+
+The parser still must emit its diagnostic synchronously. Attach the existing
+display before parsing, and let the pre-window pline raw branch finish before
+its first await. Normal initialization clears that actual output. Source
+controls verify immediate display state and its later clearing.

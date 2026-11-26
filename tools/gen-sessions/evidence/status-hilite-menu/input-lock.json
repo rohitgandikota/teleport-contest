@@ -1,0 +1,143 @@
+{
+  "final": true,
+  "candidateExisted": false,
+  "nativeEvidence": false,
+  "recipeSHA256": "f4fafd3678b1bbc3112a52f31b2a487bd7d199eae920552869667a12884b0e6d",
+  "sourceProposalSHA256": "9dd5a2546d6cd7ebae257d440affbeec5473f8623595003d88ab3debc0593f86",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    {
+      "name": {
+        "present": true,
+        "value": "percent-bare-commit"
+      },
+      "seed": {
+        "present": true,
+        "value": 465844
+      },
+      "datetime": {
+        "present": true,
+        "value": "20260426003002"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " mO|l rp50\rcb\r \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "percent-explicit-commit"
+      },
+      "seed": {
+        "present": true,
+        "value": 465844
+      },
+      "datetime": {
+        "present": true,
+        "value": "20260426003002"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " mO|l rp50%\rcb\r \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "absolute-number-commit"
+      },
+      "seed": {
+        "present": true,
+        "value": 465844
+      },
+      "datetime": {
+        "present": true,
+        "value": "20260426003002"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " mO|l rn50\rcb\r \u001b\u001b"
+      }
+    },
+    {
+      "name": {
+        "present": true,
+        "value": "percent-empty-cancel"
+      },
+      "seed": {
+        "present": true,
+        "value": 465844
+      },
+      "datetime": {
+        "present": true,
+        "value": "20260426003002"
+      },
+      "nethackrc": {
+        "present": true,
+        "value": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      "moves": {
+        "present": true,
+        "value": " mO|l rp\r\u001b\u001b"
+      }
+    }
+  ],
+  "tupleSHA256": "61ff4e473a84bc218a35db1e68ef056f619c9babeebb6ac9fc0187ba9843b96c",
+  "cases": 4,
+  "keys": 63,
+  "boundaries": 67,
+  "branches": [
+    "status.hilite-menu.percent-suffix",
+    "status.hilite-menu.explicit-percent-negative",
+    "status.hilite-menu.absolute-number-negative",
+    "status.hilite-menu.empty-cancel-negative"
+  ],
+  "keySHA256": [
+    "14fa68c5ecc3c82a86a1597c5e20847ced516f8509d91782f0a36e2e47d8661b",
+    "9dd9d7eb868392dcbedf402c7ff348e581e476b23ffb05ae31630a4b2c05fbc5",
+    "4df58177013c9089155303565eb0e862207e845fa72c4ad407d53aa54337a8ba",
+    "6a3664448072464d63d8925a35e66367701ade2b9f7525badf7df5dcc7b76b26"
+  ],
+  "negativeHashes": {
+    "percent-explicit-commit": {
+      "screens": "3f08fb6f84e1a67cee8f75cecf5093efb61f588f7c9a4697260c36211dc0ab2c",
+      "cursors": "53b7fc66f8c470eb007384cd78f9feb9866f96b1c9ff91b7b40fc743c9029fe1",
+      "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+      "slices": "354cac6ed4f859eafbe2ca9e566119d20b2274c485ab96f45f0c2a0c6aff8da9",
+      "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+    },
+    "absolute-number-commit": {
+      "screens": "ded94068740c703c7233e0c6dc5c2bb51f1e7f3e8351476988de54e589a6e091",
+      "cursors": "35a7b3e0796d1299f98cbf1d1724a3629a7a3346853966f05cded7761855cba7",
+      "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+      "slices": "2773908be33e26442b95065f0620b309fb2fd84929e72f0260173d32fc11a3ec",
+      "frames": "6c0e1fd41ec8a0fa1ac6c5c845ac3158b5a6846d089b98fab88b4d9b9e41f6a8"
+    },
+    "percent-empty-cancel": {
+      "screens": "e2dd909a23f7bfbd037b9bddb90f0d353d2b6e9910e4a7227798890cddc3419e",
+      "cursors": "b758d8e8faf8244e63c0332acb309ec8c6c5a01f1431a121338916c65883ee5d",
+      "calls": "b09da5f94c4a607b97b1690ada75af9188c8665a3304bff22a286e0a5a5a70f8",
+      "slices": "548299a3437eddf76c3687502ca7a326c781a3267c81859a558170ec15f6414e",
+      "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+    }
+  }
+}

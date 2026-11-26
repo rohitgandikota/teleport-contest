@@ -1,0 +1,32 @@
+{
+  "segments": [
+    {
+      "name": "percent-bare-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp50\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "percent-explicit-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp50%\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "absolute-number-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rn50\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "percent-empty-cancel",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp\r\u001b\u001b"
+    }
+  ]
+}

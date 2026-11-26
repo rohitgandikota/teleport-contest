@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "reviewedCVersion": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "fixedSourceManifestSHA256": "19be80e4ad24cf72916c54ab5890515ad3dd5c53d6e0b1c44dd47edd55b234e1",
+  "fixedSourceSealSHA256": "ddce7cc55c75425fc67991b245cdcbb0d10a9da8fe4e06157a172d04d634b61e",
+  "fixedRuntimeMapSHA256": "a1df91835ea64233a49bd9a0cc68f8bd38b8376b41e9257d91fdc9be9c249ed2",
+  "reviewedCSourcePins": {
+    "nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "nethack-c/upstream/src/decl.c": "4855daf7884706b74e694aff3e8373418706793265084727bd78abe44693d96e",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "nethack-c/upstream/src/pickup.c": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "nethack-c/upstream/src/dothrow.c": "1fb4be7ca03d4d4256a7637fcaab3ec3048f7c71928a4b5577ab6477ed28bc06",
+    "nethack-c/upstream/src/do.c": "e2fe19b83f22dcf496d2ced54f8d727433ef29aa4c3a3151a64e66350cae985f",
+    "nethack-c/upstream/win/tty/wintty.c": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5",
+    "nethack-c/upstream/include/decl.h": "4782c5f522f6de63503cda131c0e2485aef31506d83dcfb32defeebf984fb470",
+    "nethack-c/upstream/include/global.h": "97bcc4fdd9c1f880dacaf1fffe0043f78874f9fc7e9d84f57aa1a1d4be811e88",
+    "nethack-c/upstream/include/winprocs.h": "eebf4dbb4149d3a153a1dc815795baabe33a59d13362e00089d21ee9ce89983c",
+    "nethack-c/upstream/include/func_tab.h": "6c47ccb85277800274a4b7f860ff6e1c25b75c5cb55d860745b7479f6f6105ba",
+    "nethack-c/upstream/src/cfgfiles.c": "02b8a704da0e0fa86fd085ef0ce81bd7c60edde0d70ae937a9411de07e95ab47",
+    "nethack-c/upstream/src/role.c": "d6f9341da2a6dff5197442f78cb322c8b22437c95646c44350810fbc058f25a8",
+    "nethack-c/upstream/src/pager.c": "92d078a4c4e0f81bf91c07b91383e848427eeed37b9877fa34d8564774b8952b",
+    "nethack-c/upstream/src/windows.c": "d731d0edab36e7331987fa2ab6c751a91cec3d0de4edddb52ec27a40d03711df",
+    "nethack-c/upstream/src/hacklib.c": "9f9710dcd8fe0b3735c0b319eb7c26b7fb4148d32a5851ffe72ed94c3bbfeae2",
+    "nethack-c/upstream/src/pline.c": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+    "nethack-c/upstream/sys/unix/unixmain.c": "9c8a9a498acaffee6ce62d44a5e07977d2ec4852f29a77a1fbabdea0fd9f2165",
+    "nethack-c/upstream/win/tty/getline.c": "43abddf287e558949bb7bd17d0d7fa42201eb6f86a84146e9ee5889bc7f66afc",
+    "nethack-c/upstream/include/hack.h": "2840a9bd41fb0c09384839fafdbd427a5d8705ad8d3eb5e2a0308cccea36813b",
+    "nethack-c/upstream/include/defsym.h": "009ae2e8921fa4c376fe0ae3b4a42407421274fc15d1a8834c6ae519dad82f87",
+    "nethack-c/upstream/include/optlist.h": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+    "nethack-c/upstream/include/wintype.h": "e5bfd60534831210bdace1ba6eaef62f65d16dab8d8ac0fcddadebd000d53698",
+    "nethack-c/upstream/include/objclass.h": "101f92e0024e4404033845fb15171f8ed4b79374907a6a172b4eb7b026e1eb52",
+    "nethack-c/upstream/src/allmain.c": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+    "nethack-c/upstream/win/tty/termcap.c": "c0f16adb55fc2d7a00371165396d9fcbe89237600b68b0663fb47c38c9841ada"
+  },
+  "runtimeScope": {
+    "js/options.js": {
+      "baselineSHA256": "5ba009c69a5db7c87bcd0046dd063bea8456f140bffcbd8fdb874a1369f0c2ed",
+      "candidateSHA256": "b3de18f3f5cafb7ecf7e2ceef40a34fc231b08470d0cf5f77be8f5b398b6b548"
+    },
+    "js/gstate.js": {
+      "baselineSHA256": "626cd9f0f93c4b5c373557c8667da16b1e52eccbfd28004e7a456641bbaf4c49",
+      "candidateSHA256": "99ebcdb3a5c5ddae89d914bf46772683cca5cb83587251d3844e3855b3fe7d15"
+    },
+    "js/const.js": {
+      "baselineSHA256": "8d8d42c398cbe055af5fed48a855a563d1f3511d3668935987d2abdba2ac0042",
+      "candidateSHA256": "5dace7ce5a0a917226ff8b762c7de8fb953dc50867e0cfce9ad2f9bf84b52061"
+    },
+    "js/tty/wintty.js": {
+      "baselineSHA256": "e24cd0f9f19d1927887b0193d53d9706d9635a493d121888e523465f7f793455",
+      "candidateSHA256": "11f1c136bf94edb311f1d504cd8e832212992c44769e70d99f49ede3c6f96d0b"
+    },
+    "js/plselect.js": {
+      "baselineSHA256": "a89d2f6d4dae1fe2aa33879f445cab1a5977cc02e96f9dd0349ef8f3e0f32907",
+      "candidateSHA256": "47a3dfeec58ba680afc0b66cb9e09b00cdae99fedbd7e64d51adbad76f0c12dd"
+    },
+    "js/jsmain.js": {
+      "baselineSHA256": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b",
+      "candidateSHA256": "dda1d824fbd7ea022418b8191aae9bee0adce9ef31b78c1e2a25bc89f2d19f59"
+    },
+    "js/display.js": {
+      "baselineSHA256": "05cfa403c623422d57cd47a13d9b0ccd56568bdde64aaa2a195d5ddd26588c2a",
+      "candidateSHA256": "73e729a52bcf54094f1b0bf74da9abcb102239f4908bd6771ead2b61371bb6e8"
+    }
+  },
+  "historicalPackets": {
+    "config-menu-bindings-source-audit": {
+      "members": 24,
+      "manifestSHA256": "d60f81351c40fddac9f0ef63caddf3a8fd157d31aa304e709b9252d20780ec0b"
+    },
+    "config-menu-bindings-prerequisite-source-audit": {
+      "members": 36,
+      "manifestSHA256": "79b2b0cf3e0c6f1bcc908c51db88dcf793ef088934acaabafb37fddab6b23b3c"
+    },
+    "config-menu-bindings-runtime-source-audit": {
+      "members": 349,
+      "manifestSHA256": "19be80e4ad24cf72916c54ab5890515ad3dd5c53d6e0b1c44dd47edd55b234e1"
+    }
+  },
+  "portableDependencyPins": {
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "evidencePins": {
+    "PLAN.md": "03a6add26462e398ddd410ce352f5babadccdeb61d4ed986b30f4c894ce47f58",
+    "README.md": "681f9931050a9cae93cfc29bcef1f33f9eb3053780865918e7893439efda9fd2",
+    "SOURCE-REVIEW.md": "cb361c532b98601e0f6c2aeb3d3a767cdf167076e5428e9b56ebed950c21635f",
+    "gate-derivations.json": "81ed63c36d27d2fd5a0deb4726c7c168c59acdebc9397b049f65aab8119915c0",
+    "history/HELP-PREDICATE-REVIEW.md": "37c0070c62255407ad7ac2b85e8b3adcf0c082176cf1ff525ba2b1836d92b8d0",
+    "history/cursor-disassembly.txt": "bc33c0e1538747abebd79c8a712c70895da9f3a40945277240360c01c949d7f6",
+    "history/help-native-correction.json": "d75d7445d41b72fbf2d9b4eb36549cb1a8d4538b26389cf6163bf90622668a25",
+    "history/help-primary-derivation.json": "05c8a53bb086caf50ed2b76d366e4329daf8fe6741aaf4fd159f5520ee868190",
+    "history/legal-alias-control-correction.json": "58059de9c7730d765e5c5dc905fad2a3ee4044f18a7d00c4b08c44eabfb7734c",
+    "history/old-primary-recipe.json": "24e20c27b5faae09053cf1e524631d7433743e5cbc4110562b72b7791c3f46df",
+    "history/source-baseline-invocation.json": "a6bef54528f86d0b70b9f6845b52a19ece79b76fa91a02c652c74cc45c980eca",
+    "history/source-baseline.json": "5828ae44c36529d9c5358889c20259c47b9a5bea4b0a432652e46adca3d6c4fe",
+    "history/source-candidate-attempt1-invocation.json": "207f8853fb77182d0e6ada5e3b58b6831ae4ea96bb14f2bb4c2d6921fc7d8877",
+    "history/source-candidate-attempt1.json": "480caf66b6dd8286ee87687b173210f51f210a50b3ed0017e094e8a99117ead0",
+    "history/source-candidate-invocation.json": "ecfb1961a624ff3499ec3dfa7b726d20263c0306f6cc4d28befeea6c4eaa2ec4",
+    "history/source-candidate.json": "cacbbaa088a8c66272347addff7f61bfeb2891aa83eece12701ec508679ccc1c",
+    "history/source-control-corrections.json": "ef10c3d9342b39f733294c02aa2460a1099abe899f9990e42b5aa0ba98742411",
+    "history/source-corrected-baseline-invocation.json": "35f0d4b813cf60f739f3be1d663f799c9a2b09449cc6dea5bb765eb04133e2de",
+    "history/source-corrected-baseline.json": "d3fa617c720bb75e83280682f6b5b8228ec5babd9c00b6c3660ac3a7d91af933",
+    "history/source-gate-before-legal-alias-correction.mjs": "5b2f68c9125a62c5eee2fabca7a3fc4168b2fec3466be35ab500054656f4d60d",
+    "history/source-gate-original.mjs": "f3591c42ce3b15a13eff053d10de4a2d787d9c154f155c1a8297f8a987cd459b",
+    "native-negative-accounting.json": "de328c5f9bb18f8fcf152d38a60cff59f31970c7ff7106a7dce3d642bdd7b557",
+    "original5/baseline-ordinary.json": "df01e7c790cd6f067888a43794e2927f054db6b99031e1701776a01e81055ea5",
+    "original5/candidate-native-invocation.json": "1093a2889bef76397a31ee757e4ed9ae65ff879e50c0cd76b1b2fc5e1f91c591",
+    "original5/candidate-native.json": "3afd41e153149b6655393103e7f6a4789010d5876ab1c9ed28a6b6fe2b2cb301",
+    "original5/candidate-ordinary.json": "db655fae380f6c25c2fc6c7a8f7fda01770455b80098559e8841cc0b50ec9137",
+    "original5/input-lock.json": "da011b5580ded2ed1b62d41f5f8505153d91d0c78334407f22f9fd5097cdaa0a",
+    "original5/negative-hashes.json": "dfb72946fd29a153dcf098cf06e6d6981ebedfed80f280522241f1d4a0b1ba21",
+    "original5/original-gate.mjs": "99780ca703dc1a8ca364951921058a52cff110e20d3602028f301d8dd3699b34",
+    "original5/original-primary-derivation.json": "8dcfa9b6bd6cccf2eae638fd73baba35d07d2b791c48637b4189b2e8d8a3c8c4",
+    "original5/parent-baseline-native.json": "da30835b7e56032cd6a879e4e95d58c5bb929c1aa77e1e40ce6b87fa9c4022f0",
+    "original5/parent-native-primary-check.json": "e1e78ea27b6158a78e768596075a05b6df8a2ef14fbbf0f70f79bf359c17a36b",
+    "original5/parent-native-recording.json": "0bcf571381b2ea6d6ad41b712f03731e1a91764805ddcd3700852eecdc2fd9e1",
+    "original5/primary-recipe.json": "ad994d6249a03a48a3a9c04f9402680c9a2ad769459b8088f9da1914b4418c47",
+    "original5/public-primary-derivation.json": "966feeaf367e9a416f04cb142cf5b418cc97caae7ad33b541afde8b9a2389867",
+    "original5/recipe.json": "571b9bc80ebcadb24a0486739396a6101e2315b73cc1b631e35a245389b8ee34",
+    "parent-composed-native-checks.json": "c8373cd5db2073bc0fa8624fc3a56d52e61052487eb74db4f5c2f2a5fc917dc3",
+    "parent-composition-relation.json": "87889a7a8815bdcecad6e5acef5f99c5eddf1ee7e681c3f3380bfd2af351b7a5",
+    "partition-receipt.json": "b8c4ddf16713103e06f1cbace42c7386ea3f94baeddbdfc60d007bc2fb6f0e65",
+    "prerequisite8/baseline-ordinary.json": "86392fd277060829f3a5f3709dc3e70974659083f842310b3100066d25c8b7ad",
+    "prerequisite8/candidate-native-invocation.json": "3ba07ad263f9064aed6b74eca71fe0eff8e8c70421d5f903c3fa622ddc991beb",
+    "prerequisite8/candidate-native.json": "1dd199186ac7a838e70ec11d90534f496bf400762c86edc39d645375287fc96f",
+    "prerequisite8/candidate-ordinary.json": "c0bc7956c6b33387dc93cc8244fa5a608a13bde9bae54ff9b0e3b8fe13161356",
+    "prerequisite8/input-lock.json": "2e78736c9980f145758c159b57b671a13efb25c14c3a440e0b561b62d3da55e8",
+    "prerequisite8/negative-hashes.json": "7f1ff36ed78d88c6d551ab0942bdee0e1bd732d26974d2c444295e4ac800012b",
+    "prerequisite8/original-gate.mjs": "98d5bf800d26d85b00cea07f36740c55dd1df2acfb462096e6a89c4dd2519ce1",
+    "prerequisite8/original-primary-derivation.json": "eb72024bf83f1b35cd7529072abd0343d7c178022725e97bc41ae4d9bfabceb7",
+    "prerequisite8/parent-baseline-native.json": "4a5cc5783ddd003a4f2f6bcfee5cf04b61df28409b9348f089338290565b0235",
+    "prerequisite8/parent-native-primary-check.json": "f1c0b44e64b7431bc9aa24164e3d8649e16b50aad49b5fe83a25fc0ebcca35bd",
+    "prerequisite8/parent-native-recording.json": "709ece8f5b18b4970f53c395fa5e741e4af1423dfb8a67afdbc8714963fb690d",
+    "prerequisite8/parent-native.session.json": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+    "prerequisite8/primary-recipe.json": "f69b8be31171e4506b0b571e8d4dc1d1f2b8a917613994cc2f2ca63d38ede45b",
+    "prerequisite8/recipe.json": "02302150b4bf9d53ee34720c7bdf5cb5e84b24a78b843e906fe133864c6bd439",
+    "requirements-additions.json": "3ca16eeea9fe3dc397c92c132db17a5251aaf867aebfd025239a29cef3ebf48a",
+    "scoped-runtime.patch": "e197bda9f196c1d2b219233d953f07a302b235e2e34ab4f274af6fc126c66b54",
+    "source-gate-fixed.mjs": "fd7f568fa165f221a18ea7c6d2ead8bf7338755c6b0584c4acb3f7273dbc9f1c"
+  },
+  "families": {
+    "initial": {
+      "originalRecipe": "original5/recipe.json",
+      "inputLock": "original5/input-lock.json",
+      "originalPrimary": "original5/primary-recipe.json",
+      "primaryRecipe": "tools/gen-sessions/recipes/config-menu-bindings.json",
+      "primaryRecipeSHA256": "37877b2338643785f93e0d1172cc7df2b7a08c64b2348409d238e1cf9a26fbd9",
+      "publicMetadata": {
+        "name": "config-menu-bindings",
+        "coverage": []
+      },
+      "negativeHashes": "original5/negative-hashes.json",
+      "raw": "tools/gen-sessions/generated/config-menu-bindings.session.json",
+      "rawSHA256": "403bc5fa36aee50794057d8763e713fb8a1d11a6425e742e7d0132a26352b554",
+      "rawBytes": 660835,
+      "counts": {
+        "segments": 5,
+        "keys": 31,
+        "boundaries": 36,
+        "calls": 15520,
+        "frames": 0
+      },
+      "fixedNativeReport": "original5/candidate-native.json",
+      "fixedNativeInvocation": "original5/candidate-native-invocation.json",
+      "baselineNativeReport": "original5/parent-baseline-native.json",
+      "expectedNativeExact": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "expectedNativeExit": 0
+    },
+    "prerequisite": {
+      "originalRecipe": "prerequisite8/recipe.json",
+      "inputLock": "prerequisite8/input-lock.json",
+      "originalPrimary": "prerequisite8/primary-recipe.json",
+      "primaryRecipe": "tools/gen-sessions/evidence/config-menu-bindings-contract/prerequisite8/primary-recipe.json",
+      "primaryRecipeSHA256": "f69b8be31171e4506b0b571e8d4dc1d1f2b8a917613994cc2f2ca63d38ede45b",
+      "publicMetadata": {},
+      "negativeHashes": "prerequisite8/negative-hashes.json",
+      "raw": "tools/gen-sessions/evidence/config-menu-bindings-contract/prerequisite8/parent-native.session.json",
+      "rawSHA256": "1d8d92ff6ed2ee557c6c256a31918201a3177a5ba57dfc70458956ccc5aa346c",
+      "rawBytes": 407122,
+      "counts": {
+        "segments": 8,
+        "keys": 28,
+        "boundaries": 36,
+        "calls": 9312,
+        "frames": 0
+      },
+      "fixedNativeReport": "prerequisite8/candidate-native.json",
+      "fixedNativeInvocation": "prerequisite8/candidate-native-invocation.json",
+      "baselineNativeReport": "prerequisite8/parent-baseline-native.json",
+      "expectedNativeExact": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "expectedNativeExit": 1
+    }
+  },
+  "sourceControls": 40,
+  "ordinaryCases": 13,
+  "negativeControls": 7,
+  "negativeStreamHashes": 35,
+  "maintainedNativeCases": 12,
+  "fullPrerequisiteNative": "7/8, exit 1, five unresolved recorder cursor captures",
+  "passingPartitionReceipt": "partition-receipt.json",
+  "publicGatePins": {
+    "tools/config-menu-bindings-source-gate.mjs": "58e4b23ab5ba72795fe10090a1a12dff992030d0a1c3204239cdcd8c3ab738e6",
+    "tools/config-menu-bindings-input-gate.mjs": "3a7ed74104a7e6c479148a45fdddb697d73aab3299fc5a85464f4276f902134b",
+    "tools/config-menu-bindings-prerequisite-input-gate.mjs": "2ed09eac470435c98acfa9525d1f4dbb0d970df8575e9aa0bf0d7e4fa7a562b6"
+  }
+}

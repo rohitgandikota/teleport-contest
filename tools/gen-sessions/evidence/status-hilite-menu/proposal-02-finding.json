@@ -1,0 +1,11 @@
+{
+  "outcome": "Core source prediction reproduced; exit/lifetime suffix incomplete.",
+  "failedPrediction": "Two ESCs after accepting attribute would exit both field and status menus.",
+  "observed": "Added-hilite feedback has a real --More--. First ESC acknowledged it, leaving final snapshot in Status hilites with botDisabled true and hiliteDelta unset.",
+  "preserved": [
+    "ordinary/proposal-02.json",
+    "ordinary/proposal-02-probe.json",
+    "review/proposal-02-prediction.json"
+  ],
+  "nextChange": "Proposal03 inserts one ordinary space to acknowledge Added hilite before the two menu ESCs. No runtime changes; cancellation case unchanged."
+}

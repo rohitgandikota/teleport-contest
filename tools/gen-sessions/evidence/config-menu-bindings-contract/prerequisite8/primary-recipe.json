@@ -1,0 +1,903 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "config-menu-bindings-prerequisites",
+  "classification": "Separate source-derived inputs locked before any baseline replay or candidate. Parent C recording pending. Original five inputs are unchanged.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\nBINDINGS=;:menu_search\n",
+      "moves": "n;w\n",
+      "name": "chargen-bound-search-positive"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\nBINDINGS=;:menu_select_all\n",
+      "moves": "n~;\u001b",
+      "name": "chargen-bound-filter-all-positive"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\n",
+      "moves": "n:w\n",
+      "name": "chargen-default-search-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\n",
+      "moves": "nw",
+      "name": "chargen-explicit-role-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\n",
+      "moves": "n~a\u001b",
+      "name": "chargen-explicit-filter-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=#:menu_search\n",
+      "moves": " D#",
+      "name": "menu-capacity-32-search-positive"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=;:menu_select_all\nBINDINGS=#:menu_search\n",
+      "moves": " D#;",
+      "name": "menu-capacity-33-reject-positive"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=menustyle:partial\n",
+      "moves": " D#",
+      "name": "menu-capacity-unbound-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "chargen-bound-search-positive",
+      "family": "character-selection",
+      "positive": true,
+      "kind": "search",
+      "searchStep": 2,
+      "confirmationStep": 4,
+      "source": "role_menu_extra/setup_rolemenu -> process_menu_window map_menu_cmd MENU_SEARCH -> first selectable Wizard match -> genl_player_setup confirmation"
+    },
+    {
+      "name": "chargen-bound-filter-all-positive",
+      "family": "character-selection",
+      "positive": true,
+      "kind": "filter",
+      "selectionStep": 3,
+      "selected": "all",
+      "returnStep": 4,
+      "source": "role_menu_extra explicit ~ -> reset_role_filtering PICK_ANY -> mapped MENU_SELECT_ALL -> ESC cancels without applying filters"
+    },
+    {
+      "name": "chargen-default-search-negative",
+      "family": "character-selection",
+      "positive": false,
+      "kind": "search",
+      "searchStep": 2,
+      "confirmationStep": 4,
+      "source": "Existing default colon search and Wizard return convention"
+    },
+    {
+      "name": "chargen-explicit-role-negative",
+      "family": "character-selection",
+      "positive": false,
+      "kind": "role",
+      "confirmationStep": 2,
+      "source": "Explicit w selection -> Wizard confirmation; no alias producer"
+    },
+    {
+      "name": "chargen-explicit-filter-negative",
+      "family": "character-selection",
+      "positive": false,
+      "kind": "filter",
+      "selectionStep": 3,
+      "selected": "one",
+      "returnStep": 4,
+      "source": "Explicit a toggles only Archeologist then ESC cancels filter menu"
+    },
+    {
+      "name": "menu-capacity-32-search-positive",
+      "family": "capacity",
+      "positive": true,
+      "kind": "capacity-search",
+      "entriesAttempted": 32,
+      "searchStep": 3,
+      "source": "32nd alias # is appended and mapped to MENU_SEARCH"
+    },
+    {
+      "name": "menu-capacity-33-reject-positive",
+      "family": "capacity",
+      "positive": true,
+      "kind": "capacity-reject",
+      "entriesAttempted": 33,
+      "ignoredStep": 3,
+      "selectionStep": 4,
+      "selected": "all",
+      "source": "33rd alias # is rejected; the first ; alias still selects all. Early raw output is cleared before initial keyboard capture, with no extra acknowledgement."
+    },
+    {
+      "name": "menu-capacity-unbound-negative",
+      "family": "capacity",
+      "positive": false,
+      "kind": "capacity-unbound",
+      "entriesAttempted": 0,
+      "ignoredStep": 3,
+      "selected": "none",
+      "source": "Unmapped # is ignored by drop menu; no alias or capacity branch"
+    }
+  ],
+  "branches": [
+    "chargen-bound-search-positive",
+    "chargen-bound-filter-all-positive",
+    "chargen-default-search-negative",
+    "chargen-explicit-role-negative",
+    "chargen-explicit-filter-negative",
+    "menu-capacity-32-search-positive",
+    "menu-capacity-33-reject-positive",
+    "menu-capacity-unbound-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "chargen-bound-search-positive",
+      "segment": 0,
+      "screenIncludes": [
+        "Pick a role or profession",
+        "Search for:",
+        "Is this ok?",
+        "wizard the neutral male human Wizard"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 1,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 2,
+          "x": 2,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 2,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 2,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 2,
+          "x": 5,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 2,
+          "x": 6,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 2,
+          "x": 7,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 2,
+          "x": 8,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 2,
+          "x": 9,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 2,
+          "x": 10,
+          "y": 0,
+          "equals": ":"
+        }
+      ]
+    },
+    {
+      "branch": "chargen-bound-filter-all-positive",
+      "segment": 1,
+      "screenIncludes": [
+        "Pick a role or profession",
+        "Pick all that apply",
+        "Unacceptable roles"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 3,
+          "y": 3,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 4,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 5,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 6,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 7,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 8,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 9,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 10,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 11,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 12,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 13,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 14,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 15,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 18,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 19,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 20,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 21,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 22,
+          "equals": "+"
+        }
+      ]
+    },
+    {
+      "branch": "chargen-default-search-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Pick a role or profession",
+        "Search for:",
+        "Is this ok?",
+        "wizard the neutral male human Wizard"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 1,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 2,
+          "x": 2,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 2,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 2,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 2,
+          "x": 5,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 2,
+          "x": 6,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 2,
+          "x": 7,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 2,
+          "x": 8,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 2,
+          "x": 9,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 2,
+          "x": 10,
+          "y": 0,
+          "equals": ":"
+        }
+      ]
+    },
+    {
+      "branch": "chargen-explicit-role-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Pick a role or profession",
+        "Is this ok?",
+        "wizard the neutral male human Wizard"
+      ]
+    },
+    {
+      "branch": "chargen-explicit-filter-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Pick a role or profession",
+        "Pick all that apply",
+        "Unacceptable roles"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 3,
+          "y": 3,
+          "equals": "+"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 4,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 5,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 6,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 7,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 8,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 9,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 10,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 11,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 12,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 13,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 14,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 15,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 18,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 19,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 20,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 21,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 22,
+          "equals": "-"
+        }
+      ]
+    },
+    {
+      "branch": "menu-capacity-32-search-positive",
+      "segment": 5,
+      "screenIncludes": [
+        "Search for:",
+        "What would you like to drop?"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 3,
+          "x": 1,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 3,
+          "x": 2,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 3,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 3,
+          "x": 5,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 3,
+          "x": 6,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 3,
+          "x": 7,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 3,
+          "x": 8,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 3,
+          "x": 9,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 3,
+          "x": 10,
+          "y": 0,
+          "equals": ":"
+        }
+      ],
+      "screenExcludes": [
+        "out of menu map space.",
+        "Hit space to continue:",
+        "Hit return to continue:"
+      ]
+    },
+    {
+      "branch": "menu-capacity-33-reject-positive",
+      "segment": 6,
+      "screenIncludes": [
+        "What would you like to drop?"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 3,
+          "y": 3,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 5,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 7,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 8,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 9,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 11,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 12,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 14,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 15,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 16,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 18,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 19,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 21,
+          "equals": "-"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 3,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 5,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 7,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 8,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 9,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 11,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 12,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 14,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 15,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 16,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 18,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 19,
+          "equals": "+"
+        },
+        {
+          "step": 4,
+          "x": 3,
+          "y": 21,
+          "equals": "+"
+        }
+      ],
+      "screenExcludes": [
+        "out of menu map space.",
+        "Hit space to continue:",
+        "Hit return to continue:",
+        "Search for:"
+      ]
+    },
+    {
+      "branch": "menu-capacity-unbound-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "What would you like to drop?"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 3,
+          "y": 3,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 5,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 7,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 8,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 9,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 11,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 12,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 14,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 15,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 16,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 18,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 19,
+          "equals": "-"
+        },
+        {
+          "step": 3,
+          "x": 3,
+          "y": 21,
+          "equals": "-"
+        }
+      ],
+      "screenExcludes": [
+        "out of menu map space.",
+        "Hit space to continue:",
+        "Hit return to continue:",
+        "Search for:"
+      ]
+    }
+  ]
+}

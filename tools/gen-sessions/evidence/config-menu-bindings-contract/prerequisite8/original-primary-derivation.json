@@ -1,0 +1,20 @@
+{
+  "classification": "Pre-C primary metadata derived after the locked fixed-baseline reach check, before any runtime candidate. No input or original expectation edits.",
+  "originalRecipeSHA256": "02302150b4bf9d53ee34720c7bdf5cb5e84b24a78b843e906fe133864c6bd439",
+  "inputLockSHA256": "2e78736c9980f145758c159b57b671a13efb25c14c3a440e0b561b62d3da55e8",
+  "minimalInputSHA256": "a2fb550fc1a4919e3509e5ce43c31cc6c9dc28c433c4a3fc00cb9739b2b93833",
+  "primaryRecipeSHA256": "f69b8be31171e4506b0b571e8d4dc1d1f2b8a917613994cc2f2ca63d38ede45b",
+  "onlyAddedTopLevelKeys": [
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "allOriginalKeysAndValuesUnchanged": true,
+  "allFiveFieldsAndEveryKeyUnchanged": true,
+  "cases": 8,
+  "keys": 28,
+  "expectedBoundaries": 36,
+  "primaryAssertions": 8,
+  "coordinates": "Search prompt starts on the message line at (0,0) in the C MENU_SEARCH branch. Filter and drop entry marker coordinates come from the fixed baseline layout; expected markers follow the locked C branch predictions. Capacity messages are absent from input frames because startup clears them, not because the helper does not emit them.",
+  "separateRecorderLead": "The local recorder source leaves nomux_raw_active set after pre-window raw output. nomux_get_cursor can then use the early raw cursor even after tty_init clears the grid. Parent must preserve and diagnose any cursor-only failure; this metadata neither changes cursor output nor excuses full-stream mismatch."
+}

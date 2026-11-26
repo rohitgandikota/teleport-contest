@@ -1,8 +1,55 @@
 # STATUS — live handoff board
 
-## 2026-11-26: inventory action checkpoint verified, publication next
+## 2026-11-26: menu checkpoint ready to publish after usage reset
 
-The current inventory checkpoint is ready to commit and push immediately.
+Parent is dadb52c9dee9da8610b1609727e88df95a0e3271. The reviewed eight-file
+menu/status composition remains fixed at c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a.
+Full930 completed successfully at 06:43Z while usage was unavailable. All 930
+recordings pass, with 934,828 screens/cursors, 20,401,823 random calls and
+33,179 frames. All 1,221 files are fixed. Verification SHA256:
+9ca3618f92466823d580714e90dd7bae68bf16fd78a256fd5bc8d7d1a60f20d0.
+Do not rerun the completed NFS job. All 47 public/new strict workers, 29
+retained checks and the static scope/import audit pass. The retained input
+test's initial invocation omitted required arguments; its corrected invocation
+passes all 20 assertions without test or runtime changes.
+
+Status promotion51 and menu promotion90 are installed: 91 payloads and 17
+requirements, total 4,663, preserving every earlier requirement. Fresh public
+gates pass 40 source controls, 13 menu cases and 34 status assertions over four
+cases. All 50 negative hashes remain fixed. Native reports are unchanged from
+the isolated candidates: 5/5 menu, 7/8 prerequisites, and 4/4 status. The five
+known overflow-capture cursor failures remain explicit in the full eight-case
+diagnostic. Only its seven unaffected segments enter the maintained corpus.
+The status report differs from its isolated report only by wrapper metadata;
+it is byte-identical to the portable report. The menu promotion's original
+historical-path verifier failure and corrected verifier are retained, with
+all 65 public payloads unchanged. Both current promotion verifiers pass.
+
+Next action: stage the exact installed payloads, eight runtime files, registry
+and documentation; verify all 1,221 staged blobs; commit and push immediately.
+Then run verify-full-publication.py menu-input-full930 NEW_COMMIT
+menu-input-parent-composed. Keep that fixed runner intact.
+
+Queued work is separate: wall-mode candidate325 passes 3/3 C cases and repairs
+18 boundaries with one existing helper call; its portable promotion is in
+progress. Accessory routing has a locked four-case source packet and one C
+recording. C confirms all predictions, baseline3/4, with three exact negatives.
+The positive repairs inventory P routing to dowear while preserving direct P's
+C behavior without hands. Its isolated candidate is in progress. Neither fix
+is installed on main. Euclid is investigating status_enlightenment's synchronous
+call to async youhiding, source-only until an observable difference is proved.
+
+The official feed checked at 15:33:01Z now reports 659 unmatched screens,
+43/56 held-out passes and 44/44 public passes, agentic rank 7. The scored row
+is 13:37:55Z, after the recent pushes, but provides no exact scored commit.
+The previous row had 812 unmatched and 42/56 held-out passes. Rank 1 remains unmet. User renewed continuous work
+and push authorization and restored usage again.
+
+## 2026-11-26: inventory actions pushed; menu input under verification
+
+Inventory actions are pushed as dadb52c9dee9da8610b1609727e88df95a0e3271.
+All 1,218 tested files match the published tree; publication receipt SHA256
+47a9a2961ddbbab3596a27a1592bfc7753d4fcc9c65ae23439d82e0d2182558a.
 Parent is c6839cb352d66b3ef6737cb917a5b07708942c64. Only js/cmd.js changes:
 identified oil keeps the apply action selected by the menu, and tin labels
 place the wielded-opener phrase in C order. Fixed runtime map SHA256:
@@ -27,8 +74,21 @@ price controls on both runtimes; effective retained checks are 16/16. Original
 failures, original test and correction receipts are retained in the public
 itemactions-context evidence. Eight requirements are appended, total 4,646.
 
-Next: commit, push, then verify-full-publication.py itemactions-context-full927
-NEW_COMMIT itemactions-context-candidate. Keep that runner fixed until done.
+Menu and status candidates are now composed on dadb52c9. Eight runtime files
+change, with every other module fixed. Composition runtime SHA256
+c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a.
+Parent native reports are identical to each isolated candidate: menu 5/5,
+prerequisites 7/8 with the same five overflow cursor failures, and status 4/4.
+All 29 retained commands pass after correcting one invocation that omitted
+required fixture/report arguments. All 47 public/new strict workers pass.
+Portable promotion packets are being prepared. Full930 is running on NFS,
+PID3424599, two CPU workers, default limits and no retries. It links 927
+existing recordings and uploads only 294 source/new-recording files.
+All-files SHA256 9c308975a631efc1abf250e8b89a6c0ab1cca37fdb6720f2894a7b26a8cd0aec.
+Run directory: menu-input-full930-js-20261126 under the existing NFS root.
+Poll with poll-menu-input-full930-remote.py; never relaunch. Keep main fixed.
+The full eight-case overflow diagnostic stays outside the passing corpus;
+the seven valid segments will be retained without input or output changes.
 The menu-binding candidate349 is sealed and verified, with 40 source controls,
 13 ordinary cases, 35 unchanged negative hashes, and native 5/5 plus 7/8.
 Its one remaining failure is the independently confirmed five-cursor capture
@@ -36,7 +96,14 @@ defect on early alias-overflow output. Review all seven changed owners before
 composition and keep that entire eight-case diagnostic explicit. Status-menu
 source329 has a fresh four-case C raw; baseline is verified 3/4. A separate
 candidate is in progress. Wall-mode source322 has three locked inputs and
-needs parent C confirmation before any runtime candidate. No raw is rerun.
+has parent C confirmation: all three predicates pass, baseline2/3 with18
+positive screen differences and two exact negatives. The raw was recorded
+once. Parent omitted the root source metadata in the minimal input; the
+recorder copied that absence. The original raw remains unchanged, with the
+post-recording KeyError and pinned successful C invocation preserved in
+wallify-vault-wall-mode-parent-native-primary-check.json. A separate isolated
+wall-mode candidate is authorized; no vault change is installed. No raw is
+rerun.
 
 The official feed checked at 06:14:34Z is unchanged: agentic rank 7, 812
 unmatched screens, and a lastScored timestamp of 01:32:14Z. That score predates

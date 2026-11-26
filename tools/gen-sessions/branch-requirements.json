@@ -4664,6 +4664,152 @@
     {"group": "Inventory actions", "id": "itemactions.lamp-apply-negative", "cFile": "iactions.c", "cFunction": "itemactions_pushkeys", "description": "Light this light source; Your lamp is now on."},
     {"group": "Inventory actions", "id": "itemactions.tin-opener-text", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin with your tin opener and eat the contents"},
     {"group": "Inventory actions", "id": "itemactions.tin-no-opener-negative", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin and eat the contents"},
-    {"group": "Inventory actions", "id": "itemactions.tin-opener-not-wielded-negative", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin and eat the contents"}
+    {"group": "Inventory actions", "id": "itemactions.tin-opener-not-wielded-negative", "cFile": "iactions.c", "cFunction": "itemactions", "description": "Open this tin and eat the contents"},
+    {
+      "group": "Status highlight menu",
+      "id": "status.hilite-menu.percent-suffix",
+      "description": "C botl.c3936-4083 mutates inbuf through numstart; appending percent also changes comparison text in3811-3887.",
+      "minimumSessions": 1,
+      "normalModeRequired": true
+    },
+    {
+      "group": "Status highlight menu",
+      "id": "status.hilite-menu.explicit-percent-negative",
+      "description": "Explicit percent is stripped then restored in the same C buffer; comparison and committed rule retain50%.",
+      "minimumSessions": 1,
+      "normalModeRequired": true
+    },
+    {
+      "group": "Status highlight menu",
+      "id": "status.hilite-menu.absolute-number-negative",
+      "description": "C absolute-value behavior never appends percent; same comparison/color/attribute path commits absolute50.",
+      "minimumSessions": 1,
+      "normalModeRequired": true
+    },
+    {
+      "group": "Status highlight menu",
+      "id": "status.hilite-menu.empty-cancel-negative",
+      "description": "Empty C getlin input returns to choose_behavior; ESC returns through field and outer menus without a rule.",
+      "minimumSessions": 1,
+      "normalModeRequired": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-bind-select-and-help-positive",
+      "cFile": "src/options.c",
+      "cFunction": "parsebindings",
+      "description": "menu bind select and help positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-option-select-and-help-positive",
+      "cFile": "src/options.c",
+      "cFunction": "shared_menu_optfn",
+      "description": "menu option select and help positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-default-select-negative",
+      "cFile": "win/tty/wintty.c",
+      "cFunction": "process_menu_window",
+      "description": "menu default select negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-explicit-item-negative",
+      "cFile": "win/tty/wintty.c",
+      "cFunction": "process_menu_window",
+      "description": "menu explicit item negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-extended-command-negative",
+      "cFile": "src/cmd.c",
+      "cFunction": "bind_key",
+      "description": "menu extended command negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-bound-search-positive",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen bound search positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-bound-filter-all-positive",
+      "cFile": "src/role.c",
+      "cFunction": "reset_role_filtering",
+      "description": "chargen bound filter all positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-default-search-negative",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen default search negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-explicit-role-negative",
+      "cFile": "src/role.c",
+      "cFunction": "genl_player_setup",
+      "description": "chargen explicit role negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "chargen-explicit-filter-negative",
+      "cFile": "src/role.c",
+      "cFunction": "reset_role_filtering",
+      "description": "chargen explicit filter negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-32-search-positive",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "menu capacity 32 search positive",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-33-reject-positive",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "Capacity 33 emits the early diagnostic synchronously and retains 32 aliases. C primary and ordinary control pass; full8 native remains 7/8, exit 1, with five confirmed recorder cursor defects.",
+      "nativeStatus": "diagnostic",
+      "maintainedPassingCorpus": false,
+      "evidence": "tools/gen-sessions/evidence/config-menu-bindings-contract/prerequisite8/parent-native.session.json"
+    },
+    {
+      "group": "config-menu-bindings",
+      "id": "menu-capacity-unbound-negative",
+      "cFile": "src/options.c",
+      "cFunction": "add_menu_cmd_alias",
+      "description": "menu capacity unbound negative",
+      "nativeStatus": "exact",
+      "maintainedPassingCorpus": true
+    }
   ]
 }

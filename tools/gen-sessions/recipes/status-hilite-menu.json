@@ -1,0 +1,117 @@
+{
+  "name": "status-hilite-menu",
+  "description": "Normal keyboard percentage rule creation exposes C mutable-input suffix restoration in comparison choices, with explicit-percent, absolute-value and empty-input cancellation controls. Source prediction; parent C pending.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "name": "percent-bare-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp50\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "percent-explicit-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp50%\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "absolute-number-commit",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rn50\rcb\r \u001b\u001b"
+    },
+    {
+      "name": "percent-empty-cancel",
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l rp\r\u001b\u001b"
+    }
+  ],
+  "branches": [
+    "status.hilite-menu.percent-suffix",
+    "status.hilite-menu.explicit-percent-negative",
+    "status.hilite-menu.absolute-number-negative",
+    "status.hilite-menu.empty-cancel-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "status.hilite-menu.percent-suffix",
+      "segment": 0,
+      "source": "C botl.c3936-4083 mutates inbuf through numstart; appending percent also changes comparison text in3811-3887.",
+      "screenIncludes": [
+        "Select hitpoints field hilite behavior:",
+        "Enter percentage value for hitpoints threshold:",
+        "Less than 50%",
+        "50% or less",
+        "Exactly 50%",
+        "50% or more",
+        "More than 50%",
+        "Choose a color for when hitpoints is 50%:",
+        "Choose attribute for when hitpoints is 50%:",
+        "Added hilite hitpoints/=50%/red&normal",
+        "Current hitpoints hilites:"
+      ]
+    },
+    {
+      "branch": "status.hilite-menu.explicit-percent-negative",
+      "segment": 1,
+      "source": "Explicit percent is stripped then restored in the same C buffer; comparison and committed rule retain50%.",
+      "screenIncludes": [
+        "Select hitpoints field hilite behavior:",
+        "Less than 50%",
+        "50% or less",
+        "Exactly 50%",
+        "50% or more",
+        "More than 50%",
+        "Added hilite hitpoints/=50%/red&normal",
+        "Current hitpoints hilites:"
+      ]
+    },
+    {
+      "branch": "status.hilite-menu.absolute-number-negative",
+      "segment": 2,
+      "source": "C absolute-value behavior never appends percent; same comparison/color/attribute path commits absolute50.",
+      "screenIncludes": [
+        "Select hitpoints field hilite behavior:",
+        "Less than 50",
+        "50 or less",
+        "Exactly 50",
+        "50 or more",
+        "More than 50",
+        "Added hilite hitpoints/=50/red&normal",
+        "Current hitpoints hilites:"
+      ],
+      "screenExcludes": [
+        "Exactly 50%",
+        "Added hilite hitpoints/=50%"
+      ]
+    },
+    {
+      "branch": "status.hilite-menu.empty-cancel-negative",
+      "segment": 3,
+      "source": "Empty C getlin input returns to choose_behavior; ESC returns through field and outer menus without a rule.",
+      "screenIncludes": [
+        "Select hitpoints field hilite behavior:",
+        "Enter percentage value for hitpoints threshold:",
+        "Status hilites:"
+      ],
+      "screenExcludes": [
+        "Exactly 50",
+        "Choose a color for when hitpoints",
+        "Added hilite",
+        "Current hitpoints hilites:"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "candidateOrdinary": {
+    "passed": 34,
+    "total": 34,
+    "bodyUnchanged": true,
+    "primaryBranches": 4,
+    "observerPlainDeferredEqual": true,
+    "negativeRowsUnchanged": 3,
+    "negativeHashesUnchanged": 15,
+    "changedPositiveObservedBoundaries": [
+      11
+    ],
+    "positiveCursorsCallsSlicesFramesUnchanged": true
+  },
+  "candidateNative": {
+    "cases": 4,
+    "passed": 4,
+    "boundaries": 67,
+    "calls": 16116,
+    "frames": 0,
+    "fullStylesCursorsRngSlicesFramesExact": true,
+    "negativeCompleteRowsEqualParentArtifact": true,
+    "parentBaselineCountClaimed": true,
+    "parentBaselineNote": "Parent subsequently confirmed corrected fresh baseline3/4; original loader failure and retracted inference remain preserved.",
+    "parentBaselinePassed": 3,
+    "parentBaselineReportSHA256": "6da034b986da42986c5d0fef8d582462f8fb6e271fba5d8e2c6abb17999c92bd"
+  },
+  "runtimeMapSHA256": "1e9df95eece3190417a08ff770b17fe2b723230083a73d7cd753c48b30fb7897",
+  "candidateOrdinarySHA256": "b688937bac693c686afbb2624929bd4fec09831dbf36bfbdf05566fdfa253677",
+  "candidateNativeSHA256": "597ed654ec518cdd0ae3aa052fef7ca90bbbdb128b25d34030ec4573a975eefd",
+  "rawSHA256": "92f1b7874b112c686022d871664f161a0e3445fc5e0ce152b3a82eb517c7e7d8",
+  "runtimeScope": [
+    "js/botl.js"
+  ],
+  "workerCRecorded": false,
+  "supplementalOrdinaryInputsCreated": false
+}

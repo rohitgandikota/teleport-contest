@@ -1,0 +1,20 @@
+{
+  "classification": "Pre-C metadata-only derivation. No C recording or runtime candidate exists.",
+  "originalRecipeSHA256": "571b9bc80ebcadb24a0486739396a6101e2315b73cc1b631e35a245389b8ee34",
+  "originalInputLockSHA256": "da011b5580ded2ed1b62d41f5f8505153d91d0c78334407f22f9fd5097cdaa0a",
+  "primaryRecipeSHA256": "24e20c27b5faae09053cf1e524631d7433743e5cbc4110562b72b7791c3f46df",
+  "minimalInputSHA256": "f5aa72d460c5fec52abff48848da01301808e208788a096c9dde0a12a1072765",
+  "onlyAddedTopLevelKeys": [
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "allOriginalKeysAndValuesUnchanged": true,
+  "allFiveInputFieldsPresentAndUnchanged": true,
+  "segments": 5,
+  "keys": 31,
+  "expectedBoundaries": 36,
+  "primaryAssertions": 5,
+  "sourcePrediction": "C menu alias dispatch/select-all/help contract; both repeated selects are idempotent. Three negatives cover default bulk select, explicit selector, and ordinary extended-command binding.",
+  "cellCoordinates": "Visible menu layout from unchanged fixed baseline, including its passing default-selection negative. Expected markers come from C set_all_on_page/toggle_menu_curr and the locked original expectations. Parent recording must confirm these predictions without edits."
+}

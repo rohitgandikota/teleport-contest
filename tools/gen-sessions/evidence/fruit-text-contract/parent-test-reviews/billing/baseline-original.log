@@ -1,0 +1,130 @@
+{
+    "evidence": "JS input only; C recording pending",
+    "passed": 7,
+    "total": 8,
+    "checks": [
+        "all ordinary inputs reach every boundary with consistent collections",
+        "sale, repurchase and drinking create a real used-up bill record in both cases",
+        "both used-up menus show the actual named potion and its bill",
+        "the pre-removal stats screen counts one bill record",
+        "post-removal stats no longer includes the cancelled bill owner",
+        "ordinary payment removes the bill only after charging the actual amount",
+        "paid used-up record is staged at feedback and zeroed by the next turn"
+    ],
+    "failures": [
+        {
+            "name": "shopkeeper death cancels and disposes the retained record",
+            "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+        }
+    ],
+    "observationsNeutral": true,
+    "native": null,
+    "segments": [
+        {
+            "name": "cancel-used-up-on-keeper-death",
+            "boundaries": 141,
+            "calls": 5423,
+            "frames": 3
+        },
+        {
+            "name": "pay-used-up",
+            "boundaries": 131,
+            "calls": 5399,
+            "frames": 0
+        }
+    ],
+    "witnesses": [
+        {
+            "gold": 10,
+            "keeper": true,
+            "bills": [
+                {
+                    "id": 139,
+                    "quantity": 1,
+                    "price": 27,
+                    "useup": true
+                }
+            ],
+            "billobjs": [
+                {
+                    "id": 139,
+                    "where": 7,
+                    "quantity": 1
+                }
+            ],
+            "receipt": {
+                "id": 139,
+                "where": 7,
+                "keys": 30
+            }
+        },
+        {
+            "gold": 10,
+            "keeper": true,
+            "bills": [],
+            "billobjs": [],
+            "receipt": {
+                "id": 139,
+                "where": 9,
+                "keys": 30
+            }
+        },
+        {
+            "gold": 10,
+            "keeper": false,
+            "bills": [],
+            "billobjs": [],
+            "receipt": {
+                "id": null,
+                "where": null,
+                "keys": 0
+            }
+        },
+        {
+            "gold": 1010,
+            "keeper": true,
+            "bills": [
+                {
+                    "id": 139,
+                    "quantity": 1,
+                    "price": 27,
+                    "useup": true
+                }
+            ],
+            "billobjs": [
+                {
+                    "id": 139,
+                    "where": 7,
+                    "quantity": 1
+                }
+            ],
+            "receipt": {
+                "id": 139,
+                "where": 7,
+                "keys": 30
+            }
+        },
+        {
+            "gold": 983,
+            "keeper": true,
+            "bills": [],
+            "billobjs": [],
+            "receipt": {
+                "id": 139,
+                "where": 9,
+                "keys": 30
+            }
+        },
+        {
+            "gold": 983,
+            "keeper": true,
+            "bills": [],
+            "billobjs": [],
+            "receipt": {
+                "id": null,
+                "where": null,
+                "keys": 0
+            }
+        }
+    ]
+}

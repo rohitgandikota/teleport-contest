@@ -1,0 +1,377 @@
+[
+  {
+    "segment": 0,
+    "name": "reader-fruit-eightbit-before",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3033,
+      "rawActual": 3033,
+      "discardedEntries": 0,
+      "expected": 3033,
+      "actual": 3033,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "f92c66223bbf3fa8dc17c53aff0449c454d646660aae6bdd8dbf018eb8c80ece",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "9d1d5faacce18dfed5c95f19d58ca31717d672625966bd2e2f01082977f0fc5a",
+        "slices": "f06c3e8c1141a6a1a77e2bb8ac7d51373240feedcdc3c6c79cf9ecca50911125",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "3d7e3eeaa377b4bac7d54c131daecd76484b807f90cb08c9181276f40afb841c",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      },
+      "js": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "reader-fruit-eightbit-after",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3033,
+      "rawActual": 3033,
+      "discardedEntries": 0,
+      "expected": 3033,
+      "actual": 3033,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9b207e36a22ad826d0eed37e0a6ed6e35f0cc5e47e016f49bdf77f5631b858da",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "9d1d5faacce18dfed5c95f19d58ca31717d672625966bd2e2f01082977f0fc5a",
+        "slices": "f06c3e8c1141a6a1a77e2bb8ac7d51373240feedcdc3c6c79cf9ecca50911125",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "ab9ca1ffe4d9e324fcd6ddcc4e372b5b68abe7e9cde22196661223dc7b2cc5d0",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      },
+      "js": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "reader-fruit-enabled-partial-byte",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3033,
+      "rawActual": 3033,
+      "discardedEntries": 0,
+      "expected": 3033,
+      "actual": 3033,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2c4eed8738aa7d0db605b40b3fcebb178dcf411df3ad21869606f36077505353",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "9d1d5faacce18dfed5c95f19d58ca31717d672625966bd2e2f01082977f0fc5a",
+        "slices": "f06c3e8c1141a6a1a77e2bb8ac7d51373240feedcdc3c6c79cf9ecca50911125",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "dc8209ea76b5a7fd57b654c8dc79050c00174438a4a3de2870331df9a140fc8d",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      },
+      "js": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "reader-fruit-control-low-seven",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3033,
+      "rawActual": 3033,
+      "discardedEntries": 0,
+      "expected": 3033,
+      "actual": 3033,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "5d90d18e558146e6069c79b0bfd05ea65da08f358a2999c0a874e4fc6d58b312",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "9d1d5faacce18dfed5c95f19d58ca31717d672625966bd2e2f01082977f0fc5a",
+        "slices": "f06c3e8c1141a6a1a77e2bb8ac7d51373240feedcdc3c6c79cf9ecca50911125",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "cfde8d2ec9a3388eb3bd415846fbfc4e311eb41599114f91861642b8cd6ced0c",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      },
+      "js": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "name": "reader-fruit-ascii-negative",
+    "boundaries": {
+      "expected": 9,
+      "actual": 9
+    },
+    "frozenScreens": 9,
+    "fullStyleScreens": 9,
+    "matchingStyleCells": 17280,
+    "totalCells": 17280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3033,
+      "rawActual": 3033,
+      "discardedEntries": 0,
+      "expected": 3033,
+      "actual": 3033,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 9,
+      "actual": 9,
+      "matched": 9,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 9,
+      "actualSlices": 9,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9928efacc349808157df570ac5c7e10edfd98940a43d8d055a299168e9f1e526",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "9d1d5faacce18dfed5c95f19d58ca31717d672625966bd2e2f01082977f0fc5a",
+        "slices": "f06c3e8c1141a6a1a77e2bb8ac7d51373240feedcdc3c6c79cf9ecca50911125",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "js": {
+        "screens": "3b98df675d7ce226f9308480f3cbd7958e94293ba1dcc80513b2cabe61d8c7d2",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      },
+      "js": {
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

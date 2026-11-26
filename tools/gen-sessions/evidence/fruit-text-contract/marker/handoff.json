@@ -1,0 +1,56 @@
+{
+  "classification": "Minimal independent marker-color prerequisite after immutable fruit/text334. Source/JS accounting pass; native18 and composition pending.",
+  "baseline": {
+    "runtime": "baseline",
+    "map": "source/base-runtime.json",
+    "sha256": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff",
+    "source334ManifestSHA256": "6095f7576c8d7f548948d3801fb20e288d367cb6b709241f0836a26e23cd1210"
+  },
+  "candidate": {
+    "runtime": "candidate",
+    "map": "source/candidate-runtime.json",
+    "sha256": "b72982ce01ec0a50b990c19b9e3005567e44d8e091b8ba2bb122784d907a3381",
+    "modules": 280,
+    "changed": [
+      "js/tty/wintty.js"
+    ],
+    "ownerSHA256": "4c18ccdbbd2f3c6644bd214c23f4b19ab9870d8d55bfde4678f14898357ecf58"
+  },
+  "patch": {
+    "path": "scoped-runtime.patch",
+    "sha256": "66741917e372e10fa642b363c2479b3d9811da9d9b5da0f56066545aca9e4ffa",
+    "meaning": "set_item_state cell foreground NO_COLOR -> tty_color(item.color); one expression"
+  },
+  "preCandidateLock": {
+    "path": "source/pre-candidate-lock.json",
+    "sha256": "b2aa5f646173ae4aba7d7fe5616746e430c378f8bd9a7653f73408aaaefc3299"
+  },
+  "sourceControls": {
+    "before": "6/12",
+    "after": "12/12",
+    "negativeFullGridsUnchanged": 6,
+    "beforeReportSHA256": "1d67daa11b93e3f696617e8699577bb04f35d7b269b7d3ca2371164bb21ea0b1",
+    "afterReportSHA256": "cb60afe4d72a7c6c6005386d4ebbaaffb0a4701acbc05a00038fbd609895d79a"
+  },
+  "accounting": {
+    "path": "reports/accounting-v2.json",
+    "sha256": "391ae2aa6c43ae2e443dce60969840454ca647e57361cc7f53b9651ef9d22617",
+    "cases": 18,
+    "keys": 176,
+    "boundaries": 194,
+    "calls": 54142,
+    "frames": 0,
+    "onlyStyledChanges": 2,
+    "allOtherFourStreamsUnchanged": true,
+    "legacyNegativeHashesUnchanged": "34/35",
+    "legacyFailure": "Original ASCII screen expectation explicitly FAILS. Its old hash is retained; new marker-color result is a separate reconciliation."
+  },
+  "nativeBefore": "Source33416/18 vsdbb6/18, parent receipt pinned unchanged",
+  "nativeAfter": "Pending parent18 comparison; do not rerecord",
+  "parentPrerequisites": [
+    "Compare this fixed candidate on unchanged certified initial11, pickup2 and old fruit5 C evidence.",
+    "Verify exact color-cell attribution, then compose one-owner patch after fruit/text eight-owner patch and wrapped clearing.",
+    "Preserve original334 ASCII negative assertion/report/hash as historical failure; add a separate composition accounting receipt instead of silently replacing it.",
+    "Reconcile the unsealed portable companion including original missing-source raw/metadata proof and all18 C branches before final sealing/publication."
+  ]
+}

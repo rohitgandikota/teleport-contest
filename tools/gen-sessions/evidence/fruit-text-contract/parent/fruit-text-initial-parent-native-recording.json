@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-11-26T01:39:20.439533+00:00",
+  "input": ".cache/restart-20261122/fruit-text-initial-parent-input.session.json",
+  "inputSha256": "a310f496256fe502834ac25c8af3cafac888aef5bf33725c6481471dc768780b",
+  "sourceInput": ".cache/restart-20261122/fruit-text-initial-parent-minimal.session.json",
+  "sealReference": ".cache/restart-20261122/config-byte-reader-source-audit/fruit-text/SEAL.md",
+  "sealSha256": "d933c92f0b850580cf7a599945cbed71ac8bc68450be0a39ec4b493be878cd18",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/fruit-text-initial-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T01:39:21.104318+00:00"
+}

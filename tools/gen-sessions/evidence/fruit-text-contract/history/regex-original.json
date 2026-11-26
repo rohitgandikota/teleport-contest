@@ -1,0 +1,39 @@
+{
+  "classification": "Constructed source controls of an existing helper. No C execution, native comparison, gameplay replay, or repaired-fruit claim.",
+  "baselineManifestSHA256": "e16cc136a9ca9feceec02559a2166ed6d6669fd55d029dcb9e6654781e5ddd2d",
+  "source": {
+    "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/baseline/js/posixregex.js",
+    "sha256": "0527a70787a8f2d5887f379bfbf75f75b7d74baf04ad28a1160b4eef7de84318"
+  },
+  "controls": 8,
+  "passed": 8,
+  "finding": "Both non-ASCII byte-string handoffs change the bytes and fail matching; byte arrays preserve them. The existing Unicode and ASCII controls still match.",
+  "rows": [
+    {
+      "name": "complete-utf8",
+      "pattern": "^..$",
+      "retainedBytesHex": "c3a9",
+      "byteStringReencodedHex": "c383c2a9",
+      "byteArrayMatch": true,
+      "byteStringMatch": false,
+      "originalUnicodeMatch": true
+    },
+    {
+      "name": "partial-utf8",
+      "pattern": "^.$",
+      "retainedBytesHex": "c3",
+      "byteStringReencodedHex": "c383",
+      "byteArrayMatch": true,
+      "byteStringMatch": false
+    },
+    {
+      "name": "ascii-negative",
+      "pattern": "^..$",
+      "retainedBytesHex": "6162",
+      "byteStringReencodedHex": "6162",
+      "byteArrayMatch": true,
+      "byteStringMatch": true,
+      "originalUnicodeMatch": true
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "classification": "Source-predicted ordinary checks, not native proof. Initial failures retained.",
+  "variant": "baseline",
+  "recipeSHA256": "a55a5b01527c41e17db5db7cadcbc0c870ac1807f7190d1ad3a51e365c9a85d9",
+  "inputLockSHA256": "ab5259c513a1e68bd65096ff4ee5cb9afdd71b35f07ca3836ff12a9b26bf1fb5",
+  "runtimeMapSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "passed": 1,
+  "total": 2,
+  "rows": [
+    {
+      "name": "fruit-text-autopickup-reject-bytes-reachable",
+      "family": "pickup",
+      "asciiNegative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "all keys and five streams observer/plain/deferred",
+          "pass": true
+        },
+        {
+          "name": "ordinary valid RC",
+          "pass": true
+        },
+        {
+          "name": "C stored fruit bytes",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.fruitHex === want.fruitHex && s.chainHex === want.fruitHex))\n"
+        },
+        {
+          "name": "real inventory fruit result",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n1 !== 0\n"
+        },
+        {
+          "name": "real floor fruit result",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+        },
+        {
+          "name": "ordinary automatic exception and return",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n'e9' !== 'c3a9'\n"
+        }
+      ],
+      "hashes": {
+        "screens": "5737bb29cb33e26d295e30d7c7581835305e40e67ee1e0124c34c4d9dabed6b8",
+        "cursors": "5fafcba7dd9dd6d2994a7b900e530358b8af21de168b53b39173c2ddae28d19d",
+        "calls": "7dddcb57432d951e98220c8251fd12f6b65948b35815a3abf5c798b054f41eba",
+        "slices": "4a074c69367ad0682c82fc28f7e8d4656346184b828229d6c4073ed01563b651",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      },
+      "boundaries": 13,
+      "calls": 3088,
+      "first": {
+        "step": 0,
+        "xy": [
+          8,
+          12
+        ],
+        "moves": 1,
+        "fruitHex": "5f",
+        "chainHex": "5f",
+        "heroHex": "77697a617264",
+        "titleHex": "57697a617264207468652045766f6b657220202020202020202020202020",
+        "eightBit": false,
+        "autopickup": true,
+        "droppedNopick": false,
+        "inventoryFruit": [],
+        "floorFruit": [],
+        "exceptions": [
+          {
+            "hex": "e9",
+            "grab": false
+          }
+        ],
+        "menuPatterns": [],
+        "msgPatterns": [],
+        "errors": [],
+        "unhandled": [],
+        "pending": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.",
+        "toplin": 1
+      },
+      "last": {
+        "step": 12,
+        "xy": [
+          8,
+          12
+        ],
+        "moves": 4,
+        "fruitHex": "5f",
+        "chainHex": "5f",
+        "heroHex": "77697a617264",
+        "titleHex": "57697a617264207468652045766f6b657220202020202020202020202020",
+        "eightBit": false,
+        "autopickup": true,
+        "droppedNopick": false,
+        "inventoryFruit": [
+          {
+            "id": 72,
+            "spe": 1,
+            "quan": 1
+          }
+        ],
+        "floorFruit": [],
+        "exceptions": [
+          {
+            "hex": "e9",
+            "grab": false
+          }
+        ],
+        "menuPatterns": [],
+        "msgPatterns": [],
+        "errors": [],
+        "unhandled": [],
+        "pending": "a - a _.  The grid bug bites!  You get zapped!",
+        "toplin": 1
+      },
+      "relevantToplines": [
+        {
+          "step": 12,
+          "top": "a - a _.  The grid bug bites!  You get zapped!\n"
+        }
+      ]
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative-reachable",
+      "family": "pickup",
+      "asciiNegative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and five streams observer/plain/deferred",
+          "pass": true
+        },
+        {
+          "name": "ordinary valid RC",
+          "pass": true
+        },
+        {
+          "name": "C stored fruit bytes",
+          "pass": true
+        },
+        {
+          "name": "real inventory fruit result",
+          "pass": true
+        },
+        {
+          "name": "real floor fruit result",
+          "pass": true
+        },
+        {
+          "name": "ordinary automatic exception and return",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "f171f91ba210399f30a4960c336fca621409b1b0eda4a3795a9e816e751ffcc9",
+        "cursors": "f1e4afc936c36ea552b4c5fbf8f5faadda3a339a2549f7c58250e78c902e469b",
+        "calls": "b5adccd36ac423ccc693a9829c9fd135814572c4212833ea189b1ee0cdefcc04",
+        "slices": "fdbc3ea7170989b0e214a66eb21a1dba42f577cec5455ba60e771643f4ff5dcb",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      },
+      "boundaries": 13,
+      "calls": 3061,
+      "first": {
+        "step": 0,
+        "xy": [
+          8,
+          12
+        ],
+        "moves": 1,
+        "fruitHex": "627974656672756974",
+        "chainHex": "627974656672756974",
+        "heroHex": "77697a617264",
+        "titleHex": "57697a617264207468652045766f6b657220202020202020202020202020",
+        "eightBit": false,
+        "autopickup": true,
+        "droppedNopick": false,
+        "inventoryFruit": [],
+        "floorFruit": [],
+        "exceptions": [
+          {
+            "hex": "627974656672756974",
+            "grab": false
+          }
+        ],
+        "menuPatterns": [],
+        "msgPatterns": [],
+        "errors": [],
+        "unhandled": [],
+        "pending": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.",
+        "toplin": 1
+      },
+      "last": {
+        "step": 12,
+        "xy": [
+          8,
+          12
+        ],
+        "moves": 3,
+        "fruitHex": "627974656672756974",
+        "chainHex": "627974656672756974",
+        "heroHex": "77697a617264",
+        "titleHex": "57697a617264207468652045766f6b657220202020202020202020202020",
+        "eightBit": false,
+        "autopickup": true,
+        "droppedNopick": false,
+        "inventoryFruit": [],
+        "floorFruit": [
+          {
+            "id": 72,
+            "xy": [
+              8,
+              12
+            ],
+            "spe": 1
+          }
+        ],
+        "exceptions": [
+          {
+            "hex": "627974656672756974",
+            "grab": false
+          }
+        ],
+        "menuPatterns": [],
+        "msgPatterns": [],
+        "errors": [],
+        "unhandled": [],
+        "pending": "There is a staircase up out of the dungeon here.",
+        "toplin": 1
+      },
+      "relevantToplines": [
+        {
+          "step": 12,
+          "top": "There is a staircase up out of the dungeon here.--More--\n"
+        }
+      ]
+    }
+  ]
+}

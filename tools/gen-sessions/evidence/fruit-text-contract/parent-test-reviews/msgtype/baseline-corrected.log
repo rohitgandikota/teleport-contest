@@ -1,0 +1,42 @@
+✔ message names, aliases, prefixes and case match C (748.195333ms)
+✔ scanning limits, whitespace and malformed input match C (434.627458ms)
+✖ regex compilation reports C diagnostics and preserves valid patterns (247.064208ms)
+✔ later matching rules win and nonmatching messages use the default (0.243375ms)
+✔ a new process has no message rules from the previous process (0.094125ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1763.857834
+
+✖ failing tests:
+
+test at .cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline/tools/corrected.mjs:91:1
+✖ regex compilation reports C diagnostics and preserves valid patterns (247.064208ms)
+  AssertionError [ERR_ASSERTION]: hide "café"
+  + actual - expected
+  
+    [
+      2,
+  +   'café'
+  -   'cafÃ©'
+    ]
+  
+      at check (file:///Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline/tools/corrected.mjs:70:12)
+      at TestContext.<anonymous> (file:///Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline/tools/corrected.mjs:94:9)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,110 @@
+[
+  {
+    "fixture": "seed0004-feeding-pony.session.json",
+    "exit": 0,
+    "seconds": 0.885,
+    "report": "candidate-final-seed0004-feeding-pony.session.json",
+    "sha256": "f40981d92b732f0881cdb24567261ab5c50b94cded12a16fa9a355e21de9294e",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 409,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  },
+  {
+    "fixture": "seed0030-ten-diverse-deaths.session.json",
+    "exit": 1,
+    "seconds": 3.371,
+    "report": "candidate-final-seed0030-ten-diverse-deaths.session.json",
+    "sha256": "25cc9d8c540c566e09e1c59003f8e5dc9363cf456039093447503450576c7cf3",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 1953,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 572
+  },
+  {
+    "fixture": "seed0360-wizard-world-tour.session.json",
+    "exit": 0,
+    "seconds": 2.097,
+    "report": "candidate-final-seed0360-wizard-world-tour.session.json",
+    "sha256": "3ae3926a9884473db4d3182824da1c8bd65c62746d4497699fb4d5db93039ca4",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 833,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  },
+  {
+    "fixture": "seed2200-wizard-quaff-zap-read.session.json",
+    "exit": 0,
+    "seconds": 0.627,
+    "report": "candidate-final-seed2200-wizard-quaff-zap-read.session.json",
+    "sha256": "b1f4a15c6de5013290ddaecf428da70ee5acecae5d0841203acec18e9c596b0a",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 230,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  },
+  {
+    "fixture": "pager-lookat-swallow-statue.session.json",
+    "exit": 0,
+    "seconds": 1.091,
+    "report": "candidate-final-pager-lookat-swallow-statue.session.json",
+    "sha256": "3e7961b0b238dc210b437be42f3bf82a794a9ec16588fca39f44351ec906454d",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 675,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  },
+  {
+    "fixture": "pager-lookat-terrain.session.json",
+    "exit": 1,
+    "seconds": 1.094,
+    "report": "candidate-final-pager-lookat-terrain.session.json",
+    "sha256": "96b02b8ed1827250b6225d89e0e25bab8ea1abe463d0598fbd93df9f853bfde5",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 267,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 546
+  },
+  {
+    "fixture": "bones-persistence.session.json",
+    "exit": 1,
+    "seconds": 1.237,
+    "report": "candidate-final-bones-persistence.session.json",
+    "sha256": "08a2479d3bbc7a4ce7e7855bd7e68ee8be1ff4226bc594ff58d70b7c63280614",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 720,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 64
+  },
+  {
+    "fixture": "variant-world-tour.session.json",
+    "exit": 0,
+    "seconds": 1.975,
+    "report": "candidate-final-variant-world-tour.session.json",
+    "sha256": "cbcb5250bd2bdcd3c3ef6dd35c2a78894229841cbbbf2a9503dc16fb663a86cd",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 833,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  },
+  {
+    "fixture": "pager-restricted-inspection.session.json",
+    "exit": 0,
+    "seconds": 0.914,
+    "report": "candidate-final-pager-restricted-inspection.session.json",
+    "sha256": "62327b9fd13d34cf5f2fe3ffd22fcbf854d180fb584f865af542dfdab2eecfa4",
+    "entirePublishedReportEqual": true,
+    "allFourOtherRawStreamsUnchanged": true,
+    "boundaries": 240,
+    "frozenScreenCursorExact": true,
+    "retainedBlankStyleMismatchCells": 0
+  }
+]

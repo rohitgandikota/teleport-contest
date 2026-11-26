@@ -1,0 +1,34 @@
+{
+  "classification": "Constructed flags and terminal sentinels after a real game and real symbol/description producers. Ordinary reach is independently proved by all nine unchanged fixture replays.",
+  "consumerCases": [
+    "mixed-floor",
+    "mixed-wall",
+    "plain-middle-dot",
+    "plain-UTF8-first",
+    "plain-UTF8-interior",
+    "plain-ASCII",
+    "topl-utf8-guard"
+  ],
+  "messageCases": [
+    "actual-floor",
+    "actual-wall",
+    "ASCII-attr-zero",
+    "STOP-retains-screen",
+    "NOSTOP-overrides-once",
+    "join-keeps-interior-as-text",
+    "ESC-more-stops-output",
+    "bypass-pline-policy",
+    "full-producer-wrapped-acknowledgement"
+  ],
+  "warmRecipe": "Unchanged pager-lookat-terrain segment0 through recorded boundary1. This prefix is a constructed source setup, not a new ordinary proposal.",
+  "symbolProducer": "Existing DECgraphics startup and actual do_screen_description on visible wall/floor",
+  "predictions": {
+    "regressed": "two mixed consumer first glyph failures; new split message owner absent",
+    "candidate-v1": "mixed glyphs restored; NOSTOP one-shot cleanup missing",
+    "candidate": "all controls; plain byte suppression and six unaffected complete-grid hashes stay unchanged"
+  },
+  "C": "upstream tty_putmixed 4170; tty_putstr 2226-2300 attr0; redotoplin 123-145",
+  "correction": "Original warm failed before all controls: midgame parseNethackrc did not rebuild displayed symbols. Original tool and failure log preserved; assertion bodies unchanged.",
+  "sourceBody": "Actual producer first glyph plus literal map glyph body for short constructed boundary cases; full output independently tested with exactly one acknowledgement in a distinct wrapped case and all nine ordinary fixtures.",
+  "secondSetupCorrection": "Original floor description is longer than one terminal row and wraps. Preserve failed 4/15 and 7/15 source reports. Short-branch controls now explicitly construct only the short body; one new full-producer wrapped acknowledgement case retains complete output. No ordinary inputs, oracle or assertions changed."
+}

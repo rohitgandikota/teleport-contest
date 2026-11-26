@@ -1,0 +1,14 @@
+{
+  "controls": [
+    {
+      "name": "reader-fruit-ascii-negative",
+      "hashes": {
+        "screens": "3b98df675d7ce226f9308480f3cbd7958e94293ba1dcc80513b2cabe61d8c7d2",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    }
+  ]
+}

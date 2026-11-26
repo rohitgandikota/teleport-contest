@@ -1,0 +1,254 @@
+[
+  {
+    "segment": 0,
+    "boundaries": {
+      "expected": 252,
+      "actual": 252
+    },
+    "frozenScreens": 252,
+    "fullStyleScreens": 251,
+    "matchingStyleCells": 483776,
+    "totalCells": 483840,
+    "blankStyleMismatches": 64,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 251,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1856,
+        "blankStyleMismatches": 64,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 4,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 252,
+      "actual": 252,
+      "matched": 252,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 19884,
+      "rawActual": 19884,
+      "discardedEntries": 0,
+      "expected": 19884,
+      "actual": 19884,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 252,
+      "actual": 252,
+      "matched": 252,
+      "differences": []
+    },
+    "frames": {
+      "expected": 13,
+      "actual": 13,
+      "expectedSlices": 252,
+      "actualSlices": 252,
+      "countMismatches": [],
+      "fullStyleMatches": 13,
+      "cursorMatches": 13
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "a376137affb0679cfe4a5be36e685ee3a420fafb1aa0f0b994ab298f9a927e2b",
+        "cursors": "23b414207e9ee2cbc9549e90a5a6c876b1a72af5c085ca3db0ed7e7e4a307a52",
+        "calls": "92dc93fe42dd1e7e637b6bcc09f73dd37a52b6064f39f4c610ef9e82883f2ca8",
+        "slices": "b48a0fbe4f0324c60cf17348d9e881b81d748c4d390e1dfe859092470bef6c0a",
+        "frames": "0763f8fc54bdaebfbde0a2b36284714df9aae6dbb8001e320d9b4ee19e4a4b43"
+      },
+      "js": {
+        "screens": "7d4a26a9a5f4bd1cb0fc8fff07a99a078efce043149d8419106803ff4d8c6a96",
+        "cursors": "23b414207e9ee2cbc9549e90a5a6c876b1a72af5c085ca3db0ed7e7e4a307a52",
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "c2ee39548a924f593c43cf01bd714233b293ce050364bad557585069581ea778",
+        "frames": "1d4cc986b5df59aed244d9eedc21c8bd776ea0a43d37b9e3d3749932352631a2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "c2ee39548a924f593c43cf01bd714233b293ce050364bad557585069581ea778"
+      },
+      "js": {
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "c2ee39548a924f593c43cf01bd714233b293ce050364bad557585069581ea778"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "boundaries": {
+      "expected": 468,
+      "actual": 468
+    },
+    "frozenScreens": 466,
+    "fullStyleScreens": 466,
+    "matchingStyleCells": 898558,
+    "totalCells": 898560,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 2,
+    "screenDifferences": [
+      {
+        "step": 352,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 353,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 468,
+      "actual": 468,
+      "matched": 468,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 17104,
+      "rawActual": 17104,
+      "discardedEntries": 0,
+      "expected": 17104,
+      "actual": 17104,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 468,
+      "actual": 468,
+      "matched": 468,
+      "differences": []
+    },
+    "frames": {
+      "expected": 2,
+      "actual": 2,
+      "expectedSlices": 468,
+      "actualSlices": 468,
+      "countMismatches": [],
+      "fullStyleMatches": 2,
+      "cursorMatches": 2
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "4c77db18885f84e6c158e739515a41e04eb4cef08d06b23c7c6680c1ba4a970b",
+        "cursors": "ffa427ec54fb0a0069383df71d32e40b60602d982e17bb5b41fb0f08c757f019",
+        "calls": "cc51a32640ce20316e579b272ff9672471909dbbfb6b8e84a14c31b6450f48bc",
+        "slices": "c4b1c309dd445ca77844a2e59d262adb3013847478651c1b485eedb26fe8fb85",
+        "frames": "1785b62199ad41dd1d9ed4a809be57a39805d84f6fc54260a81845d580473971"
+      },
+      "js": {
+        "screens": "c8c61990e6bc1575419e309aa78e43372bb219cd968c42682b4c18276f6baf0f",
+        "cursors": "ffa427ec54fb0a0069383df71d32e40b60602d982e17bb5b41fb0f08c757f019",
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080",
+        "frames": "e1dc3fec621d51d23336a4e3334ca8fa3cea3ff908ac15284f4e73bd4cbffbf1"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080"
+      },
+      "js": {
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  }
+]

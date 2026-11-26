@@ -1,0 +1,17 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "tools/billing-disposal-input-gate.mjs",
+    "tools/gen-sessions/recipes/billing-object-disposal.json",
+    "tools/gen-sessions/generated/billing-object-disposal.session.json"
+  ],
+  "exit": 0,
+  "seconds": 1.39,
+  "log": ".cache/restart-20261122/fruit-text-parent-billing-test-review/main-corrected.log",
+  "sha256": "9efb6736ca8e4e997d6c838be174ddafaeb5dc358bdcb239728bae1b51c0abda",
+  "passed": 8,
+  "total": 8,
+  "assertionsAdded": 3,
+  "runtimeChanged": false
+}

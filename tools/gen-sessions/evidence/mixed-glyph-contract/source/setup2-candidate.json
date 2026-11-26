@@ -1,0 +1,90 @@
+{
+  "classification": "Constructed source boundaries with real game, option and description producers. No ordinary reach claim.",
+  "passed": 7,
+  "total": 15,
+  "rows": [
+    {
+      "name": "consumer/mixed-floor",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "73393d08294fb2f89328dcc1baf0e9afd805c9888d81a8f2c420ca422dc0b474"
+    },
+    {
+      "name": "consumer/mixed-wall",
+      "pass": true,
+      "gridSHA256": "040e2ca3e54377b4b382b41724059e101e2fc8227ff723d75c309c15ac9f3037"
+    },
+    {
+      "name": "consumer/plain-middle-dot",
+      "pass": true,
+      "gridSHA256": "e0ed13158192f0ddf1dca20b5d01632b8a12381856dec510202c965403a725a1"
+    },
+    {
+      "name": "consumer/plain-UTF8-first",
+      "pass": true,
+      "gridSHA256": "300c169f02851d3954076ca73499fdf0f3e1da6f891b81ea93ba02d47775a6dd"
+    },
+    {
+      "name": "consumer/plain-UTF8-interior",
+      "pass": true,
+      "gridSHA256": "0bd32fdbeec7fd386f39ef4aa3286160d0b16abed74078c67105ab68c3c0db31"
+    },
+    {
+      "name": "consumer/plain-ASCII",
+      "pass": true,
+      "gridSHA256": "77afe92017501d61f5d3d6e31b280122d01dbce49a520dcbfb4b2fa07b204ef5"
+    },
+    {
+      "name": "consumer/topl-utf8-guard",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "67833c2664d9fdbb58dbe32aed202f1db572d30c12bcabceda89891ae307c5e1"
+    },
+    {
+      "name": "message/actual-floor",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "73393d08294fb2f89328dcc1baf0e9afd805c9888d81a8f2c420ca422dc0b474"
+    },
+    {
+      "name": "message/actual-wall",
+      "pass": true,
+      "gridSHA256": "040e2ca3e54377b4b382b41724059e101e2fc8227ff723d75c309c15ac9f3037"
+    },
+    {
+      "name": "message/ASCII-attr-zero",
+      "pass": true,
+      "gridSHA256": "149b63b1415e4101a68e36388ee33aaf19b98401bcad4e86b8efbfea39011b0d"
+    },
+    {
+      "name": "message/STOP-retains-screen",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '·        a doorway or the floor of a room or the dark part of a room or ice\\n' +\n+   '(doorway)'\n- '  ·        a doorway or the floor of a room or the dark part of a room or ice (doorway)'\n",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/NOSTOP-overrides-once",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "73393d08294fb2f89328dcc1baf0e9afd805c9888d81a8f2c420ca422dc0b474"
+    },
+    {
+      "name": "message/join-keeps-interior-as-text",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "8d5ff7e9877f6840bb103a3e621a35198eb5187b938dc13062eebdc53b0ef85d"
+    },
+    {
+      "name": "message/ESC-more-stops-output",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "73393d08294fb2f89328dcc1baf0e9afd805c9888d81a8f2c420ca422dc0b474"
+    },
+    {
+      "name": "message/bypass-pline-policy",
+      "pass": false,
+      "error": "Input queue empty - test may be missing keystrokes",
+      "gridSHA256": "73393d08294fb2f89328dcc1baf0e9afd805c9888d81a8f2c420ca422dc0b474"
+    }
+  ]
+}

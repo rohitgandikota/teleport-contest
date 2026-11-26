@@ -1,0 +1,106 @@
+{
+  "status": "reviewed-parent-native-and-composition",
+  "raws": {
+    "initial11": {
+      "path": "tools/gen-sessions/generated/fruit-text-initial-contract.session.json",
+      "sha256": "637aecc127c2e406a7cba2e22d5ba6d0c8bae7ba4a038b2315947698d1cad2c2",
+      "bytes": 1401088,
+      "segments": 11,
+      "keys": 112,
+      "boundaries": 123,
+      "calls": 32843,
+      "frames": 0
+    },
+    "pickup2": {
+      "path": "tools/gen-sessions/generated/fruit-text-pickup-contract.session.json",
+      "sha256": "e8396d2a9fb4ac32706342f01d287fbe94b04ba74fc15b040c2eaf78db752932",
+      "bytes": 262527,
+      "segments": 2,
+      "keys": 24,
+      "boundaries": 26,
+      "calls": 6134,
+      "frames": 0
+    },
+    "original5": {
+      "path": "tools/gen-sessions/generated/fruit-byte-ingress-contract.session.json",
+      "sha256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7",
+      "bytes": 641982,
+      "segments": 5,
+      "keys": 40,
+      "boundaries": 45,
+      "calls": 15165,
+      "frames": 0
+    }
+  },
+  "recordingReceipts": {
+    "initial11": {
+      "path": "parent/fruit-text-initial-parent-native-recording.json",
+      "sha256": "75fa04caa6b17e5a5cd652bdfae4a8087b678764c7d7cc23133807df412629bb"
+    },
+    "pickup2": {
+      "path": "parent/fruit-text-pickup-parent-native-recording.json",
+      "sha256": "dc40be71093b565c836c72b44b293ce02119d1ed794cba6c5e9cb33d8a386f0e"
+    },
+    "original5": {
+      "path": "parent/fruit-bytes-parent-native-recording.json",
+      "sha256": "993a47a7d282dd6890660cc3a09a02b3a795daad97bc52ba16588063e32f72db"
+    }
+  },
+  "primaryRecipes": {
+    "initial11": {
+      "path": "tools/gen-sessions/recipes/fruit-text-initial-contract.json",
+      "sha256": "b4717030c33c7a3ea75d3fcf54a3b3466676ad6836951192a1a974c00fe560f1",
+      "derivationPath": "primary-derivation/initial11.json",
+      "derivationSHA256": "10f45590cde47c0da0f35101b5b0dcb08d9cd79f9205a65f4c1dd0dc8279b970",
+      "branches": [
+        "fruit-text.typed-name-utf8",
+        "fruit-text.typed-name-ascii-negative",
+        "fruit-text.msgtype-stop-bytes",
+        "fruit-text.msgtype-stop-ascii-negative",
+        "fruit-text.menu-color-byte-search",
+        "fruit-text.menu-color-ascii-negative",
+        "fruit-text.menu-highbyte-not-casefolded",
+        "fruit-text.autopickup-reject-bytes",
+        "fruit-text.autopickup-reject-ascii-negative",
+        "fruit-text.hero-status-bytes",
+        "fruit-text.hero-status-ascii-negative"
+      ]
+    },
+    "pickup2": {
+      "path": "tools/gen-sessions/recipes/fruit-text-pickup-contract.json",
+      "sha256": "658ce91a9cf59a0192205b9539f003b554833269b0b0106a17d52f6e7d4b426d",
+      "derivationPath": "primary-derivation/pickup2.json",
+      "derivationSHA256": "de8c893ba02333785f07864d09ea2f496cc82fa516c257752cddfcb4337ffbe1",
+      "branches": [
+        "fruit-text.autopickup-reject-bytes-reachable",
+        "fruit-text.autopickup-reject-ascii-negative-reachable"
+      ]
+    },
+    "original5": {
+      "path": "tools/gen-sessions/recipes/fruit-byte-ingress-contract.json",
+      "sha256": "0ecbe5791ee7da1051a0d0d1352f3c9d0f3b5ec1deca7fbadc3be19f4c2a1e22",
+      "derivationPath": "primary-derivation/original5.json",
+      "derivationSHA256": "da317c12d480bd9dba3255c88d3db45a9f13496b1f66e185d2e2ebe485ee46ec",
+      "branches": [
+        "fruit-bytes.reader-fruit-eightbit-before",
+        "fruit-bytes.reader-fruit-eightbit-after",
+        "fruit-bytes.reader-fruit-enabled-partial-byte",
+        "fruit-bytes.reader-fruit-control-low-seven",
+        "fruit-bytes.reader-fruit-ascii-negative"
+      ]
+    }
+  },
+  "certification": {
+    "originalPath": "parent-initial-missing-source.session.json",
+    "originalSHA256": "b73654ce904e6e1156decd64a360c5e4af4b91aea989ee72f9e488b658dbaa4f",
+    "originalBytes": 1401075,
+    "proofPath": "parent/fruit-text-initial-parent-provenance-correction.json",
+    "proofSHA256": "f64c68840ff72c0ad7537e05a3620501ab268c5e46471d502c11312d4792e221"
+  },
+  "compositionReview": {
+    "state": "reviewed",
+    "path": "composition-review.json",
+    "sha256": "d408512fe3c2b61d22faebea99902b6e7831a963e9dc5f402217326f500fecc7"
+  },
+  "guardIntegration": "Parent validates separately after this 8de composition."
+}

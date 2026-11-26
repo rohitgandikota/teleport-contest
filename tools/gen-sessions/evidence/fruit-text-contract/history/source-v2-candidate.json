@@ -1,0 +1,97 @@
+{
+  "classification": "Constructed real-owner states after a locked ordinary ASCII setup. No mocks, native proof, or test-only runtime exports.",
+  "variant": "candidate",
+  "runtimeMapSHA256": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff",
+  "total": 22,
+  "passed": 22,
+  "checks": [
+    {
+      "name": "fruit/before/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/after/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/partial/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/low-seven-enabled/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/low-seven-disabled/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/ASCII/statement-and-deferred-registration",
+      "pass": true
+    },
+    {
+      "name": "fruit/right-to-left-same-statement-order",
+      "pass": true
+    },
+    {
+      "name": "fruit/option-table-rejects-negation-before-setter",
+      "pass": true
+    },
+    {
+      "name": "name/byte-limit-retains-partial-sequence",
+      "pass": true
+    },
+    {
+      "name": "name/string-for-opt-preserves-leading-value-space",
+      "pass": true
+    },
+    {
+      "name": "msgtype/byte-target-match-and-reject",
+      "pass": true
+    },
+    {
+      "name": "msgtype/partial-pattern-metadata-retains-byte",
+      "pass": true
+    },
+    {
+      "name": "menucolor/byte-label-and-byte-target",
+      "pass": true
+    },
+    {
+      "name": "autopickup/byte-pattern-scanf-boundary",
+      "pass": true
+    },
+    {
+      "name": "menu/ASCII-case-and-wildcards",
+      "pass": true
+    },
+    {
+      "name": "menu/high-bytes-do-not-casefold",
+      "pass": true
+    },
+    {
+      "name": "topline/signed-bytes-preserve-styled-cells-and-advance",
+      "pass": true
+    },
+    {
+      "name": "topline/ASCII-and-newline-control",
+      "pass": true
+    },
+    {
+      "name": "base/signed-byte-preserves-cell-and-next-row-position",
+      "pass": true
+    },
+    {
+      "name": "status/signed-byte-capture-and-backed-byte-comparison",
+      "pass": true
+    },
+    {
+      "name": "menu/corner-clear-precedes-skipped-bytes",
+      "pass": true
+    },
+    {
+      "name": "text/first-byte-glyph-and-later-signed-byte",
+      "pass": true
+    }
+  ]
+}

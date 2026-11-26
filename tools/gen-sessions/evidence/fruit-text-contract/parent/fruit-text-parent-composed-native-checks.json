@@ -1,0 +1,62 @@
+[
+  {
+    "family": "initial",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+      ".cache/restart-20261122/fruit-text-initial-parent-composed-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.62,
+    "report": ".cache/restart-20261122/fruit-text-initial-parent-composed-native.json",
+    "reportSHA256": "072bb4028753adc3eb339003ed6451c5026e5ea4068f1b93e34260ce59f5d7c9",
+    "log": ".cache/restart-20261122/fruit-text-initial-parent-composed-native.log",
+    "logSHA256": "40c4baa0994ff2d862bb5a4eb08a99e5bece53beaef46c9e6e16b0c4e5c89ac9",
+    "exact": 9,
+    "total": 11,
+    "completeReportSameAsSourceCandidate": true
+  },
+  {
+    "family": "pickup",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-pickup-parent-composed-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.4,
+    "report": ".cache/restart-20261122/fruit-text-pickup-parent-composed-native.json",
+    "reportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+    "log": ".cache/restart-20261122/fruit-text-pickup-parent-composed-native.log",
+    "logSHA256": "b95ea5e94ce8e70c603c289e744ef64d6e3c4749a157f2d91cf8fefce49dbbab",
+    "exact": 2,
+    "total": 2,
+    "completeReportSameAsSourceCandidate": true
+  },
+  {
+    "family": "original5",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-bytes-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-original5-parent-composed-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.42,
+    "report": ".cache/restart-20261122/fruit-text-original5-parent-composed-native.json",
+    "reportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+    "log": ".cache/restart-20261122/fruit-text-original5-parent-composed-native.log",
+    "logSHA256": "3f7550e2239beec821a076a06963cef98373455072275c864c4fde190bd75c27",
+    "exact": 5,
+    "total": 5,
+    "completeReportSameAsSourceCandidate": true
+  }
+]

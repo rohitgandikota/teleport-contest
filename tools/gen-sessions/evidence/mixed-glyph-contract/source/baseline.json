@@ -1,0 +1,98 @@
+{
+  "classification": "Constructed source boundaries with real game, option and description producers. No ordinary reach claim.",
+  "passed": 5,
+  "total": 16,
+  "rows": [
+    {
+      "name": "consumer/mixed-floor",
+      "pass": false,
+      "error": "cell 0,0\n+ actual - expected\n\n  {\n+   attr: 2,\n+   ch: 'Z',\n+   color: 2\n-   attr: 0,\n-   ch: '·',\n-   color: 8\n  }\n",
+      "gridSHA256": "d490416fc00733a181ec3a699f28d74bded1001e26baa6ab42637542b985c358"
+    },
+    {
+      "name": "consumer/mixed-wall",
+      "pass": false,
+      "error": "cell 0,0\n+ actual - expected\n\n  {\n+   attr: 2,\n+   ch: 'Z',\n+   color: 2\n-   attr: 0,\n-   ch: '│',\n-   color: 8\n  }\n",
+      "gridSHA256": "d490416fc00733a181ec3a699f28d74bded1001e26baa6ab42637542b985c358"
+    },
+    {
+      "name": "consumer/plain-middle-dot",
+      "pass": true,
+      "gridSHA256": "e0ed13158192f0ddf1dca20b5d01632b8a12381856dec510202c965403a725a1"
+    },
+    {
+      "name": "consumer/plain-UTF8-first",
+      "pass": true,
+      "gridSHA256": "300c169f02851d3954076ca73499fdf0f3e1da6f891b81ea93ba02d47775a6dd"
+    },
+    {
+      "name": "consumer/plain-UTF8-interior",
+      "pass": true,
+      "gridSHA256": "0bd32fdbeec7fd386f39ef4aa3286160d0b16abed74078c67105ab68c3c0db31"
+    },
+    {
+      "name": "consumer/plain-ASCII",
+      "pass": true,
+      "gridSHA256": "77afe92017501d61f5d3d6e31b280122d01dbce49a520dcbfb4b2fa07b204ef5"
+    },
+    {
+      "name": "consumer/topl-utf8-guard",
+      "pass": true,
+      "gridSHA256": "d490416fc00733a181ec3a699f28d74bded1001e26baa6ab42637542b985c358"
+    },
+    {
+      "name": "message/actual-floor",
+      "pass": false,
+      "error": "actual reached message owner\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/actual-wall",
+      "pass": false,
+      "error": "actual reached message owner\n+ actual - expected\n\n+ 'undefined'\n- 'function'\n",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/ASCII-attr-zero",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/STOP-retains-screen",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/NOSTOP-overrides-once",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/join-keeps-interior-as-text",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "86127c7c165ae1126529e4ac121a3277a76eb14dd6768ec66a44fab5bf30e5ab"
+    },
+    {
+      "name": "message/ESC-more-stops-output",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "b3cbe9822b6a38721cb629dd52e2ce3c93606d0e3d99b92872e7aea3fc427f94"
+    },
+    {
+      "name": "message/bypass-pline-policy",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/full-producer-wrapped-acknowledgement",
+      "pass": false,
+      "error": "tty.tty_putmixed_message is not a function",
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    }
+  ]
+}

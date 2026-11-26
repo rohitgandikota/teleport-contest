@@ -1,0 +1,13 @@
+✔ message names, aliases, prefixes and case match C (935.667958ms)
+✔ scanning limits, whitespace and malformed input match C (499.740625ms)
+✔ regex compilation reports C diagnostics and preserves valid patterns (344.416209ms)
+✔ later matching rules win and nonmatching messages use the default (0.31475ms)
+✔ a new process has no message rules from the previous process (0.115166ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2540.752666

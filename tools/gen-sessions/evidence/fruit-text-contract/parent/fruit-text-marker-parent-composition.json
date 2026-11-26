@@ -1,0 +1,15 @@
+{
+  "preparedAt": "2026-11-26T02:03:39.410473+00:00",
+  "sourceSealSHA256": "d2fdb8a4f72b86a95df948723bea3f40962fad2afcba612e4c26702d47298b86",
+  "sourceManifestSHA256": "1cc6a6b15a85d3b48aae3bf65b4b260d3eb775708297bf9e81b5f0ea297f42ff",
+  "candidateRuntimeSHA256": "b72982ce01ec0a50b990c19b9e3005567e44d8e091b8ba2bb122784d907a3381",
+  "baselineRuntimeSHA256": "d4cbfd5fbe60e46e0d7bf72d6d4e9ecef48f0c3395d79024fbbb1d48d2b2258b",
+  "composedRuntimeSHA256": "8de03214a2c538db68e8b0a0ac5e0a1ef17fcb49cb5f97214168aec5cc52cff8",
+  "patchSHA256": "66741917e372e10fa642b363c2479b3d9811da9d9b5da0f56066545aca9e4ffa",
+  "runtimeChanged": [
+    "js/tty/wintty.js"
+  ],
+  "runtimeFiles": 280,
+  "unchangedRuntimeFiles": 279,
+  "mainChanged": false
+}

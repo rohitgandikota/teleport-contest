@@ -1,0 +1,241 @@
+{
+  "seed0004-feeding-pony.session.json": {
+    "canonical": "sessions/seed0004-feeding-pony.session.json",
+    "sha256": "2d9441398ce7dcf35bcff30dbd055f503bf75afc574cdd59cf440c767fa26b57",
+    "bytes": 1618134,
+    "segments": 1,
+    "boundaries": 409,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "77018882116c5ac9f6817c2bd352a5c780f7e97cdd72e512df7f10e9f7465821",
+        "keys": 408,
+        "boundaries": 409
+      }
+    ]
+  },
+  "seed0030-ten-diverse-deaths.session.json": {
+    "canonical": "sessions/seed0030-ten-diverse-deaths.session.json",
+    "sha256": "f19b80b4261aa820589732ef2d17ddbac7c9d5c2033b6673e2a436600d3c1eb6",
+    "bytes": 6227191,
+    "segments": 10,
+    "boundaries": 1953,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "a1ad030c362df7bc6575220db3db00305936dc5db8a8d78ef6eea1a8c57d6354",
+        "keys": 78,
+        "boundaries": 79
+      },
+      {
+        "fieldsSHA256": "00588adb516da7230d961f4479b6728157e0c11a3bf659e8ad640fd148aa00ae",
+        "keys": 123,
+        "boundaries": 124
+      },
+      {
+        "fieldsSHA256": "47782c47b434ffa0c924d643f5d708adec364611d2da39d4c8f6f7a73a3e7946",
+        "keys": 92,
+        "boundaries": 93
+      },
+      {
+        "fieldsSHA256": "14e8320eaabbe92b4f734635eeb66798cb6c7f1e224c91aec0e4e0c01790c224",
+        "keys": 290,
+        "boundaries": 291
+      },
+      {
+        "fieldsSHA256": "4befe0f71df64cacc5a180c56843021cbd573097b97cc898dcc5bd936900f422",
+        "keys": 197,
+        "boundaries": 198
+      },
+      {
+        "fieldsSHA256": "5676a3f1d971fd64f887e57e9212c545a6e9b56c279487a6f131ac5f6cfe93ce",
+        "keys": 235,
+        "boundaries": 236
+      },
+      {
+        "fieldsSHA256": "b4a23fae2d88848ee87a8d2248cfeedc14734f3f848ebf847870028c60fac320",
+        "keys": 252,
+        "boundaries": 253
+      },
+      {
+        "fieldsSHA256": "c2392d8099afc039a027058f06b46f0a1f5b444ed3ec4ea3324efadd3cb15e47",
+        "keys": 171,
+        "boundaries": 172
+      },
+      {
+        "fieldsSHA256": "d8f4bf910894a7dc04c6e5bb43dd36c765f2c2b1897bcedd946ded9d7dde27e4",
+        "keys": 38,
+        "boundaries": 39
+      },
+      {
+        "fieldsSHA256": "46c4ffe12ae5590ba252612da102c56c7c39c8c50449a5c68fbfc2eec743d4cb",
+        "keys": 467,
+        "boundaries": 468
+      }
+    ]
+  },
+  "seed0360-wizard-world-tour.session.json": {
+    "canonical": "sessions/seed0360-wizard-world-tour.session.json",
+    "sha256": "0afc5bc9b290b5f099d7929556568147ee9329c569e0fcafab6fa058872fb776",
+    "bytes": 7477841,
+    "segments": 1,
+    "boundaries": 833,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "c543cc850c49a60398f016071bdb2ff69792b693c0ab398e350328f3f5300b4e",
+        "keys": 832,
+        "boundaries": 833
+      }
+    ]
+  },
+  "seed2200-wizard-quaff-zap-read.session.json": {
+    "canonical": "sessions/seed2200-wizard-quaff-zap-read.session.json",
+    "sha256": "3c7251202c33f6c4f15bd7faf212cd414e13379220c0544b30b5f55cea7b0740",
+    "bytes": 506419,
+    "segments": 1,
+    "boundaries": 230,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "68c6f014ab83b54aebc6c90ecba5a17e5c251cf630d56666fdd55e8616312f94",
+        "keys": 229,
+        "boundaries": 230
+      }
+    ]
+  },
+  "pager-lookat-swallow-statue.session.json": {
+    "canonical": "tools/gen-sessions/generated/pager-lookat-swallow-statue.session.json",
+    "sha256": "ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a",
+    "bytes": 820370,
+    "segments": 4,
+    "boundaries": 675,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "51b96b0924d68c945dfa97f080095579320a4c27df2ca96eecd12dc803c478fb",
+        "keys": 273,
+        "boundaries": 274
+      },
+      {
+        "fieldsSHA256": "fbcc37172431c7c2953e4f0b0dd6c666011becd3ecb7dcf4bd606dec6b49e242",
+        "keys": 273,
+        "boundaries": 274
+      },
+      {
+        "fieldsSHA256": "b6ed28d13f0c6234d5d2730e286913a948f0ea51ad7f30b016e17639bd92019a",
+        "keys": 72,
+        "boundaries": 73
+      },
+      {
+        "fieldsSHA256": "85ee7cc4a4e9c825370220ac4d9a1a179794ed8ac18e61177a1293882113fab4",
+        "keys": 53,
+        "boundaries": 54
+      }
+    ]
+  },
+  "pager-lookat-terrain.session.json": {
+    "canonical": "tools/gen-sessions/generated/pager-lookat-terrain.session.json",
+    "sha256": "697396be1fec25734f8ebc5ced7e93c4b6d2531268c3728ad7cf7d36a8ff3dc5",
+    "bytes": 1639426,
+    "segments": 4,
+    "boundaries": 267,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "ca704ca06e202f25ff84839da4aeb68a1e7f12af9da5f55be508046d25f7cbba",
+        "keys": 113,
+        "boundaries": 114
+      },
+      {
+        "fieldsSHA256": "6b69d1945d46df671c7e3977d983d09f3b59b13c4b729c67ee64b66b3b1bc03f",
+        "keys": 81,
+        "boundaries": 82
+      },
+      {
+        "fieldsSHA256": "7bcb187b01a6ba2fa9e456d9660ae9f46065126f2c861d63d5bf30b8aedd628e",
+        "keys": 45,
+        "boundaries": 46
+      },
+      {
+        "fieldsSHA256": "09cdf7b0a6249bd97b2c211f63601c08748e86e4dfc64a5454a0b44f7d3c968d",
+        "keys": 24,
+        "boundaries": 25
+      }
+    ]
+  },
+  "bones-persistence.session.json": {
+    "canonical": "tools/gen-sessions/generated/bones-persistence.session.json",
+    "sha256": "a7bf881345f84821bd97a9aac2f9eca800f64b2a1800813609aa804fac171f48",
+    "bytes": 2244723,
+    "segments": 2,
+    "boundaries": 720,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "c657f037d7075340f140281882c7793ce6ac6362aee0c1aae7919bfd368bf154",
+        "keys": 251,
+        "boundaries": 252
+      },
+      {
+        "fieldsSHA256": "de19e3cd74b2348425378595508a7db75f68a4a00aed503242ea7746f11951f9",
+        "keys": 467,
+        "boundaries": 468
+      }
+    ]
+  },
+  "variant-world-tour.session.json": {
+    "canonical": "tools/gen-sessions/generated/variant-world-tour.session.json",
+    "sha256": "f3ac52130543e6e6ebdf3d87427010c30191b29294c162d1f13ba16a516b1cfb",
+    "bytes": 7314605,
+    "segments": 1,
+    "boundaries": 833,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "dfce79fdf59965a7d79689c8196031f50e166d5642bf2907eacf15786ef3a000",
+        "keys": 832,
+        "boundaries": 833
+      }
+    ]
+  },
+  "pager-restricted-inspection.session.json": {
+    "canonical": "tools/gen-sessions/generated/pager-restricted-inspection.session.json",
+    "sha256": "3816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d",
+    "bytes": 520890,
+    "segments": 4,
+    "boundaries": 240,
+    "version": 5,
+    "source": "c",
+    "parts": [
+      {
+        "fieldsSHA256": "fe71350622eea55f028dcf1d82e0d6ac7618664d98a1f2583fd180ec691588ad",
+        "keys": 62,
+        "boundaries": 63
+      },
+      {
+        "fieldsSHA256": "44acb88e0820007d6fde3a3f6474a8e99813409eefe01335d6c03ca44879bcaf",
+        "keys": 61,
+        "boundaries": 62
+      },
+      {
+        "fieldsSHA256": "6c6225727da347680c33e0801df323b39182f114098f5b6766ecfb17f4ca5939",
+        "keys": 62,
+        "boundaries": 63
+      },
+      {
+        "fieldsSHA256": "1c20c04a15f242d40ad658a9046867aac24e6c151f8d0a3388675ea961343731",
+        "keys": 51,
+        "boundaries": 52
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "preparedAt": "2026-11-26T01:39:04.772640+00:00",
+  "classification": "Pre-recording primary reach conditions derived from C owners and fixed source expectations. They supplement, not replace, complete output comparison and ordinary state assertions.",
+  "sourceSealSHA256": "d933c92f0b850580cf7a599945cbed71ac8bc68450be0a39ec4b493be878cd18",
+  "originalRecipeSHA256": "b4f5cbe0d94d4d473149387d315b9a61bc6b9ca5b542982c1b15ec85614238f8",
+  "inputLockSHA256": "9ffc83d0f52b1ee49353acf2917dd1dac6c02370dca2789695559e7d57519bd7",
+  "inputFieldsSHA256": "0c070215534b8823eb67b84679d57ec2bfdde7580d67abf4f893f59621bd91a8",
+  "primaryRecipeSHA256": "b4717030c33c7a3ea75d3fcf54a3b3466676ad6836951192a1a974c00fe560f1",
+  "onlyAddedFields": [
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "minimalSHA256": "a310f496256fe502834ac25c8af3cafac888aef5bf33725c6481471dc768780b",
+  "cases": 11,
+  "keys": 112,
+  "boundaries": 123,
+  "runtimeMaps": {
+    "baseline": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+    "candidate": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff"
+  },
+  "knownLimits": [
+    "Original initial pickup pair bypasses exception matcher through dropped_nopick; additional pair proves ordinary reach.",
+    "Original failed source v1 and old merged-cap native failures are fixed, not rerecorded.",
+    "Existing fruit5 C raw will be reused unchanged."
+  ]
+}

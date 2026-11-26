@@ -1,0 +1,51 @@
+{
+  "classification": "Preserved failed accounting invocation. No runtime, input or original C/style expectation changed.",
+  "command": "node --preserve-symlinks --max-old-space-size=512 tools/accounting.mjs",
+  "exit": 1,
+  "case": "fruit-text-menu-color-byte-search",
+  "assertion": "complete styled-cell differences",
+  "actual": [
+    {
+      "step": 13,
+      "x": 43,
+      "y": 3,
+      "before": {
+        "ch": "+",
+        "color": 8,
+        "attr": 2,
+        "decgfx": 0
+      },
+      "after": {
+        "ch": "+",
+        "color": 1,
+        "attr": 2,
+        "decgfx": 0
+      }
+    }
+  ],
+  "expectedBeforeSchemaCorrection": [
+    {
+      "step": 13,
+      "x": 43,
+      "y": 3,
+      "before": {
+        "ch": "+",
+        "color": 8,
+        "attr": 2
+      },
+      "after": {
+        "ch": "+",
+        "color": 1,
+        "attr": 2
+      }
+    }
+  ],
+  "cause": "Frozen decoder includes decgfx. Parent compact first-difference cells omit that field. V2 explicitly requires it to stay zero; no actual output field is removed.",
+  "originalToolSHA256": "615a3f9d9c47e90a7bbaba70fdadf3be21c9583347d42a0eb69e2dc53d86d0ea",
+  "v2ToolSHA256": "7ed96442e1f47573971015dc1d85cadd542541552269026cbf10330542436582",
+  "bodyReplacement": {
+    "from": "before: x.before, after: x.C})),\n",
+    "to": "before: {...x.before, decgfx: 0}, after: {...x.C, decgfx: 0}})),\n"
+  },
+  "outputChange": "reports/accounting.json -> reports/accounting-v2.json"
+}

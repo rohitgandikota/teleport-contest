@@ -1,0 +1,11 @@
+--- a/js/tty/wintty.js
++++ b/js/tty/wintty.js
+@@ -583,7 +583,7 @@
+     if (!cw || !display) return;
+     const ch = item.selected ? (item.count === -1 ? '+' : '#') : '-';
+     /* tty_curs(window, 4, lineno) — 1-based, so column offx + 3 */
+-    display.setCell(cw.offx + 3, cw.offy + lineno, ch, NO_COLOR,
++    display.setCell(cw.offx + 3, cw.offy + lineno, ch, tty_color(item.color),
+                     term_attr(item.attr));
+ }
+ 

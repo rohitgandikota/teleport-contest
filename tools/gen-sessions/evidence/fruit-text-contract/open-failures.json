@@ -1,0 +1,35 @@
+{
+  "sourceV1": {
+    "baseline": "2/22",
+    "candidate": "19/22",
+    "correction": "C option table rejects !fruit before setter; two constructed windows require preceding message acknowledgement. V1 reports/tools retained unchanged."
+  },
+  "initialPickupPair": {
+    "keptInInitial11": true,
+    "actualExceptionMatcherReached": false,
+    "reason": "dropped_nopick rejects first",
+    "distinctAdditional2ReachMatcher": true
+  },
+  "originalFive": {
+    "nativeBaseline": "1/5",
+    "candidateNative": "pending",
+    "originalRawSHA256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7"
+  },
+  "originalSix": {
+    "nativeHistorical": "4/6",
+    "expectedOpenFailures": [
+      "config-bytes-merged-ascii-cap",
+      "config-bytes-merged-utf8-cap"
+    ],
+    "noNewResult": true
+  },
+  "originalNine": {
+    "nativeOriginalBaseline": "5/9",
+    "nativeSymbolStage": "7/9",
+    "nativeParentRowGraph": "8/9",
+    "candidateNative": "pending",
+    "originalNegativeMetadataPreserved": true
+  },
+  "newOrdinaryNative": "pending",
+  "wrappedComposition": "pending"
+}

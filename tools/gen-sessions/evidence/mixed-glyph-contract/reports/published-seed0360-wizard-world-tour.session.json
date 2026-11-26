@@ -1,0 +1,76 @@
+[
+  {
+    "segment": 0,
+    "boundaries": {
+      "expected": 833,
+      "actual": 833
+    },
+    "frozenScreens": 833,
+    "fullStyleScreens": 833,
+    "matchingStyleCells": 1599360,
+    "totalCells": 1599360,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 833,
+      "actual": 833,
+      "matched": 833,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 120639,
+      "rawActual": 120639,
+      "discardedEntries": 0,
+      "expected": 120639,
+      "actual": 120639,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 833,
+      "actual": 833,
+      "matched": 833,
+      "differences": []
+    },
+    "frames": {
+      "expected": 12,
+      "actual": 12,
+      "expectedSlices": 833,
+      "actualSlices": 833,
+      "countMismatches": [],
+      "fullStyleMatches": 12,
+      "cursorMatches": 12
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2e086a5958c8ef98e7df044e5d302976d21a5ff9bc8c33a55cee71083cb26657",
+        "cursors": "5431cef6e8d678884dd629ae8e5e92c4bac25ef75434a8b49eb630918d07a043",
+        "calls": "69695d5cf51308ec805ff2ac4c463df553b8675c5425bb3173b7cdd1ffbffdc1",
+        "slices": "2435ea4ffd653f2ac76ae0a1749c91cef7b9fcae80a41291cc8c91c506e66268",
+        "frames": "a452aa08f24f2901a074beb5814fa87786fba863931ffe0c751306759e695f70"
+      },
+      "js": {
+        "screens": "a4d2965aece2a855fa35f2a603b5eb77872de9600bfb5578145713646a4579ec",
+        "cursors": "5431cef6e8d678884dd629ae8e5e92c4bac25ef75434a8b49eb630918d07a043",
+        "calls": "814e4868568d16dea8970803d53d58b220be027d097bf606dda32059916d531f",
+        "slices": "477f920da9cd094242be5d428da7206c36cadd20fdf280d94276b43dfb270fa6",
+        "frames": "de7d0ab457e806a6b4464f77808e7cdb3bc07647763e99128710749f233fa77e"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "814e4868568d16dea8970803d53d58b220be027d097bf606dda32059916d531f",
+        "slices": "477f920da9cd094242be5d428da7206c36cadd20fdf280d94276b43dfb270fa6"
+      },
+      "js": {
+        "calls": "814e4868568d16dea8970803d53d58b220be027d097bf606dda32059916d531f",
+        "slices": "477f920da9cd094242be5d428da7206c36cadd20fdf280d94276b43dfb270fa6"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

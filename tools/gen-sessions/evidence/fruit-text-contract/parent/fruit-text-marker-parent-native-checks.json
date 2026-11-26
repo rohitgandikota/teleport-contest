@@ -1,0 +1,128 @@
+[
+  {
+    "kind": "candidate",
+    "family": "initial",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-initial-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.67,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-candidate-initial-native.json",
+    "reportSHA256": "06d6ce1b008167f5da7a4d047aaced80b0e6c3d29f19bc5501cc695901be9e0f",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-candidate-initial-native.log",
+    "logSHA256": "979f3bdb3df3e0a0af6f5a22e4637b384f6c03fe9c4350fb3f8847b9b10629a4",
+    "rawSHA256": "637aecc127c2e406a7cba2e22d5ba6d0c8bae7ba4a038b2315947698d1cad2c2",
+    "exact": 11,
+    "total": 11
+  },
+  {
+    "kind": "candidate",
+    "family": "pickup",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-pickup-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.39,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-candidate-pickup-native.json",
+    "reportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-candidate-pickup-native.log",
+    "logSHA256": "b95ea5e94ce8e70c603c289e744ef64d6e3c4749a157f2d91cf8fefce49dbbab",
+    "rawSHA256": "e8396d2a9fb4ac32706342f01d287fbe94b04ba74fc15b040c2eaf78db752932",
+    "exact": 2,
+    "total": 2
+  },
+  {
+    "kind": "candidate",
+    "family": "original5",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-bytes-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-candidate-original5-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.43,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-candidate-original5-native.json",
+    "reportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-candidate-original5-native.log",
+    "logSHA256": "3f7550e2239beec821a076a06963cef98373455072275c864c4fde190bd75c27",
+    "rawSHA256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7",
+    "exact": 5,
+    "total": 5
+  },
+  {
+    "kind": "composed",
+    "family": "initial",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-initial-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.55,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-composed-initial-native.json",
+    "reportSHA256": "06d6ce1b008167f5da7a4d047aaced80b0e6c3d29f19bc5501cc695901be9e0f",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-composed-initial-native.log",
+    "logSHA256": "979f3bdb3df3e0a0af6f5a22e4637b384f6c03fe9c4350fb3f8847b9b10629a4",
+    "rawSHA256": "637aecc127c2e406a7cba2e22d5ba6d0c8bae7ba4a038b2315947698d1cad2c2",
+    "exact": 11,
+    "total": 11
+  },
+  {
+    "kind": "composed",
+    "family": "pickup",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-pickup-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.4,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-composed-pickup-native.json",
+    "reportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-composed-pickup-native.log",
+    "logSHA256": "b95ea5e94ce8e70c603c289e744ef64d6e3c4749a157f2d91cf8fefce49dbbab",
+    "rawSHA256": "e8396d2a9fb4ac32706342f01d287fbe94b04ba74fc15b040c2eaf78db752932",
+    "exact": 2,
+    "total": 2
+  },
+  {
+    "kind": "composed",
+    "family": "original5",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-bytes-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-marker-parent-composed-original5-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.43,
+    "report": ".cache/restart-20261122/fruit-text-marker-parent-composed-original5-native.json",
+    "reportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+    "log": ".cache/restart-20261122/fruit-text-marker-parent-composed-original5-native.log",
+    "logSHA256": "3f7550e2239beec821a076a06963cef98373455072275c864c4fde190bd75c27",
+    "rawSHA256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7",
+    "exact": 5,
+    "total": 5
+  }
+]

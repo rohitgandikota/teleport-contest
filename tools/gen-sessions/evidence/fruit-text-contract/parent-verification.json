@@ -1,0 +1,302 @@
+{
+  "baselineCommit": "8c978c3f23c532e068f7653c9ed1df77451845d3",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeFiles": 280,
+  "runtimeSHA256": "227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a",
+  "runtimeChanged": [
+    "js/coloratt.js",
+    "js/display.js",
+    "js/hacklib.js",
+    "js/jsmain.js",
+    "js/options.js",
+    "js/pager.js",
+    "js/pickup.js",
+    "js/tty/topl.js",
+    "js/tty/wintty.js",
+    "js/windows.js"
+  ],
+  "nativeFruit": {
+    "baseline": 6,
+    "candidate": 18,
+    "cases": 18
+  },
+  "retainedGuardNative": {
+    "cases": 11,
+    "completeReportsUnchanged": true
+  },
+  "nativeChecks": [
+    {
+      "family": "initial",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-initial-native.json"
+      ],
+      "exit": 0,
+      "seconds": 0.55,
+      "rawSHA256": "637aecc127c2e406a7cba2e22d5ba6d0c8bae7ba4a038b2315947698d1cad2c2",
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-initial-native.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-initial-native.log",
+      "reportSHA256": "06d6ce1b008167f5da7a4d047aaced80b0e6c3d29f19bc5501cc695901be9e0f",
+      "logSHA256": "979f3bdb3df3e0a0af6f5a22e4637b384f6c03fe9c4350fb3f8847b9b10629a4",
+      "priorReportSHA256": "06d6ce1b008167f5da7a4d047aaced80b0e6c3d29f19bc5501cc695901be9e0f",
+      "exact": 11,
+      "total": 11
+    },
+    {
+      "family": "pickup",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-pickup-native.json"
+      ],
+      "exit": 0,
+      "seconds": 0.39,
+      "rawSHA256": "e8396d2a9fb4ac32706342f01d287fbe94b04ba74fc15b040c2eaf78db752932",
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-pickup-native.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-pickup-native.log",
+      "reportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+      "logSHA256": "b95ea5e94ce8e70c603c289e744ef64d6e3c4749a157f2d91cf8fefce49dbbab",
+      "priorReportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+      "exact": 2,
+      "total": 2
+    },
+    {
+      "family": "original5",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-bytes-parent-native.session.json",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-original5-native.json"
+      ],
+      "exit": 0,
+      "seconds": 0.4,
+      "rawSHA256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7",
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-original5-native.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-original5-native.log",
+      "reportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+      "logSHA256": "3f7550e2239beec821a076a06963cef98373455072275c864c4fde190bd75c27",
+      "priorReportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+      "exact": 5,
+      "total": 5
+    },
+    {
+      "family": "guard",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-diagnostic-await-parent-native.session.json",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-guard-native.json"
+      ],
+      "exit": 0,
+      "seconds": 1.68,
+      "rawSHA256": "fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218",
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-guard-native.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-guard-native.log",
+      "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+      "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84",
+      "priorReportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+      "exact": 5,
+      "total": 5
+    },
+    {
+      "family": "guard-name",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-native.session.json",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-guard-name-native.json"
+      ],
+      "exit": 0,
+      "seconds": 2.22,
+      "rawSHA256": "a68e3eaf35cfbf52cafa3b562e9e46b19e0459fa587be0820be9a045606cbd10",
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-guard-name-native.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-guard-name-native.log",
+      "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+      "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e",
+      "priorReportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+      "exact": 6,
+      "total": 6
+    }
+  ],
+  "portableChecks": [
+    {
+      "tool": "fruit-text-source-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fruit-text-source-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-fruit-text-source-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 0.69,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-source-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-source-gate.log",
+      "reportSHA256": "39be1a10f589dd2b76ec824f21dfa6dd9933f32c8151b345c78a955b4b3ebfc1",
+      "logSHA256": "bc6f0f105fcaea96a760bcbf105e6581389571960531865c76ef70536de221b6",
+      "sealedReportSHA256": "39be1a10f589dd2b76ec824f21dfa6dd9933f32c8151b345c78a955b4b3ebfc1"
+    },
+    {
+      "tool": "fruit-text-marker-source-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fruit-text-marker-source-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-fruit-text-marker-source-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-marker-source-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-marker-source-gate.log",
+      "reportSHA256": "1ba5a0b17e6b39fb1ec42f8bf53d65b6f593f9e180ca1fdeac45b0ad6e1fe21e",
+      "logSHA256": "0de92c6d483ab38f1dd957284c9992efc6c2fdd39d74719e038f578aea09f544",
+      "sealedReportSHA256": "1ba5a0b17e6b39fb1ec42f8bf53d65b6f593f9e180ca1fdeac45b0ad6e1fe21e"
+    },
+    {
+      "tool": "fruit-text-input-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fruit-text-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-fruit-text-input-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 1.27,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-input-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-input-gate.log",
+      "reportSHA256": "bc77cc1ba38bc5285c5842978c53658413ae437406e98fc1d056f4e3e9745996",
+      "logSHA256": "c2343ed92c6aaa9c962b8f5c8a3fe815f742ff362e4a882cddc45c5f87b0455f",
+      "sealedReportSHA256": "bc77cc1ba38bc5285c5842978c53658413ae437406e98fc1d056f4e3e9745996"
+    },
+    {
+      "tool": "fruit-text-pickup-input-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fruit-text-pickup-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-fruit-text-pickup-input-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 0.45,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-pickup-input-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-pickup-input-gate.log",
+      "reportSHA256": "34413154a2d39249bd952d90c6bde27c382fb07eb76c3914e67725b58fc680cf",
+      "logSHA256": "ee052a4763e118f50e1088f0c30552e71d45d5fade68fd7d4b611eed165b4f17",
+      "sealedReportSHA256": "34413154a2d39249bd952d90c6bde27c382fb07eb76c3914e67725b58fc680cf"
+    },
+    {
+      "tool": "fruit-text-original-input-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fruit-text-original-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-fruit-text-original-input-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 0.51,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-original-input-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-fruit-text-original-input-gate.log",
+      "reportSHA256": "94a78b75058456723c67128479cc1231d0f294fabda3c4fe0a7afdf015e943e4",
+      "logSHA256": "d58df1bee064529bcdd54d791749e40ee0c93811b30b95ab6a54c0fc3be5c31b",
+      "sealedReportSHA256": "94a78b75058456723c67128479cc1231d0f294fabda3c4fe0a7afdf015e943e4"
+    },
+    {
+      "tool": "mixed-glyph-source-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/mixed-glyph-source-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-source-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 2.26,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-source-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-source-gate.log",
+      "reportSHA256": "e39e19616dae5362512988df3219ad0dfa96b73ed95ce8419bfc254f974b2ae4",
+      "logSHA256": "b959d17e9cdb35e2e41f62e54d69918c3f7024e889ef11ccd2cb84b0d85fa942",
+      "sealedReportSHA256": "e39e19616dae5362512988df3219ad0dfa96b73ed95ce8419bfc254f974b2ae4"
+    },
+    {
+      "tool": "mixed-glyph-regression-gate.mjs",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/mixed-glyph-regression-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-regression-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 7.91,
+      "report": ".cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-regression-gate.json",
+      "log": ".cache/restart-20261122/fruit-text-corrected-parent-mixed-glyph-regression-gate.log",
+      "reportSHA256": "705b1a8e82ba9fdc1c80b06f16e7d508bf275add6c8ee0f215ed940d9880932c",
+      "logSHA256": "9e578127e64dfd260e9f89ee605c78e17dae58b38e814dfac46debc86d5fa4dc",
+      "sealedReportSHA256": "705b1a8e82ba9fdc1c80b06f16e7d508bf275add6c8ee0f215ed940d9880932c"
+    }
+  ],
+  "selectedPublic": {
+    "passed": 142,
+    "total": 142
+  },
+  "strict8s": {
+    "passed": 142,
+    "total": 142
+  },
+  "retainedChecks": {
+    "passed": 70,
+    "total": 70,
+    "receiptSHA256": "7e126aba44899d6a8a946b05825559d4e96d18a6bcdc65ee6ecb6527db38d7c2"
+  },
+  "full916": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/fruit-text-corrected-full916-js-20261125",
+    "passed": 916,
+    "sessions": 916,
+    "totals": {
+      "screens": 928624,
+      "cursors": 928624,
+      "rngCalls": 20137721,
+      "animFrames": 33131
+    },
+    "files": 1207,
+    "allFilesSHA256": "2f80fbecebf808717e22e840ea561c4dd8ad6398479ee38beee799e77573e461",
+    "verificationSHA256": "38e2ca5024a32f89be5c526d9a80c36eab55e93b147c19c7fb49db5f6a3dc07a",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "payloads": {
+    "fruit": 105,
+    "mixedGlyph": 41,
+    "testReviews": 16
+  },
+  "newRequirements": 18,
+  "originalRun": {
+    "passed": 906,
+    "sessions": 915,
+    "preserved": true,
+    "verificationSHA256": "85ba733088de4cce8efa594faf9e0fc555fa42451a497eb44a8483ccbc4409c2"
+  },
+  "limits": [
+    "The original ASCII negative screen hash remains a failure in the legacy 10/11 report. Two C-backed menu marker cells explain its correction; the other 34 negative hashes are fixed.",
+    "Nine mixed-glyph reports return to their published behavior. Three retain 1182 pre-existing blank-style differences.",
+    "The two test corrections preserve C bytes and observe dead shopkeeper removal at its later boundary. Both original failures and source reviews are retained.",
+    "Full-corpus parity uses the contest comparator. The 29 focused native cases additionally check all decoded styled cells. Literal serialized-byte and whole-port completion are not established.",
+    "No held-out score improvement is inferred from local verification."
+  ]
+}

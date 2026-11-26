@@ -1,0 +1,39 @@
+{
+  "classification": "Fixed before baseline observation or candidate. This locks input evidence only, not the active source packet.",
+  "recipeSHA256": "fb3339e5af6d14598d544b7e363202461a8385c6ef440b2cbbc4d93f85bfd062",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "8e3d29027817b643512699c1a783d700f19475fcb821588f4ab40b32b4310065",
+  "segments": [
+    {
+      "name": "reader-fruit-eightbit-before",
+      "keys": 8,
+      "inputSHA256": "62013c83b0ec7cfb2b7aef579447f43e9fe1fa3bac871131a4a4d00f046b567a"
+    },
+    {
+      "name": "reader-fruit-eightbit-after",
+      "keys": 8,
+      "inputSHA256": "23798c0b88860fb1d572f1f3ab37c34f02c5156bf207d936e58feffb7813b057"
+    },
+    {
+      "name": "reader-fruit-enabled-partial-byte",
+      "keys": 8,
+      "inputSHA256": "610ff617f69342ee1376980e674b80ba249b3bed5c7dec501bd2311ab5c50d99"
+    },
+    {
+      "name": "reader-fruit-control-low-seven",
+      "keys": 8,
+      "inputSHA256": "ac91918b59db5ee1b68bc01a33512a667fce56d6d390db5dc50778b3fd216fea"
+    },
+    {
+      "name": "reader-fruit-ascii-negative",
+      "keys": 8,
+      "inputSHA256": "5f53bacaacc9a6293f2e4d06c707a9e61257f27bf07d0ef86fcbd7a031b0a9b5"
+    }
+  ]
+}

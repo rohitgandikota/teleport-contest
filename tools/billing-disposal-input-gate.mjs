@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { runSegment } from '../js/jsmain.js';
 import { InMemoryStorage } from '../js/storage.js';
 import { money_cnt } from '../js/invent.js';
-import { OBJ_ONBILL, OBJ_DELETED } from '../js/const.js';
+import { OBJ_ONBILL, OBJ_DELETED, MON_DETACH } from '../js/const.js';
 import { decodeScreen } from './gen-sessions/screen-decode.mjs';
 import { recordingIntegrityErrors } from './gen-sessions/assertions.mjs';
 
@@ -40,6 +40,7 @@ try {
             const shkp = game.level.monsters.find(mon => mon.isshk);
             steps[step] = {
                 gold: money_cnt(game.invent), keeper: !!shkp,
+                keeperHP: shkp?.mhp ?? null, keeperDetached: !!(shkp?.mstate & MON_DETACH),
                 bills: (shkp?.eshk.bill_p || []).slice(0, shkp?.eshk.billct || 0).map(bp => ({ id: bp.bo_id,
                     quantity: bp.bquan, price: bp.price, useup: bp.useup })),
                 billobjs: (game.billobjs || []).map(obj => ({ id: obj.o_id,
@@ -99,8 +100,12 @@ check('the pre-removal stats screen counts one bill record', () => {
 });
 check('shopkeeper death cancels and disposes the retained record', () => {
     assert.match(rows[0][127], /You kill Upernavik!/);
-    assert.equal(states[0][127].keeper, false);
+    // mon.c m_detach leaves the dead monster linked until dmonsfree.
+    assert.equal(states[0][127].keeper, true);
+    assert.equal(states[0][127].keeperHP, 0);
+    assert.equal(states[0][127].keeperDetached, true);
     assert.deepEqual(states[0][127].billobjs, []);
+    assert.equal(states[0][140].keeper, false);
     assert.equal(states[0][140].receipt.keys, 0);
 });
 check('post-removal stats no longer includes the cancelled bill owner', () => {

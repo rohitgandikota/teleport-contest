@@ -1,0 +1,68 @@
+{
+  "baselineManifestSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "name": "fruit-text-pickup-reach-contract",
+  "classification": "Additional inputs only. Original eleven remain unchanged. Explicit autopickup and !dropped_nopick reach the exception reader after real drop/return.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\nAUTOPICKUP_EXCEPTION=\">é\"\nOPTIONS=autopickup,!dropped_nopick\n",
+      "moves": " \u0017fruit\rdalh",
+      "name": "fruit-text-autopickup-reject-bytes-reachable"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:bytefruit\nAUTOPICKUP_EXCEPTION=\">bytefruit\"\nOPTIONS=autopickup,!dropped_nopick\n",
+      "moves": " \u0017fruit\rdalh",
+      "name": "fruit-text-autopickup-reject-ascii-negative-reachable"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "fruit-text-autopickup-reject-bytes-reachable",
+      "family": "pickup",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "returnToStart": true,
+      "exceptionGrab": false,
+      "requiresAutomaticPickup": true
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative-reachable",
+      "family": "pickup",
+      "asciiNegative": true,
+      "fruitHex": "627974656672756974",
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "returnToStart": true,
+      "exceptionGrab": false,
+      "requiresAutomaticPickup": true
+    }
+  ],
+  "branches": [
+    "fruit-text.autopickup-reject-bytes-reachable",
+    "fruit-text.autopickup-reject-ascii-negative-reachable"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "fruit-text.autopickup-reject-bytes-reachable",
+      "segment": 0,
+      "screenIncludes": [
+        "You drop a ",
+        "There is a staircase up out of the dungeon here."
+      ]
+    },
+    {
+      "branch": "fruit-text.autopickup-reject-ascii-negative-reachable",
+      "segment": 1,
+      "screenIncludes": [
+        "You drop a ",
+        "There is a staircase up out of the dungeon here."
+      ]
+    }
+  ]
+}

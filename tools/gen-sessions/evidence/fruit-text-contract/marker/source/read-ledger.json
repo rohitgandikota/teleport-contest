@@ -1,0 +1,68 @@
+{
+  "classification": "Complete named owner bodies and immediate attribute/color callers read. Minimal color fix only; other source-only leads remain explicit.",
+  "C": {
+    "nethack-c/recorder/win/tty/wintty.c": [
+      "toggle_menu_curr",
+      "dmore",
+      "set_item_state",
+      "set_all_on_page",
+      "unset_all_on_page",
+      "invert_all_on_page",
+      "invert_all",
+      "toggle_menu_attr",
+      "process_menu_window",
+      "tty_curs",
+      "tty_add_menu",
+      "reverse",
+      "tty_end_menu",
+      "tty_select_menu"
+    ],
+    "nethack-c/recorder/win/tty/termcap.c": [
+      "nomux_putch",
+      "nomux_set_attr",
+      "nomux_end_attr",
+      "nomux_set_fg",
+      "nomux_end_fg",
+      "term_start_attr",
+      "term_end_attr",
+      "term_start_color",
+      "term_end_color"
+    ],
+    "nethack-c/recorder/src/windows.c": [
+      "add_menu",
+      "get_menu_coloring",
+      "select_menu",
+      "menuitem_invert_test"
+    ]
+  },
+  "JS": {
+    "js/tty/wintty.js": [
+      "term_attr",
+      "tty_add_menu",
+      "tty_end_menu",
+      "process_menu_window",
+      "set_item_state",
+      "menu_page_items",
+      "invert_all_on_page",
+      "invert_all",
+      "menuitem_invert_test",
+      "set_all_on_page",
+      "unset_all_on_page",
+      "tty_select_menu",
+      "tty_next_page",
+      "tty_prev_page"
+    ],
+    "js/windows.js": [
+      "get_menu_coloring"
+    ],
+    "js/tty/termcap.js": [
+      "complete module"
+    ]
+  },
+  "existing334ProducerReview": "coloratt add_menu_coloring and typed pattern/name owners remain fixed; no producer change.",
+  "limits": [
+    "Transient tty_curs/window bookkeeping is not newly modeled. Existing input-boundary cursors stay unchanged.",
+    "C search passes counting/count to toggle_menu_curr; existing JS search ignores them. Source-only independent lead, not repaired or ordinary-proven by this family.",
+    "Broader wc2_darkgray handling is outside the existing effective-color helper use."
+  ]
+}

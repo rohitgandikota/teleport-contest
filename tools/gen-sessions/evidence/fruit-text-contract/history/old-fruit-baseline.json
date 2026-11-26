@@ -1,0 +1,438 @@
+{
+  "classification": "Read-only fixed NUL baseline observation against C source predictions, not a candidate API or native pass claim.",
+  "recipeSHA256": "fb3339e5af6d14598d544b7e363202461a8385c6ef440b2cbbc4d93f85bfd062",
+  "total": 5,
+  "matchingSourcePredictions": 1,
+  "rows": [
+    {
+      "name": "reader-fruit-eightbit-before",
+      "positive": true,
+      "sourcePredictionMatches": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no collected error or unhandled directive",
+          "pass": true
+        },
+        {
+          "name": "C-predicted stored name bytes, observed through existing JS text storage",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.fruitTextUtf8Hex === expected.storedNameHex))\n"
+        },
+        {
+          "name": "C boolean reader agrees with final actual option value",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.iflagsValue === expected.eightBitInput))\n"
+        },
+        {
+          "name": "ordinary wish creates the current real fruit",
+          "pass": true
+        },
+        {
+          "name": "source-predicted period position after byte-counted fruit name",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n' ' !== '.'\n"
+        }
+      ],
+      "hashes": {
+        "screens": "ba319b5a93674ae8f6de813d57fb087eb84b0e1acfee352d793b39908965dba4",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 3033,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": []
+      },
+      "lastState": {
+        "step": 8,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": [
+          {
+            "otyp": 285,
+            "spe": 1,
+            "quan": 1
+          }
+        ]
+      },
+      "observedWishCell": {
+        "ch": " ",
+        "color": 8,
+        "attr": 0,
+        "decgfx": 0
+      },
+      "wishTopline": "a - a _."
+    },
+    {
+      "name": "reader-fruit-eightbit-after",
+      "positive": true,
+      "sourcePredictionMatches": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no collected error or unhandled directive",
+          "pass": true
+        },
+        {
+          "name": "C-predicted stored name bytes, observed through existing JS text storage",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.fruitTextUtf8Hex === expected.storedNameHex))\n"
+        },
+        {
+          "name": "C boolean reader agrees with final actual option value",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.iflagsValue === expected.eightBitInput))\n"
+        },
+        {
+          "name": "ordinary wish creates the current real fruit",
+          "pass": true
+        },
+        {
+          "name": "source-predicted period position after byte-counted fruit name",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n' ' !== '.'\n"
+        }
+      ],
+      "hashes": {
+        "screens": "ba319b5a93674ae8f6de813d57fb087eb84b0e1acfee352d793b39908965dba4",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 3033,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": []
+      },
+      "lastState": {
+        "step": 8,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": [
+          {
+            "otyp": 285,
+            "spe": 1,
+            "quan": 1
+          }
+        ]
+      },
+      "observedWishCell": {
+        "ch": " ",
+        "color": 8,
+        "attr": 0,
+        "decgfx": 0
+      },
+      "wishTopline": "a - a _."
+    },
+    {
+      "name": "reader-fruit-enabled-partial-byte",
+      "positive": true,
+      "sourcePredictionMatches": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no collected error or unhandled directive",
+          "pass": true
+        },
+        {
+          "name": "C-predicted stored name bytes, observed through existing JS text storage",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.fruitTextUtf8Hex === expected.storedNameHex))\n"
+        },
+        {
+          "name": "C boolean reader agrees with final actual option value",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.iflagsValue === expected.eightBitInput))\n"
+        },
+        {
+          "name": "ordinary wish creates the current real fruit",
+          "pass": true
+        },
+        {
+          "name": "source-predicted period position after byte-counted fruit name",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "1050772fd0c30f6a9b4db10bb37db3807347986ca89e7283c0b5780637728007",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 3033,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_",
+        "fruitTextUtf8Hex": "4141414141414141414141414141414141414141414141414141414141415f",
+        "fruitChainHead": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_",
+        "fruitChainHeadUtf8Hex": "4141414141414141414141414141414141414141414141414141414141415f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": []
+      },
+      "lastState": {
+        "step": 8,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_",
+        "fruitTextUtf8Hex": "4141414141414141414141414141414141414141414141414141414141415f",
+        "fruitChainHead": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_",
+        "fruitChainHeadUtf8Hex": "4141414141414141414141414141414141414141414141414141414141415f",
+        "currentFruit": 1,
+        "optionValue": true,
+        "flagsValue": true,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": [
+          {
+            "otyp": 285,
+            "spe": 1,
+            "quan": 1
+          }
+        ]
+      },
+      "observedWishCell": {
+        "ch": ".",
+        "color": 8,
+        "attr": 0,
+        "decgfx": 0
+      },
+      "wishTopline": "a - an AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_."
+    },
+    {
+      "name": "reader-fruit-control-low-seven",
+      "positive": true,
+      "sourcePredictionMatches": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no collected error or unhandled directive",
+          "pass": true
+        },
+        {
+          "name": "C-predicted stored name bytes, observed through existing JS text storage",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.fruitTextUtf8Hex === expected.storedNameHex))\n"
+        },
+        {
+          "name": "C boolean reader agrees with final actual option value",
+          "pass": true
+        },
+        {
+          "name": "ordinary wish creates the current real fruit",
+          "pass": true
+        },
+        {
+          "name": "source-predicted period position after byte-counted fruit name",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n' ' !== '.'\n"
+        }
+      ],
+      "hashes": {
+        "screens": "ba319b5a93674ae8f6de813d57fb087eb84b0e1acfee352d793b39908965dba4",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 3033,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": false,
+        "flagsValue": false,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": []
+      },
+      "lastState": {
+        "step": 8,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "_",
+        "fruitTextUtf8Hex": "5f",
+        "fruitChainHead": "_",
+        "fruitChainHeadUtf8Hex": "5f",
+        "currentFruit": 1,
+        "optionValue": false,
+        "flagsValue": false,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": [
+          {
+            "otyp": 285,
+            "spe": 1,
+            "quan": 1
+          }
+        ]
+      },
+      "observedWishCell": {
+        "ch": " ",
+        "color": 8,
+        "attr": 0,
+        "decgfx": 0
+      },
+      "wishTopline": "a - a _."
+    },
+    {
+      "name": "reader-fruit-ascii-negative",
+      "positive": false,
+      "sourcePredictionMatches": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid RC has no collected error or unhandled directive",
+          "pass": true
+        },
+        {
+          "name": "C-predicted stored name bytes, observed through existing JS text storage",
+          "pass": true
+        },
+        {
+          "name": "C boolean reader agrees with final actual option value",
+          "pass": true
+        },
+        {
+          "name": "ordinary wish creates the current real fruit",
+          "pass": true
+        },
+        {
+          "name": "source-predicted period position after byte-counted fruit name",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "3b98df675d7ce226f9308480f3cbd7958e94293ba1dcc80513b2cabe61d8c7d2",
+        "cursors": "93f08d5200bbd8ae9fb96faa23b92cd78c5b0eb9cb27a11a8dc82bbe1a1b2a0e",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "6f9eae1a6f48b76a2452d689f843955e5f65d569f63afc949f7ec2ebba4f3777",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 3033,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "bytefruit",
+        "fruitTextUtf8Hex": "627974656672756974",
+        "fruitChainHead": "bytefruit",
+        "fruitChainHeadUtf8Hex": "627974656672756974",
+        "currentFruit": 1,
+        "optionValue": false,
+        "flagsValue": false,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": []
+      },
+      "lastState": {
+        "step": 8,
+        "errors": [],
+        "unhandled": [],
+        "fruitText": "bytefruit",
+        "fruitTextUtf8Hex": "627974656672756974",
+        "fruitChainHead": "bytefruit",
+        "fruitChainHeadUtf8Hex": "627974656672756974",
+        "currentFruit": 1,
+        "optionValue": false,
+        "flagsValue": false,
+        "iflagsPresent": false,
+        "iflagsValue": false,
+        "inventory": [
+          {
+            "otyp": 285,
+            "spe": 1,
+            "quan": 1
+          }
+        ]
+      },
+      "observedWishCell": {
+        "ch": ".",
+        "color": 8,
+        "attr": 0,
+        "decgfx": 0
+      },
+      "wishTopline": "a - a bytefruit."
+    }
+  ]
+}

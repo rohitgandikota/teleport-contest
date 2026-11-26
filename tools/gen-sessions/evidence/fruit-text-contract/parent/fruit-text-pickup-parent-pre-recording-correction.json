@@ -1,0 +1,6 @@
+{
+  "correction": "Add only top-level source:c before first C run; all original five-field tuples unchanged.",
+  "originalMinimalSHA256": "2b394cef982a3046553cd5662c28702201a7e8a26db9ec0612d6b26ba7efe814",
+  "recordingInputSHA256": "98ab824c7dff73b4f3f84439349a3d6ea7295ce1c912d5a8be078855c765aa3e",
+  "CAlreadyRun": false
+}

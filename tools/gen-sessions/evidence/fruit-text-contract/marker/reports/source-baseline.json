@@ -1,0 +1,520 @@
+{
+  "classification": "Constructed real menu producer/helper controls; no native claim or transient cursor model change.",
+  "variant": "baseline",
+  "runtimeMapSHA256": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff",
+  "controlsSHA256": "ba3b10740a16198462b58e4b63cd460e83996d3cc23233bd5836f3d539ac0e2d",
+  "passed": 6,
+  "total": 12,
+  "rows": [
+    {
+      "name": "no-color-unselected",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "-",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "-",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "gridSHA256": "d2ca6259263e400d4de9b4b8a332b6045b2d5d8ef24f4326f4abe2d2548a3cf7"
+    },
+    {
+      "name": "no-color-selected-bold",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 2
+        }
+      },
+      "gridSHA256": "cf8819dc5643e73c61cbd0ac934a4966731449e174f0efd3005a724b2448d111"
+    },
+    {
+      "name": "red-selected-bold",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 2,\n    ch: '+',\n+   color: 8\n-   color: 1\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 2
+        }
+      },
+      "gridSHA256": "c16607106ab8a1f4f4747b7a41a25942bb809df3ceaea62969c9bcae16e0eeab"
+    },
+    {
+      "name": "red-unselected-bold",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 2,\n    ch: '-',\n+   color: 8\n-   color: 1\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "-",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "-",
+          "color": 8,
+          "attr": 2
+        }
+      },
+      "gridSHA256": "0646f11610d903323d59241f544249853230ddb2e1ff32739c31676c8badea12"
+    },
+    {
+      "name": "green-counted-underline",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 4,\n    ch: '#',\n+   color: 8\n-   color: 2\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "#",
+          "color": 8,
+          "attr": 4
+        }
+      },
+      "gridSHA256": "0476906b411acfc410173b9b0f5202cc3f28d50178cc813f2e4fa7fd2f4b5186"
+    },
+    {
+      "name": "cyan-selected-inverse",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 1,\n    ch: '+',\n+   color: 8\n-   color: 6\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 1
+        }
+      },
+      "gridSHA256": "ce8ff2014a7df09b5943da0edcee1756c5e33192a1c7b62b6de8c98ca7895ecd"
+    },
+    {
+      "name": "gray-selected-bold",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 2
+        }
+      },
+      "gridSHA256": "cf8819dc5643e73c61cbd0ac934a4966731449e174f0efd3005a724b2448d111"
+    },
+    {
+      "name": "default-darkgray-selected",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "gridSHA256": "879871e19e8ffda2c7f747ac15a0ec3613978070590c4b7feee7336f71083aaf"
+    },
+    {
+      "name": "menucolor-overrides-caller",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 2,\n    ch: '+',\n+   color: 8\n-   color: 1\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 2
+        }
+      },
+      "gridSHA256": "c16607106ab8a1f4f4747b7a41a25942bb809df3ceaea62969c9bcae16e0eeab"
+    },
+    {
+      "name": "skip-menucolor-retains-caller",
+      "negative": false,
+      "pass": false,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    attr: 4,\n    ch: '+',\n+   color: 8\n-   color: 2\n  }\n"
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 4
+        }
+      },
+      "gridSHA256": "46b847aa4308b6a4d3d26623bd1884718c5808b7ca5f7df2b35d2328bcfd0389"
+    },
+    {
+      "name": "disabled-menucolor-retains-default",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 4
+        }
+      },
+      "gridSHA256": "d590899c28bc2bbdded591c43757ce4aea191fcda4ffc15deddcec2973a0d85b"
+    },
+    {
+      "name": "nonmatching-menucolor-retains-default",
+      "negative": true,
+      "pass": true,
+      "checks": [
+        {
+          "name": "actual producer stores color and attribute",
+          "pass": true
+        },
+        {
+          "name": "initial full-page marker has unhighlighted prefix",
+          "pass": true
+        },
+        {
+          "name": "repaint uses C marker character color and attribute",
+          "pass": true
+        },
+        {
+          "name": "all other styled cells unchanged",
+          "pass": true
+        },
+        {
+          "name": "repaint does not mutate selection count or style metadata",
+          "pass": true
+        }
+      ],
+      "marker": {
+        "x": 43,
+        "y": 0,
+        "before": {
+          "ch": "*",
+          "color": 8,
+          "attr": 0
+        },
+        "after": {
+          "ch": "+",
+          "color": 8,
+          "attr": 1
+        }
+      },
+      "gridSHA256": "b0235a484256497a6e0a124d330174134330dde74ab22b2e85f9ca7e9b41773b"
+    }
+  ]
+}

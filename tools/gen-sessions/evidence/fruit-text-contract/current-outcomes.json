@@ -1,0 +1,12 @@
+{
+  "source22": "22/22; original v1 19/22 remains",
+  "markerSource12": "12/12 versus 6/12",
+  "native18": "6/18 baseline,16/18 fruit,18/18 with separate marker",
+  "legacyASCIIHash": "FAIL retained; only one of35 negative hashes changes under marker prerequisite",
+  "other34Hashes": "Unchanged",
+  "originalSix": "Historical4/6; both merged-cap failures remain open; no new claim",
+  "originalNine": "Historical parent row8/9 retained; no rerun or pruning here",
+  "initialPickupPair": "Original pair bypasses matcher through dropped_nopick; additional2 reaches it",
+  "wrapperFailure": "Original missing-source raw preserved; certified source:c is an exact prefix insertion; no rerecord",
+  "guard": "Outside scope; parent validates later"
+}

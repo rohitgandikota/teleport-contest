@@ -1,0 +1,24 @@
+{
+  "runtimeFiles": 280,
+  "unchanged": 277,
+  "files": [
+    {
+      "target": "js/pager.js",
+      "source": "candidate/js/pager.js",
+      "baselineSHA256": "89a9424ecc6dedc7b5106a65e78f096d3ff8c4e4343afdec6c0603e2f62443dd",
+      "candidateSHA256": "4991ad8e9aa98247c92841fec507275689375b6f5ac425591a6b0849cdaa725e"
+    },
+    {
+      "target": "js/tty/topl.js",
+      "source": "candidate/js/tty/topl.js",
+      "baselineSHA256": "046317043244a10099ed626a4aff2c9872c13d3865eff70d8764813bb7b2cd8a",
+      "candidateSHA256": "a49c7dc1eee29a55486bc270a19ff62d78bce729629b0a29c9800008c85b6905"
+    },
+    {
+      "target": "js/tty/wintty.js",
+      "source": "candidate/js/tty/wintty.js",
+      "baselineSHA256": "66a9ee0a7c5501b882ce49a5ef92bbf6c7a1e36d42b29df5c6ba1c0feb6b437e",
+      "candidateSHA256": "e24cd0f9f19d1927887b0193d53d9706d9635a493d121888e523465f7f793455"
+    }
+  ]
+}

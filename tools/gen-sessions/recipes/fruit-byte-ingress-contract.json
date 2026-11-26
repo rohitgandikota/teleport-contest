@@ -1,0 +1,183 @@
+{
+  "name": "fruit-byte-reader-prerequisite",
+  "classification": "Read-only ordinary producer/consumer audit, no runtime candidate. Stored byte predictions are distinct from recorder-visible output. Original9 and all prior failures remain fixed.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\n",
+      "moves": " \u0017fruit\r",
+      "name": "reader-fruit-eightbit-before"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=fruit:é\nOPTIONS=eight_bit_tty\n",
+      "moves": " \u0017fruit\r",
+      "name": "reader-fruit-eightbit-after"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAé\n",
+      "moves": " \u0017fruit\r",
+      "name": "reader-fruit-enabled-partial-byte"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=fruit:€\n",
+      "moves": " \u0017fruit\r",
+      "name": "reader-fruit-control-low-seven"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=fruit:bytefruit\n",
+      "moves": " \u0017fruit\r",
+      "name": "reader-fruit-ascii-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "reader-fruit-eightbit-before",
+      "positive": true,
+      "storedNameHex": "c3a9",
+      "eightBitInput": true,
+      "fruitID": 1,
+      "wishResultStep": 8,
+      "wishResultCell": {
+        "x": 8,
+        "y": 0,
+        "ch": "."
+      },
+      "renderingClassification": "Source-predicted period after C byte-counted name. High-bit cells preserve prior shadow content, whose exact glyphs are not guessed."
+    },
+    {
+      "name": "reader-fruit-eightbit-after",
+      "positive": true,
+      "storedNameHex": "5f5f",
+      "eightBitInput": true,
+      "fruitID": 1,
+      "wishResultStep": 8,
+      "wishResultCell": {
+        "x": 8,
+        "y": 0,
+        "ch": "."
+      },
+      "renderingClassification": "Source-predicted period after C byte-counted name. High-bit cells preserve prior shadow content, whose exact glyphs are not guessed."
+    },
+    {
+      "name": "reader-fruit-enabled-partial-byte",
+      "positive": true,
+      "storedNameHex": "414141414141414141414141414141414141414141414141414141414141c3",
+      "eightBitInput": true,
+      "fruitID": 1,
+      "wishResultStep": 8,
+      "wishResultCell": {
+        "x": 38,
+        "y": 0,
+        "ch": "."
+      },
+      "renderingClassification": "Source-predicted period after C byte-counted name. High-bit cells preserve prior shadow content, whose exact glyphs are not guessed."
+    },
+    {
+      "name": "reader-fruit-control-low-seven",
+      "positive": true,
+      "storedNameHex": "5f2e5f",
+      "eightBitInput": false,
+      "fruitID": 1,
+      "wishResultStep": 8,
+      "wishResultCell": {
+        "x": 9,
+        "y": 0,
+        "ch": "."
+      },
+      "renderingClassification": "Source-predicted period after C byte-counted name. High-bit cells preserve prior shadow content, whose exact glyphs are not guessed."
+    },
+    {
+      "name": "reader-fruit-ascii-negative",
+      "positive": false,
+      "storedNameHex": "627974656672756974",
+      "eightBitInput": false,
+      "fruitID": 1,
+      "wishResultStep": 8,
+      "wishResultCell": {
+        "x": 15,
+        "y": 0,
+        "ch": "."
+      },
+      "renderingClassification": "Source-predicted period after C byte-counted name. High-bit cells preserve prior shadow content, whose exact glyphs are not guessed."
+    }
+  ],
+  "branches": [
+    "fruit-bytes.reader-fruit-eightbit-before",
+    "fruit-bytes.reader-fruit-eightbit-after",
+    "fruit-bytes.reader-fruit-enabled-partial-byte",
+    "fruit-bytes.reader-fruit-control-low-seven",
+    "fruit-bytes.reader-fruit-ascii-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "fruit-bytes.reader-fruit-eightbit-before",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "fruit-bytes.reader-fruit-eightbit-after",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "fruit-bytes.reader-fruit-enabled-partial-byte",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 38,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "fruit-bytes.reader-fruit-control-low-seven",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "fruit-bytes.reader-fruit-ascii-negative",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "classification": "Source candidate ready for parent native verification. Thirteen five-field tuples locked before runtime edits; no native pass claim. Record each original family unchanged, including the two weak pickup witnesses.",
+  "baseline": {
+    "runner": "../../saved-monster-traits-parent-composed-native-runner",
+    "map": "source/base-runtime.json",
+    "sha256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+    "modules": 280
+  },
+  "candidate": {
+    "runner": "candidate",
+    "map": "source/candidate-runtime.json",
+    "sha256": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff",
+    "modules": 280
+  },
+  "changedRuntime": [
+    {
+      "path": "js/coloratt.js",
+      "baseSHA256": "fe06f01ec7d64de55bf628339887e5a1341012c0e4ce419f997e778a84cd3124",
+      "candidateSHA256": "c89f124e8c7577625c88ef320b5ab969fb501a88db2fd0beffdac6414506a5fd"
+    },
+    {
+      "path": "js/display.js",
+      "baseSHA256": "c0c7a8053ff6eced29028e78f6658afcaa3db9e39fdaaeca65a927070752be01",
+      "candidateSHA256": "eed2063eaadfa52a4e0ca5b551a647b63cba5522c8c3e2ec2f2fe8183e211df7"
+    },
+    {
+      "path": "js/hacklib.js",
+      "baseSHA256": "37a888c138c72ed19fb99fe4830c959ae52ae1ad5a71a5c68deea4912ea1f2d1",
+      "candidateSHA256": "73fa2108dde072fe3a87c382f5aa9e22b2ab4934c1fc5252821e292472d10f38"
+    },
+    {
+      "path": "js/jsmain.js",
+      "baseSHA256": "aff597bac8a6ea391174fc498cf0a7fb43aa681b4efe934d34def2737c637165",
+      "candidateSHA256": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b"
+    },
+    {
+      "path": "js/options.js",
+      "baseSHA256": "469796100bf0e7b173c432bfba1ee8a0431b6a85bcf05b93cd2415846169b99d",
+      "candidateSHA256": "1de92421ef10cf99a39aa7da84d51fea3d01cb9b6b370934af7c67aa61e6fc59"
+    },
+    {
+      "path": "js/pickup.js",
+      "baseSHA256": "49a6bf1e92f024e62b0f15b425ac244bf0df1cb2166c57856d2f30c5f30bc505",
+      "candidateSHA256": "f9c1226c164ee0d18613fd835cdab0b9509efc26dae4030a8d48c34c28b57b14"
+    },
+    {
+      "path": "js/tty/wintty.js",
+      "baseSHA256": "8422f3ad753589d7a88027251e69fa0b20839800a87a73ccf18b398e4ec2517e",
+      "candidateSHA256": "97ead31e9e4a198872fec6bd72ab60a49775dead6e28b3862614768384edda22"
+    },
+    {
+      "path": "js/windows.js",
+      "baseSHA256": "784aa0ad1f4b57961668c4b6ab828e64eeb524a26d151636926515e9c9b0c570",
+      "candidateSHA256": "01e356e3dfb54adc2ca91b9726eab814fc224cef6422019d07eb702e12cd1c9e"
+    }
+  ],
+  "patch": {
+    "path": "scoped-runtime.patch",
+    "sha256": "06dfc7436795466edc081fabc90affbbd574d3ddb44e3daf28a34e745f0f0b8e"
+  },
+  "families": [
+    {
+      "recipe": "recipes/initial-ordinary.json",
+      "recipeSHA256": "b4f5cbe0d94d4d473149387d315b9a61bc6b9ca5b542982c1b15ec85614238f8",
+      "inputLock": "recipes/initial-input-lock.json",
+      "inputLockSHA256": "9ffc83d0f52b1ee49353acf2917dd1dac6c02370dca2789695559e7d57519bd7",
+      "inputFieldsSHA256": "0c070215534b8823eb67b84679d57ec2bfdde7580d67abf4f893f59621bd91a8",
+      "cases": 11,
+      "keys": 112,
+      "expectedBoundaries": 123,
+      "baselineSourcePass": 5,
+      "candidateSourcePass": 11,
+      "candidateCalls": 32843,
+      "negativeHashes": 25,
+      "sourcePredictions": "expectations in the unchanged recipe; C outcomes unverified"
+    },
+    {
+      "recipe": "recipes/pickup-ordinary.json",
+      "recipeSHA256": "a55a5b01527c41e17db5db7cadcbc0c870ac1807f7190d1ad3a51e365c9a85d9",
+      "inputLock": "recipes/pickup-input-lock.json",
+      "inputLockSHA256": "ab5259c513a1e68bd65096ff4ee5cb9afdd71b35f07ca3836ff12a9b26bf1fb5",
+      "inputFieldsSHA256": "650ed40c2220779ea8014bb9c20d64eed591a21b5d1bdc98f2532896de69e4e9",
+      "cases": 2,
+      "keys": 24,
+      "expectedBoundaries": 26,
+      "baselineSourcePass": 1,
+      "candidateSourcePass": 2,
+      "candidateCalls": 6134,
+      "negativeHashes": 5,
+      "sourcePredictions": "expectations in the unchanged recipe; C outcomes unverified"
+    }
+  ],
+  "total": {
+    "cases": 13,
+    "keys": 136,
+    "boundaries": 149,
+    "sourceBefore": 6,
+    "sourceAfter": 13,
+    "negativeHashes": 30
+  },
+  "existingFive": {
+    "recipe": "fixtures/fruit-original-recipe.json",
+    "recipeSHA256": "fb3339e5af6d14598d544b7e363202461a8385c6ef440b2cbbc4d93f85bfd062",
+    "inputLock": "fixtures/fruit-original-input-lock.json",
+    "inputLockSHA256": "202c2ce1e8a2d8dae386ba6573833819b40ab1d7756f97622658392c96a51240",
+    "raw": "fixtures/fruit-original-native.session.json",
+    "rawSHA256": "59e5279288cf22b864d20e7372e00d07bcd426ba7599785b18af85ffe11fd7a7",
+    "sourceBefore": 1,
+    "sourceAfter": 5,
+    "keys": 40,
+    "boundaries": 45,
+    "calls": 15165,
+    "negativeHashes": 5,
+    "parentAction": "Compare unchanged existing C raw; do not rerecord."
+  },
+  "retainedFailures": {
+    "sourceV1": "baseline2/22 candidate19/22 preserved; three explicit premise/setup corrections in source/source-control-corrections.json",
+    "initialPickupPair": "dropped_nopick bypasses actual exception matcher; later two distinct tuples disable it and prove matcher reach",
+    "fullByteCaps": "Original six remain historically native4/6 with ASCII/UTF8 merged-cap failures. No reader-cap code change or closure.",
+    "originalNine": "Historical parent row-native8/9 with fruit remaining. Original assertions/raw/30 negative hashes unchanged; new candidate native comparison pending."
+  },
+  "parentPrerequisites": [
+    "Native-record original13 locked tuples once and compare all five streams/styles/cursors.",
+    "Compare original recorded fruit5 without input or expectation edits.",
+    "Review and compose eight scoped hunks against current main. Preserve wrapped clearing; overlap is only display.js paint_topline byte writes.",
+    "Verify retained/public/full and prepare promotion in a separate companion after native evidence."
+  ],
+  "noRuntimeComposition": true
+}

@@ -1,0 +1,155 @@
+[
+  {
+    "segment": 0,
+    "boundaries": {
+      "expected": 833,
+      "actual": 833
+    },
+    "frozenScreens": 831,
+    "fullStyleScreens": 831,
+    "matchingStyleCells": 1599358,
+    "totalCells": 1599360,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 2,
+    "screenDifferences": [
+      {
+        "step": 692,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "d",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "d",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 696,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "d",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "d",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 833,
+      "actual": 833,
+      "matched": 833,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 123614,
+      "rawActual": 123614,
+      "discardedEntries": 0,
+      "expected": 123614,
+      "actual": 123614,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 833,
+      "actual": 833,
+      "matched": 833,
+      "differences": []
+    },
+    "frames": {
+      "expected": 17,
+      "actual": 17,
+      "expectedSlices": 833,
+      "actualSlices": 833,
+      "countMismatches": [],
+      "fullStyleMatches": 17,
+      "cursorMatches": 17
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "029b0eea055b055d378930cd6fe7ebf8f20639a423121042c810c25ec91f1973",
+        "cursors": "6dc4f3114acf0bb92e29a3c61447d94d0473db16a94daf9bc86a22ebee4e1692",
+        "calls": "d76336b55eade6a86fb36bb8bfe6fa8cc063d692f1e754e1c479ced1d44c46ce",
+        "slices": "de6ecf0cccdb8e74948d9892dec547344e102714bd72658b2e48667ccc6215f2",
+        "frames": "a663e01dbbbad0883d50e30c60d75e294831dfd028bd319061ba4288eb12d001"
+      },
+      "js": {
+        "screens": "2c2a8a096338ccac9af45dc4a27208bf26005335cf534c3589b5cd092c5bb03d",
+        "cursors": "6dc4f3114acf0bb92e29a3c61447d94d0473db16a94daf9bc86a22ebee4e1692",
+        "calls": "fee2236d15550e93fe64f92a1391e585ab2148b69cabc26466980e9e5f53ae23",
+        "slices": "bc53d86852b90901902d1c6ba69d283a1122c02739071cc9d1f4260dc350f80a",
+        "frames": "73d1372b114ab91edf275ef10795b742f98ce0ad2e28adca5503db023024991e"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "fee2236d15550e93fe64f92a1391e585ab2148b69cabc26466980e9e5f53ae23",
+        "slices": "bc53d86852b90901902d1c6ba69d283a1122c02739071cc9d1f4260dc350f80a"
+      },
+      "js": {
+        "calls": "fee2236d15550e93fe64f92a1391e585ab2148b69cabc26466980e9e5f53ae23",
+        "slices": "bc53d86852b90901902d1c6ba69d283a1122c02739071cc9d1f4260dc350f80a"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  }
+]

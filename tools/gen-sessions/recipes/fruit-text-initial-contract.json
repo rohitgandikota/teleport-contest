@@ -1,0 +1,392 @@
+{
+  "name": "fruit-text-initial-ordinary-contract",
+  "classification": "Initial source-predicted ordinary tuples locked before baseline and candidate. No C run; setup failures remain, any revised proposals need new names and lock.",
+  "baselineManifestSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\n",
+      "moves": " \u0017Ã©\r",
+      "name": "fruit-text-typed-name-utf8"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:bytefruit\n",
+      "moves": " \u0017bytefruit\r",
+      "name": "fruit-text-typed-name-ascii-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\nMSGTYPE=stop \"^a - a ..\\.$\"\n",
+      "moves": " \u0017fruit\r ",
+      "name": "fruit-text-msgtype-stop-bytes"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:bytefruit\nMSGTYPE=stop \"^a - a bytefruit\\.$\"\n",
+      "moves": " \u0017fruit\r ",
+      "name": "fruit-text-msgtype-stop-ascii-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\nMENUCOLOR=\"é\"=red&bold\n",
+      "moves": " \u0017fruit\rD:Ã©\r\r",
+      "name": "fruit-text-menu-color-byte-search"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:bytefruit\nMENUCOLOR=\"bytefruit\"=red&bold\n",
+      "moves": " \u0017fruit\rD:BYTEFRUIT\r\r",
+      "name": "fruit-text-menu-color-ascii-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\n",
+      "moves": " \u0017fruit\rD:ã©\r\r",
+      "name": "fruit-text-menu-highbyte-not-casefolded"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:é\nAUTOPICKUP_EXCEPTION=\">é\"\n",
+      "moves": " \u0017fruit\rdalh",
+      "name": "fruit-text-autopickup-reject-bytes"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\nOPTIONS=fruit:bytefruit\nAUTOPICKUP_EXCEPTION=\">bytefruit\"\n",
+      "moves": " \u0017fruit\rdalh",
+      "name": "fruit-text-autopickup-reject-ascii-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:é,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\n",
+      "moves": " .",
+      "name": "fruit-text-hero-status-bytes"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Bytehero,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=eight_bit_tty\n",
+      "moves": " .",
+      "name": "fruit-text-hero-status-ascii-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "fruit-text-typed-name-utf8",
+      "family": "typed-name",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "inventoryFruit": 1,
+      "fruitID": 1
+    },
+    {
+      "name": "fruit-text-typed-name-ascii-negative",
+      "family": "typed-name",
+      "asciiNegative": true,
+      "fruitHex": "627974656672756974",
+      "inventoryFruit": 1,
+      "fruitID": 1
+    },
+    {
+      "name": "fruit-text-msgtype-stop-bytes",
+      "family": "stop",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "inventoryFruit": 1,
+      "stopStep": 8,
+      "ackStep": 9,
+      "patternHex": "5e61202d2061202e2e5c2e24"
+    },
+    {
+      "name": "fruit-text-msgtype-stop-ascii-negative",
+      "family": "stop",
+      "asciiNegative": true,
+      "fruitHex": "627974656672756974",
+      "inventoryFruit": 1,
+      "stopStep": 8,
+      "ackStep": 9
+    },
+    {
+      "name": "fruit-text-menu-color-byte-search",
+      "family": "menu",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "menuStep": 9,
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "menuRedBold": true
+    },
+    {
+      "name": "fruit-text-menu-color-ascii-negative",
+      "family": "menu",
+      "asciiNegative": true,
+      "fruitHex": "627974656672756974",
+      "menuStep": 9,
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "menuRedBold": true
+    },
+    {
+      "name": "fruit-text-menu-highbyte-not-casefolded",
+      "family": "menu-bytecase",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "inventoryFruit": 1,
+      "floorFruit": 0,
+      "menuSearchShouldMatch": false
+    },
+    {
+      "name": "fruit-text-autopickup-reject-bytes",
+      "family": "pickup",
+      "asciiNegative": false,
+      "fruitHex": "c3a9",
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "returnToStart": true,
+      "exceptionGrab": false
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative",
+      "family": "pickup",
+      "asciiNegative": true,
+      "fruitHex": "627974656672756974",
+      "inventoryFruit": 0,
+      "floorFruit": 1,
+      "returnToStart": true,
+      "exceptionGrab": false
+    },
+    {
+      "name": "fruit-text-hero-status-bytes",
+      "family": "hero",
+      "asciiNegative": false,
+      "heroHex": "c3a9",
+      "titlePrefixHex": "c3a92074686520"
+    },
+    {
+      "name": "fruit-text-hero-status-ascii-negative",
+      "family": "hero",
+      "asciiNegative": true,
+      "heroHex": "427974656865726f",
+      "titlePrefixHex": "427974656865726f2074686520"
+    }
+  ],
+  "branches": [
+    "fruit-text.typed-name-utf8",
+    "fruit-text.typed-name-ascii-negative",
+    "fruit-text.msgtype-stop-bytes",
+    "fruit-text.msgtype-stop-ascii-negative",
+    "fruit-text.menu-color-byte-search",
+    "fruit-text.menu-color-ascii-negative",
+    "fruit-text.menu-highbyte-not-casefolded",
+    "fruit-text.autopickup-reject-bytes",
+    "fruit-text.autopickup-reject-ascii-negative",
+    "fruit-text.hero-status-bytes",
+    "fruit-text.hero-status-ascii-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "fruit-text.typed-name-utf8",
+      "segment": 0,
+      "screenIncludes": [
+        "a - a "
+      ],
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 5,
+          "x": 1,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 5,
+          "x": 2,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 5,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 5,
+          "x": 4,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 5,
+          "x": 5,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "fruit-text.typed-name-ascii-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "a - a bytefruit."
+      ],
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 12,
+          "x": 1,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 12,
+          "x": 2,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 12,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 12,
+          "x": 4,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 12,
+          "x": 5,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "fruit-text.msgtype-stop-bytes",
+      "segment": 2,
+      "screenIncludes": [
+        "--More--"
+      ],
+      "screenCells": [
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "fruit-text.msgtype-stop-ascii-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "--More--"
+      ],
+      "screenCells": [
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "fruit-text.menu-color-byte-search",
+      "segment": 4,
+      "screenIncludes": [
+        "What would you like to drop?",
+        "You drop a "
+      ]
+    },
+    {
+      "branch": "fruit-text.menu-color-ascii-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "What would you like to drop?",
+        "You drop a "
+      ]
+    },
+    {
+      "branch": "fruit-text.menu-highbyte-not-casefolded",
+      "segment": 6,
+      "screenIncludes": [
+        "What would you like to drop?"
+      ],
+      "screenExcludes": [
+        "You drop"
+      ]
+    },
+    {
+      "branch": "fruit-text.autopickup-reject-bytes",
+      "segment": 7,
+      "screenIncludes": [
+        "You drop a ",
+        "There is a staircase up out of the dungeon here."
+      ]
+    },
+    {
+      "branch": "fruit-text.autopickup-reject-ascii-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "You drop a ",
+        "There is a staircase up out of the dungeon here."
+      ]
+    },
+    {
+      "branch": "fruit-text.hero-status-bytes",
+      "segment": 9,
+      "screenIncludes": [
+        "the Evoker"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 3,
+          "y": 22,
+          "equals": "t"
+        }
+      ]
+    },
+    {
+      "branch": "fruit-text.hero-status-ascii-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "the Evoker"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 9,
+          "y": 22,
+          "equals": "t"
+        }
+      ]
+    }
+  ]
+}

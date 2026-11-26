@@ -1,0 +1,111 @@
+{
+  "verifiedAt": "2026-11-26T02:05:33.072753+00:00",
+  "cases": 18,
+  "completeNativeReportsUnchanged": 16,
+  "onlyScreenHashesChanged": [
+    {
+      "name": "fruit-text-menu-color-byte-search",
+      "originalScreenSHA256": "57890cd1d3865123a72ec7f3bf5ff35c5b7d97f23ce9410c8f0bb433ab62f7b5",
+      "correctedScreenSHA256": "bfd0e7d3e76e17f5f400ac88ede409144f83d2823ad7f409d07ed8e981fd1e31",
+      "otherFourHashesUnchanged": true,
+      "beforeNativeExact": false,
+      "afterNativeExact": true,
+      "originalMismatch": [
+        {
+          "step": 13,
+          "frozenEqual": false,
+          "fullStyleEqual": false,
+          "totalCells": 1920,
+          "matchingStyleCells": 1919,
+          "blankStyleMismatches": 0,
+          "nonblankStyleMismatches": 1,
+          "glyphMismatches": 0,
+          "firstFullStyleDifference": {
+            "x": 43,
+            "y": 3,
+            "c": {
+              "ch": "+",
+              "color": 1,
+              "attr": 2
+            },
+            "js": {
+              "ch": "+",
+              "color": 8,
+              "attr": 2
+            }
+          },
+          "firstFrozenDifference": {
+            "x": 43,
+            "y": 3,
+            "kind": "attr",
+            "c": {
+              "ch": "+",
+              "color": 1,
+              "attr": 2
+            },
+            "js": {
+              "ch": "+",
+              "color": 8,
+              "attr": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "fruit-text-menu-color-ascii-negative",
+      "originalScreenSHA256": "97b6330d47819c7c56369ed2ac01c1c3ee4b9aea5fafe3ab1170820af02f92c5",
+      "correctedScreenSHA256": "153770a877b930ad86698f931365697949761a3ab5312dfb797a21f6e2203cdb",
+      "otherFourHashesUnchanged": true,
+      "beforeNativeExact": false,
+      "afterNativeExact": true,
+      "originalMismatch": [
+        {
+          "step": 20,
+          "frozenEqual": false,
+          "fullStyleEqual": false,
+          "totalCells": 1920,
+          "matchingStyleCells": 1919,
+          "blankStyleMismatches": 0,
+          "nonblankStyleMismatches": 1,
+          "glyphMismatches": 0,
+          "firstFullStyleDifference": {
+            "x": 43,
+            "y": 3,
+            "c": {
+              "ch": "+",
+              "color": 1,
+              "attr": 2
+            },
+            "js": {
+              "ch": "+",
+              "color": 8,
+              "attr": 2
+            }
+          },
+          "firstFrozenDifference": {
+            "x": 43,
+            "y": 3,
+            "kind": "attr",
+            "c": {
+              "ch": "+",
+              "color": 1,
+              "attr": 2
+            },
+            "js": {
+              "ch": "+",
+              "color": 8,
+              "attr": 2
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "allCInputsFixed": true,
+  "newCRecordings": 0,
+  "sourceAccountingSHA256": "391ae2aa6c43ae2e443dce60969840454ca647e57361cc7f53b9651ef9d22617",
+  "parentNativeChecksSHA256": "34456d835c31ccc87c002be7c50bc531616f06a7ec4ae506c852d87dc545dad7",
+  "composedRuntimeSHA256": "8de03214a2c538db68e8b0a0ac5e0a1ef17fcb49cb5f97214168aec5cc52cff8",
+  "legacyNegativeExpectation": "Original ASCII screen hash remains a failed expectation, explicitly reconciled by C-matching marker color; other 34/35 negative hashes remain unchanged."
+}

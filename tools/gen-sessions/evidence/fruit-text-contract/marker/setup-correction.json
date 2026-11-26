@@ -1,0 +1,13 @@
+{
+  "classification": "Constructed setup correction only, no runtime/input/expected value changes",
+  "source": "recorder/win/tty/wintty.c:1927 NHW_MESSAGE display arm calls more, restores TOPLINE_NEED_MORE, then clears. clear arm1064..1140; menu caller1976.",
+  "js": "display.js:2803 display_nhwindow_message and2828 clear; full corresponding owners read on8de",
+  "originalFailure": "Direct more leaves a - a bytefruit.--More-- at row0; naive prefix search hits column0 instead of real menu column41. Preserved log.",
+  "onlyBodyReplacement": {
+    "from": "d.pushKey(32); await more();",
+    "to": "d.pushKey(32); await display_nhwindow_message();"
+  },
+  "assertionsAndSixNegativeGridHashes": "Unchanged",
+  "originalSource334": "Untouched; original controls pass on their sealed source graph.",
+  "initialPortableExit": 1
+}

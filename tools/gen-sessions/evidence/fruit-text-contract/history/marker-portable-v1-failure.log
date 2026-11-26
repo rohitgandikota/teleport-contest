@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: real selector prefix is present
+    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/fruit-text-promotion/tools/fruit-text-marker-source-gate.mjs:232:16 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

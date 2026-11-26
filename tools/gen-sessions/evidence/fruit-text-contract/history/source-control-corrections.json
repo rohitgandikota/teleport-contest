@@ -1,0 +1,24 @@
+{
+  "classification": "Three explicit source premise/setup corrections; runtime and all ordinary inputs unchanged. Original reports remain baseline2/22 candidate19/22.",
+  "changes": [
+    {
+      "case": "fruit negation",
+      "source": "include/optlist.h:339; src/options.c:625-628",
+      "correction": "Assert rejection and previous fruit retained. No claim about diagnostic rendering."
+    },
+    {
+      "cases": [
+        "menu corner",
+        "text first byte"
+      ],
+      "source": "win/tty/wintty.c:1966-1967; JS tty_display_nhwindow pending-message prelude",
+      "correction": "Acknowledge the preceding real wish message through more() before constructing the window. Retain the window acknowledgement and every cell assertion."
+    }
+  ],
+  "files": {
+    "tools/source-controls.mjs": "db8855578882554e5937732c9b1bbf20dc7aca73f5ea59741f5141e90d814ab6",
+    "reports/source-baseline.json": "dd4e2348dec342e0b2899ecbc317f70be7a2e15c421a84aeeb247f5e29a77bd0",
+    "reports/source-candidate.json": "6eee4a202a1e850f20e7dee87f4067f2328d07c565f334dd49fb98ed8973fef1",
+    "tools/source-controls-v2.mjs": "38d76dc4742540b464451ba1ce44ea365524d27dfdad9b354aec3d1d21fcaf30"
+  }
+}

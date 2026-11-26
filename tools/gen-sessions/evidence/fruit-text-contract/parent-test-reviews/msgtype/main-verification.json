@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "tools/message-type-config-gate.mjs"
+  ],
+  "exit": 0,
+  "seconds": 2.94,
+  "log": ".cache/restart-20261122/fruit-text-parent-msgtype-test-review/main-corrected.log",
+  "sha256": "e46b181bd8667ac9e30493d831ec0dbc1daeb4ee6be33a87fc443dd138adcc5f",
+  "assertionsPreserved": 10,
+  "runtimeChanged": false
+}

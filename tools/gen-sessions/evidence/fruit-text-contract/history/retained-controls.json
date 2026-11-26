@@ -1,0 +1,24 @@
+[
+  {
+    "oldTool": "../tools/fruit-representation-boundary-probe.mjs",
+    "oldToolSHA256": "4230194640168b79c41f2d2097532853c7c5811c9d7030bb25ba73c4a8c63b1f",
+    "newTool": "tools/regex-interface-retained.mjs",
+    "newToolSHA256": "c1e0ae9ac5d80ea9b4c6353e50701d4f1fbafcd5f4a349ab8f457b215d48332c",
+    "assertionRegionStart": "// The string interface",
+    "assertionRegionEnd": "const report =",
+    "unchangedAssertionBodySHA256": "0ef472efb1dc0d72da62f026fca7ff8c1c58d2bd249d8a5106c77aff78c1775d",
+    "oldReport": "../reports/fruit-representation-boundary.json",
+    "oldReportSHA256": "e459095284b2ce567f81e196eea2c0549f4924f73259d25958c257dfb061e9a1"
+  },
+  {
+    "oldTool": "../tools/fruit-byte-storage-design-probe.mjs",
+    "oldToolSHA256": "45b4424cc835e9e7d8f0a7997050359615d6f02536f3307965eda19883b38814",
+    "newTool": "tools/storage-retained.mjs",
+    "newToolSHA256": "193a44c12cd2ccfeb452691a1895e0de598e10d542ff5025a2108b05555d68cc",
+    "assertionRegionStart": "const byteString",
+    "assertionRegionEnd": "const report =",
+    "unchangedAssertionBodySHA256": "e1f07b3a32bad96f7a2d4f501ca7905039171b9a6d515b1b7cf2e6240f246546",
+    "oldReport": "../reports/fruit-byte-storage-design.json",
+    "oldReportSHA256": "7e7b3f7327666267c310d46fb2a9d2af229126defa574c49aca4022c701a8ee3"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "state": "reviewed",
+  "runtimeFiles": 280,
+  "runtimeMapSHA256": "8de03214a2c538db68e8b0a0ac5e0a1ef17fcb49cb5f97214168aec5cc52cff8",
+  "fruitCompositionMapSHA256": "d4cbfd5fbe60e46e0d7bf72d6d4e9ecef48f0c3395d79024fbbb1d48d2b2258b",
+  "fruitNativeBeforeMarker": "16/18",
+  "markerNativeAfter": "18/18",
+  "candidateComposedReportsByteIdentical": true,
+  "markerChangedOwner": "js/tty/wintty.js",
+  "other279FilesUnchanged": true,
+  "nativeChecks": "parent/fruit-text-marker-parent-native-checks.json",
+  "markerComposition": "parent/fruit-text-marker-parent-composition.json",
+  "parentNativeAccounting": "parent/fruit-text-marker-parent-native-validation.json",
+  "sourceAccounting": "marker/reports/accounting-v2.json",
+  "legacyASCIIExpectation": "Still fails, never rewritten. Separate marker accounting is mandatory.",
+  "sourceSeals": {
+    "fruit": "d933c92f0b850580cf7a599945cbed71ac8bc68450be0a39ec4b493be878cd18",
+    "marker": "d2fdb8a4f72b86a95df948723bea3f40962fad2afcba612e4c26702d47298b86"
+  }
+}

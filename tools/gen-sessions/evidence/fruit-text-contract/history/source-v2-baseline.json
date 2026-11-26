@@ -1,0 +1,117 @@
+{
+  "classification": "Constructed real-owner states after a locked ordinary ASCII setup. No mocks, native proof, or test-only runtime exports.",
+  "variant": "baseline",
+  "runtimeMapSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "total": 22,
+  "passed": 2,
+  "checks": [
+    {
+      "name": "fruit/before/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- 'c3a9'\n"
+    },
+    {
+      "name": "fruit/after/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- '5f5f'\n"
+    },
+    {
+      "name": "fruit/partial/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- '414141414141414141414141414141414141414141414141414141414141c3'\n"
+    },
+    {
+      "name": "fruit/low-seven-enabled/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- 'e22eac'\n"
+    },
+    {
+      "name": "fruit/low-seven-disabled/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- '5f2e5f'\n"
+    },
+    {
+      "name": "fruit/ASCII/statement-and-deferred-registration",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- false\n"
+    },
+    {
+      "name": "fruit/right-to-left-same-statement-order",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- 'c3a9'\n"
+    },
+    {
+      "name": "fruit/option-table-rejects-negation-before-setter",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '627974656672756974'\n- 'c3a9'\n"
+    },
+    {
+      "name": "name/byte-limit-retains-partial-sequence",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '414141414141414141414141414141414141414141414141414141414141e9'\n- '414141414141414141414141414141414141414141414141414141414141c3'\n"
+    },
+    {
+      "name": "name/string-for-opt-preserves-leading-value-space",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'Abel' !== '  Abel'\n"
+    },
+    {
+      "name": "msgtype/byte-target-match-and-reject",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 2\n"
+    },
+    {
+      "name": "msgtype/partial-pattern-metadata-retains-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '78787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878"
+    },
+    {
+      "name": "menucolor/byte-label-and-byte-target",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'e9' !== 'c3a9'\n"
+    },
+    {
+      "name": "autopickup/byte-pattern-scanf-boundary",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '78787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878"
+    },
+    {
+      "name": "menu/ASCII-case-and-wildcards",
+      "pass": true
+    },
+    {
+      "name": "menu/high-bytes-do-not-casefold",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(!pmatchi('*\\xe3\\xa9*', 'a \\xc3\\xa9'))\n"
+    },
+    {
+      "name": "topline/signed-bytes-preserve-styled-cells-and-advance",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     attr: 0,\n+     ch: 'Ã',\n+     color: 8\n-     attr: 4,\n-     ch: 'X',\n-     color: 2\n    },\n    {\n+     attr: 0,\n+     ch: '©',\n+     color: 8\n-     attr: 1,\n-     ch: 'Y',\n-     color: 6\n    }\n  ]\n"
+    },
+    {
+      "name": "topline/ASCII-and-newline-control",
+      "pass": true
+    },
+    {
+      "name": "base/signed-byte-preserves-cell-and-next-row-position",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   attr: 2,\n+   ch: 'Ã',\n+   color: 8\n-   attr: 4,\n-   ch: 'Q',\n-   color: 5\n  }\n"
+    },
+    {
+      "name": "status/signed-byte-capture-and-backed-byte-comparison",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     attr: 0,\n+     ch: 'Ã',\n+     color: 8\n-     attr: 4,\n-     ch: 'P',\n-     color: 3\n    },\n    {\n+     attr: 0,\n+     ch: '©',\n+     color: 8\n-     attr: 1,\n-     ch: 'Q',\n-     color: 6\n    }\n  ]\n"
+    },
+    {
+      "name": "menu/corner-clear-precedes-skipped-bytes",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'Ã' !== ' '\n"
+    },
+    {
+      "name": "text/first-byte-glyph-and-later-signed-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'Ã' !== ' '\n"
+    }
+  ]
+}

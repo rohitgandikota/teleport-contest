@@ -1,8 +1,31 @@
 # STATUS — live handoff board
 
-## 2026-11-25: guard913 passed, corrected fruit/text verifying
+## 2026-11-25: guard naming pushed, fruit/text916 ready to publish
 
-Guard correction is published as 80049d9227b05454dd0922275fb6fd403bd92819.
+
+Guard naming is published as8c978c3f23c532e068f7653c9ed1df77451845d3.
+Origin/main is confirmed at that commit. All1,204 tested Git blobs match the
+full913 inputs. Publication receipt SHA256
+ecc9025c05f4f20593120e483eef2cf7102227c9b966170889e8e54d9939f188.
+The pending fruit checkpoint is verified and ready for immediate publication.
+
+Fruit/text final verification passes. All916 recordings pass on NFS with
+928,624 screens/cursors,20,137,721 RNG positions and33,131 animation frames.
+All1,207 tested files remained fixed; two CPU workers, default45-second budgets,
+no retries. Full verification SHA256
+38e2ca5024a32f89be5c526d9a80c36eab55e93b147c19c7fb49db5f6a3dc07a.
+The exact published8c978 baseline passes6/18 new native cases; candidate passes
+18/18. All11 retained guard native reports are unchanged. Seven portable gates,
+70 retained checks,142 selected/public and142 strict checks all pass.
+Public parent proof SHA256
+b0011136d5443ec25cf8bdb7c9909d520364451b76627b1dc3b3a829bbf4c4f1.
+Stage the exact fruit105, glyph41, test-review16 payloads, three raws, ten runtime
+files, two corrected tests, eighteen requirements, parent proof and two docs.
+Then commit/push immediately and verify all1,207 published Git inputs.
+
+
+
+Earlier guard correction is published as 80049d9227b05454dd0922275fb6fd403bd92819.
 All 1,203 tested files match that pushed tree. Publication receipt:
 guard-cleanup-policy-full912-publication-verification.json, SHA256
 `5d37c85397a78e828f8d93784e0cebba577aad49fb544d6683712f2ee0aec2fe`.
@@ -41,18 +64,27 @@ Verification SHA25685ba733088de4cce8efa594faf9e0fc555fa42451a497eb44a8483ccbc440
 Totals:927,281screens/cursors,20,098,639RNG positions,33,131frames. Preserve
 this completed failing run. A source-backed correction needs fresh verification.
 
+Mixed-glyph promotion76 is independently verified and its41 payloads are
+installed exactly. Install receipt SHA256
+b0f00ed2e8b647caa7a9d711672be86e2b76ad898c1530b7a616614c79de9ae3.
+It adds no runtime or raw copies. Final live checks in session76851 all pass: five fruit gates, two glyph gates
+and29 full-style native cases on fixedf227. All complete reports equal their
+fixed predecessor reports.
+
 The final mixed correction is installed on the guard-name composition. Main
 and the physical replay snapshot match280-file map
 fruit-text-corrected-parent-composed-runtime.json, SHA256
 227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a.
 Only pager.js, tty/topl.js and tty/wintty.js changed from combined102. Install
 receipt SHA256868e4d8eed7c146e28981e0b2bf2796f0e7f2057a28bc16d17a9fc9ffcf15cc5.
-Fresh70 retained checks and142 selected/public recordings pass. The142
-strict workers are still running in parent session90034. All optional report destinations are new and names
-are normalized before launch. Full916 is running with two CPU workers, PID3340415, root
+Fresh70 retained checks,142 selected/public recordings and142 strict
+eight-second workers all pass. Parent session90034 completed. Normal logSHA
+ffb33335fcdca20febb9e60ce5de6ed916addccba3d4b00050f375397aec20e1; strict
+logSHA2281ebb061f529f89ed3f4afe0e9da99ec28c9259fd728338125579461b45abf. All optional report destinations are new and names
+are normalized before launch. Full916 completed successfully with two CPU workers, PID3340415, root
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/fruit-text-corrected-full916-js-20261125.
 Its parent is verifiedguard912, with912 fixture links and four new raws; it
-includes the new guard naming fixture. Do not mutate or relaunch either run.
+includes the new guard naming fixture. Both verification runs are complete. Preserve their receipts and fixed inputs.
 
 The 69 retained commands initially pass 67. Both failures have now been
 reviewed against source and corrected without runtime changes. The message-type
@@ -141,9 +173,10 @@ The historical source verifier pins the earlier CLAUDE.md. It passed using
 that exact document from80049; the current documentation was restored exactly
 in a finally block. No sealed file or runtime changed. The failure and proof
 remain in guard-hallucinated-name-parent-historical-document-check.json.
-Add the public receipt and updated docs, commit and immediately push. Then
-run verify-full-publication.py against the isolated guard snapshot.
-Do not accidentally stage the pending fruit files or full working registry.
+The public receipt and updated docs were committed and immediately pushed as
+8c978c3f. The exact publication verifier passes for all1,204 files.
+That guard-only staging is complete. Future fruit staging should include the
+eighteen pending fruit requirements, with all published4,580 preserved.
 
 
 Corpse naming source358 is now sealed and independently reviewed. Only objnam.js
@@ -158,9 +191,10 @@ pass; baseline3/4 improves to candidate4/4 full styled C comparisons. Raw
 corpse-xname-owner-parent-native.session.json SHA256
 13990943b540a0f3b08f4752fe68249b1aa43da2ca210e2a12b93a5d91d7c309,
 3,056,105bytes,733boundaries,729keys,23,926calls,zero frames. Source candidate
-map603af569 is on baseline32dd. Leibniz is preparing compact portable source
-and ordinary gates with fresh state observations, retaining the three open
-shape diagnostics. No corpse naming runtime or canonical fixture is on main.
+map603af569 is on baseline32dd. Promotion80 is sealed and independently verified:27 payloads,40/40 owner,
+4/4 ordinary,10/10 preflight and the unchanged43/46 diagnostic. Leibniz is
+composing the exact objnam patch onto fixedf227 in a separate source snapshot.
+No corpse naming runtime or canonical fixture is on main.
 
 ## 2026-11-25: guard prompt correction published as 80049d92
 

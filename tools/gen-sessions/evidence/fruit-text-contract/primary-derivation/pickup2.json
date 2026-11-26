@@ -1,0 +1,13 @@
+{
+  "originalRecipeSHA256": "a55a5b01527c41e17db5db7cadcbc0c870ac1807f7190d1ad3a51e365c9a85d9",
+  "primaryRecipeSHA256": "658ce91a9cf59a0192205b9539f003b554833269b0b0106a17d52f6e7d4b426d",
+  "onlyAddedKeys": [
+    "branchAssertions",
+    "branches",
+    "requireBranchAssertions"
+  ],
+  "parentPreCPrimary": "fruit-text-pickup-parent-primary-recipe.json",
+  "allOriginalKeysUnchanged": true,
+  "fiveFieldsAndExpectationsUnchanged": true,
+  "branchPredicates": "Exact parent pre-C predicates"
+}

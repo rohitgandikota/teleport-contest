@@ -1,0 +1,116 @@
+[
+  {
+    "segment": 0,
+    "boundaries": {
+      "expected": 409,
+      "actual": 409
+    },
+    "frozenScreens": 408,
+    "fullStyleScreens": 408,
+    "matchingStyleCells": 785279,
+    "totalCells": 785280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 1,
+    "screenDifferences": [
+      {
+        "step": 312,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "│",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "w",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "│",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "w",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 409,
+      "actual": 409,
+      "matched": 409,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 12084,
+      "rawActual": 12084,
+      "discardedEntries": 0,
+      "expected": 12084,
+      "actual": 12084,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 409,
+      "actual": 409,
+      "matched": 409,
+      "differences": []
+    },
+    "frames": {
+      "expected": 47,
+      "actual": 47,
+      "expectedSlices": 409,
+      "actualSlices": 409,
+      "countMismatches": [],
+      "fullStyleMatches": 47,
+      "cursorMatches": 47
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "29579e0dbe7087f89485190bce2e018c73ba82fe6279993329608b541aafc6f2",
+        "cursors": "ac47d01ed79b849169e5a87e8c55ded8edbb8042ee15a8cb70e1e603433228e5",
+        "calls": "a3e2bd4c59caf2fb20a7ca0715d312c8ef80433502aee5ad59c738fbbe3de1ad",
+        "slices": "d9d0ff9ea2f32469c95baedff0c0e1270e29583348d24d3568ae65fe3433a47a",
+        "frames": "193887870c353f6c55ed4e3eeed9738914616962a78dae4433eaa9238377c6dc"
+      },
+      "js": {
+        "screens": "6b82559d84b34e113336b60e6d90135cefde482564142cbd02ff180ea6505e28",
+        "cursors": "ac47d01ed79b849169e5a87e8c55ded8edbb8042ee15a8cb70e1e603433228e5",
+        "calls": "a06c05c83783027d9623d51f65d350239db12e00c1fdf7df0d866e57f1c93b4a",
+        "slices": "e6b254b1576f268e90dabdce452c01421bba67be0a4fd5ba7aa5b27ce36108d9",
+        "frames": "c4c88b1625873f1152a4fbda435cde523e80bf09cd7e35206f58f15ac77af742"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "a06c05c83783027d9623d51f65d350239db12e00c1fdf7df0d866e57f1c93b4a",
+        "slices": "e6b254b1576f268e90dabdce452c01421bba67be0a4fd5ba7aa5b27ce36108d9"
+      },
+      "js": {
+        "calls": "a06c05c83783027d9623d51f65d350239db12e00c1fdf7df0d866e57f1c93b4a",
+        "slices": "e6b254b1576f268e90dabdce452c01421bba67be0a4fd5ba7aa5b27ce36108d9"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  }
+]

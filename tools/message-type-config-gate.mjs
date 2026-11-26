@@ -61,8 +61,9 @@ execFileSync('clang', ['-std=c99', '-I', join(root, 'nethack-c/recorder/include'
     join(temp, 'probe.c'), '-o', join(temp, 'probe')]);
 
 function check(value) {
+    // Preserve C pattern bytes, including a truncated UTF-8 sequence.
     const [type, pattern, error] = execFileSync(join(temp, 'probe'),
-        [mungspaces(value)], { encoding: 'utf8' }).split('\n');
+        [mungspaces(value)], { encoding: 'latin1' }).split('\n');
     resetGame();
     const rc = parseNethackrc('MSGTYPE=' + value + '\n');
     const rule = game.plinemsg_types?.[0];

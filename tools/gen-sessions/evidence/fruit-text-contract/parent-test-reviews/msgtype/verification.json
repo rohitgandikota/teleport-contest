@@ -1,0 +1,59 @@
+{
+  "path": "tools/message-type-config-gate.mjs",
+  "runtimeChanged": false,
+  "originalSHA256": "2c1ff6c4d2b3eea214d002401b0c5101e779e01c4389f530fbf10a34408fe57c",
+  "correctedSHA256": "554e5e91027f169500748af5090eca72f70c66917af8adcc2d93fb1968d7a26f",
+  "assertionsBefore": 10,
+  "assertionsAfter": 10,
+  "removedAssertions": 0,
+  "correction": "Decode C probe stdout losslessly as Latin-1 byte values instead of UTF-8 replacement decoding. C probe source, all inputs and assertions are unchanged.",
+  "originalBaseline": "5/5",
+  "originalCandidate": "4/5",
+  "correctedBaseline": "4/5",
+  "correctedCandidate": "5/5",
+  "checks": [
+    {
+      "kind": "baseline",
+      "label": "original",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline/tools/original.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.82,
+      "log": ".cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline-original.log",
+      "sha256": "97439f7c1c3e96827ad568448ebc8f4a021dcb71c4fb2e814f1a16c5785d66ad"
+    },
+    {
+      "kind": "baseline",
+      "label": "corrected",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline/tools/corrected.mjs"
+      ],
+      "exit": 1,
+      "seconds": 2.11,
+      "log": ".cache/restart-20261122/fruit-text-parent-msgtype-test-review/baseline-corrected.log",
+      "sha256": "902e3d07f3a268964676f9180cc28d03e4811891eb7496ba9aaf0d970f99c31d"
+    },
+    {
+      "kind": "candidate",
+      "label": "corrected",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-msgtype-test-review/candidate/tools/corrected.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.34,
+      "log": ".cache/restart-20261122/fruit-text-parent-msgtype-test-review/candidate-corrected.log",
+      "sha256": "8e534e9758b99a59ae1f9aeddc509ce5deb022797c105f45458c7404a394cc34"
+    }
+  ],
+  "CSourceSHA256": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940"
+}

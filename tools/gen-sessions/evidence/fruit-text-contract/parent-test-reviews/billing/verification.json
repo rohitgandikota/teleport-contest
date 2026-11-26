@@ -1,0 +1,79 @@
+{
+  "path": "tools/billing-disposal-input-gate.mjs",
+  "runtimeChanged": false,
+  "originalSHA256": "24c5c3eff126f671a479d5177af621d90115a1eaa330ab06d1f108659a6c5d79",
+  "correctedSHA256": "03626f05ef04c26b1a196217f8f71223233288f5b2dbfd1676533433a272702b",
+  "originalAssertionSites": 37,
+  "correctedAssertionSites": 40,
+  "removedAssertions": 0,
+  "changedAssertion": "The existing keeper-absent assertion moves from boundary127 to140, after dmonsfree. Boundary127 now checks linked, zero HP and MON_DETACH. All billing and disposal assertions remain.",
+  "source": {
+    "nethack-c/upstream/src/mon.c": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+    "nethack-c/upstream/src/shk.c": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b"
+  },
+  "sourceLines": {
+    "m_detach": "2734-2798",
+    "dmonsfree": "2487-2511",
+    "movemon": "1322-1345",
+    "shkgone": "235-269"
+  },
+  "checks": [
+    {
+      "kind": "baseline",
+      "label": "original",
+      "command": [
+        "node",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-billing-test-review/baseline/tools/original.mjs"
+      ],
+      "exit": 1,
+      "seconds": 1.56,
+      "passed": 7,
+      "total": 8,
+      "native": null,
+      "log": ".cache/restart-20261122/fruit-text-parent-billing-test-review/baseline-original.log",
+      "sha256": "d3bc25b86bb6ec86423418d73fa65948167ad92ae9879b41f7407628856c7b03"
+    },
+    {
+      "kind": "baseline",
+      "label": "corrected",
+      "command": [
+        "node",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-billing-test-review/baseline/tools/corrected.mjs",
+        "/Users/rohit/research/code/contest/tools/gen-sessions/recipes/billing-object-disposal.json",
+        "/Users/rohit/research/code/contest/tools/gen-sessions/generated/billing-object-disposal.session.json"
+      ],
+      "exit": 0,
+      "seconds": 1.58,
+      "passed": 8,
+      "total": 8,
+      "native": {
+        "sha256": "7b995cc56abf0e46ff71be9f0cfd8e5b8adb21a39a82c4caa095b8a956c81ee2",
+        "witnesses": 5,
+        "limit": "Payment text proves reach; canonical deletion is independently source/state checked."
+      },
+      "log": ".cache/restart-20261122/fruit-text-parent-billing-test-review/baseline-corrected.log",
+      "sha256": "9efb6736ca8e4e997d6c838be174ddafaeb5dc358bdcb239728bae1b51c0abda"
+    },
+    {
+      "kind": "candidate",
+      "label": "corrected",
+      "command": [
+        "node",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-parent-billing-test-review/candidate/tools/corrected.mjs",
+        "/Users/rohit/research/code/contest/tools/gen-sessions/recipes/billing-object-disposal.json",
+        "/Users/rohit/research/code/contest/tools/gen-sessions/generated/billing-object-disposal.session.json"
+      ],
+      "exit": 0,
+      "seconds": 1.52,
+      "passed": 8,
+      "total": 8,
+      "native": {
+        "sha256": "7b995cc56abf0e46ff71be9f0cfd8e5b8adb21a39a82c4caa095b8a956c81ee2",
+        "witnesses": 5,
+        "limit": "Payment text proves reach; canonical deletion is independently source/state checked."
+      },
+      "log": ".cache/restart-20261122/fruit-text-parent-billing-test-review/candidate-corrected.log",
+      "sha256": "9efb6736ca8e4e997d6c838be174ddafaeb5dc358bdcb239728bae1b51c0abda"
+    }
+  ]
+}

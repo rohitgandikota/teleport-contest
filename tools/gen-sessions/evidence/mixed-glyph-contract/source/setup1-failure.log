@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: real wall producer
+
+undefined !== '│'
+
+    at warm (file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/fruit-text-glyph-regression-source-audit/candidate/tools/mixed-message-source-gate.mjs:31:12)
+    at async check (file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/fruit-text-glyph-regression-source-audit/candidate/tools/mixed-message-source-gate.mjs:42:33)
+    at async file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/fruit-text-glyph-regression-source-audit/candidate/tools/mixed-message-source-gate.mjs:63:43 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: '│',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

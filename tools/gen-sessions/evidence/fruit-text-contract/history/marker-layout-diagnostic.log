@@ -1,0 +1,16 @@
+{"case":"no-color-unselected","x":0,"top":["a - a bytefruit.--More--                 a - marker entry                       ","                                         (end)                                  ","                                                                                ","                                                                                ","                                                                                "],"toplin":0,"pending":"","win":2,"menu":{"identifier":1,"glyphinfo":null,"count":-1,"selected":false,"itemflags":0,"selector":"a","gselector":0,"attr":0,"color":8,"str":"a - marker entry","next":null}}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: real selector prefix is present
+    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/config-byte-reader-source-audit/fruit-text-promotion/tools/marker-layout-diagnostic.mjs:233:16 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

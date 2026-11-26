@@ -1,0 +1,15 @@
+{
+  "originalSHA256": "c5a0aeea2cddb35fe2aca2df8309d970b952acce4a813a71cfcadf60ae4e3b6a",
+  "portableSHA256": "f24379f83cc3311eab10cebb35e6a3a839217df8f2f7e0533d172932a03066f1",
+  "replacements": [
+    [
+      "import { reportPath, js, sha } from './fruit-text-preflight.mjs';\nconst warmBytes = fs.readFileSync(new URL('../../fixtures/pager-lookat-terrain.session.json', import.meta.url));\nassert.equal(sha(warmBytes), '697396be1fec25734f8ebc5ced7e93c4b6d2531268c3728ad7cf7d36a8ff3dc5');\nconst warmSegment = JSON.parse(warmBytes).segments[0];",
+      "import { reportPath, js, sha, fixtures, baselineSource } from './mixed-glyph-preflight.mjs';\nconst warmSegment = fixtures['pager-lookat-terrain.session.json'].segments[0];"
+    ],
+    [
+      "const negatives = JSON.parse(fs.readFileSync(new URL('../../reports/source-regressed-v3.json', import.meta.url))).rows;",
+      "const negatives = baselineSource.rows;"
+    ]
+  ],
+  "assertionsChanged": false
+}

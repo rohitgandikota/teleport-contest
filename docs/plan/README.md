@@ -28,15 +28,17 @@ Fruit/text and its menu-color prerequisite are integrated locally. All eighteen
 fruit and five prior guard native comparisons match. The initial full915 run
 passed906/915, exposing nine screen regressions. A reviewed mixed-message glyph
 correction restores all nine to their published behavior and passes16 source
-controls. Fresh70 retained checks and142 selected/public recordings pass. The142
-strict checks and full916 continue on the corrected composition. The old full-style blank
+controls. Fresh70 retained checks,142 selected/public recordings and142 strict checks
+pass. Full916 passes all916 recordings with928,624 screens/cursors,
+20,137,721 RNG positions and33,131 frames. Seven portable gates and29 native
+cases pass; the18 fruit cases improve from6/18 on published8c978 to18/18.
+The exact verified checkpoint is being prepared for immediate publication. The old full-style blank
 cell differences in three fixtures remain open and explicit.
 
 Conditional guard naming independently improves six C cases from4/6 to6/6,
 repairing18 boundaries. Its87 normal,87 strict,35 retained and30 portable checks
-pass. Full913 passes all913 recordings on the isolated candidate. The guard-only checkpoint
-is staged separately, with every tested file matching its staged Git blob.
-No pending fruit runtime or registry entry is staged with it. See STATUS for
+pass. The fix is pushed as8c978c3f. Full913 passes all913 recordings, and all
+1,204 tested files match the published tree. Pending fruit changes are separate. See STATUS for
 exact source graphs, receipts and publication steps.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings

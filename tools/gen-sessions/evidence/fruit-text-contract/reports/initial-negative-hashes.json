@@ -1,0 +1,59 @@
+{
+  "controls": [
+    {
+      "name": "fruit-text-typed-name-ascii-negative",
+      "sourcePass": true,
+      "hashes": {
+        "screens": "aadcef7bf83d3514d9ed2e1e8d287e15a6b30110bc71a0bcc514741401896473",
+        "cursors": "4b3ef52d6b3cf504330e602ef81c4ab55f44e8efabd7858c25722938d461b8a5",
+        "calls": "f73e3400c9073810ab8e82234ebb6c0aa667f1802525d613df3d1b3cdd530961",
+        "slices": "b7f2e03f174f1460a052045fe7e4ee06d93972ab8d7e6e53df395874cae22b6c",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      }
+    },
+    {
+      "name": "fruit-text-msgtype-stop-ascii-negative",
+      "sourcePass": true,
+      "hashes": {
+        "screens": "52b24d39716d7d614e2d445027101660712847d6dcc01409ff317874a3f7ad33",
+        "cursors": "5731fe95a947609e987767185ef720fa2f74fdecda3a44db1def50d7c6c2abd4",
+        "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+        "slices": "1ebf1d42c3d4cc9995f4fe5b9a877030e17687ccef6664cd42d75fd3ac5b55c4",
+        "frames": "4d417efac51835eb0795550275c95bc7001c6e50f0c37e7ff381af198cfb7a8a"
+      }
+    },
+    {
+      "name": "fruit-text-menu-color-ascii-negative",
+      "sourcePass": true,
+      "hashes": {
+        "screens": "97b6330d47819c7c56369ed2ac01c1c3ee4b9aea5fafe3ab1170820af02f92c5",
+        "cursors": "32846abfcf486cafc8247f3cbd00b81e43589f747b74e6d2bdd04e711b3fab68",
+        "calls": "f6ac7743763514524af8e13d0b3236c1015825050fa90bebf2805569b2a761fa",
+        "slices": "e693685ed8bc0733810416b8ff07d5025474907efd78324852014bcb0b093ff3",
+        "frames": "45a79937473997492a35fe96c7d1767becc5bfcb1919a8e327ef81dbfcd73a51"
+      }
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative",
+      "sourcePass": true,
+      "hashes": {
+        "screens": "f171f91ba210399f30a4960c336fca621409b1b0eda4a3795a9e816e751ffcc9",
+        "cursors": "f1e4afc936c36ea552b4c5fbf8f5faadda3a339a2549f7c58250e78c902e469b",
+        "calls": "b5adccd36ac423ccc693a9829c9fd135814572c4212833ea189b1ee0cdefcc04",
+        "slices": "fdbc3ea7170989b0e214a66eb21a1dba42f577cec5455ba60e771643f4ff5dcb",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      }
+    },
+    {
+      "name": "fruit-text-hero-status-ascii-negative",
+      "sourcePass": true,
+      "hashes": {
+        "screens": "2b6948da197b8c64e3264debfa04bcf4d28d23fc2a8e02dfe92a1c5edbd96a0c",
+        "cursors": "6a2b23694276d15dc342742bfd2f8389e68fb62a99151443e74efc4aaadc1147",
+        "calls": "f282094cc8c918f0ca06d3336a72377260ddd91c792deaf2ab77e902e60dd58a",
+        "slices": "5d2672ea4e12b2f544b2e596dcc576a7c1d321f42628f5988c38c04f9f990384",
+        "frames": "5ae1625b488b3935122d8dd627fe575b388a5aa360378fa4407aad08baaed1e2"
+      }
+    }
+  ]
+}

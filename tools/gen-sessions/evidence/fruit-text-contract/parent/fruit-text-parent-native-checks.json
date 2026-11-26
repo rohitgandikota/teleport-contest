@@ -1,0 +1,836 @@
+[
+  {
+    "kind": "baseline",
+    "family": "initial",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+      ".cache/restart-20261122/fruit-text-initial-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.68,
+    "log": ".cache/restart-20261122/fruit-text-initial-parent-baseline-native.log",
+    "logSHA256": "317ef3cee1db64458e7ecc1422909b1db8374bbee413164d960ff0f1ba4b34f5",
+    "report": ".cache/restart-20261122/fruit-text-initial-parent-baseline-native.json",
+    "reportSHA256": "f67f55610edb1a0041b73c5e9fd50002d66a869b04c07a5a35e7994c4b56990e",
+    "exact": 4,
+    "total": 11,
+    "failures": [
+      {
+        "name": "fruit-text-typed-name-utf8",
+        "screen": [
+          {
+            "step": 3,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1919,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 1,
+            "firstFullStyleDifference": {
+              "x": 22,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "\u00c3",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 22,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "\u00c3",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": {
+          "index": 3029,
+          "c": "rnd(2)=1",
+          "js": null
+        },
+        "cursor": {
+          "index": 5,
+          "c": [
+            7,
+            13,
+            1
+          ],
+          "js": [
+            60,
+            0,
+            1
+          ]
+        }
+      },
+      {
+        "name": "fruit-text-msgtype-stop-bytes",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1909,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 11,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": {
+          "index": 8,
+          "c": [
+            17,
+            0,
+            1
+          ],
+          "js": [
+            7,
+            13,
+            1
+          ]
+        }
+      },
+      {
+        "name": "fruit-text-menu-color-byte-search",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1917,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 3,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": {
+          "index": 3033,
+          "c": "rn2(12)=0",
+          "js": null
+        },
+        "cursor": null
+      },
+      {
+        "name": "fruit-text-menu-color-ascii-negative",
+        "screen": [
+          {
+            "step": 20,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1919,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 1,
+            "glyphMismatches": 0,
+            "firstFullStyleDifference": {
+              "x": 43,
+              "y": 3,
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 43,
+              "y": 3,
+              "kind": "attr",
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "fruit-text-menu-highbyte-not-casefolded",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1917,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 3,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "fruit-text-autopickup-reject-bytes",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1917,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 3,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": {
+          "index": 12,
+          "c": [
+            76,
+            0,
+            1
+          ],
+          "js": [
+            75,
+            0,
+            1
+          ]
+        }
+      },
+      {
+        "name": "fruit-text-hero-status-bytes",
+        "screen": [
+          {
+            "step": 0,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1848,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 72,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "\u00e9",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "\u00e9",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      }
+    ]
+  },
+  {
+    "kind": "baseline",
+    "family": "pickup",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-pickup-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.49,
+    "log": ".cache/restart-20261122/fruit-text-pickup-parent-baseline-native.log",
+    "logSHA256": "858f849fda0f73e3e88e85d2b7099407a78311e3600c0088ffe14fea91644da2",
+    "report": ".cache/restart-20261122/fruit-text-pickup-parent-baseline-native.json",
+    "reportSHA256": "eb3d2f554a8b808229b6e2bca05e78583ee29fa943ffa4c971ea00891b808eba",
+    "exact": 1,
+    "total": 2,
+    "failures": [
+      {
+        "name": "fruit-text-autopickup-reject-bytes-reachable",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1917,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 3,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": {
+          "index": 3073,
+          "c": null,
+          "js": "rn2(10)=7"
+        },
+        "cursor": {
+          "index": 12,
+          "c": [
+            76,
+            0,
+            1
+          ],
+          "js": [
+            7,
+            13,
+            1
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "kind": "baseline",
+    "family": "original5",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-bytes-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-original5-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.56,
+    "log": ".cache/restart-20261122/fruit-text-original5-parent-baseline-native.log",
+    "logSHA256": "9c0346d56f83f92293b3f7f8c5ae7d3f61138b010415313a5297752bc44580b5",
+    "report": ".cache/restart-20261122/fruit-text-original5-parent-baseline-native.json",
+    "reportSHA256": "355ae93f3bc44a5cd5237f32b7deeffee2559ea121f96bd0bfd517db47e6fb41",
+    "exact": 1,
+    "total": 5,
+    "failures": [
+      {
+        "name": "reader-fruit-eightbit-before",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1917,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 3,
+            "firstFullStyleDifference": {
+              "x": 6,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 6,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "reader-fruit-eightbit-after",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1918,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 2,
+            "firstFullStyleDifference": {
+              "x": 7,
+              "y": 0,
+              "c": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": ".",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 7,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": ".",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "reader-fruit-enabled-partial-byte",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1919,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 1,
+            "firstFullStyleDifference": {
+              "x": 37,
+              "y": 0,
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 37,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "reader-fruit-control-low-seven",
+        "screen": [
+          {
+            "step": 8,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1918,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 0,
+            "glyphMismatches": 2,
+            "firstFullStyleDifference": {
+              "x": 8,
+              "y": 0,
+              "c": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 8,
+              "y": 0,
+              "kind": "ch",
+              "c": {
+                "ch": "_",
+                "color": 8,
+                "attr": 0
+              },
+              "js": {
+                "ch": " ",
+                "color": 8,
+                "attr": 0
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      }
+    ]
+  },
+  {
+    "kind": "candidate",
+    "family": "initial",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+      ".cache/restart-20261122/fruit-text-initial-parent-candidate-native.json"
+    ],
+    "exit": 1,
+    "seconds": 0.66,
+    "log": ".cache/restart-20261122/fruit-text-initial-parent-candidate-native.log",
+    "logSHA256": "40c4baa0994ff2d862bb5a4eb08a99e5bece53beaef46c9e6e16b0c4e5c89ac9",
+    "report": ".cache/restart-20261122/fruit-text-initial-parent-candidate-native.json",
+    "reportSHA256": "072bb4028753adc3eb339003ed6451c5026e5ea4068f1b93e34260ce59f5d7c9",
+    "exact": 9,
+    "total": 11,
+    "failures": [
+      {
+        "name": "fruit-text-menu-color-byte-search",
+        "screen": [
+          {
+            "step": 13,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1919,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 1,
+            "glyphMismatches": 0,
+            "firstFullStyleDifference": {
+              "x": 43,
+              "y": 3,
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 43,
+              "y": 3,
+              "kind": "attr",
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      },
+      {
+        "name": "fruit-text-menu-color-ascii-negative",
+        "screen": [
+          {
+            "step": 20,
+            "frozenEqual": false,
+            "fullStyleEqual": false,
+            "totalCells": 1920,
+            "matchingStyleCells": 1919,
+            "blankStyleMismatches": 0,
+            "nonblankStyleMismatches": 1,
+            "glyphMismatches": 0,
+            "firstFullStyleDifference": {
+              "x": 43,
+              "y": 3,
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            },
+            "firstFrozenDifference": {
+              "x": 43,
+              "y": 3,
+              "kind": "attr",
+              "c": {
+                "ch": "+",
+                "color": 1,
+                "attr": 2
+              },
+              "js": {
+                "ch": "+",
+                "color": 8,
+                "attr": 2
+              }
+            }
+          }
+        ],
+        "rng": null,
+        "cursor": null
+      }
+    ]
+  },
+  {
+    "kind": "candidate",
+    "family": "pickup",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-text-pickup-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-pickup-parent-candidate-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.46,
+    "log": ".cache/restart-20261122/fruit-text-pickup-parent-candidate-native.log",
+    "logSHA256": "b95ea5e94ce8e70c603c289e744ef64d6e3c4749a157f2d91cf8fefce49dbbab",
+    "report": ".cache/restart-20261122/fruit-text-pickup-parent-candidate-native.json",
+    "reportSHA256": "4e823e59f62b3a6e93f4c9999f75335eb0b5fe9017f689ccf8343553ffce86ef",
+    "exact": 2,
+    "total": 2,
+    "failures": []
+  },
+  {
+    "kind": "candidate",
+    "family": "original5",
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/fruit-text-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      ".cache/restart-20261122/fruit-bytes-parent-native.session.json",
+      ".cache/restart-20261122/fruit-text-original5-parent-candidate-native.json"
+    ],
+    "exit": 0,
+    "seconds": 0.51,
+    "log": ".cache/restart-20261122/fruit-text-original5-parent-candidate-native.log",
+    "logSHA256": "3f7550e2239beec821a076a06963cef98373455072275c864c4fde190bd75c27",
+    "report": ".cache/restart-20261122/fruit-text-original5-parent-candidate-native.json",
+    "reportSHA256": "eac70fea0c6d1786ae9e50bf006acf83aa90954c3b7d7dbe66539f392f2224aa",
+    "exact": 5,
+    "total": 5,
+    "failures": []
+  }
+]

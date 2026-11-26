@@ -1,0 +1,13 @@
+{
+  "originalRecipeSHA256": "fb3339e5af6d14598d544b7e363202461a8385c6ef440b2cbbc4d93f85bfd062",
+  "primaryRecipeSHA256": "0ecbe5791ee7da1051a0d0d1352f3c9d0f3b5ec1deca7fbadc3be19f4c2a1e22",
+  "onlyAddedKeys": [
+    "branchAssertions",
+    "branches",
+    "requireBranchAssertions"
+  ],
+  "parentPreCPrimary": null,
+  "allOriginalKeysUnchanged": true,
+  "fiveFieldsAndExpectationsUnchanged": true,
+  "branchPredicates": "Only original wishResultStep/wishResultCell assertions"
+}

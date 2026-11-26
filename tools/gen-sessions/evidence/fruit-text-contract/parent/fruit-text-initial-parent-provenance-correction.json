@@ -1,0 +1,21 @@
+{
+  "verifiedAt": "2026-11-26T01:40:23.895892+00:00",
+  "cause": "Parent minimal input omitted top-level source. Recorder carries top-level metadata rather than assigning it. The wrapper failed only after the successful single C recording.",
+  "originalRaw": ".cache/restart-20261122/fruit-text-initial-parent-native.session.json",
+  "originalSHA256": "b73654ce904e6e1156decd64a360c5e4af4b91aea989ee72f9e488b658dbaa4f",
+  "originalBytes": 1401075,
+  "canonicalRaw": ".cache/restart-20261122/fruit-text-initial-parent-certified-native.session.json",
+  "canonicalSHA256": "637aecc127c2e406a7cba2e22d5ba6d0c8bae7ba4a038b2315947698d1cad2c2",
+  "canonicalBytes": 1401088,
+  "onlyByteEdit": "Insert top-level \"source\":\"c\", immediately after the opening brace. Every original byte thereafter is unchanged.",
+  "fiveFieldsAndAllKeysUnchanged": true,
+  "recordedStepsUnchanged": true,
+  "cExecutedOnce": true,
+  "rerecorded": false,
+  "binarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "recordingReceiptSHA256": "75fa04caa6b17e5a5cd652bdfae4a8087b678764c7d7cc23133807df412629bb",
+  "cases": 11,
+  "boundaries": 123
+}

@@ -1,0 +1,69 @@
+{
+  "classification": "Immutable initial five-field input lock, not whole-stage seal.",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "recipeSHA256": "b4f5cbe0d94d4d473149387d315b9a61bc6b9ca5b542982c1b15ec85614238f8",
+  "inputFieldsSHA256": "0c070215534b8823eb67b84679d57ec2bfdde7580d67abf4f893f59621bd91a8",
+  "segments": [
+    {
+      "name": "fruit-text-typed-name-utf8",
+      "keys": 5,
+      "inputSHA256": "f5548c9a7d7f000ed950be1e142fd9158969c06364d0ea1ee7c9ec5c63999cdd"
+    },
+    {
+      "name": "fruit-text-typed-name-ascii-negative",
+      "keys": 12,
+      "inputSHA256": "5d2bfc6982c7f05a2773d93506c1b7c12e5b688cb8c9224ed0f843eb3d877839"
+    },
+    {
+      "name": "fruit-text-msgtype-stop-bytes",
+      "keys": 9,
+      "inputSHA256": "018c72894f7ced7b5b3b37e849f31133366fc71c8f619f882b9f5866cf059cf0"
+    },
+    {
+      "name": "fruit-text-msgtype-stop-ascii-negative",
+      "keys": 9,
+      "inputSHA256": "e89b680de3dece79688774d64e1da111faab907935c3d95a5f3785eeff300e1b"
+    },
+    {
+      "name": "fruit-text-menu-color-byte-search",
+      "keys": 14,
+      "inputSHA256": "cac8896b92cb7d2b24675ebb57719fe99182a7833cb81c9b39039c185558dadf"
+    },
+    {
+      "name": "fruit-text-menu-color-ascii-negative",
+      "keys": 21,
+      "inputSHA256": "6e3cf2ee1bb84c8d705c411c5d0c9f4792c2f31c049b18369ab633e106fe2594"
+    },
+    {
+      "name": "fruit-text-menu-highbyte-not-casefolded",
+      "keys": 14,
+      "inputSHA256": "4d7e8989b706d680540a4b70a802975dbfa265c13e818757d5235c378f8b6e47"
+    },
+    {
+      "name": "fruit-text-autopickup-reject-bytes",
+      "keys": 12,
+      "inputSHA256": "0dff688f8af64ca510d641c036e48bb6c34499a771b90665d2173b28b8317e80"
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative",
+      "keys": 12,
+      "inputSHA256": "a5d96bc6236f3d0e4b1361ffba790abb1afefc3869a100c072026e748302ebfb"
+    },
+    {
+      "name": "fruit-text-hero-status-bytes",
+      "keys": 2,
+      "inputSHA256": "2311d7a43576eda6709d7c1b8158d0cafa546d7465b9c609843540de714656bd"
+    },
+    {
+      "name": "fruit-text-hero-status-ascii-negative",
+      "keys": 2,
+      "inputSHA256": "f2445ff82ac4d31e80744b6fc9b8467125719189b28bf1a3dbcbf2aa5a09c609"
+    }
+  ]
+}

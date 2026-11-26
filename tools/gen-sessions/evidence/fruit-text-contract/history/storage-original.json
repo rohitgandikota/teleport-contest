@@ -1,0 +1,155 @@
+{
+  "classification": "Constructed real-owner checks of the selected byte-valued-string storage design, not new ordinary inputs, a runtime candidate, or native closure.",
+  "baselineManifestSHA256": "e16cc136a9ca9feceec02559a2166ed6d6669fd55d029dcb9e6654781e5ddd2d",
+  "runtimeFiles": 280,
+  "sourceControls": 30,
+  "passed": 30,
+  "cases": [
+    {
+      "name": "retained-utf8",
+      "input": "c3a9",
+      "enabled": "c3a9",
+      "disabled": "5f5f"
+    },
+    {
+      "name": "retained-partial-utf8",
+      "input": "414141414141414141414141414141414141414141414141414141414141c3",
+      "enabled": "414141414141414141414141414141414141414141414141414141414141c3",
+      "disabled": "4141414141414141414141414141414141414141414141414141414141415f"
+    },
+    {
+      "name": "low-seven-control",
+      "input": "e282ac",
+      "enabled": "e22eac",
+      "disabled": "5f2e5f"
+    },
+    {
+      "name": "ascii-negative",
+      "input": "627974656672756974",
+      "enabled": "627974656672756974",
+      "disabled": "627974656672756974"
+    }
+  ],
+  "checks": [
+    {
+      "name": "retained-utf8/enabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/disabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/singular-retains-bytes",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/C-plural-suffix",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/exact-fruit-lookup",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/owned-fruit-save-load",
+      "pass": true
+    },
+    {
+      "name": "retained-utf8/game-codec-preserves-name-and-alias",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/enabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/disabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/singular-retains-bytes",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/C-plural-suffix",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/exact-fruit-lookup",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/owned-fruit-save-load",
+      "pass": true
+    },
+    {
+      "name": "retained-partial-utf8/game-codec-preserves-name-and-alias",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/enabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/disabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/singular-retains-bytes",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/C-plural-suffix",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/exact-fruit-lookup",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/owned-fruit-save-load",
+      "pass": true
+    },
+    {
+      "name": "low-seven-control/game-codec-preserves-name-and-alias",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/enabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/disabled-sanitizer",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/singular-retains-bytes",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/C-plural-suffix",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/exact-fruit-lookup",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/owned-fruit-save-load",
+      "pass": true
+    },
+    {
+      "name": "ascii-negative/game-codec-preserves-name-and-alias",
+      "pass": true
+    },
+    {
+      "name": "typed-array-is-not-a-persistent-name",
+      "pass": true
+    },
+    {
+      "name": "RC-and-key-ingress-differ",
+      "pass": true
+    }
+  ]
+}

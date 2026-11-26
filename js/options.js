@@ -23,7 +23,7 @@ import {
     PICK_NONE, PICK_ONE, PICK_ANY, ECMD_OK,
     AUTOUNLOCK_APPLY_KEY, MENU_TRADITIONAL, MENU_COMBINATION,
     GPCOORDS_NONE, GPCOORDS_COMPASS, GPCOORDS_COMFULL, GPCOORDS_MAP,
-    GPCOORDS_SCREEN, COLNO, ROWNO, PL_FSIZ, ismnum,
+    GPCOORDS_SCREEN, COLNO, ROWNO, PL_FSIZ, PL_NSIZ, ismnum,
 } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { allopt, findOption } from './optlist.js';
@@ -78,8 +78,6 @@ function note_unported_options(what) {
 // src/options.c optfn_fruit() and initoptions_finish().
 export function set_fruit_name(value, initial = false) {
     const name = mungspaces(value ?? '');
-    if (initial)
-        game.ffruit = null;
     let forig = null;
     if (!initial) {
         const fnum = {v: 0};
@@ -94,13 +92,14 @@ export function set_fruit_name(value, initial = false) {
     }
     game.svp ||= {};
     game.svp.pl_fruit = sanitize_name(nmcpy(name, PL_FSIZ)) || 'slime mold';
-    fruitadd(game.svp, forig);
+    if (!initial)
+        fruitadd(game.svp, forig);
     return game.svp.pl_fruit;
 }
 
 // src/options.c:6861 nmcpy(), strings return the destination contents.
 function nmcpy(src, maxlen) {
-    return src.split(',')[0].slice(0, maxlen - 1);
+    return src.split(/[\0,]/, 1)[0].slice(0, maxlen - 1);
 }
 
 // src/options.c:8170 fruitadd(). Passing svp preserves pl_fruit buffer identity;
@@ -196,7 +195,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
 
     /* strip leading and trailing white space */
-    opts = opts.replace(/^\s+/, '').replace(/\s+$/, '');
+    opts = opts.replace(/^[ \t\r\n\f\v]+/, '').replace(/[ \t\r\n\f\v]+$/, '');
 
     if (!opts) {
         config_error_add('Empty statement');
@@ -215,8 +214,10 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     /* Split "name:value" / "name=value" into the parts the table matches on.
        length_without_val() in the C stops at the first ':' or '='. */
     const sep = firstSeparator(opts);
-    const name = (sep < 0 ? opts : opts.slice(0, sep)).trim();
-    const value = sep < 0 ? null : opts.slice(sep + 1).trim();
+    const name = (sep < 0 ? opts : opts.slice(0, sep))
+        .replace(/^[ \t\r\n\f\v]+|[ \t\r\n\f\v]+$/g, '');
+    const value = sep < 0 ? null : opts.slice(sep + 1)
+        .replace(/^[ \t\r\n\f\v]+|[ \t\r\n\f\v]+$/g, '');
 
     let opt = findOption(name);
     // src/options.c:6703 determine_ambiguities(): at least three letters,
@@ -265,13 +266,30 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         && !(opt.name === 'whatis_coord' && negated)
         && !(opt.name === 'paranoid_confirmation' && negated)
         && !(opt.name === 'number_pad' && (opts.length <= 10 || negated || tinitial))
+        && !(opt.name === 'fruit' && negated)
         && opt.name !== 'hilite_status' && opt.name !== 'menu_headings'
         && opt.name !== 'petattr' && opt.name !== 'msg_window') {
         config_error_add(`Missing value for '${opt.name}'`);
         return false;
     }
 
-    if (opt.type === 'BoolOpt') {
+    if (opt.name === 'fruit') {
+        // src/options.c:1706 optfn_fruit(), sanitize at this statement.
+        const op = sep < 0 ? '' : opts.slice(sep + 1);
+        if (negated && op) {
+            config_error_add('The fruit option may not both have a value and be negated.');
+            return false;
+        }
+        const bytes = tinitial
+            ? Array.from(new TextEncoder().encode(op), c => String.fromCharCode(c)).join('')
+            : op; // getlin already supplies C bytes.
+        result.opts.fruit = set_fruit_name(negated ? '' : bytes, tinitial);
+    } else if (opt.name === 'name' && tinitial) {
+        // src/options.c:2549 optfn_name(), RC text reaches C as UTF8 bytes.
+        const bytes = Array.from(new TextEncoder().encode(opts.slice(sep + 1)),
+                                 c => String.fromCharCode(c)).join('');
+        result.opts.name = nmcpy(bytes, PL_NSIZ);
+    } else if (opt.type === 'BoolOpt') {
         // src/options.c optfn_boolean(): ignore unavailable storage, then
         // enforce whether this option may be set at startup or during play.
         if (opt.noaddr)
@@ -305,6 +323,8 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         // Later number_pad lines call update_rest_on_space during startup.
         if (opt.name === 'rest_on_space')
             (game.flags ||= {}).rest_on_space = !negated;
+        if (opt.name === 'eight_bit_tty')
+            set_bool_optval(opt.name, !negated);
         if (opt.name === 'hilite_pet') {
             set_bool_optval('hilite_pet', !negated);
             boolopt_side_effects('hilite_pet');
@@ -902,6 +922,9 @@ export function parseNethackrc(rc) {
     (game.iflags ||= {}).wc2_petattr = ATR_INVERSE;
     // src/options.c:7181 initoptions_init(): tty message-history default.
     game.iflags.prevmsg_window = 's';
+    // src/options.c:7181 initoptions_init(), before any fruit statements.
+    game.iflags.wc_eight_bit_input = false;
+    (game.svp ||= {}).pl_fruit = 'slime mold';
     if (!rc) return result;
     config_error_data = result; /* src/cfgfiles.c config_error_init() */
 
@@ -986,7 +1009,8 @@ export function parseNethackrc(rc) {
             msgtype_parse_add(rest);
             break;
         case 'AUTOPICKUP_EXCEPTION':
-            add_autopickup_exception(rest);
+            add_autopickup_exception(Array.from(new TextEncoder().encode(rest),
+                                               c => String.fromCharCode(c)).join(''));
             break;
         case 'BINDINGS':
             result.bindings.push(rest);
@@ -1480,7 +1504,7 @@ function longest_option_name(startpass, endpass) {
    menu and the rc must write the same place. */
 export const iflag_boolean_options = new Set([
     'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
-    'customcolors', 'customsymbols', 'bgcolors',
+    'customcolors', 'customsymbols', 'bgcolors', 'eight_bit_tty',
     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
     'menucolors', /* iflags.use_menu_color */
     'whatis_menu', /* iflags.getloc_usemenu */
@@ -1494,7 +1518,8 @@ function bool_opt_store(name) {
 
 function set_bool_optval(name, value) {
     // include/optlist.h:634 binds safe_pet to flags.safe_dog.
-    const field = name === 'safe_pet' ? 'safe_dog' : name;
+    const field = name === 'safe_pet' ? 'safe_dog'
+        : name === 'eight_bit_tty' ? 'wc_eight_bit_input' : name;
     bool_opt_store(name)[field] = value;
 }
 
@@ -1505,7 +1530,8 @@ function bool_optval(o) {
     // optlist.h stores these options in u.uroleplay; pauper also sets nudist.
     if ((o.name === 'nudist' || o.name === 'pauper') && game.u?.uroleplay)
         return !!game.u.uroleplay[o.name];
-    const field = o.name === 'safe_pet' ? 'safe_dog' : o.name;
+    const field = o.name === 'safe_pet' ? 'safe_dog'
+        : o.name === 'eight_bit_tty' ? 'wc_eight_bit_input' : o.name;
     const v = bool_opt_store(o.name)[field];
     return (v === undefined) ? (o.initval === 'On') : !!v;
 }
@@ -3054,7 +3080,9 @@ function msgtype_add(typ, pattern) {
 
     /* test_regex_pattern() has already validated this regexp but parsing
        it again could conceivably run out of memory */
-    if (!regex_compile(pattern, tmp.regex)) {
+    const bytes = pattern instanceof Uint8Array ? pattern
+        : Uint8Array.from(pattern, ch => ch.charCodeAt(0));
+    if (!regex_compile(bytes, tmp.regex)) {
         const re_error_desc = regex_error_desc(tmp.regex);
 
         /* free first in case reason for failure was insufficient memory */
@@ -3062,8 +3090,7 @@ function msgtype_add(typ, pattern) {
         config_error_add(`${re_error}: ${re_error_desc}`);
         return false;
     }
-    tmp.pattern = pattern instanceof Uint8Array
-        ? new TextDecoder().decode(pattern) : pattern;
+    tmp.pattern = Array.from(bytes, c => String.fromCharCode(c)).join('').split('\0', 1)[0];
     (game.plinemsg_types ||= []).unshift(tmp);
     return true;
 }
@@ -3083,7 +3110,7 @@ export function msgtype_type(msg, norepeat) { /* called from Norep(via pline) */
     for (const tmp of game.plinemsg_types || []) {
         /* we don't exclude entries with negative msgtype values
            because then the msg might end up matching a later pattern */
-        if (regex_match(msg, tmp.regex))
+        if (regex_match(Uint8Array.from(msg, ch => ch.charCodeAt(0)), tmp.regex))
             return tmp.msgtype;
     }
     return norepeat ? MSGTYP_NOREP : MSGTYP_NORMAL;
@@ -3144,7 +3171,7 @@ async function test_regex_pattern(str, errmsg) {
         return false;
     }
 
-    const retval = regex_compile(str, match);
+    const retval = regex_compile(Uint8Array.from(str, ch => ch.charCodeAt(0)), match);
     /* get potential error message before freeing regexp and free regexp
        before issuing message in case the error is "ran out of memory"
        since message delivery might need to allocate some memory */
@@ -3219,7 +3246,7 @@ function scan_ape(mapping, lead) {
     if (mapping[i] !== '"')
         return { n: 1, text };
     i++;
-    while (i < mapping.length && /\s/.test(mapping[i]))
+    while (i < mapping.length && /[ \t\r\n\f\v]/.test(mapping[i]))
         i++;
     if (i >= mapping.length)
         return { n: 1, text };
@@ -3252,7 +3279,7 @@ export function add_autopickup_exception(mapping) {
     const text = r.text;
 
     const ape = { regex: regex_init(), pattern: null, grab: false };
-    if (!regex_compile(text, ape.regex)) {
+    if (!regex_compile(Uint8Array.from(text, ch => ch.charCodeAt(0)), ape.regex)) {
         const re_error_desc = regex_error_desc(ape.regex);
 
         /* free first in case reason for failure was insufficient memory */
@@ -3948,7 +3975,7 @@ async function parseoptions_interactive(buf) {
     config_error_data = null;
     for (const [name, value] of Object.entries(result.opts)) {
         if (name === 'fruit') {
-            set_fruit_name(value);
+            // optfn_fruit already stored and registered the new name.
         } else if (name === 'num_pad' || name === 'num_pad_mode') {
             /* optfn_number_pad() writes iflags */
             (game.iflags ||= {})[name] = value;
@@ -3960,7 +3987,7 @@ async function parseoptions_interactive(buf) {
                 new_status_window();
         } else if (name === 'statushilites') {
             /* iflags.hilite_delta was written by parseoptions() */
-        } else if (name === 'safe_pet' || name === 'bgcolors') {
+        } else if (name === 'safe_pet' || name === 'bgcolors' || name === 'eight_bit_tty') {
             set_bool_optval(name, value);
         } else {
             game.flags[name] = value;

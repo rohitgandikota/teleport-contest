@@ -1,0 +1,52 @@
+{
+  "sourceMembers": 334,
+  "sourceManifestSHA256": "6095f7576c8d7f548948d3801fb20e288d367cb6b709241f0836a26e23cd1210",
+  "sourceSealSHA256": "d933c92f0b850580cf7a599945cbed71ac8bc68450be0a39ec4b493be878cd18",
+  "nativeHandoffSHA256": "543c4f11846be4db10ec5e570821149b69f475951d39c51ee54ed2a6dc5a9497",
+  "baselineRuntimeMapSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "candidateRuntimeMapSHA256": "21a22aa9c2adbb83a4c3ea93f7dbd89daf774a1d1b1bf541936870921e4a32ff",
+  "runtimeFiles": 280,
+  "candidateOwners": [
+    {
+      "path": "candidate/js/coloratt.js",
+      "sha256": "c89f124e8c7577625c88ef320b5ab969fb501a88db2fd0beffdac6414506a5fd",
+      "baselineSHA256": "fe06f01ec7d64de55bf628339887e5a1341012c0e4ce419f997e778a84cd3124"
+    },
+    {
+      "path": "candidate/js/display.js",
+      "sha256": "eed2063eaadfa52a4e0ca5b551a647b63cba5522c8c3e2ec2f2fe8183e211df7",
+      "baselineSHA256": "c0c7a8053ff6eced29028e78f6658afcaa3db9e39fdaaeca65a927070752be01"
+    },
+    {
+      "path": "candidate/js/hacklib.js",
+      "sha256": "73fa2108dde072fe3a87c382f5aa9e22b2ab4934c1fc5252821e292472d10f38",
+      "baselineSHA256": "37a888c138c72ed19fb99fe4830c959ae52ae1ad5a71a5c68deea4912ea1f2d1"
+    },
+    {
+      "path": "candidate/js/jsmain.js",
+      "sha256": "1ea0e1a6ecf643dc913ef487d02b92a144e56a072773d123085bb7b1fb66853b",
+      "baselineSHA256": "aff597bac8a6ea391174fc498cf0a7fb43aa681b4efe934d34def2737c637165"
+    },
+    {
+      "path": "candidate/js/options.js",
+      "sha256": "1de92421ef10cf99a39aa7da84d51fea3d01cb9b6b370934af7c67aa61e6fc59",
+      "baselineSHA256": "469796100bf0e7b173c432bfba1ee8a0431b6a85bcf05b93cd2415846169b99d"
+    },
+    {
+      "path": "candidate/js/pickup.js",
+      "sha256": "f9c1226c164ee0d18613fd835cdab0b9509efc26dae4030a8d48c34c28b57b14",
+      "baselineSHA256": "49a6bf1e92f024e62b0f15b425ac244bf0df1cb2166c57856d2f30c5f30bc505"
+    },
+    {
+      "path": "candidate/js/tty/wintty.js",
+      "sha256": "97ead31e9e4a198872fec6bd72ab60a49775dead6e28b3862614768384edda22",
+      "baselineSHA256": "8422f3ad753589d7a88027251e69fa0b20839800a87a73ccf18b398e4ec2517e"
+    },
+    {
+      "path": "candidate/js/windows.js",
+      "sha256": "01e356e3dfb54adc2ca91b9726eab814fc224cef6422019d07eb702e12cd1c9e",
+      "baselineSHA256": "784aa0ad1f4b57961668c4b6ab828e64eeb524a26d151636926515e9c9b0c570"
+    }
+  ],
+  "status": "Source-only proof. Native/composed review pending."
+}

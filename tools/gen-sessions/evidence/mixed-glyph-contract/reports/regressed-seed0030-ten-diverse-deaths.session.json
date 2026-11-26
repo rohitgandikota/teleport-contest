@@ -1,0 +1,1021 @@
+[
+  {
+    "segment": 0,
+    "boundaries": {
+      "expected": 79,
+      "actual": 79
+    },
+    "frozenScreens": 79,
+    "fullStyleScreens": 78,
+    "matchingStyleCells": 151616,
+    "totalCells": 151680,
+    "blankStyleMismatches": 64,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 78,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1856,
+        "blankStyleMismatches": 64,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 4,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 79,
+      "actual": 79,
+      "matched": 79,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 14300,
+      "rawActual": 14300,
+      "discardedEntries": 0,
+      "expected": 14300,
+      "actual": 14300,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 79,
+      "actual": 79,
+      "matched": 79,
+      "differences": []
+    },
+    "frames": {
+      "expected": 3,
+      "actual": 3,
+      "expectedSlices": 79,
+      "actualSlices": 79,
+      "countMismatches": [],
+      "fullStyleMatches": 3,
+      "cursorMatches": 3
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "56be5dd34b4ceb42a3495888497815c2b0c3b5d6db6f70ce03a1258b173638e8",
+        "cursors": "2368b7430afce56650e980622628c1e38558678eda37d02d97d5a7e9b9e1c501",
+        "calls": "f82e0b03babd45a6dff01ec7c3775bd9ffd073c46cd115e787b4f0a10d0fbbcb",
+        "slices": "485423ee8bde7f793a4dfded76fd347243fda52a9724c02bbbbbe9ad8df649d2",
+        "frames": "3c6de7d710a6bb84b714d9e31038dd744ddc6085caa63dab5ebf2e3bfeed5413"
+      },
+      "js": {
+        "screens": "3b09db6545b3d91028560e18672d8fee61ac9b2d8e8c4de30a49b67d5bccba28",
+        "cursors": "2368b7430afce56650e980622628c1e38558678eda37d02d97d5a7e9b9e1c501",
+        "calls": "0f177d6deec04f444cd5d79f5f6c6de0c7fcf272ecf348773aa8c19a849bca0d",
+        "slices": "8d7db99a64ab80fabdce97ccb5e883f57adbc65a8d35948dfd9a9ddd0990b3f8",
+        "frames": "910871756b318f79ad4db870fa95353f1f41098eed947033f2b05a6dc445d19f"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0f177d6deec04f444cd5d79f5f6c6de0c7fcf272ecf348773aa8c19a849bca0d",
+        "slices": "8d7db99a64ab80fabdce97ccb5e883f57adbc65a8d35948dfd9a9ddd0990b3f8"
+      },
+      "js": {
+        "calls": "0f177d6deec04f444cd5d79f5f6c6de0c7fcf272ecf348773aa8c19a849bca0d",
+        "slices": "8d7db99a64ab80fabdce97ccb5e883f57adbc65a8d35948dfd9a9ddd0990b3f8"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "boundaries": {
+      "expected": 124,
+      "actual": 124
+    },
+    "frozenScreens": 124,
+    "fullStyleScreens": 123,
+    "matchingStyleCells": 238024,
+    "totalCells": 238080,
+    "blankStyleMismatches": 56,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 123,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1864,
+        "blankStyleMismatches": 56,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 6,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 124,
+      "actual": 124,
+      "matched": 124,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 7640,
+      "rawActual": 7640,
+      "discardedEntries": 0,
+      "expected": 7640,
+      "actual": 7640,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 124,
+      "actual": 124,
+      "matched": 124,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 124,
+      "actualSlices": 124,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "3014e24019869f0f7def9a4d52b814a7bd90ef5edb0478444572886373edee76",
+        "cursors": "7a8fcf538fd3372a22a7f7f0ac39511df791131a476dbe1e8d6cee17f8e6ea1e",
+        "calls": "0000b552736a6f358320cfa2bc60bb806456e80e17b20268a78355d68294fafc",
+        "slices": "a9e98bf49392a55888cf1aa7ffeea89f63e1cd86040c8ac36b044f6c6c07b8f2",
+        "frames": "9d07a2d02a5ae9e5f75490a6379030e0ea726c589ea367382379173ed2330828"
+      },
+      "js": {
+        "screens": "0538a2a9e8a4d9479245d5c38bf467c726ce2342dbc1a31e045ed4fad3ce1247",
+        "cursors": "7a8fcf538fd3372a22a7f7f0ac39511df791131a476dbe1e8d6cee17f8e6ea1e",
+        "calls": "c38b6034e8459386acde263d78d694876b669cdbd1dc6c3c281e875c9354e9d1",
+        "slices": "6ee0e483e1d36b2e330a7fe35ee826ff6e6cd59e4e605aa255d28aa5f4d672e3",
+        "frames": "9d07a2d02a5ae9e5f75490a6379030e0ea726c589ea367382379173ed2330828"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "c38b6034e8459386acde263d78d694876b669cdbd1dc6c3c281e875c9354e9d1",
+        "slices": "6ee0e483e1d36b2e330a7fe35ee826ff6e6cd59e4e605aa255d28aa5f4d672e3"
+      },
+      "js": {
+        "calls": "c38b6034e8459386acde263d78d694876b669cdbd1dc6c3c281e875c9354e9d1",
+        "slices": "6ee0e483e1d36b2e330a7fe35ee826ff6e6cd59e4e605aa255d28aa5f4d672e3"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "boundaries": {
+      "expected": 93,
+      "actual": 93
+    },
+    "frozenScreens": 93,
+    "fullStyleScreens": 92,
+    "matchingStyleCells": 178499,
+    "totalCells": 178560,
+    "blankStyleMismatches": 61,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 92,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1859,
+        "blankStyleMismatches": 61,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 6,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 93,
+      "actual": 93,
+      "matched": 93,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 6221,
+      "rawActual": 6221,
+      "discardedEntries": 0,
+      "expected": 6221,
+      "actual": 6221,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 93,
+      "actual": 93,
+      "matched": 93,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 93,
+      "actualSlices": 93,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "50ff49c565527344627a8188ec58eadd6b4db25170babe63c7cfed6c794c7b37",
+        "cursors": "4da3a3072d1684932683148bc26ec6da142534b7db65fceb5ae14b27d1c3cc6b",
+        "calls": "687a6d4b2d99f3672a69ff518b03949bdb8d7f15cfea40a63ace59ec71ac33a2",
+        "slices": "a9665d3bf901716deafed618158945320cae846aeb356c3b67c54db2d827b480",
+        "frames": "a03fd2f8811ce412428854e40f9ee5c02874f3d2e3aa28c219784f5a99fc6b74"
+      },
+      "js": {
+        "screens": "c921c51845528fc8d304a8423af11b68736ddc4a108bd235b8da466ec9c9cbe2",
+        "cursors": "4da3a3072d1684932683148bc26ec6da142534b7db65fceb5ae14b27d1c3cc6b",
+        "calls": "56f71e8378e7e9854519fd7407c8665b100f5635fb3d1fa4241e16292f50ff38",
+        "slices": "723a519381f807cb00d052424c262f4ed6627e86a412544110cf29d0edd504d7",
+        "frames": "a03fd2f8811ce412428854e40f9ee5c02874f3d2e3aa28c219784f5a99fc6b74"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "56f71e8378e7e9854519fd7407c8665b100f5635fb3d1fa4241e16292f50ff38",
+        "slices": "723a519381f807cb00d052424c262f4ed6627e86a412544110cf29d0edd504d7"
+      },
+      "js": {
+        "calls": "56f71e8378e7e9854519fd7407c8665b100f5635fb3d1fa4241e16292f50ff38",
+        "slices": "723a519381f807cb00d052424c262f4ed6627e86a412544110cf29d0edd504d7"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "boundaries": {
+      "expected": 291,
+      "actual": 291
+    },
+    "frozenScreens": 291,
+    "fullStyleScreens": 290,
+    "matchingStyleCells": 558602,
+    "totalCells": 558720,
+    "blankStyleMismatches": 118,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 290,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1802,
+        "blankStyleMismatches": 118,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 6,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 291,
+      "actual": 291,
+      "matched": 291,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 9892,
+      "rawActual": 9892,
+      "discardedEntries": 0,
+      "expected": 9892,
+      "actual": 9892,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 291,
+      "actual": 291,
+      "matched": 291,
+      "differences": []
+    },
+    "frames": {
+      "expected": 21,
+      "actual": 21,
+      "expectedSlices": 291,
+      "actualSlices": 291,
+      "countMismatches": [],
+      "fullStyleMatches": 21,
+      "cursorMatches": 21
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "b6afdffb0f6a369df523b3499b2f62828fd1a8d373d9ad8d473e467650294ea1",
+        "cursors": "c62cf87c5e984d3377c49173434e49adf64ebe7528f20a7422da94907a1d0038",
+        "calls": "6800c044851b33004eedffd7fe7cabc6cafd9f0829e1810780023c7d93233760",
+        "slices": "e57e3560bbdd350271d9fb83be29d709cac7478d18ae86830fad0d4dfb86ed7d",
+        "frames": "e45cc639332803e711bec144a8ba741685a6063878fe59d6765635a429274eb5"
+      },
+      "js": {
+        "screens": "93c1954d602e7675377b7d7e8b29cb0c82c2aedf7fe8202c05d4d12db0b8fd70",
+        "cursors": "c62cf87c5e984d3377c49173434e49adf64ebe7528f20a7422da94907a1d0038",
+        "calls": "39661725aa5da2027cda1e0c398f6d2f09b4760dffce5fd70ad65e9f00a7f9bf",
+        "slices": "6248438fbe8df10425fa1a99a7267a5a338670bbcca586fffb7c28ec98ecba87",
+        "frames": "912a9148d05f3908444c0ecd1ab4583bf875e51fbed8cac5cbe7f77df13ef0f5"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "39661725aa5da2027cda1e0c398f6d2f09b4760dffce5fd70ad65e9f00a7f9bf",
+        "slices": "6248438fbe8df10425fa1a99a7267a5a338670bbcca586fffb7c28ec98ecba87"
+      },
+      "js": {
+        "calls": "39661725aa5da2027cda1e0c398f6d2f09b4760dffce5fd70ad65e9f00a7f9bf",
+        "slices": "6248438fbe8df10425fa1a99a7267a5a338670bbcca586fffb7c28ec98ecba87"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "boundaries": {
+      "expected": 198,
+      "actual": 198
+    },
+    "frozenScreens": 198,
+    "fullStyleScreens": 197,
+    "matchingStyleCells": 380099,
+    "totalCells": 380160,
+    "blankStyleMismatches": 61,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 197,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1859,
+        "blankStyleMismatches": 61,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 11,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 198,
+      "actual": 198,
+      "matched": 198,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 8031,
+      "rawActual": 8031,
+      "discardedEntries": 0,
+      "expected": 8031,
+      "actual": 8031,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 198,
+      "actual": 198,
+      "matched": 198,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 198,
+      "actualSlices": 198,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9dfd6f7951367ff9d452f5d61cb67f4e48408318fa955905a837f7853ea26897",
+        "cursors": "5c97211445f608d84832471e6833115f676665e6d7628981815f28d0096f94ff",
+        "calls": "7af00844900d61b8e1cfe47b4f9857bb85892c924928a9f6cbb9888f3b271cfe",
+        "slices": "58a37b8a4ad4ee48b5e790789ce5f3d405ca58e57c19630573d351337799c3db",
+        "frames": "431e926e4872a0d723010e64ef8caf7fe211b057a7af043ee28ddaed1790184f"
+      },
+      "js": {
+        "screens": "a93abdc625653c8bdd9793fc944738a4370723f27b5b06fb00072f2a9aa35404",
+        "cursors": "5c97211445f608d84832471e6833115f676665e6d7628981815f28d0096f94ff",
+        "calls": "eb8fe783950d161aeed6d93cef4e13be6c2c7297fb27d467d7d8aa9326156553",
+        "slices": "170c8cc17ad360237f191d4efbf376f7b8443ecf2b10abe2f567bd3e97c483ea",
+        "frames": "431e926e4872a0d723010e64ef8caf7fe211b057a7af043ee28ddaed1790184f"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "eb8fe783950d161aeed6d93cef4e13be6c2c7297fb27d467d7d8aa9326156553",
+        "slices": "170c8cc17ad360237f191d4efbf376f7b8443ecf2b10abe2f567bd3e97c483ea"
+      },
+      "js": {
+        "calls": "eb8fe783950d161aeed6d93cef4e13be6c2c7297fb27d467d7d8aa9326156553",
+        "slices": "170c8cc17ad360237f191d4efbf376f7b8443ecf2b10abe2f567bd3e97c483ea"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 5,
+    "boundaries": {
+      "expected": 236,
+      "actual": 236
+    },
+    "frozenScreens": 236,
+    "fullStyleScreens": 236,
+    "matchingStyleCells": 453120,
+    "totalCells": 453120,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 236,
+      "actual": 236,
+      "matched": 236,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 8397,
+      "rawActual": 8397,
+      "discardedEntries": 0,
+      "expected": 8397,
+      "actual": 8397,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 236,
+      "actual": 236,
+      "matched": 236,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 236,
+      "actualSlices": 236,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "11750c8d40b6aa192f3559189c774d1de8b3b6159888613d87afa65a0a19dedf",
+        "cursors": "b65d521a08f64299c0ff51ae31da4132390378b51abbd2c3b1b3b0246d41f02e",
+        "calls": "986a3b348b66430e076f0d208bfd077ed1d2f8511c5c235209a847cac1243225",
+        "slices": "0fa79dfc8f87dc68ff2b6f043f3db2bb715802cf933391d40c07f9717633a76e",
+        "frames": "7835b8fd7c71b89a69c5208399baace8babe1eccd343cd1778187ccc93e5d648"
+      },
+      "js": {
+        "screens": "139401c7d0a48583f39f5adc1d6e74518803d8c76ba230c1875b91e74341d41c",
+        "cursors": "b65d521a08f64299c0ff51ae31da4132390378b51abbd2c3b1b3b0246d41f02e",
+        "calls": "0b60710d7fceae9faaa87511fc316c6b187838aad74d61423673008a6e7cf772",
+        "slices": "aeb5634d7102aaf92f319066ab447776dc2e9248f48ea4c930a420cbfacc4b5c",
+        "frames": "7835b8fd7c71b89a69c5208399baace8babe1eccd343cd1778187ccc93e5d648"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0b60710d7fceae9faaa87511fc316c6b187838aad74d61423673008a6e7cf772",
+        "slices": "aeb5634d7102aaf92f319066ab447776dc2e9248f48ea4c930a420cbfacc4b5c"
+      },
+      "js": {
+        "calls": "0b60710d7fceae9faaa87511fc316c6b187838aad74d61423673008a6e7cf772",
+        "slices": "aeb5634d7102aaf92f319066ab447776dc2e9248f48ea4c930a420cbfacc4b5c"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 6,
+    "boundaries": {
+      "expected": 253,
+      "actual": 253
+    },
+    "frozenScreens": 253,
+    "fullStyleScreens": 252,
+    "matchingStyleCells": 485696,
+    "totalCells": 485760,
+    "blankStyleMismatches": 64,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 252,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1856,
+        "blankStyleMismatches": 64,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 4,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 253,
+      "actual": 253,
+      "matched": 253,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 19884,
+      "rawActual": 19884,
+      "discardedEntries": 0,
+      "expected": 19884,
+      "actual": 19884,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 253,
+      "actual": 253,
+      "matched": 253,
+      "differences": []
+    },
+    "frames": {
+      "expected": 13,
+      "actual": 13,
+      "expectedSlices": 253,
+      "actualSlices": 253,
+      "countMismatches": [],
+      "fullStyleMatches": 13,
+      "cursorMatches": 13
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1b877ddf2f168a660974299208265d0174211da31a250c9bd3447edbd1a74d6f",
+        "cursors": "d3198be73020828bea1f2df6d6a4018f3fb34c9c5ec7521726dd619f11ea8d6e",
+        "calls": "92dc93fe42dd1e7e637b6bcc09f73dd37a52b6064f39f4c610ef9e82883f2ca8",
+        "slices": "a221d81beae0fbb8518aec9217a107bb6b5aa8382baee755d20ff014599aa603",
+        "frames": "c9121e45692074dbc63db55130e318a84905cbcb05679d3a64abb3738bad7f06"
+      },
+      "js": {
+        "screens": "bc6f8f44c5ac2e140b1f273846fa21f434811c4d378e8d203bba0cdac3cb72a9",
+        "cursors": "d3198be73020828bea1f2df6d6a4018f3fb34c9c5ec7521726dd619f11ea8d6e",
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "d05a90fc59ce4fecb2e29b94d55981c25cb618e60e813d349082783b96f36871",
+        "frames": "b6489c902cc035a05df0c96e2459bce9e4e2cb5ee35722b30a252abb05fd8589"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "d05a90fc59ce4fecb2e29b94d55981c25cb618e60e813d349082783b96f36871"
+      },
+      "js": {
+        "calls": "5dca5a6638d5fd9cb31ef2d42808e17d54d310c59e74bfc3f4086604c5f14b2f",
+        "slices": "d05a90fc59ce4fecb2e29b94d55981c25cb618e60e813d349082783b96f36871"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 7,
+    "boundaries": {
+      "expected": 172,
+      "actual": 172
+    },
+    "frozenScreens": 172,
+    "fullStyleScreens": 171,
+    "matchingStyleCells": 330178,
+    "totalCells": 330240,
+    "blankStyleMismatches": 62,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 171,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1858,
+        "blankStyleMismatches": 62,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 13,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 172,
+      "actual": 172,
+      "matched": 172,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 10584,
+      "rawActual": 10584,
+      "discardedEntries": 0,
+      "expected": 10584,
+      "actual": 10584,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 172,
+      "actual": 172,
+      "matched": 172,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 172,
+      "actualSlices": 172,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "7c29610a07541e2796f3a7ad7dc76a2af6788c784d599d2e8d7a5ee71aea5fa8",
+        "cursors": "6593ed9356d744c26ad453c62d3694929ba027f938f8790cd1add3fb231f3fd9",
+        "calls": "f28420ca1e7a9d06a539786f438563b2a7b651e3fbb15c33328c78d7ca4d1b62",
+        "slices": "3294d05bfad66860fe6a1bb931a34ed38578a1a5fd0b8014d859de65b9690fec",
+        "frames": "9a7a961f5b7e9cc07211e03bf27bd1019ab4c1b9393ae319d19cf889b6f25c61"
+      },
+      "js": {
+        "screens": "61366f2e650d436f94356a9de5f5f7eea0bd28963551ff380fa1f34a5bc77d03",
+        "cursors": "6593ed9356d744c26ad453c62d3694929ba027f938f8790cd1add3fb231f3fd9",
+        "calls": "d75d5b14c4567e54ea7143d76247b80b0c6b665c151659c9c6c8ee186bf6b0ec",
+        "slices": "1b7079aca4082d7f69cba3ac11021dba4a10911817637fced783cfb90b2c8c20",
+        "frames": "9a7a961f5b7e9cc07211e03bf27bd1019ab4c1b9393ae319d19cf889b6f25c61"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "d75d5b14c4567e54ea7143d76247b80b0c6b665c151659c9c6c8ee186bf6b0ec",
+        "slices": "1b7079aca4082d7f69cba3ac11021dba4a10911817637fced783cfb90b2c8c20"
+      },
+      "js": {
+        "calls": "d75d5b14c4567e54ea7143d76247b80b0c6b665c151659c9c6c8ee186bf6b0ec",
+        "slices": "1b7079aca4082d7f69cba3ac11021dba4a10911817637fced783cfb90b2c8c20"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 8,
+    "boundaries": {
+      "expected": 39,
+      "actual": 39
+    },
+    "frozenScreens": 39,
+    "fullStyleScreens": 38,
+    "matchingStyleCells": 74794,
+    "totalCells": 74880,
+    "blankStyleMismatches": 86,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [
+      {
+        "step": 38,
+        "frozenEqual": true,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1834,
+        "blankStyleMismatches": 86,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 0,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 14,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 2
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 39,
+      "actual": 39,
+      "matched": 39,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3476,
+      "rawActual": 3476,
+      "discardedEntries": 0,
+      "expected": 3476,
+      "actual": 3476,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 39,
+      "actual": 39,
+      "matched": 39,
+      "differences": []
+    },
+    "frames": {
+      "expected": 1,
+      "actual": 1,
+      "expectedSlices": 39,
+      "actualSlices": 39,
+      "countMismatches": [],
+      "fullStyleMatches": 1,
+      "cursorMatches": 1
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "eda56949e50892f0238c03f468483fc61cc4686e3cc4f4b09ac0e96b4588009b",
+        "cursors": "f157e5b99116d42a4f8c45f655d1584219b2bac0ce754bec36147668db76ffec",
+        "calls": "32be649356172e580b66edf9c28e1949cf857e347c330d497a46f4213b2b8981",
+        "slices": "f2350d8ba6cfbaea29c64399a3d5a4b12ebecabb4562047a6a94552b596e2951",
+        "frames": "7104b5cce9c5b68e7e6c0305a0936d872978b2b58865f2e6b0dbb48eae77cb85"
+      },
+      "js": {
+        "screens": "3e59a279cf5a777ec8bb32b454a1cffe338cddebf0d34c3294ea6c861892dea3",
+        "cursors": "f157e5b99116d42a4f8c45f655d1584219b2bac0ce754bec36147668db76ffec",
+        "calls": "a69b97c3972c90e3efb13d9613a366737386eee8e9c256a4987a234f4aa24d69",
+        "slices": "c84a6e48c469981e9b62336c51665c3d6103cfa6f3c69c76436087a215f63b83",
+        "frames": "7a488385f45cc88cd860efafccf04eff30cac49cfbbe08db2bb4341aec13d95e"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "a69b97c3972c90e3efb13d9613a366737386eee8e9c256a4987a234f4aa24d69",
+        "slices": "c84a6e48c469981e9b62336c51665c3d6103cfa6f3c69c76436087a215f63b83"
+      },
+      "js": {
+        "calls": "a69b97c3972c90e3efb13d9613a366737386eee8e9c256a4987a234f4aa24d69",
+        "slices": "c84a6e48c469981e9b62336c51665c3d6103cfa6f3c69c76436087a215f63b83"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 9,
+    "boundaries": {
+      "expected": 468,
+      "actual": 468
+    },
+    "frozenScreens": 466,
+    "fullStyleScreens": 466,
+    "matchingStyleCells": 898558,
+    "totalCells": 898560,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 2,
+    "screenDifferences": [
+      {
+        "step": 352,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 353,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "·",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 468,
+      "actual": 468,
+      "matched": 468,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 17104,
+      "rawActual": 17104,
+      "discardedEntries": 0,
+      "expected": 17104,
+      "actual": 17104,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 468,
+      "actual": 468,
+      "matched": 468,
+      "differences": []
+    },
+    "frames": {
+      "expected": 2,
+      "actual": 2,
+      "expectedSlices": 468,
+      "actualSlices": 468,
+      "countMismatches": [],
+      "fullStyleMatches": 2,
+      "cursorMatches": 2
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2c9cca3f93fe2ca11e8a5e2c3d163ffbf232fc315f5f3bd0662057c279072cb4",
+        "cursors": "ffa427ec54fb0a0069383df71d32e40b60602d982e17bb5b41fb0f08c757f019",
+        "calls": "cc51a32640ce20316e579b272ff9672471909dbbfb6b8e84a14c31b6450f48bc",
+        "slices": "c4b1c309dd445ca77844a2e59d262adb3013847478651c1b485eedb26fe8fb85",
+        "frames": "c9bd9ef4bea2bad428ae10929e138b0d85e81164af12109ea64160ed9671af59"
+      },
+      "js": {
+        "screens": "5acda4111193d45b32e7a38be26475c9755c09862c645839efd9271468055ad9",
+        "cursors": "ffa427ec54fb0a0069383df71d32e40b60602d982e17bb5b41fb0f08c757f019",
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080",
+        "frames": "1150958ea9a20d2a5982451d4f814c2c9cdd8b9bc573adaaf9e8ae2e1c3c1698"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080"
+      },
+      "js": {
+        "calls": "77cc571af0ef4bc68d88f86468cd2e9ad5641dc92c0f94f9de8c96c7d1147df6",
+        "slices": "ebb0b6f39efa646996d77773d83f517d21092a481fba4d8f626ca15e3fbeb080"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  }
+]

@@ -1,0 +1,88 @@
+{
+  "classification": "Constructed source boundaries with real game, option and description producers. No ordinary reach claim.",
+  "passed": 15,
+  "total": 16,
+  "rows": [
+    {
+      "name": "consumer/mixed-floor",
+      "pass": true,
+      "gridSHA256": "a1bc13510e4e7821911e0dc1775fd143a8b902673a927b274bfa6c1cac2f84c5"
+    },
+    {
+      "name": "consumer/mixed-wall",
+      "pass": true,
+      "gridSHA256": "cde2209d781209d4944d747c1f1fd2cbee1a7696ac1b63099bdd4274c5a2ce00"
+    },
+    {
+      "name": "consumer/plain-middle-dot",
+      "pass": true,
+      "gridSHA256": "e0ed13158192f0ddf1dca20b5d01632b8a12381856dec510202c965403a725a1"
+    },
+    {
+      "name": "consumer/plain-UTF8-first",
+      "pass": true,
+      "gridSHA256": "300c169f02851d3954076ca73499fdf0f3e1da6f891b81ea93ba02d47775a6dd"
+    },
+    {
+      "name": "consumer/plain-UTF8-interior",
+      "pass": true,
+      "gridSHA256": "0bd32fdbeec7fd386f39ef4aa3286160d0b16abed74078c67105ab68c3c0db31"
+    },
+    {
+      "name": "consumer/plain-ASCII",
+      "pass": true,
+      "gridSHA256": "77afe92017501d61f5d3d6e31b280122d01dbce49a520dcbfb4b2fa07b204ef5"
+    },
+    {
+      "name": "consumer/topl-utf8-guard",
+      "pass": true,
+      "gridSHA256": "d490416fc00733a181ec3a699f28d74bded1001e26baa6ab42637542b985c358"
+    },
+    {
+      "name": "message/actual-floor",
+      "pass": true,
+      "gridSHA256": "a1bc13510e4e7821911e0dc1775fd143a8b902673a927b274bfa6c1cac2f84c5"
+    },
+    {
+      "name": "message/actual-wall",
+      "pass": true,
+      "gridSHA256": "cde2209d781209d4944d747c1f1fd2cbee1a7696ac1b63099bdd4274c5a2ce00"
+    },
+    {
+      "name": "message/ASCII-attr-zero",
+      "pass": true,
+      "gridSHA256": "149b63b1415e4101a68e36388ee33aaf19b98401bcad4e86b8efbfea39011b0d"
+    },
+    {
+      "name": "message/STOP-retains-screen",
+      "pass": true,
+      "gridSHA256": "d10b31169996c25d3ed9e3018a72bef4582d47a9be0c86d797eefd347f38c5c1"
+    },
+    {
+      "name": "message/NOSTOP-overrides-once",
+      "pass": false,
+      "error": "tty_putstr clears the one-shot flag\n\ntrue !== false\n",
+      "gridSHA256": "a1bc13510e4e7821911e0dc1775fd143a8b902673a927b274bfa6c1cac2f84c5"
+    },
+    {
+      "name": "message/join-keeps-interior-as-text",
+      "pass": true,
+      "gridSHA256": "c97f1151c402b5b010d2d1fd1fe0f078ecb3ac41eda56f8f2975a931563603f6"
+    },
+    {
+      "name": "message/ESC-more-stops-output",
+      "pass": true,
+      "gridSHA256": "a1bc13510e4e7821911e0dc1775fd143a8b902673a927b274bfa6c1cac2f84c5"
+    },
+    {
+      "name": "message/bypass-pline-policy",
+      "pass": true,
+      "gridSHA256": "a1bc13510e4e7821911e0dc1775fd143a8b902673a927b274bfa6c1cac2f84c5"
+    },
+    {
+      "name": "message/full-producer-wrapped-acknowledgement",
+      "pass": true,
+      "gridSHA256": "73785e894fcdfb14c436da06cb7533aab1b2b388edd6371098992d6f07651e11"
+    }
+  ]
+}

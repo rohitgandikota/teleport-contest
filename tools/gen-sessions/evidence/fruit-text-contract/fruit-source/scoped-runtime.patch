@@ -1,0 +1,478 @@
+--- a/js/coloratt.js
++++ b/js/coloratt.js
+@@ -319,7 +319,7 @@
+     const tmp = { match: regex_init(), origstr: null, color: 0, attr: 0 };
+     /* test_regex_pattern() has already validated this regexp but parsing
+        it again could conceivably run out of memory */
+-    if (!regex_compile(str, tmp.match)) {
++    if (!regex_compile(Uint8Array.from(str, ch => ch.charCodeAt(0)), tmp.match)) {
+         const re_error_desc = regex_error_desc(tmp.match);
+ 
+         regex_free(tmp.match);
+@@ -338,7 +338,10 @@
+ // and add it to menucoloring
+ export function add_menu_coloring(tmpstr) {
+     let c = NO_COLOR, a = ATR_NONE;
+-    const str = String(tmpstr ?? '').slice(0, BUFSZ - 1);
++    // RC text is UTF8; the parsed and interactive pattern owner uses C bytes.
++    const str = Array.from(new TextEncoder().encode(String(tmpstr ?? '')),
++                           c => String.fromCharCode(c)).join('')
++        .split('\0', 1)[0].slice(0, BUFSZ - 1);
+ 
+     const cs = str.indexOf('=');
+     if (cs < 0) {
+@@ -363,7 +366,7 @@
+     let pattern = str.slice(0, cs);
+     if (pattern[0] === '"' || pattern[0] === "'") {
+         let end = pattern.length - 1;
+-        while (end > 0 && /\s/.test(pattern[end]))
++        while (end > 0 && /[ \t\r\n\f\v]/.test(pattern[end]))
+             end--;
+         if (pattern[end] === pattern[0])
+             pattern = pattern.slice(1, end);
+--- a/js/display.js
++++ b/js/display.js
+@@ -2199,7 +2199,7 @@
+    set (S_pool's '`', the ▒/°/± family beyond 'a') is compared by its raw
+    byte, so the grid must store the raw byte for it: a literal '◆' can never
+    match C's '`'. Do NOT widen this to terminal.js's full DEC_TO_UNICODE. */
+-const CMP_DEC_MAP = {
++export const CMP_DEC_MAP = {
+     'l': '┌', 'q': '─', 'k': '┐',
+     'x': '│', 'm': '└', 'j': '┘',
+     't': '├', 'u': '┤', 'w': '┬',
+@@ -2232,7 +2232,7 @@
+     const code = raw.charCodeAt(0);
+     if (code >= 0x80 && code <= 0xff) {
+         dec = handling !== H_IBM && handling !== H_UTF8
+-            && (!game.flags.eight_bit_tty
++            && (!game.iflags?.wc_eight_bit_input
+                 || (handling === H_DEC && (code & 0x7f) >= 0x60));
+         raw = String.fromCharCode(code & 0x7f);
+     }
+@@ -2427,9 +2427,13 @@
+     const msgLines = painted.split('\n');
+     for (let r = 0; r < msgLines.length && r < 24; r++) {
+         const line = msgLines[r];
+-        for (let c = 0; c < CO; c++)
+-            display.setCell(c, r, c < line.length ? line[c] : ' ',
+-                            NO_COLOR, 0);
++        for (let c = 0; c < CO; c++) {
++            // win/tty/topl.c:305 topl_putsym(char), then nomux_putch(int).
++            const ch = c < line.length ? line[c] : ' ';
++            const byte = (ch.charCodeAt(0) << 24) >> 24;
++            if (byte >= 32)
++                display.setCell(c, r, ch, NO_COLOR, 0);
++        }
+     }
+     // win/tty/topl.c:305 putsyms()/topl_putsym() leave the cursor after the text.
+     display.setCursor(msgLines[msgLines.length - 1].length, msgLines.length - 1);
+--- a/js/hacklib.js
++++ b/js/hacklib.js
+@@ -118,7 +118,7 @@
+             return s ? pmatch_internal(patrn.slice(pi - 1), strng.slice(si), ci)
+                      : false;
+         }
+-        if ((ci ? p.toLowerCase() !== s.toLowerCase() : p !== s)
++        if ((ci ? lowc(p) !== lowc(s) : p !== s)
+             && (p !== '?' || !s))
+             return false;
+     }
+--- a/js/jsmain.js
++++ b/js/jsmain.js
+@@ -17,7 +17,7 @@
+ import { newgame, newgame_moveloop_preamble, moveloop_core,
+          maybe_do_tutorial } from './allmain.js';
+ import { wd_message, restore_savefile_prompt } from './unixmain.js';
+-import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags, iflag_boolean_options } from './options.js';
++import { parseNethackrc, optValue, fruitadd, set_menuobjsyms_flags, iflag_boolean_options } from './options.js';
+ import { assign_graphics, init_symbols, clear_symsetentry, PRIMARYSET, ROGUESET,
+          gp_primary_syms, gr_rogue_syms, gc_currentgraphics,
+          savedsym_free, go_ov_primary_syms, go_ov_rogue_syms, SYM_BOULDER,
+@@ -191,7 +191,8 @@
+            readers and the 'O' menu look (see iflag_boolean_options) */
+         for (const name of iflag_boolean_options) {
+             if (name in rc.opts) {
+-                g.iflags[name] = rc.opts[name];
++                const field = name === 'eight_bit_tty' ? 'wc_eight_bit_input' : name;
++                g.iflags[field] = rc.opts[name];
+                 delete g.flags[name];
+             }
+         }
+@@ -235,7 +236,9 @@
+             },
+         };
+         g.context = { move: 0 };
+-        set_fruit_name(optValue(rc, 'fruit') || 'slime mold', true);
++        // src/options.c:7324 initoptions_finish(), register the parsed name.
++        g.ffruit = null;
++        fruitadd(g.svp, null);
+         g.program_state = {};
+         /* src/decl.c — svm.moves starts at 0 and moveloop() advances it. Several
+            things in u_init read `moves == 0` to mean "this is character
+--- a/js/options.js
++++ b/js/options.js
+@@ -23,7 +23,7 @@
+     PICK_NONE, PICK_ONE, PICK_ANY, ECMD_OK,
+     AUTOUNLOCK_APPLY_KEY, MENU_TRADITIONAL, MENU_COMBINATION,
+     GPCOORDS_NONE, GPCOORDS_COMPASS, GPCOORDS_COMFULL, GPCOORDS_MAP,
+-    GPCOORDS_SCREEN, COLNO, ROWNO, PL_FSIZ, ismnum,
++    GPCOORDS_SCREEN, COLNO, ROWNO, PL_FSIZ, PL_NSIZ, ismnum,
+ } from './const.js';
+ import { NO_COLOR } from './terminal.js';
+ import { allopt, findOption } from './optlist.js';
+@@ -78,8 +78,6 @@
+ // src/options.c optfn_fruit() and initoptions_finish().
+ export function set_fruit_name(value, initial = false) {
+     const name = mungspaces(value ?? '');
+-    if (initial)
+-        game.ffruit = null;
+     let forig = null;
+     if (!initial) {
+         const fnum = {v: 0};
+@@ -94,13 +92,14 @@
+     }
+     game.svp ||= {};
+     game.svp.pl_fruit = sanitize_name(nmcpy(name, PL_FSIZ)) || 'slime mold';
+-    fruitadd(game.svp, forig);
++    if (!initial)
++        fruitadd(game.svp, forig);
+     return game.svp.pl_fruit;
+ }
+ 
+ // src/options.c:6861 nmcpy(), strings return the destination contents.
+ function nmcpy(src, maxlen) {
+-    return src.split(',')[0].slice(0, maxlen - 1);
++    return src.split(/[\0,]/, 1)[0].slice(0, maxlen - 1);
+ }
+ 
+ // src/options.c:8170 fruitadd(). Passing svp preserves pl_fruit buffer identity;
+@@ -196,7 +195,7 @@
+     }
+ 
+     /* strip leading and trailing white space */
+-    opts = opts.replace(/^\s+/, '').replace(/\s+$/, '');
++    opts = opts.replace(/^[ \t\r\n\f\v]+/, '').replace(/[ \t\r\n\f\v]+$/, '');
+ 
+     if (!opts) {
+         config_error_add('Empty statement');
+@@ -215,8 +214,10 @@
+     /* Split "name:value" / "name=value" into the parts the table matches on.
+        length_without_val() in the C stops at the first ':' or '='. */
+     const sep = firstSeparator(opts);
+-    const name = (sep < 0 ? opts : opts.slice(0, sep)).trim();
+-    const value = sep < 0 ? null : opts.slice(sep + 1).trim();
++    const name = (sep < 0 ? opts : opts.slice(0, sep))
++        .replace(/^[ \t\r\n\f\v]+|[ \t\r\n\f\v]+$/g, '');
++    const value = sep < 0 ? null : opts.slice(sep + 1)
++        .replace(/^[ \t\r\n\f\v]+|[ \t\r\n\f\v]+$/g, '');
+ 
+     let opt = findOption(name);
+     // src/options.c:6703 determine_ambiguities(): at least three letters,
+@@ -265,13 +266,30 @@
+         && !(opt.name === 'whatis_coord' && negated)
+         && !(opt.name === 'paranoid_confirmation' && negated)
+         && !(opt.name === 'number_pad' && (opts.length <= 10 || negated || tinitial))
++        && !(opt.name === 'fruit' && negated)
+         && opt.name !== 'hilite_status' && opt.name !== 'menu_headings'
+         && opt.name !== 'petattr' && opt.name !== 'msg_window') {
+         config_error_add(`Missing value for '${opt.name}'`);
+         return false;
+     }
+ 
+-    if (opt.type === 'BoolOpt') {
++    if (opt.name === 'fruit') {
++        // src/options.c:1706 optfn_fruit(), sanitize at this statement.
++        const op = sep < 0 ? '' : opts.slice(sep + 1);
++        if (negated && op) {
++            config_error_add('The fruit option may not both have a value and be negated.');
++            return false;
++        }
++        const bytes = tinitial
++            ? Array.from(new TextEncoder().encode(op), c => String.fromCharCode(c)).join('')
++            : op; // getlin already supplies C bytes.
++        result.opts.fruit = set_fruit_name(negated ? '' : bytes, tinitial);
++    } else if (opt.name === 'name' && tinitial) {
++        // src/options.c:2549 optfn_name(), RC text reaches C as UTF8 bytes.
++        const bytes = Array.from(new TextEncoder().encode(opts.slice(sep + 1)),
++                                 c => String.fromCharCode(c)).join('');
++        result.opts.name = nmcpy(bytes, PL_NSIZ);
++    } else if (opt.type === 'BoolOpt') {
+         // src/options.c optfn_boolean(): ignore unavailable storage, then
+         // enforce whether this option may be set at startup or during play.
+         if (opt.noaddr)
+@@ -305,6 +323,8 @@
+         // Later number_pad lines call update_rest_on_space during startup.
+         if (opt.name === 'rest_on_space')
+             (game.flags ||= {}).rest_on_space = !negated;
++        if (opt.name === 'eight_bit_tty')
++            set_bool_optval(opt.name, !negated);
+         if (opt.name === 'hilite_pet') {
+             set_bool_optval('hilite_pet', !negated);
+             boolopt_side_effects('hilite_pet');
+@@ -902,6 +922,9 @@
+     (game.iflags ||= {}).wc2_petattr = ATR_INVERSE;
+     // src/options.c:7181 initoptions_init(): tty message-history default.
+     game.iflags.prevmsg_window = 's';
++    // src/options.c:7181 initoptions_init(), before any fruit statements.
++    game.iflags.wc_eight_bit_input = false;
++    (game.svp ||= {}).pl_fruit = 'slime mold';
+     if (!rc) return result;
+     config_error_data = result; /* src/cfgfiles.c config_error_init() */
+ 
+@@ -986,7 +1009,8 @@
+             msgtype_parse_add(rest);
+             break;
+         case 'AUTOPICKUP_EXCEPTION':
+-            add_autopickup_exception(rest);
++            add_autopickup_exception(Array.from(new TextEncoder().encode(rest),
++                                               c => String.fromCharCode(c)).join(''));
+             break;
+         case 'BINDINGS':
+             result.bindings.push(rest);
+@@ -1480,7 +1504,7 @@
+    menu and the rc must write the same place. */
+ export const iflag_boolean_options = new Set([
+     'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
+-    'customcolors', 'customsymbols', 'bgcolors',
++    'customcolors', 'customsymbols', 'bgcolors', 'eight_bit_tty',
+     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
+     'menucolors', /* iflags.use_menu_color */
+     'whatis_menu', /* iflags.getloc_usemenu */
+@@ -1494,7 +1518,8 @@
+ 
+ function set_bool_optval(name, value) {
+     // include/optlist.h:634 binds safe_pet to flags.safe_dog.
+-    const field = name === 'safe_pet' ? 'safe_dog' : name;
++    const field = name === 'safe_pet' ? 'safe_dog'
++        : name === 'eight_bit_tty' ? 'wc_eight_bit_input' : name;
+     bool_opt_store(name)[field] = value;
+ }
+ 
+@@ -1505,7 +1530,8 @@
+     // optlist.h stores these options in u.uroleplay; pauper also sets nudist.
+     if ((o.name === 'nudist' || o.name === 'pauper') && game.u?.uroleplay)
+         return !!game.u.uroleplay[o.name];
+-    const field = o.name === 'safe_pet' ? 'safe_dog' : o.name;
++    const field = o.name === 'safe_pet' ? 'safe_dog'
++        : o.name === 'eight_bit_tty' ? 'wc_eight_bit_input' : o.name;
+     const v = bool_opt_store(o.name)[field];
+     return (v === undefined) ? (o.initval === 'On') : !!v;
+ }
+@@ -3054,7 +3080,9 @@
+ 
+     /* test_regex_pattern() has already validated this regexp but parsing
+        it again could conceivably run out of memory */
+-    if (!regex_compile(pattern, tmp.regex)) {
++    const bytes = pattern instanceof Uint8Array ? pattern
++        : Uint8Array.from(pattern, ch => ch.charCodeAt(0));
++    if (!regex_compile(bytes, tmp.regex)) {
+         const re_error_desc = regex_error_desc(tmp.regex);
+ 
+         /* free first in case reason for failure was insufficient memory */
+@@ -3062,8 +3090,7 @@
+         config_error_add(`${re_error}: ${re_error_desc}`);
+         return false;
+     }
+-    tmp.pattern = pattern instanceof Uint8Array
+-        ? new TextDecoder().decode(pattern) : pattern;
++    tmp.pattern = Array.from(bytes, c => String.fromCharCode(c)).join('').split('\0', 1)[0];
+     (game.plinemsg_types ||= []).unshift(tmp);
+     return true;
+ }
+@@ -3083,7 +3110,7 @@
+     for (const tmp of game.plinemsg_types || []) {
+         /* we don't exclude entries with negative msgtype values
+            because then the msg might end up matching a later pattern */
+-        if (regex_match(msg, tmp.regex))
++        if (regex_match(Uint8Array.from(msg, ch => ch.charCodeAt(0)), tmp.regex))
+             return tmp.msgtype;
+     }
+     return norepeat ? MSGTYP_NOREP : MSGTYP_NORMAL;
+@@ -3144,7 +3171,7 @@
+         return false;
+     }
+ 
+-    const retval = regex_compile(str, match);
++    const retval = regex_compile(Uint8Array.from(str, ch => ch.charCodeAt(0)), match);
+     /* get potential error message before freeing regexp and free regexp
+        before issuing message in case the error is "ran out of memory"
+        since message delivery might need to allocate some memory */
+@@ -3219,7 +3246,7 @@
+     if (mapping[i] !== '"')
+         return { n: 1, text };
+     i++;
+-    while (i < mapping.length && /\s/.test(mapping[i]))
++    while (i < mapping.length && /[ \t\r\n\f\v]/.test(mapping[i]))
+         i++;
+     if (i >= mapping.length)
+         return { n: 1, text };
+@@ -3252,7 +3279,7 @@
+     const text = r.text;
+ 
+     const ape = { regex: regex_init(), pattern: null, grab: false };
+-    if (!regex_compile(text, ape.regex)) {
++    if (!regex_compile(Uint8Array.from(text, ch => ch.charCodeAt(0)), ape.regex)) {
+         const re_error_desc = regex_error_desc(ape.regex);
+ 
+         /* free first in case reason for failure was insufficient memory */
+@@ -3948,7 +3975,7 @@
+     config_error_data = null;
+     for (const [name, value] of Object.entries(result.opts)) {
+         if (name === 'fruit') {
+-            set_fruit_name(value);
++            // optfn_fruit already stored and registered the new name.
+         } else if (name === 'num_pad' || name === 'num_pad_mode') {
+             /* optfn_number_pad() writes iflags */
+             (game.iflags ||= {})[name] = value;
+@@ -3960,7 +3987,7 @@
+                 new_status_window();
+         } else if (name === 'statushilites') {
+             /* iflags.hilite_delta was written by parseoptions() */
+-        } else if (name === 'safe_pet' || name === 'bgcolors') {
++        } else if (name === 'safe_pet' || name === 'bgcolors' || name === 'eight_bit_tty') {
+             set_bool_optval(name, value);
+         } else {
+             game.flags[name] = value;
+--- a/js/pickup.js
++++ b/js/pickup.js
+@@ -644,7 +644,8 @@
+     if (apelist.length) {
+         const objdesc = makesingular(doname(obj));
+ 
+-        while (i < apelist.length && !regex_match(objdesc, apelist[i].regex))
++        while (i < apelist.length
++               && !regex_match(Uint8Array.from(objdesc, ch => ch.charCodeAt(0)), apelist[i].regex))
+             i++;
+     }
+     return apelist[i] || null;
+--- a/js/tty/wintty.js
++++ b/js/tty/wintty.js
+@@ -33,7 +33,7 @@
+ import { impossible } from './../pline.js';
+ import { TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT, more } from './../display.js';
+ import { tty_clear_nhwindow_message, row_refresh, bot,
+-         docrt, flush_screen } from './../display.js';
++         docrt, flush_screen, CMP_DEC_MAP } from './../display.js';
+ import { nhgetch } from './../input.js';
+ import { xwaitforspace } from './getline.js';
+ import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
+@@ -42,11 +42,11 @@
+          MENU_ITEMFLAGS_SKIPMENUCOLORS,
+          MENU_ITEMFLAGS_SKIPINVERT, MENU_NEXT_PAGE, MENU_PREVIOUS_PAGE,
+          MENU_SEARCH, PICK_ONE, PICK_ANY, GOLD_SYM, ROWNO, COLNO } from './../const.js';
+-import { pmatch } from './../hacklib.js';
++import { pmatchi } from './../hacklib.js';
+ import { get_menu_coloring } from './../windows.js';
+ import { term_start_color as tty_color } from './termcap.js';
+ import { notice_all_mons_flush } from './../hack.js';
+-import { gc_currentgraphics, gs_symset, H_UTF8 } from './../symbols.js';
++import { gc_currentgraphics, gs_symset, H_UTF8, H_IBM, H_DEC } from './../symbols.js';
+ 
+ // include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
+ // frozen terminal's bit flags; win/tty/wintty.c term_start_attr() translates
+@@ -94,7 +94,10 @@
+             col = 0;
+             base.cury++;
+         }
+-        display.setCell(col, base.cury, s[i], NO_COLOR, attr);
++        // win/tty/wintty.c tty_putstr(NHW_BASE), signed char capture.
++        const byte = (s.charCodeAt(i) << 24) >> 24;
++        if (byte >= 32)
++            display.setCell(col, base.cury, s[i], NO_COLOR, attr);
+         col++;
+     }
+     base.curx = 0;
+@@ -480,6 +483,10 @@
+     items.forEach((item, lineno) => {
+         const row = cw.offy + lineno;
+         let col = cw.offx;
++        // win/tty/wintty.c:1459, cl_end precedes bytes in a corner menu.
++        if (cw.offx)
++            for (let c = col; c < COLS; c++)
++                display.setCell(c, row, ' ', NO_COLOR, 0);
+         /* the leading space, drawn before any attribute is turned on */
+         if (col < COLS) display.setCell(col, row, ' ', NO_COLOR, 0);
+         col++;
+@@ -506,15 +513,20 @@
+             const highlighted = i >= attr_n && !plainrun[i];
+             const on = highlighted ? attr : 0;
+             let ch = s[i], color = highlighted ? tty_color(item.color) : NO_COLOR;
++            let glyph = false;
+             if (i === 2 && item.identifier) {
+                 if (item.selected)
+                     ch = item.count === -1 ? '*' : '#';
+                 else if (show_obj_syms && item.glyphinfo?.ch) {
+                     ch = item.glyphinfo.ch;
+                     color = tty_color(item.glyphinfo.color);
++                    glyph = true;
+                 }
+             }
+-            display.setCell(col, row, ch, color, on);
++            // Text uses *cp (signed char); the glyph has its own ttychar.
++            const byte = (ch.charCodeAt(0) << 24) >> 24;
++            if (glyph || byte >= 32)
++                display.setCell(col, row, ch, color, on);
+         }
+         for (let c = col; c < COLS; c++)
+             display.setCell(c, row, ' ', NO_COLOR, 0);
+@@ -657,10 +669,18 @@
+                 display.setCell(col++, row, ' ', NO_COLOR, 0);
+             const attr = term_attr(cw.attrs?.[i] || 0);
+             for (let j = 0; j < line.length && ++col < COLS; j++) {
+-                // The recorder's first UTF-8 g_putch uses the advanced cursor.
+-                const x = j === 0 && gs_symset[gc_currentgraphics.set]?.handling === H_UTF8
+-                    ? col : col - 1;
+-                display.setCell(x, row, line[j], NO_COLOR, attr);
++                // win/tty/wintty.c:1863, first glyph differs from later text.
++                const handling = gs_symset[gc_currentgraphics.set]?.handling;
++                const code = line.charCodeAt(j);
++                const glyph = j === 0 && (handling === H_UTF8 || (code & 0x80));
++                const byte = glyph ? code & 0x7f : (code << 24) >> 24;
++                const dec = glyph && (code & 0x80) && handling !== H_IBM
++                    && handling !== H_UTF8 && (!game.iflags?.wc_eight_bit_input
++                        || (handling === H_DEC && (code & 0x7f) >= 0x60));
++                const ch = String.fromCharCode(byte);
++                if (byte >= 32)
++                    display.setCell(glyph ? col : col - 1, row,
++                                    dec ? (CMP_DEC_MAP[ch] || ch) : ch, NO_COLOR, attr);
+             }
+             display.setCursor(col, row);
+         }
+@@ -1029,12 +1049,12 @@
+                 const { hooked_tty_getlin } = await import('./../cmd.js');
+                 const search = await hooked_tty_getlin('Search for:');
+                 if (search && search !== '\x1b') {
+-                    const pattern = `*${search}*`.toLowerCase();
++                    const pattern = `*${search}*`;
+                     const items = menu_page_items(window, cw.curr_page);
+                     const onpage = new Map(items.map((item, n) => [item, n]));
+                     for (let curr = cw.mlist; curr; curr = curr.next) {
+                         if (!curr.identifier
+-                            || !pmatch(pattern, curr.str.toLowerCase()))
++                            || !pmatchi(pattern, curr.str))
+                             continue;
+                         const lineno = onpage.get(curr);
+                         if (curr.selected) {
+@@ -1629,7 +1649,9 @@
+         for (i = 0; i < lth; ++i) {
+             n = i + x;
+             if (n < ncols) {
+-                if (display)
++                // C still advances and updates cw.data when capture skips a byte.
++                const byte = (text.charCodeAt(i) << 24) >> 24;
++                if (display && byte >= 32)
+                     display.setCell(n - 1 + cw.offx, y + cw.offy, text[i],
+                                     plain[i] ? NO_COLOR : st.cur_color,
+                                     plain[i] ? 0 : st.cur_attr);
+--- a/js/windows.js
++++ b/js/windows.js
+@@ -131,7 +131,7 @@
+ export function get_menu_coloring(str) {
+     if (game.iflags?.menucolors)
+         for (const tmpmc of game.menu_colorings || [])
+-            if (regex_match(str, tmpmc.match))
++            if (regex_match(Uint8Array.from(str, ch => ch.charCodeAt(0)), tmpmc.match))
+                 return { color: tmpmc.color, attr: tmpmc.attr };
+     return null;
+ }

@@ -1,0 +1,13 @@
+{
+  "originalRecipeSHA256": "b4f5cbe0d94d4d473149387d315b9a61bc6b9ca5b542982c1b15ec85614238f8",
+  "primaryRecipeSHA256": "b4717030c33c7a3ea75d3fcf54a3b3466676ad6836951192a1a974c00fe560f1",
+  "onlyAddedKeys": [
+    "branchAssertions",
+    "branches",
+    "requireBranchAssertions"
+  ],
+  "parentPreCPrimary": "fruit-text-initial-parent-primary-recipe.json",
+  "allOriginalKeysUnchanged": true,
+  "fiveFieldsAndExpectationsUnchanged": true,
+  "branchPredicates": "Exact parent pre-C predicates"
+}

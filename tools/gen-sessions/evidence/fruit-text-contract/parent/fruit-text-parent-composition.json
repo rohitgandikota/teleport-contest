@@ -1,0 +1,28 @@
+{
+  "preparedAt": "2026-11-26T01:54:58.470667+00:00",
+  "originalPatchSHA256": "06dfc7436795466edc081fabc90affbbd574d3ddb44e3daf28a34e745f0f0b8e",
+  "contextAdaptedPatchSHA256": "a3bfcad56498abc460cc6d97072038d24d764daae02bf52be11ad3d994cdb691",
+  "sourceSealSHA256": "d933c92f0b850580cf7a599945cbed71ac8bc68450be0a39ec4b493be878cd18",
+  "baselineRuntimeSHA256": "32dd9edca12276307dd353234ca770d4fe71aafc22f443774cf30a33794c0766",
+  "composedRuntimeSHA256": "d4cbfd5fbe60e46e0d7bf72d6d4e9ecef48f0c3395d79024fbbb1d48d2b2258b",
+  "runtimeChanged": [
+    "js/coloratt.js",
+    "js/display.js",
+    "js/hacklib.js",
+    "js/jsmain.js",
+    "js/options.js",
+    "js/pickup.js",
+    "js/tty/wintty.js",
+    "js/windows.js"
+  ],
+  "runtimeFiles": 280,
+  "overlappingFilesWithPublishedChanges": [
+    "js/display.js",
+    "js/pickup.js",
+    "js/tty/wintty.js"
+  ],
+  "initialFailure": "Original patch check rejected one unchanged import context line in wintty.js. No edit was applied.",
+  "contextCorrection": "Only unchanged context now includes published display_nhwindow_message import. All added/deleted patch lines are untouched. Reverse check passes; recent wrapped-message code preserved.",
+  "menuMarkerColor": "separate source prerequisite, not applied here",
+  "mainChanged": false
+}

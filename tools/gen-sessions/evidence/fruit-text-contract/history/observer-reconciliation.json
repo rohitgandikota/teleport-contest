@@ -1,0 +1,24 @@
+{
+  "classification": "Measurement change at the explicitly changed storage representation; not an oracle/input change.",
+  "oldTool": {
+    "path": "../tools/fruit-byte-observe.mjs",
+    "sha256": "5c32ded3c1f73460d68bc037c439e03fbbff9b74fb8e54fce3f68328083ef314",
+    "meaning": "Buffer.from(name, utf8) measures Unicode encoding on the old NUL graph. This tool/report remains unchanged."
+  },
+  "newTool": {
+    "path": "tools/recorded-fruit.mjs",
+    "sha256": "3a243bd7fbc1486c32d6cbf2b9aacb17edffb96cf252a30d6890270f65bed8ad",
+    "meaning": "Measure one code unit per C byte in the new representation, identically on dbb baseline and candidate."
+  },
+  "unchanged": [
+    "all five seed/datetime/nethackrc/moves/name fields and their presence",
+    "source expected storedNameHex and canonical boolean",
+    "real fruit inventory/current ID/quantity assertions",
+    "all five original period cell assertions",
+    "observer/plain/deferred five-stream equality and key counts",
+    "original ASCII negative all five hashes",
+    "raw59e527 C5/sourcec and all recorded keys/boundaries"
+  ],
+  "added": "Mandatory exact original C raw and five-field/key/integrity preflight, full280 graph hashes, original negative hash check.",
+  "nativeComparisonPerformed": false
+}

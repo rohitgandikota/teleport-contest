@@ -1,0 +1,422 @@
+{
+  "sourceBase": "b161939eae5516586ccd728590eb6393167509297536bbbc72395e7eb6b26587",
+  "candidateMapSHA256": "f6439e33b43b65c5b17032fc3b974af9b089d8611633da90ec114c844f844dfe",
+  "patchSHA256": "cbe0c1a32802fe537691d019dcd0fcb947c6a5595810c492908700dc8e4dfbfe",
+  "full915ReceiptSHA256": "85ba733088de4cce8efa594faf9e0fc555fa42451a497eb44a8483ccbc4409c2",
+  "initialFull915": "906/915, all nine failures preserved; no worker rerun of the full corpus",
+  "rows": [
+    {
+      "fixture": "seed0004-feeding-pony.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 1
+    },
+    {
+      "fixture": "seed0030-ten-diverse-deaths.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": false,
+      "newGlyphCells": 2
+    },
+    {
+      "fixture": "seed0360-wizard-world-tour.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 3
+    },
+    {
+      "fixture": "seed2200-wizard-quaff-zap-read.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 2
+    },
+    {
+      "fixture": "pager-lookat-swallow-statue.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 1
+    },
+    {
+      "fixture": "pager-lookat-terrain.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": false,
+      "newGlyphCells": 2
+    },
+    {
+      "fixture": "bones-persistence.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": false,
+      "newGlyphCells": 2
+    },
+    {
+      "fixture": "variant-world-tour.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 2
+    },
+    {
+      "fixture": "pager-restricted-inspection.session.json",
+      "entireCandidateReportEqualsPublished": true,
+      "fourOtherRawStreamsEqualRegressed": true,
+      "retainedFullStyleExact": true,
+      "newGlyphCells": 2
+    }
+  ],
+  "newRegressions": [
+    {
+      "fixture": "seed0004-feeding-pony.session.json",
+      "segment": 0,
+      "step": 312,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "w",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed0030-ten-diverse-deaths.session.json",
+      "segment": 9,
+      "step": 352,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed0030-ten-diverse-deaths.session.json",
+      "segment": 9,
+      "step": 353,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed0360-wizard-world-tour.session.json",
+      "segment": 0,
+      "step": 686,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "w",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed0360-wizard-world-tour.session.json",
+      "segment": 0,
+      "step": 692,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed0360-wizard-world-tour.session.json",
+      "segment": 0,
+      "step": 696,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed2200-wizard-quaff-zap-read.session.json",
+      "segment": 0,
+      "step": 54,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "seed2200-wizard-quaff-zap-read.session.json",
+      "segment": 0,
+      "step": 66,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "pager-lookat-swallow-statue.session.json",
+      "segment": 0,
+      "step": 268,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u2502",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "i",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "pager-lookat-terrain.session.json",
+      "segment": 0,
+      "step": 111,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "o",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "pager-lookat-terrain.session.json",
+      "segment": 2,
+      "step": 43,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "d",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "bones-persistence.session.json",
+      "segment": 1,
+      "step": 352,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "bones-persistence.session.json",
+      "segment": 1,
+      "step": 353,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "variant-world-tour.session.json",
+      "segment": 0,
+      "step": 692,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "d",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "variant-world-tour.session.json",
+      "segment": 0,
+      "step": 696,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "d",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "pager-restricted-inspection.session.json",
+      "segment": 2,
+      "step": 60,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    {
+      "fixture": "pager-restricted-inspection.session.json",
+      "segment": 3,
+      "step": 49,
+      "difference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\u00b7",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "f",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    }
+  ],
+  "totals": {
+    "segments": 28,
+    "boundaries": 6160,
+    "calls": 448954,
+    "frames": 131,
+    "newGlyphCells": 17,
+    "oldBlankStyleCells": 1182
+  }
+}

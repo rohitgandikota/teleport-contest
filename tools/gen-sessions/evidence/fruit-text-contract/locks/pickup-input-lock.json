@@ -1,0 +1,24 @@
+{
+  "classification": "Additional two immutable tuples, not replacements for original eleven.",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "recipeSHA256": "a55a5b01527c41e17db5db7cadcbc0c870ac1807f7190d1ad3a51e365c9a85d9",
+  "inputFieldsSHA256": "650ed40c2220779ea8014bb9c20d64eed591a21b5d1bdc98f2532896de69e4e9",
+  "segments": [
+    {
+      "name": "fruit-text-autopickup-reject-bytes-reachable",
+      "keys": 12,
+      "inputSHA256": "1381a1885fa37c8b78fa7cba0734d7c95f37b5b6ad459a43bf2b2c596c2e9392"
+    },
+    {
+      "name": "fruit-text-autopickup-reject-ascii-negative-reachable",
+      "keys": 12,
+      "inputSHA256": "0ab12f048c63814a6717bf654c93251668027f08ffc1fd2e344ecf3073a09839"
+    }
+  ]
+}

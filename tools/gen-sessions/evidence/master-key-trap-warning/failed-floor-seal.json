@@ -1,0 +1,10 @@
+{
+  "members": 17,
+  "manifestSHA256": "fe75bc310778ad8d89f0c7f16e84498cbe1cb8e85e784fe2131e5209a83b7ef4",
+  "inputLockSHA256": "88639c102d25d0d523be13da4b517cf7f826c88153e9be87a95dbafab8b7fd35",
+  "runtimeSHA256": "29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33",
+  "checks": "51/60",
+  "validProducers": 0,
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

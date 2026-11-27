@@ -1,0 +1,30 @@
+{
+  "beforeC": true,
+  "sourceSealSHA256": "747df7b870361f451c6a21089a3d26db0eb94eac24b8716a2c1b433e622dc588",
+  "sourceRecipeSHA256": "8c1fe0407ffa0ab62c153cac97b0ed29f2534bd9b3c21efe75e24ef063213ddb",
+  "primaryRecipeSHA256": "880781688e9fb2514bafedbafd6f32b754d5719ea8fae78b0c692e8ca002164f",
+  "sourceIndexes": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "nativeIndexes": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "unchangedFiveFieldTuples": true,
+  "originalBranchPredicatesPreserved": true,
+  "changedRootMetadata": [
+    "name",
+    "description",
+    "segments subset",
+    "branches subset",
+    "branchAssertion segment index offset"
+  ],
+  "excludedFailedRowsRetained": true
+}

@@ -5826,6 +5826,90 @@
       "cFile": "src/trap.c",
       "cFunction": "dofiretrap",
       "description": "Blind look preserves the stacks and sight with the source time cost."
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.floor-trap-warning.bare-hidden",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "floor bare hidden"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.floor-trap-warning.bare-covered-known",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "floor bare covered known"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.floor-trap-warning.gloved-hidden",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "floor gloved hidden"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.floor-trap-warning.carried-hidden",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "floor carried hidden"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.floor-trap-warning.ordinary-key-hidden",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "floor ordinary key hidden"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.locations.trapped-container-pile",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "trapped container pile"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.locations.untrapped-container-pile",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "untrapped container pile"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.locations.trapped-door",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "trapped door"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.locations.untrapped-door",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "untrapped door"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.locations.equipment-count-reset",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "equipment count reset"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.container-heat.heat-artifact-key",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "heat artifact key"
+    },
+    {
+      "group": "Master Key trap warning",
+      "id": "artifact.master-key.container-heat.heat-ordinary-key",
+      "cFile": "src/artifact.c",
+      "cFunction": "mkot_trap_warn",
+      "description": "heat ordinary key"
     }
   ]
 }

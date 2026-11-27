@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "families": [
+    {
+      "name": "master-key-floor-trap-warning",
+      "cases": 5,
+      "checks": 60,
+      "negativeIndexes": [
+        2,
+        3,
+        4
+      ],
+      "sourceIndexes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+      "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+      "rawSHA256": "9aebbf28da07abbf5308056ee809f4a06a06d8462a4e11c6084db218abe0dfb7",
+      "evidence": "gen-sessions/evidence/master-key-trap-warning/master-key-floor-trap-warning/",
+      "gate": "tools/master-key-floor-trap-warning-gate.mjs"
+    },
+    {
+      "name": "master-key-container-door-reset",
+      "cases": 5,
+      "checks": 100,
+      "negativeIndexes": [
+        1,
+        3
+      ],
+      "sourceIndexes": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+      "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+      "rawSHA256": "0aed802ea04b800a325b70ecc46c32a52eb86f1d7a1cdcf6463ff5d850c59cc9",
+      "evidence": "gen-sessions/evidence/master-key-trap-warning/master-key-container-door-reset/",
+      "gate": "tools/master-key-container-door-reset-gate.mjs"
+    },
+    {
+      "name": "master-key-container-heat",
+      "cases": 2,
+      "checks": 158,
+      "negativeIndexes": [
+        1
+      ],
+      "sourceIndexes": [
+        0,
+        1
+      ],
+      "recipe": "gen-sessions/recipes/master-key-container-heat.json",
+      "raw": "gen-sessions/generated/master-key-container-heat.session.json",
+      "rawSHA256": "182109142e5b3b81ae09ce6e3b8cabe384ef2f257f42a425a46457cb6beb75b6",
+      "evidence": "gen-sessions/evidence/master-key-trap-warning/master-key-container-heat/",
+      "gate": "tools/master-key-container-heat-gate.mjs"
+    }
+  ],
+  "correctedOrdinary": "318/318",
+  "originalOrdinary": "316/318",
+  "nativeParent": "12/12",
+  "neutrality": 24,
+  "negativeHashes": 30,
+  "negativeRows": 6,
+  "bodyProofs": [
+    {
+      "name": "master-key-floor-trap-warning",
+      "marker": "const snapshotObject =",
+      "bodySHA256": "97a764a446861203f9bebc7accaeeaf8852ef1ed1dbb9c30245aef8689d7489f",
+      "sourceProbeSHA256": "13ad9f1b1c416f41805c2497fc08dbf23eff5884bf495f07048776467ee468fd",
+      "gate": "tools/master-key-floor-trap-warning-gate.mjs",
+      "original": "gen-sessions/evidence/master-key-trap-warning/master-key-floor-trap-warning/source-probe.mjs",
+      "onlyAdaptations": [
+        "pin/preflight prefix",
+        "repository-relative dynamic imports",
+        "packet output footer replaced with read-only compact result and optional wx report"
+      ]
+    },
+    {
+      "name": "master-key-container-door-reset",
+      "marker": "const object =",
+      "bodySHA256": "e1d440cd01566e2ba8fc14c8dfdcd46aef85bf0867dea6a651d38f4a8bd9b572",
+      "sourceProbeSHA256": "13a9623dbfa44960ae96a1342ca3170c5ea2497427804e3dfb4a2df9f5de8990",
+      "gate": "tools/master-key-container-door-reset-gate.mjs",
+      "original": "gen-sessions/evidence/master-key-trap-warning/master-key-container-door-reset/source-probe.mjs",
+      "onlyAdaptations": [
+        "pin/preflight prefix",
+        "repository-relative dynamic imports",
+        "packet output footer replaced with read-only compact result and optional wx report"
+      ]
+    },
+    {
+      "name": "master-key-container-heat",
+      "marker": "const object =",
+      "bodySHA256": "830ef89a9cd887f2c8d3adc0961e8fae3d4aba889f594093ee6e7ca07091f4a1",
+      "sourceProbeSHA256": "fe6600b22bb543ffa5df279f50bce94a225e1fa49cabea6572743409c4edfccd",
+      "gate": "tools/master-key-container-heat-gate.mjs",
+      "original": "gen-sessions/evidence/master-key-trap-warning/master-key-container-heat/source-probe.mjs",
+      "onlyAdaptations": [
+        "pin/preflight prefix",
+        "repository-relative dynamic imports",
+        "packet output footer replaced with read-only compact result and optional wx report"
+      ]
+    }
+  ]
+}

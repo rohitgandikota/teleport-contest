@@ -1,0 +1,98 @@
+[
+  {
+    "branch": "artifact.master-key.floor-trap-warning.bare-hidden",
+    "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+    "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+    "nativeIndex": 0,
+    "sourceIndex": 0,
+    "sourceName": "floor-bare-hidden"
+  },
+  {
+    "branch": "artifact.master-key.floor-trap-warning.bare-covered-known",
+    "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+    "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+    "nativeIndex": 1,
+    "sourceIndex": 1,
+    "sourceName": "floor-bare-covered-known"
+  },
+  {
+    "branch": "artifact.master-key.floor-trap-warning.gloved-hidden",
+    "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+    "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+    "nativeIndex": 2,
+    "sourceIndex": 2,
+    "sourceName": "floor-gloved-hidden"
+  },
+  {
+    "branch": "artifact.master-key.floor-trap-warning.carried-hidden",
+    "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+    "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+    "nativeIndex": 3,
+    "sourceIndex": 3,
+    "sourceName": "floor-carried-hidden"
+  },
+  {
+    "branch": "artifact.master-key.floor-trap-warning.ordinary-key-hidden",
+    "raw": "gen-sessions/generated/master-key-floor-trap-warning.session.json",
+    "recipe": "gen-sessions/recipes/master-key-floor-trap-warning.json",
+    "nativeIndex": 4,
+    "sourceIndex": 4,
+    "sourceName": "floor-ordinary-key-hidden"
+  },
+  {
+    "branch": "artifact.master-key.locations.trapped-container-pile",
+    "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+    "nativeIndex": 0,
+    "sourceIndex": 2,
+    "sourceName": "trapped-container-pile"
+  },
+  {
+    "branch": "artifact.master-key.locations.untrapped-container-pile",
+    "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+    "nativeIndex": 1,
+    "sourceIndex": 3,
+    "sourceName": "untrapped-container-pile"
+  },
+  {
+    "branch": "artifact.master-key.locations.trapped-door",
+    "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+    "nativeIndex": 2,
+    "sourceIndex": 4,
+    "sourceName": "trapped-door"
+  },
+  {
+    "branch": "artifact.master-key.locations.untrapped-door",
+    "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+    "nativeIndex": 3,
+    "sourceIndex": 5,
+    "sourceName": "untrapped-door"
+  },
+  {
+    "branch": "artifact.master-key.locations.equipment-count-reset",
+    "raw": "gen-sessions/generated/master-key-container-door-reset.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-door-reset.json",
+    "nativeIndex": 4,
+    "sourceIndex": 6,
+    "sourceName": "equipment-count-reset"
+  },
+  {
+    "branch": "artifact.master-key.container-heat.heat-artifact-key",
+    "raw": "gen-sessions/generated/master-key-container-heat.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-heat.json",
+    "nativeIndex": 0,
+    "sourceIndex": 0,
+    "sourceName": "heat-artifact-key"
+  },
+  {
+    "branch": "artifact.master-key.container-heat.heat-ordinary-key",
+    "raw": "gen-sessions/generated/master-key-container-heat.session.json",
+    "recipe": "gen-sessions/recipes/master-key-container-heat.json",
+    "nativeIndex": 1,
+    "sourceIndex": 1,
+    "sourceName": "heat-ordinary-key"
+  }
+]

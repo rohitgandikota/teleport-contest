@@ -1,0 +1,44 @@
+{
+  "createdAt": "2026-11-27T04:17:13.383407+00:00",
+  "beforePortableReplay": true,
+  "originalSourceSealSHA256": "747df7b870361f451c6a21089a3d26db0eb94eac24b8716a2c1b433e622dc588",
+  "originalCandidatePredictionsSHA256": "1683f00aa0178fe96ac60fbda966a87018c497851c595d337fbf302e1af8510b",
+  "originalCandidateReportSHA256": "624e0f05fe91f1e82f8268aea593c5500984208ddeff7d9071f31a5a63117124",
+  "nativeReportSHA256": "1fad1d291b65d3d97aee2c14581b1df41770ca8e83fc2c7af0215f516a92e5af",
+  "changes": [
+    {
+      "sourceIndex": 6,
+      "nativeIndex": 4,
+      "phase": "bare-again",
+      "field": "count",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sourceIndex": 6,
+      "nativeIndex": 4,
+      "phase": "bare-again",
+      "field": "message",
+      "before": "The Key feels slightly warm.",
+      "after": null
+    }
+  ],
+  "sourceReason": "C allmain351 checks the key while gloves are still worn. Later allmain380-385 calls unmul, whose hack4177-4211 callback invokes Gloves_off. armoroff schedules that callback for the leather-glove delay. The last key action finishes removal; no subsequent world turn occurs. Thus count remains0 and no key warning occurs in that action.",
+  "completeOwnersRead": [
+    "C do_wear646-702 Gloves_off;1771-1829 armor_or_accessory_off;1920-2009 armoroff",
+    "C hack4177-4211 unmul",
+    "paired JS do_wear252-294,2369-2448,2478-2515 and hack1846-1876",
+    "C allmain344-390 order"
+  ],
+  "CFiles": {
+    "nethack-c/upstream/src/do_wear.c": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "nethack-c/upstream/src/hack.c": "547cab9e7aaa922aa5bb8b5ad38696f9f74e3e1e31c264509a9448a689cb4665",
+    "nethack-c/upstream/src/allmain.c": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4"
+  },
+  "runtimeChanges": false,
+  "newGameplay": false,
+  "originalFailuresPreserved": true,
+  "limits": [
+    "A later turn after glove removal is not part of these inputs and is not claimed as observed."
+  ]
+}

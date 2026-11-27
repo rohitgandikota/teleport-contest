@@ -1,0 +1,339 @@
+[
+  {
+    "name": "trapped-container-pile",
+    "negative": false,
+    "artifact": true,
+    "start": 281,
+    "phases": [
+      {
+        "name": "carried-containers-ignored",
+        "before": 281,
+        "after": 296,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 2,
+        "boxesFloor": 0,
+        "boxesTrapped": true
+      },
+      {
+        "name": "first-box",
+        "before": 296,
+        "after": 312,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 1,
+        "boxesFloor": 1,
+        "boxesTrapped": true
+      },
+      {
+        "name": "same-location-second-box",
+        "before": 312,
+        "after": 328,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 1,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": true
+      },
+      {
+        "name": "trap-and-containers-one-location",
+        "before": 328,
+        "after": 369,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": true
+      }
+    ]
+  },
+  {
+    "name": "untrapped-container-pile",
+    "negative": true,
+    "artifact": true,
+    "start": 285,
+    "phases": [
+      {
+        "name": "carried-containers-ignored",
+        "before": 285,
+        "after": 300,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 2,
+        "boxesFloor": 0,
+        "boxesTrapped": false
+      },
+      {
+        "name": "first-box",
+        "before": 300,
+        "after": 316,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 1,
+        "boxesFloor": 1,
+        "boxesTrapped": false
+      },
+      {
+        "name": "same-location-second-box",
+        "before": 316,
+        "after": 332,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "trapped-door",
+    "negative": false,
+    "artifact": true,
+    "start": 193,
+    "phases": [
+      {
+        "name": "door-created",
+        "before": 193,
+        "after": 243,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false,
+        "doorTrapped": true
+      },
+      {
+        "name": "door-untrapped",
+        "before": 243,
+        "after": 295,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": "The Key feels cool.",
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "untrapped-door",
+    "negative": true,
+    "artifact": true,
+    "start": 193,
+    "phases": [
+      {
+        "name": "door-created",
+        "before": 193,
+        "after": 245,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      },
+      {
+        "name": "door-untrapped",
+        "before": 245,
+        "after": 297,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "equipment-count-reset",
+    "negative": false,
+    "artifact": true,
+    "start": 258,
+    "phases": [
+      {
+        "name": "bare-key",
+        "before": 258,
+        "after": 273,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "unwield-reset",
+        "before": 273,
+        "after": 289,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": false,
+        "gloves": false
+      },
+      {
+        "name": "wield-again",
+        "before": 289,
+        "after": 305,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "gloves-reset",
+        "before": 305,
+        "after": 321,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": true
+      },
+      {
+        "name": "bare-again",
+        "before": 321,
+        "after": 336,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      }
+    ]
+  }
+]

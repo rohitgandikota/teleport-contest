@@ -1,0 +1,2992 @@
+{
+  "validProducers": 5,
+  "checks": "56/60",
+  "producerChecks": "35/35",
+  "neutrality": "10/10",
+  "failedSourceIndexes": [
+    0,
+    1
+  ],
+  "sourceFailure": "Only bare wielded Master Key cases lack first-turn warning and remembered trap count. All five actual arrow traps are on ROOM terrain71,3 with an undisplayed trap glyph. The known trap is covered by the hero glyph. Gloves, carried key and ordinary-key controls pass; all15 negative hashes are locked.",
+  "nativeRecordings": 0,
+  "runtimeCandidate": false,
+  "oldSource17Preserved": true,
+  "cases": [
+    {
+      "index": 0,
+      "before": {
+        "step": 219,
+        "turn": 4,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "first": {
+        "step": 234,
+        "turn": 5,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "after": {
+        "step": 249,
+        "turn": 6,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "firstMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "secondMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "outputHashes": {
+        "screens": "667cb0bb89c6ada72fcf2a6609183f045985e7f557adb9d960685b356e4aa30e",
+        "cursors": "2c56c38a54b82a6210645a1f1f3aefe3bee399a37276b0f523dfbec19426b7d7",
+        "calls": "3e1d4bfaf74d44825d699d2d8e533c912fbe9d517d6f23367f1874a8e84437be",
+        "slices": "f1e0c16188fd2b2698913a6205bfb7da58dfb26f35baf539483cb25c8e3bc24a",
+        "frames": "3959840ba6ee96b578cf99901a2dcd5ca2c3d0e9f77783c1da8c84f18ba94fe9"
+      }
+    },
+    {
+      "index": 1,
+      "before": {
+        "step": 241,
+        "turn": 4,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": true
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "first": {
+        "step": 256,
+        "turn": 5,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": true
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "after": {
+        "step": 271,
+        "turn": 6,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": true
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "firstMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "secondMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "outputHashes": {
+        "screens": "6109abe82053125d306f750f5a4db1f5746709fc05e6f4b33455c430e8485042",
+        "cursors": "8724208843a7d18b26f22ae229ebb9a7f5dc18ed0d96763e224177ad1eeff8d4",
+        "calls": "55a040e329ec534eb4da46dc00c1dac512a0e6e8bd0f551d88e7b5a597e5d659",
+        "slices": "89ce40a0a1bdc5b22c57ffadfcab4bd11cffff5b8c772e4542ff2ad864633896",
+        "frames": "7dc4ff2040bf4989c4a10d2d3f5af68dfb97f252471c388ac01ceb0fed0738ca"
+      }
+    },
+    {
+      "index": 2,
+      "before": {
+        "step": 274,
+        "turn": 5,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": {
+          "id": 42,
+          "type": 159,
+          "count": 1,
+          "letter": "c",
+          "where": 3,
+          "worn": 16,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": false,
+          "cursed": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          },
+          {
+            "id": 42,
+            "type": 159,
+            "count": 1,
+            "letter": "c",
+            "where": 3,
+            "worn": 16,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "first": {
+        "step": 289,
+        "turn": 6,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": {
+          "id": 42,
+          "type": 159,
+          "count": 1,
+          "letter": "c",
+          "where": 3,
+          "worn": 16,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": false,
+          "cursed": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          },
+          {
+            "id": 42,
+            "type": 159,
+            "count": 1,
+            "letter": "c",
+            "where": 3,
+            "worn": 16,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "after": {
+        "step": 304,
+        "turn": 7,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 29,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": {
+          "id": 42,
+          "type": 159,
+          "count": 1,
+          "letter": "c",
+          "where": 3,
+          "worn": 16,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": false,
+          "cursed": false
+        },
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          },
+          {
+            "id": 42,
+            "type": 159,
+            "count": 1,
+            "letter": "c",
+            "where": 3,
+            "worn": 16,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": false,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "firstMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "secondMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "outputHashes": {
+        "screens": "383b6b03db9c8bd46d5deb44fe4f5b556aa766905551bee59414642dc3136c7b",
+        "cursors": "6cda44bcbbf12a1a14ab0f5b3461d2dd72b7f674481c57f95d5e653cb5d58724",
+        "calls": "fb0310566aff1ccef512ed32c402e89453ee9e95856c382d27f737934725bda7",
+        "slices": "6186b84a6616ba205818f5b1704adbc012e60506e0bfc56077e377f1d5cdf715",
+        "frames": "fdd13a7d76b3e8eca6768023aefca161ff9458bf1500283708d9d4e4d77926ff"
+      }
+    },
+    {
+      "index": 3,
+      "before": {
+        "step": 203,
+        "turn": 3,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": null,
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 0,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "first": {
+        "step": 218,
+        "turn": 4,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": null,
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 0,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "after": {
+        "step": 233,
+        "turn": 5,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": null,
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 0,
+            "artifact": 29,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "firstMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "secondMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "outputHashes": {
+        "screens": "6ca0d622bd3f1da22d99b792e1c6857f992f2bba199451f5696a5bba3c6b40f2",
+        "cursors": "37ac87be110ae0f7864fa8d9199e354734c3372bcc3296afa066a1a1b723c070",
+        "calls": "90e41b77bf89a5eb51f966afa1ed2ae10a15a36656955e4dc7277b87048452a5",
+        "slices": "d140c597e2a273085c5a25eac668913b43dd6ea955ff8e2bebc0b848174da589",
+        "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+      }
+    },
+    {
+      "index": 4,
+      "before": {
+        "step": 209,
+        "turn": 4,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "first": {
+        "step": 224,
+        "turn": 5,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "after": {
+        "step": 239,
+        "turn": 6,
+        "hp": 135,
+        "maxHp": 135,
+        "mortality": 0,
+        "gameover": false,
+        "xy": [
+          71,
+          3
+        ],
+        "blind": false,
+        "warningCount": 0,
+        "weapon": {
+          "id": 40,
+          "type": 221,
+          "count": 1,
+          "letter": "b",
+          "where": 3,
+          "worn": 256,
+          "artifact": 0,
+          "trapped": false,
+          "blessed": true,
+          "cursed": false
+        },
+        "gloves": null,
+        "liveMonsters": 0,
+        "inventory": [
+          {
+            "id": 40,
+            "type": 221,
+            "count": 1,
+            "letter": "b",
+            "where": 3,
+            "worn": 256,
+            "artifact": 0,
+            "trapped": false,
+            "blessed": true,
+            "cursed": false
+          }
+        ],
+        "neighbors": [
+          {
+            "xy": [
+              70,
+              2
+            ],
+            "terrain": 23,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 12,
+              "glyphnum": 3985
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              3
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              70,
+              4
+            ],
+            "terrain": 1,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 1,
+              "glyphnum": 3930
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              2
+            ],
+            "terrain": 26,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 29,
+              "glyphnum": 4002
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "hero",
+              "glyphnum": 339
+            },
+            "shownTrap": false,
+            "trap": {
+              "type": 1,
+              "seen": false
+            },
+            "objects": []
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "terrain": 25,
+            "doorMask": 0,
+            "glyph": {
+              "kind": "cmap",
+              "cmap": 19,
+              "glyphnum": 3992
+            },
+            "shownTrap": false,
+            "trap": null,
+            "objects": []
+          }
+        ]
+      },
+      "firstMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "secondMessages": [
+        "",
+        "Unknown command ' '."
+      ],
+      "outputHashes": {
+        "screens": "3c77c4c745fba0e947b3169d11ef0473ff689081bb453d9925986594a2d59df2",
+        "cursors": "8ad62ef2b028bb791d858f6783934cae5d16224681b38b5ad49404c25f2252d0",
+        "calls": "26ddaba04073bfbe1fdcb9737ef86ed666933184b47b610ceb94369529a0e4c4",
+        "slices": "9a43d35095753759649693480934a9e0bef4ef8730ca4574709d0b13181db21a",
+        "frames": "959414ca4640e733f0b3f3167bc8fe1eec751dd88ae397e47260a63058f72764"
+      }
+    }
+  ]
+}

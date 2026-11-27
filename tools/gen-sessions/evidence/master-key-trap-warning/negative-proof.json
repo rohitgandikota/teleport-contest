@@ -1,0 +1,104 @@
+[
+  {
+    "family": "master-key-floor-trap-warning",
+    "nativeIndex": 2,
+    "sourceIndex": 2,
+    "sourceReportSHA256": "a9c1ddcc2bb0a0ea6a1d9ef6ab2127696f5b07612b84b54f467050a7c86904df",
+    "ordinaryRowSHA256": "e8edbdef7bd3ea13d38a31c678f137409c6134c4983d183cb40fd53d5dca3413",
+    "nativeRowSHA256": "32d85cbac949442f4fed5a88cc6066d163415a4c0426e5e2d84a71d90f155c63",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "383b6b03db9c8bd46d5deb44fe4f5b556aa766905551bee59414642dc3136c7b",
+      "cursors": "6cda44bcbbf12a1a14ab0f5b3461d2dd72b7f674481c57f95d5e653cb5d58724",
+      "calls": "fb0310566aff1ccef512ed32c402e89453ee9e95856c382d27f737934725bda7",
+      "slices": "6186b84a6616ba205818f5b1704adbc012e60506e0bfc56077e377f1d5cdf715",
+      "frames": "fdd13a7d76b3e8eca6768023aefca161ff9458bf1500283708d9d4e4d77926ff"
+    }
+  },
+  {
+    "family": "master-key-floor-trap-warning",
+    "nativeIndex": 3,
+    "sourceIndex": 3,
+    "sourceReportSHA256": "a9c1ddcc2bb0a0ea6a1d9ef6ab2127696f5b07612b84b54f467050a7c86904df",
+    "ordinaryRowSHA256": "f0df23dbd063af3b600936ff9db9748d340ec82e923f7497ea7422cb969f9cf3",
+    "nativeRowSHA256": "c07d060a816035a0b0df4b09a951cd765b0dea6275b2ad5c35b88c137df5c182",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "6ca0d622bd3f1da22d99b792e1c6857f992f2bba199451f5696a5bba3c6b40f2",
+      "cursors": "37ac87be110ae0f7864fa8d9199e354734c3372bcc3296afa066a1a1b723c070",
+      "calls": "90e41b77bf89a5eb51f966afa1ed2ae10a15a36656955e4dc7277b87048452a5",
+      "slices": "d140c597e2a273085c5a25eac668913b43dd6ea955ff8e2bebc0b848174da589",
+      "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+    }
+  },
+  {
+    "family": "master-key-floor-trap-warning",
+    "nativeIndex": 4,
+    "sourceIndex": 4,
+    "sourceReportSHA256": "a9c1ddcc2bb0a0ea6a1d9ef6ab2127696f5b07612b84b54f467050a7c86904df",
+    "ordinaryRowSHA256": "7e2f1e815d10f6d14704efbeb05c3e96d45141da5399b4d9ccf2241b6951d341",
+    "nativeRowSHA256": "96e4df36e673e9c42acf5c569639bcad27f87df48811f2ee54f2decd93262421",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "3c77c4c745fba0e947b3169d11ef0473ff689081bb453d9925986594a2d59df2",
+      "cursors": "8ad62ef2b028bb791d858f6783934cae5d16224681b38b5ad49404c25f2252d0",
+      "calls": "26ddaba04073bfbe1fdcb9737ef86ed666933184b47b610ceb94369529a0e4c4",
+      "slices": "9a43d35095753759649693480934a9e0bef4ef8730ca4574709d0b13181db21a",
+      "frames": "959414ca4640e733f0b3f3167bc8fe1eec751dd88ae397e47260a63058f72764"
+    }
+  },
+  {
+    "family": "master-key-container-door-reset",
+    "nativeIndex": 1,
+    "sourceIndex": 3,
+    "sourceReportSHA256": "27fe4eb983ceb972fa9b6ddcd6a11e37c75d0214a4b1c420c0193078df703560",
+    "ordinaryRowSHA256": "f987e9ed70e78a587551116c719a65931c74fac3070e4a3392d6401aa74fe6d3",
+    "nativeRowSHA256": "e06c203e131df322e89dac299662fbc34d30e8120c94d09ab43fc29db8c5596b",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "b3030968d412d2846adf4e15444248e5f4d8e5fbd03746c627c2dd817d266349",
+      "cursors": "80b10f19715a3459ea9311af1b67a4c2ee1035436c028770a47bd694a72b6cd8",
+      "calls": "e4237515107470e8613cff3f7f9aa03b0633d474a2eeccdd06744691f832ab2b",
+      "slices": "46b2f09752a61fd74adbeb62f37837d7cf7ea94696bbb5853972ac91e323cacf",
+      "frames": "8e733806878c165b6c61a1b91096cfdff5c1a304f61d430632fb646e3567b822"
+    }
+  },
+  {
+    "family": "master-key-container-door-reset",
+    "nativeIndex": 3,
+    "sourceIndex": 5,
+    "sourceReportSHA256": "27fe4eb983ceb972fa9b6ddcd6a11e37c75d0214a4b1c420c0193078df703560",
+    "ordinaryRowSHA256": "85ce3cebb03c685f59fbb67f8eb35bde22cb73fa09e3391f27d7f00b23345806",
+    "nativeRowSHA256": "60b9d07008e0125da3b8de15a9569b67873d8997d336476fa4a2df128cfa0c13",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "0574d584701d72818c8f85f4c9c41c7c01bef817070735e89f51b800a751abe4",
+      "cursors": "257c38dbf874592f6f69c8405c4a60091970b51fe308cbd5b6b1530dd7d14278",
+      "calls": "3e1d4bfaf74d44825d699d2d8e533c912fbe9d517d6f23367f1874a8e84437be",
+      "slices": "d1ca5c117968f6fd8076cf19751b82b83c0e2bef530305ba7c2af3720bbed661",
+      "frames": "6e3ae00a18e3410764617dc60838748191368a46a9100543f35d5fa590f1a981"
+    }
+  },
+  {
+    "family": "master-key-container-heat",
+    "nativeIndex": 1,
+    "sourceIndex": 1,
+    "sourceReportSHA256": "a95f89bdb91d223b1dfa209850b54f713f59f26761222bca37dd93f25e091aad",
+    "ordinaryRowSHA256": "94066f927b1ac795c67815aad379dac753af3c05896d07960fc6c1123ced6de8",
+    "nativeRowSHA256": "62e1ea50fa32cecae19f5b6d1dff37ad867df30185f141f2893b71e2f3ac9f30",
+    "ordinaryWholeRowExact": true,
+    "nativeWholeRowExact": true,
+    "outputHashes": {
+      "screens": "f12655721ddfca48d2e3affcb682cbfb550c4817a59c252a22e2ac735e3b3e1c",
+      "cursors": "cb821bbba2171994a9dba0b3f74bde978d8b4359cfc124fcd579416ae1dd0701",
+      "calls": "1b49d755e83b9a0fbb8b7494e6d0b24d991ffe5d0fb57b573ff7ab27dfb8bb54",
+      "slices": "b264fd961e881d66ea96f3d3cc6997ca4e4f9db0c97e0e222cc73726c721cc88",
+      "frames": "0c31fcbcef8e65f6bb37c2cb2c7f88ff4c8ae7b9916ad2b6e4dfb754da3a2bbe"
+    }
+  }
+]

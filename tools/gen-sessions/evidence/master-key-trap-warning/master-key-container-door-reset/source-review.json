@@ -1,0 +1,21 @@
+{
+  "originalInputsAndResultsUnchanged": true,
+  "checks": "149/200",
+  "validProducers": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "qualifiedPhases": 20,
+  "sourceSkipped": 24,
+  "neutrality": 14,
+  "negativeHashes": 15,
+  "validNegativeHashes": 10,
+  "reasonHeatProducerFailed": "The level30 Rogue has intrinsic Searching (C attrib.c69-72). Before mkot_trap_warn, the world loop calls dosearch0(1). Complete C detect.c2016-2097 searches adjacent unseen traps and may reveal them via rnl(8). Actual case0 reports You find an arrow trap and seen=true at72,2 by create-2. The locked assumption that all earlier traps stay unseen is false. Case1 independently discovers traps. Neither heat row is valid coverage.",
+  "validSubset": "Cases2..6 are complete container, door and equipment producers. They retain87/100 checks with13 missing-warning/count failures. Both untrapped negative cases pass and retain10 exact hashes. A separate primary recipe may retain those five complete tuples and original predicates, with only root metadata/index remapping for C.",
+  "laterHeatPlan": "Use trapped containers on distinct floor locations. The C dosearch0 owner checks map traps, not container traps. No new gameplay authorized by this saved review.",
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

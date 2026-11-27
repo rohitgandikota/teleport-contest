@@ -1,0 +1,1909 @@
+[
+  {
+    "name": "heat-and-visible-traps",
+    "negative": false,
+    "artifact": true,
+    "start": 178,
+    "phases": [
+      {
+        "name": "create-1",
+        "before": 178,
+        "after": 234,
+        "xy": [
+          72,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-2",
+        "before": 234,
+        "after": 290,
+        "xy": [
+          73,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          }
+        ],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-3",
+        "before": 290,
+        "after": 346,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 3,
+        "message": "The Key feels very warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-4",
+        "before": 346,
+        "after": 402,
+        "xy": [
+          73,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-5",
+        "before": 402,
+        "after": 458,
+        "xy": [
+          72,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 3,
+        "message": "The Key feels very warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-6",
+        "before": 458,
+        "after": 514,
+        "xy": [
+          71,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-7",
+        "before": 514,
+        "after": 570,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 4,
+        "message": "The Key feels hot!",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "seven-hidden",
+        "before": 570,
+        "after": 600,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 7,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "five-covered-and-hidden",
+        "before": 600,
+        "after": 630,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 5,
+        "message": "The Key feels very hot!",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "six-after-leaving-known-trap",
+        "before": 630,
+        "after": 660,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 6,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "seven-count-same-heat",
+        "before": 660,
+        "after": 701,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 7,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "only-covered-trap-counts",
+        "before": 701,
+        "after": 738,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "visible-traps-ignored",
+        "before": 738,
+        "after": 768,
+        "xy": [
+          71,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 0,
+        "message": "The Key feels cool.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "stable-zero",
+        "before": 768,
+        "after": 783,
+        "xy": [
+          71,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      }
+    ]
+  },
+  {
+    "name": "ordinary-key-many-traps",
+    "negative": true,
+    "artifact": false,
+    "start": 168,
+    "phases": [
+      {
+        "name": "create-1",
+        "before": 168,
+        "after": 224,
+        "xy": [
+          72,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-2",
+        "before": 224,
+        "after": 280,
+        "xy": [
+          73,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-3",
+        "before": 280,
+        "after": 336,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-4",
+        "before": 336,
+        "after": 392,
+        "xy": [
+          73,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-5",
+        "before": 392,
+        "after": 448,
+        "xy": [
+          72,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-6",
+        "before": 448,
+        "after": 504,
+        "xy": [
+          71,
+          4
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "create-7",
+        "before": 504,
+        "after": 560,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "seven-hidden",
+        "before": 560,
+        "after": 590,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "five-covered-and-hidden",
+        "before": 590,
+        "after": 620,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "six-after-leaving-known-trap",
+        "before": 620,
+        "after": 650,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "seven-count-same-heat",
+        "before": 650,
+        "after": 691,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "only-covered-trap-counts",
+        "before": 691,
+        "after": 728,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "visible-traps-ignored",
+        "before": 728,
+        "after": 758,
+        "xy": [
+          71,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "stable-zero",
+        "before": 758,
+        "after": 773,
+        "xy": [
+          71,
+          2
+        ],
+        "traps": [
+          {
+            "xy": [
+              72,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              2
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              73,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              4
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": true
+          },
+          {
+            "xy": [
+              72,
+              3
+            ],
+            "seen": true
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false
+      }
+    ]
+  },
+  {
+    "name": "trapped-container-pile",
+    "negative": false,
+    "artifact": true,
+    "start": 281,
+    "phases": [
+      {
+        "name": "carried-containers-ignored",
+        "before": 281,
+        "after": 296,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 2,
+        "boxesFloor": 0,
+        "boxesTrapped": true
+      },
+      {
+        "name": "first-box",
+        "before": 296,
+        "after": 312,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 1,
+        "boxesFloor": 1,
+        "boxesTrapped": true
+      },
+      {
+        "name": "same-location-second-box",
+        "before": 312,
+        "after": 328,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 1,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": true
+      },
+      {
+        "name": "trap-and-containers-one-location",
+        "before": 328,
+        "after": 369,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": true
+      }
+    ]
+  },
+  {
+    "name": "untrapped-container-pile",
+    "negative": true,
+    "artifact": true,
+    "start": 285,
+    "phases": [
+      {
+        "name": "carried-containers-ignored",
+        "before": 285,
+        "after": 300,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 2,
+        "boxesFloor": 0,
+        "boxesTrapped": false
+      },
+      {
+        "name": "first-box",
+        "before": 300,
+        "after": 316,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 1,
+        "boxesFloor": 1,
+        "boxesTrapped": false
+      },
+      {
+        "name": "same-location-second-box",
+        "before": 316,
+        "after": 332,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxesCarried": 0,
+        "boxesFloor": 2,
+        "boxesTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "trapped-door",
+    "negative": false,
+    "artifact": true,
+    "start": 193,
+    "phases": [
+      {
+        "name": "door-created",
+        "before": 193,
+        "after": 243,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false,
+        "doorTrapped": true
+      },
+      {
+        "name": "door-untrapped",
+        "before": 243,
+        "after": 295,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": "The Key feels cool.",
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "untrapped-door",
+    "negative": true,
+    "artifact": true,
+    "start": 193,
+    "phases": [
+      {
+        "name": "door-created",
+        "before": 193,
+        "after": 245,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      },
+      {
+        "name": "door-untrapped",
+        "before": 245,
+        "after": 297,
+        "xy": [
+          70,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "doorTrapped": false
+      }
+    ]
+  },
+  {
+    "name": "equipment-count-reset",
+    "negative": false,
+    "artifact": true,
+    "start": 258,
+    "phases": [
+      {
+        "name": "bare-key",
+        "before": 258,
+        "after": 273,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "unwield-reset",
+        "before": 273,
+        "after": 289,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": false,
+        "gloves": false
+      },
+      {
+        "name": "wield-again",
+        "before": 289,
+        "after": 305,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      },
+      {
+        "name": "gloves-reset",
+        "before": 305,
+        "after": 321,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": true
+      },
+      {
+        "name": "bare-again",
+        "before": 321,
+        "after": 336,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [
+          {
+            "xy": [
+              71,
+              3
+            ],
+            "seen": false
+          }
+        ],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false
+      }
+    ]
+  }
+]

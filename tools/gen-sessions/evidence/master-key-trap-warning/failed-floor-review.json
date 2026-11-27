@@ -1,0 +1,20 @@
+{
+  "originalResultsPreserved": true,
+  "validProducers": 0,
+  "checks": "51/60",
+  "nativeRecordings": 0,
+  "runtimeCandidate": false,
+  "cause": "All five cases wish for an arrow trap while standing on stairs. No trap is created. C trap.c456-602 maketrap rejects non-overwritable terrain; JS mklev.js510-658 has the same guard.",
+  "coordinateCorrection": "The existing C screen at boundary162 has @ at zero-based column70,row3. TTY map coordinates are x=column+1,y=row-1, hence world71,2, matching the observed JS state. The original prediction70,3 confused screen and world coordinates.",
+  "completeOwnersRead": [
+    "C trap.c456-602 maketrap",
+    "JS mklev.js510-658 maketrap",
+    "C/JS wiz_map"
+  ],
+  "dispatchArmsRead": [
+    "C objnam.c3554-3582 wizard trap wishes",
+    "JS objnam.js2844-2876 wiztrapwish"
+  ],
+  "nextProducer": "A separate family will insert ordinary south movement with the same fixed acknowledgements before each arrow-trap wish. The observed adjacent world71,3 tile is ROOM25 and empty. Names, branch IDs and checkpoint offsets change explicitly. No seed/date/configuration changes.",
+  "limits": "The two missing warning assertions do not establish a gameplay divergence because their producers failed. Fifteen negative stream hashes are preserved but do not establish trap controls."
+}

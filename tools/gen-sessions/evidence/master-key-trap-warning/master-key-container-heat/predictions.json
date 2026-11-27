@@ -1,0 +1,1210 @@
+[
+  {
+    "name": "heat-artifact-key",
+    "negative": false,
+    "artifact": true,
+    "start": 178,
+    "phases": [
+      {
+        "name": "box-1",
+        "before": 178,
+        "after": 255,
+        "xy": [
+          72,
+          2
+        ],
+        "traps": [],
+        "count": 1,
+        "message": "The Key feels slightly warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ]
+        ]
+      },
+      {
+        "name": "box-2",
+        "before": 255,
+        "after": 332,
+        "xy": [
+          73,
+          2
+        ],
+        "traps": [],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ]
+        ]
+      },
+      {
+        "name": "box-3",
+        "before": 332,
+        "after": 409,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 3,
+        "message": "The Key feels very warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "box-4",
+        "before": 409,
+        "after": 486,
+        "xy": [
+          73,
+          4
+        ],
+        "traps": [],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-5",
+        "before": 486,
+        "after": 563,
+        "xy": [
+          72,
+          4
+        ],
+        "traps": [],
+        "count": 3,
+        "message": "The Key feels very warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-6",
+        "before": 563,
+        "after": 640,
+        "xy": [
+          71,
+          4
+        ],
+        "traps": [],
+        "count": 2,
+        "message": "The Key feels warm.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-7",
+        "before": 640,
+        "after": 717,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 4,
+        "message": "The Key feels hot!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "seven-locations",
+        "before": 717,
+        "after": 747,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 7,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "five-locations",
+        "before": 747,
+        "after": 777,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 5,
+        "message": "The Key feels very hot!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "seven-again",
+        "before": 777,
+        "after": 807,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 7,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "eight-count-same-heat",
+        "before": 807,
+        "after": 869,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 8,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "six-locations",
+        "before": 869,
+        "after": 899,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 6,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "eight-again",
+        "before": 899,
+        "after": 929,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 8,
+        "message": "The Key feels like fire!",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "outside-hazards",
+        "before": 929,
+        "after": 989,
+        "xy": [
+          69,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": "The Key feels cool.",
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "stable-zero",
+        "before": 989,
+        "after": 1004,
+        "xy": [
+          69,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "name": "heat-ordinary-key",
+    "negative": true,
+    "artifact": false,
+    "start": 168,
+    "phases": [
+      {
+        "name": "box-1",
+        "before": 168,
+        "after": 245,
+        "xy": [
+          72,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ]
+        ]
+      },
+      {
+        "name": "box-2",
+        "before": 245,
+        "after": 322,
+        "xy": [
+          73,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ]
+        ]
+      },
+      {
+        "name": "box-3",
+        "before": 322,
+        "after": 399,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "box-4",
+        "before": 399,
+        "after": 476,
+        "xy": [
+          73,
+          4
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-5",
+        "before": 476,
+        "after": 553,
+        "xy": [
+          72,
+          4
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-6",
+        "before": 553,
+        "after": 630,
+        "xy": [
+          71,
+          4
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "box-7",
+        "before": 630,
+        "after": 707,
+        "xy": [
+          71,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "seven-locations",
+        "before": 707,
+        "after": 737,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "five-locations",
+        "before": 737,
+        "after": 767,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "seven-again",
+        "before": 767,
+        "after": 797,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "eight-count-same-heat",
+        "before": 797,
+        "after": 859,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "six-locations",
+        "before": 859,
+        "after": 889,
+        "xy": [
+          73,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "eight-again",
+        "before": 889,
+        "after": 919,
+        "xy": [
+          72,
+          3
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "outside-hazards",
+        "before": 919,
+        "after": 979,
+        "xy": [
+          69,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      },
+      {
+        "name": "stable-zero",
+        "before": 979,
+        "after": 994,
+        "xy": [
+          69,
+          2
+        ],
+        "traps": [],
+        "count": 0,
+        "message": null,
+        "held": true,
+        "gloves": false,
+        "boxLocations": [
+          [
+            72,
+            2
+          ],
+          [
+            73,
+            2
+          ],
+          [
+            73,
+            3
+          ],
+          [
+            73,
+            4
+          ],
+          [
+            72,
+            4
+          ],
+          [
+            71,
+            4
+          ],
+          [
+            71,
+            3
+          ],
+          [
+            72,
+            3
+          ]
+        ]
+      }
+    ]
+  }
+]

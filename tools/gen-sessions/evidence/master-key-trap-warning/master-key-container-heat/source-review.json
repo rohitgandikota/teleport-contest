@@ -1,0 +1,12 @@
+{
+  "checks": "131/158",
+  "validProducers": 2,
+  "qualifiedPhases": 30,
+  "sourceSkipped": 0,
+  "neutrality": 4,
+  "negativeHashes": 5,
+  "sourceFailure": "All27 failures are the artifact key counter and heat messages. The ordinary-key case passes every check. Real trapped large boxes occupy all eight declared positions, with no carried boxes left after each drop. Distinct heat levels0..6 and counts7/8 are locked; count8->6 and6->8 preserve the saturated heat but still require fresh messages. The final zero-count wait requires silence.",
+  "failedEarlierHeatRowsPreserved": true,
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

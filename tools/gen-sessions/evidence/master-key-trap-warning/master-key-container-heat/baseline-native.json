@@ -1,0 +1,894 @@
+[
+  {
+    "segment": 0,
+    "name": "heat-artifact-key",
+    "boundaries": {
+      "expected": 1005,
+      "actual": 1005
+    },
+    "frozenScreens": 986,
+    "fullStyleScreens": 986,
+    "matchingStyleCells": 1929226,
+    "totalCells": 1929600,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 374,
+    "screenDifferences": [
+      {
+        "step": 241,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1896,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 24,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 318,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1904,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 16,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 395,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 410,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1896,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 24,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 472,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1904,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 16,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 549,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 564,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1896,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 24,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 626,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1904,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 16,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 641,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 703,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1905,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 15,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 718,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 748,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1901,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 19,
+        "firstFullStyleDifference": {
+          "x": 27,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 27,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 778,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 855,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 23,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 23,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 870,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 27,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 27,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 900,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 27,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 27,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 930,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1900,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 20,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 945,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1896,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 24,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 960,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1904,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 16,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "T",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 1005,
+      "actual": 1005,
+      "matched": 1005,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3032,
+      "rawActual": 3032,
+      "discardedEntries": 0,
+      "expected": 3032,
+      "actual": 3032,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 1005,
+      "actual": 1005,
+      "matched": 1005,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 1005,
+      "actualSlices": 1005,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "8276de1beb4204146f8d6811725c5a0efa4275c799774b36c4b8159f951cd04f",
+        "cursors": "9b387b52881bba9a70fcb51726697c02e6384d62f8e3e8e246e2a234186f18b9",
+        "calls": "7165b75dfdd50f661a302b4b72e9947d2b35ffa07f993e8f843658e30bec1fae",
+        "slices": "707142ad60602fe7747fb7c5e58dbe1b66ddfa8b0752a8911ede581c3659e573",
+        "frames": "730d44c93d262491736db947bfc576df99b1e17d727d54f2f568cbf529beb5e0"
+      },
+      "js": {
+        "screens": "9883c9705ad837e5744e46c5620ec48273f3d71529d6fc9e45ebfdc4648bc8a9",
+        "cursors": "9b387b52881bba9a70fcb51726697c02e6384d62f8e3e8e246e2a234186f18b9",
+        "calls": "96cb4e77dc996fca9979b984679af4c666ecddc6c6a0be16d43ef75012c5f0dc",
+        "slices": "9721c42d3906b754e046f004d33397ccacbf5b04ee8ea86666b57e6ebf09147f",
+        "frames": "730d44c93d262491736db947bfc576df99b1e17d727d54f2f568cbf529beb5e0"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "96cb4e77dc996fca9979b984679af4c666ecddc6c6a0be16d43ef75012c5f0dc",
+        "slices": "9721c42d3906b754e046f004d33397ccacbf5b04ee8ea86666b57e6ebf09147f"
+      },
+      "js": {
+        "calls": "96cb4e77dc996fca9979b984679af4c666ecddc6c6a0be16d43ef75012c5f0dc",
+        "slices": "9721c42d3906b754e046f004d33397ccacbf5b04ee8ea86666b57e6ebf09147f"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "heat-ordinary-key",
+    "boundaries": {
+      "expected": 995,
+      "actual": 995
+    },
+    "frozenScreens": 995,
+    "fullStyleScreens": 995,
+    "matchingStyleCells": 1910400,
+    "totalCells": 1910400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 995,
+      "actual": 995,
+      "matched": 995,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3315,
+      "rawActual": 3315,
+      "discardedEntries": 0,
+      "expected": 3315,
+      "actual": 3315,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 995,
+      "actual": 995,
+      "matched": 995,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 995,
+      "actualSlices": 995,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "64c813599abb5550f75a7a0f8fee5d5713623fa15d71283e486bea96720b9026",
+        "cursors": "cb821bbba2171994a9dba0b3f74bde978d8b4359cfc124fcd579416ae1dd0701",
+        "calls": "4be3d227931cc994bbc3711fa3c1b1889c5d50b26d87090fe325898642682beb",
+        "slices": "aec54af1487b5e4b07c6cbf412624b67efedb065ac1ac4724408b0d1f1bb60bb",
+        "frames": "0c31fcbcef8e65f6bb37c2cb2c7f88ff4c8ae7b9916ad2b6e4dfb754da3a2bbe"
+      },
+      "js": {
+        "screens": "f12655721ddfca48d2e3affcb682cbfb550c4817a59c252a22e2ac735e3b3e1c",
+        "cursors": "cb821bbba2171994a9dba0b3f74bde978d8b4359cfc124fcd579416ae1dd0701",
+        "calls": "1b49d755e83b9a0fbb8b7494e6d0b24d991ffe5d0fb57b573ff7ab27dfb8bb54",
+        "slices": "b264fd961e881d66ea96f3d3cc6997ca4e4f9db0c97e0e222cc73726c721cc88",
+        "frames": "0c31fcbcef8e65f6bb37c2cb2c7f88ff4c8ae7b9916ad2b6e4dfb754da3a2bbe"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1b49d755e83b9a0fbb8b7494e6d0b24d991ffe5d0fb57b573ff7ab27dfb8bb54",
+        "slices": "b264fd961e881d66ea96f3d3cc6997ca4e4f9db0c97e0e222cc73726c721cc88"
+      },
+      "js": {
+        "calls": "1b49d755e83b9a0fbb8b7494e6d0b24d991ffe5d0fb57b573ff7ab27dfb8bb54",
+        "slices": "b264fd961e881d66ea96f3d3cc6997ca4e4f9db0c97e0e222cc73726c721cc88"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

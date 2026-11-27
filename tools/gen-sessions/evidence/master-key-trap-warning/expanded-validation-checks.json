@@ -1,0 +1,31 @@
+{
+  "candidateSealSHA256": "98f62462395a2049990885569b813cbe48ccff3f5f45d6f5e969e4b7d87d4ef8",
+  "runtimeSHA256": "cee507d3845d7dcf7fbd4567d2717df7aab6067e53ba435997c44b7ace018ad3",
+  "ordinaryOriginal": "316/318",
+  "ordinaryCorrectedAccounting": "318/318",
+  "correctionSHA256": "ae56edb0b906f7f24474bddefe97b236eeace4d50f7133fb00625b6e4dc9f63a",
+  "sourceCorrectedAccounting": "276/318",
+  "nativeBefore": "6/12",
+  "nativeAfter": "12/12",
+  "keys": 4923,
+  "boundaries": 4935,
+  "calls": 31573,
+  "frames": 0,
+  "neutralityComparisons": 24,
+  "negativeHashes": 30,
+  "completeOrdinaryNegativeRows": 6,
+  "completeNativeNegativeRows": 6,
+  "ordinarySubsetIndexMapping": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "newGameplayForCorrection": false,
+  "originalExpandedBatchReceiptSHA256": "48b771a3172b73c6c171a0218f8deb68ae98b01fa7f91546ecbaf098c317e229",
+  "remainingCommandsReceiptSHA256": "53b56cff8b01b07d1de8ff71e757b2e1e8141a016cd13484c727faea22a53f3d",
+  "limits": [
+    "A later turn after glove removal is not part of these inputs and is not claimed as observed."
+  ]
+}

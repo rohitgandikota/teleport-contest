@@ -10,21 +10,23 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-11-26
+## Current focus, 2026-11-27
 
-Chest fire floor isolation is pushed as `81630143`. The next checkpoint saves
-vision at fire-trap entry, so potion vapor changing sight does not change the
-later floor-burning message. All seven native cases and 84 focused checks pass,
-versus five native cases before. Both installed test reports equal the isolated
-results. Eight retained gates, 46 strict workers and all 956 recordings pass,
-with all 1,247 regression files fixed. Failed setup attempts remain preserved.
+Fire-entry vision is pushed as `786d3781`. The next checkpoint restores the
+Master Key's nearby-trap warnings, following C location counts, equipment
+conditions and turn order. All 12 native cases pass, versus six before. All
+959 maintained recordings, five retained artifact/save gates and 47 strict
+workers pass. The complete 1,250-file regression snapshot is fixed. The three
+installed portable gates reproduce all 318 checks before publication. Two source-backed glove
+removal expectation corrections remain separate from the original failures.
 
-New source audits cover the missing Master Key trap warning, Wizard intervention
-and human HP-floor handling. The corrected Master Key family reaches five real
-trap setups and is recorded in C; its native comparison is next. Human HP-floor
-coverage still has no qualified crossing. The latest official result remains
-agentic rank 7 with 659 unmatched screens; its timestamp predates these newest
-pushes. See STATUS for evidence and limits.
+C confirms missing human level loss at the fire-damage HP floor. Four controls
+already match; the isolated and combined candidates now pass all five C cases
+and 1,193 focused checks. The full 960-recording regression is running. A
+separate source audit is reviewing Wizard-intervention setup failures. The latest official result,
+scored at 8:35 a.m. EST on November 27, is agentic rank 7 with 655 unmatched
+screens, 44/44 public and 44/56 held-out sessions passing. See STATUS for
+evidence and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

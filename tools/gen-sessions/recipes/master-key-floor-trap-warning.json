@@ -1,0 +1,98 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "master-key-floor-trap-warning",
+  "description": "Real Master Key warning on room floor, with covered traps and equipment controls.",
+  "coverage": [
+    "mode.debug",
+    "traps.door-container",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "artifact.master-key.floor-trap-warning.bare-hidden",
+    "artifact.master-key.floor-trap-warning.bare-covered-known",
+    "artifact.master-key.floor-trap-warning.gloved-hidden",
+    "artifact.master-key.floor-trap-warning.carried-hidden",
+    "artifact.master-key.floor-trap-warning.ordinary-key-hidden"
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001bwb        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017arrow trap\r        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "floor-bare-hidden"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001bwb        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017arrow trap\r        \u001b\u001b\u001b\u001b\u001b\u001b#wizmap\r        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "floor-bare-covered-known"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\r        \u001b\u001b\u001b\u001b\u001b\u001bWc        \u001b\u001b\u001b\u001b\u001b\u001bwb        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017arrow trap\r        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "floor-gloved-hidden"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017arrow trap\r        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "floor-carried-hidden"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed skeleton key\r        \u001b\u001b\u001b\u001b\u001b\u001bwb        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017arrow trap\r        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "floor-ordinary-key-hidden"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "artifact.master-key.floor-trap-warning.bare-hidden",
+      "segment": 0,
+      "screenIncludes": [
+        "The Key feels slightly warm."
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "artifact.master-key.floor-trap-warning.bare-covered-known",
+      "segment": 1,
+      "screenIncludes": [
+        "The Key feels slightly warm."
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "artifact.master-key.floor-trap-warning.gloved-hidden",
+      "segment": 2,
+      "screenIncludes": [],
+      "screenExcludes": [
+        "The Key feels"
+      ]
+    },
+    {
+      "branch": "artifact.master-key.floor-trap-warning.carried-hidden",
+      "segment": 3,
+      "screenIncludes": [],
+      "screenExcludes": [
+        "The Key feels"
+      ]
+    },
+    {
+      "branch": "artifact.master-key.floor-trap-warning.ordinary-key-hidden",
+      "segment": 4,
+      "screenIncludes": [],
+      "screenExcludes": [
+        "The Key feels"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "cases": 2,
+  "setupCases": 2,
+  "checksPassed": 131,
+  "checksTotal": 158,
+  "qualifiedPhases": 30,
+  "sourceSkipped": 0,
+  "neutrality": 4,
+  "negativeIndexes": [
+    1
+  ],
+  "negativeHashes": 5,
+  "nativeRecordings": 0,
+  "runtimeCandidate": false
+}

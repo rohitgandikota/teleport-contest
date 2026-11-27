@@ -1,0 +1,87 @@
+[
+  {
+    "index": 0,
+    "name": "floor-bare-hidden",
+    "artifact": true,
+    "held": true,
+    "gloves": false,
+    "known": false,
+    "negative": false,
+    "warning": true,
+    "before": 219,
+    "firstEnd": 234,
+    "after": 249,
+    "xy": [
+      71,
+      3
+    ]
+  },
+  {
+    "index": 1,
+    "name": "floor-bare-covered-known",
+    "artifact": true,
+    "held": true,
+    "gloves": false,
+    "known": true,
+    "negative": false,
+    "warning": true,
+    "before": 241,
+    "firstEnd": 256,
+    "after": 271,
+    "xy": [
+      71,
+      3
+    ]
+  },
+  {
+    "index": 2,
+    "name": "floor-gloved-hidden",
+    "artifact": true,
+    "held": true,
+    "gloves": true,
+    "known": false,
+    "negative": true,
+    "warning": false,
+    "before": 274,
+    "firstEnd": 289,
+    "after": 304,
+    "xy": [
+      71,
+      3
+    ]
+  },
+  {
+    "index": 3,
+    "name": "floor-carried-hidden",
+    "artifact": true,
+    "held": false,
+    "gloves": false,
+    "known": false,
+    "negative": true,
+    "warning": false,
+    "before": 203,
+    "firstEnd": 218,
+    "after": 233,
+    "xy": [
+      71,
+      3
+    ]
+  },
+  {
+    "index": 4,
+    "name": "floor-ordinary-key-hidden",
+    "artifact": false,
+    "held": true,
+    "gloves": false,
+    "known": false,
+    "negative": true,
+    "warning": false,
+    "before": 209,
+    "firstEnd": 224,
+    "after": 239,
+    "xy": [
+      71,
+      3
+    ]
+  }
+]

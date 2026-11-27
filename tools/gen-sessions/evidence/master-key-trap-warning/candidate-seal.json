@@ -1,0 +1,27 @@
+{
+  "createdAt": "2026-11-27T04:10:30.902632+00:00",
+  "members": 343,
+  "manifestSHA256": "484cf8d421ea952290c8200ec3805926d270da250e6f7e72d33981dc0ee9350b",
+  "baselineRuntimeSHA256": "29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33",
+  "candidateRuntimeSHA256": "cee507d3845d7dcf7fbd4567d2717df7aab6067e53ba435997c44b7ace018ad3",
+  "patchSHA256": "a7f3f6bdb7999ccebeb0643d687755f3125c87caf1b4a90e81b0549bf269eebc",
+  "preEditLockSHA256": "c818243db70bfb4ff953c27f1645d36bcd970c7b7b9a09f29ffe26691377525d",
+  "originalSourceSealSHA256": "0333f69b81ca215236ed9bbf6966bf2dfa59e997d0e053c6849129550e4579cb",
+  "failedSourceSealSHA256": "01a9dd6c5af2d76d528dc2cb6ab0a914e5638e6dd233d86c88f8ba2683636afd",
+  "nativeSHA256": "9aebbf28da07abbf5308056ee809f4a06a06d8462a4e11c6084db218abe0dfb7",
+  "nativeReportSHA256": "e73d9e44172161a88f7665dde7d546642e1f25e4f0c372d753c1b58261b660aa",
+  "checks": "60/60",
+  "neutrality": "10/10",
+  "native": "5/5",
+  "retained": [
+    "8/8",
+    "7/7"
+  ],
+  "negativeHashes": 15,
+  "wholeNegativeOrdinaryRows": 3,
+  "wholeNegativeNativeRows": 3,
+  "runtimeCopies": 4,
+  "runtimeLinks": 276,
+  "newCRecordings": 0,
+  "promotion": false
+}

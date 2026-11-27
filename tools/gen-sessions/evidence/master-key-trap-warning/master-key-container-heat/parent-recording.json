@@ -1,0 +1,33 @@
+{
+  "startedAt": "2026-11-26T23:15:57.015711+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/master-key-container-heat-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/master-key-container-heat-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/master-key-container-heat-parent-minimal.session.json",
+  "inputSHA256": "354917e6276957e926591551d01cd741ff0bab0b53b0c8c98e96b337b14eff93",
+  "primaryRecipeSHA256": "354917e6276957e926591551d01cd741ff0bab0b53b0c8c98e96b337b14eff93",
+  "sourceSealSHA256": "a8eda22d6db7550b54dcd3e84079638de64e5d2ca36cf96edcc7cccb5c70b87e",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/master-key-container-heat-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T23:15:57.498915+00:00",
+  "log": ".cache/restart-20261122/master-key-container-heat-parent-native-recording.log",
+  "logSHA256": "cd393bd41654999cba2998f3fa4fdae98316873004ea070be0073eeeda9a4383",
+  "rawSha256": "182109142e5b3b81ae09ce6e3b8cabe384ef2f257f42a425a46457cb6beb75b6",
+  "bytes": 1306521,
+  "segments": 2,
+  "boundaries": 2000,
+  "keys": 1998,
+  "calls": 6347,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "rootMetadataPreserved": true,
+  "cExecutedOnce": true
+}

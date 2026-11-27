@@ -1,0 +1,478 @@
+[
+  {
+    "source": ".cache/restart-20261122/master-key-trap-warning-source-audit/baseline-observation.json",
+    "label": "failed-floor",
+    "reportSHA256": "6e5e94ce3528827b339d3942a79a00bd49ffdd90501ff9dff43f0324eee5877f",
+    "total": 60,
+    "passed": 51,
+    "failures": [
+      {
+        "index": 0,
+        "name": "bare-hidden",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "one real hidden or covered arrow trap occupies the hero square",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n+   2\n-   70,\n-   3\n  ]\n"
+          },
+          {
+            "kind": "source",
+            "name": "only a bare wielded artifact key reports the nearby trap",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+          },
+          {
+            "kind": "source",
+            "name": "the remembered count follows the actual warning condition",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "name": "bare-covered-known",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "one real hidden or covered arrow trap occupies the hero square",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n+   2\n-   70,\n-   3\n  ]\n"
+          },
+          {
+            "kind": "source",
+            "name": "only a bare wielded artifact key reports the nearby trap",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+          },
+          {
+            "kind": "source",
+            "name": "the remembered count follows the actual warning condition",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "name": "gloved-hidden",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "one real hidden or covered arrow trap occupies the hero square",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n+   2\n-   70,\n-   3\n  ]\n"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "name": "carried-hidden",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "one real hidden or covered arrow trap occupies the hero square",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n+   2\n-   70,\n-   3\n  ]\n"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "name": "ordinary-key-hidden",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "one real hidden or covered arrow trap occupies the hero square",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n+   2\n-   70,\n-   3\n  ]\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": ".cache/restart-20261122/master-key-locations-source-audit/baseline-observation.json",
+    "label": "locations-original-seven",
+    "reportSHA256": "27fe4eb983ceb972fa9b6ddcd6a11e37c75d0214a4b1c420c0193078df703560",
+    "total": 200,
+    "passed": 149,
+    "failures": [
+      {
+        "index": 0,
+        "name": "heat-and-visible-traps",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "source",
+            "name": "create-1: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "create-1: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          },
+          {
+            "kind": "producer",
+            "name": "create-2: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-3: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-4: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-5: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-6: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-7: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-hidden: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "five-covered-and-hidden: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   72,\n-   73,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "five-covered-and-hidden: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "six-after-leaving-known-trap: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "six-after-leaving-known-trap: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        71,\n        3\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-count-same-heat: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-count-same-heat: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: false,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: false,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "only-covered-trap-counts: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "only-covered-trap-counts: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          },
+          {
+            "kind": "producer",
+            "name": "visible-traps-ignored: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   70,\n-   71,\n    2\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "visible-traps-ignored: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          },
+          {
+            "kind": "producer",
+            "name": "stable-zero: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   70,\n-   71,\n    2\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "stable-zero: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "name": "ordinary-key-many-traps",
+        "producer": false,
+        "failedChecks": [
+          {
+            "kind": "producer",
+            "name": "create-4: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        72,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-5: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        72,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-6: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "create-7: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-hidden: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        3\n      ]\n    },\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "five-covered-and-hidden: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   72,\n-   73,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "five-covered-and-hidden: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "six-after-leaving-known-trap: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "six-after-leaving-known-trap: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        71,\n        3\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-count-same-heat: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "seven-count-same-heat: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: false,\n      xy: [\n        71,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        72,\n        2\n      ]\n    },\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: false,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: false,\n...\n    {\n+     seen: true,\n-     seen: false,\n      xy: [\n        73,\n        4\n      ]\n    }\n"
+          },
+          {
+            "kind": "producer",
+            "name": "only-covered-trap-counts: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   71,\n-   72,\n    3\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "only-covered-trap-counts: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          },
+          {
+            "kind": "producer",
+            "name": "visible-traps-ignored: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   70,\n-   71,\n    2\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "visible-traps-ignored: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          },
+          {
+            "kind": "producer",
+            "name": "stable-zero: actual location and time",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   70,\n-   71,\n    2\n  ]\n"
+          },
+          {
+            "kind": "producer",
+            "name": "stable-zero: actual hazards and glyph visibility",
+            "pass": false,
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    {\n      seen: true,\n      xy: [\n        71,\n...\n        72,\n-       3\n-     ]\n-   },\n-   {\n-     seen: true,\n-     xy: [\n-       72,\n        4\n      ]\n    },\n    {\n      seen: true,\n"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "name": "trapped-container-pile",
+        "producer": true,
+        "failedChecks": [
+          {
+            "kind": "source",
+            "name": "first-box: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "first-box: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          },
+          {
+            "kind": "source",
+            "name": "same-location-second-box: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "trap-and-containers-one-location: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "name": "trapped-door",
+        "producer": true,
+        "failedChecks": [
+          {
+            "kind": "source",
+            "name": "door-created: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "door-created: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          },
+          {
+            "kind": "source",
+            "name": "door-untrapped: warning feedback",
+            "pass": false,
+            "error": "The Key feels cool."
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "name": "equipment-count-reset",
+        "producer": true,
+        "failedChecks": [
+          {
+            "kind": "source",
+            "name": "bare-key: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "bare-key: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          },
+          {
+            "kind": "source",
+            "name": "wield-again: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "wield-again: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          },
+          {
+            "kind": "source",
+            "name": "bare-again: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "bare-again: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": ".cache/restart-20261122/master-key-container-door-reset-candidate-review/baseline-observation.json",
+    "label": "container-candidate-original",
+    "reportSHA256": "624e0f05fe91f1e82f8268aea593c5500984208ddeff7d9071f31a5a63117124",
+    "total": 100,
+    "passed": 98,
+    "failures": [
+      {
+        "index": 4,
+        "name": "equipment-count-reset",
+        "producer": true,
+        "failedChecks": [
+          {
+            "kind": "source",
+            "name": "bare-again: remembered count",
+            "pass": false,
+            "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "kind": "source",
+            "name": "bare-again: warning feedback",
+            "pass": false,
+            "error": "The Key feels slightly warm."
+          }
+        ]
+      }
+    ]
+  }
+]

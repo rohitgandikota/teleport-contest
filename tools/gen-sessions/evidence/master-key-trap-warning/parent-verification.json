@@ -1,0 +1,314 @@
+{
+  "verifiedAt": "2026-11-27T14:38:40.116674+00:00",
+  "composition": {
+    "createdAt": "2026-11-27T04:13:46.076399+00:00",
+    "baselineCommit": "786d3781eeb02b1335cb426b0851e9af5cd0a239",
+    "baselineRuntimeSHA256": "29739bd4a3092aee8a248bbd2529a3baf1bf0653682298338fb5572e98fb7e33",
+    "candidateSealSHA256": "98f62462395a2049990885569b813cbe48ccff3f5f45d6f5e969e4b7d87d4ef8",
+    "runtimeSHA256": "cee507d3845d7dcf7fbd4567d2717df7aab6067e53ba435997c44b7ace018ad3",
+    "runtimeChanged": [
+      "js/allmain.js",
+      "js/artifact.js",
+      "js/gstate.js",
+      "js/save.js"
+    ],
+    "copies": 4,
+    "fixedLinks": 276,
+    "completeCandidateRuntimeMapIdentical": true,
+    "additionalOriginalFiveNativeReplays": 0
+  },
+  "ordinary": [
+    {
+      "family": "master-key-floor-trap-warning",
+      "completeReportEqual": true,
+      "compactReportBytesEqual": true,
+      "mainReportSHA256": "53b5416a779a6b60e0623b3e5c8ac37df7fa8dd5b79640d5e4b035ddea4ead5b",
+      "command": {
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/master-key-floor-trap-warning-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/master-key-floor-trap-warning-main.json"
+        ],
+        "seconds": 3.168,
+        "exit": 0,
+        "maxHeapMB": 512,
+        "timeoutSeconds": 55,
+        "logSHA256": "f7eb52eeda14c4fc6feed5dca8e1b8b050320674ac7aada6b46534a4b8067db3",
+        "reportSHA256": "53b5416a779a6b60e0623b3e5c8ac37df7fa8dd5b79640d5e4b035ddea4ead5b"
+      }
+    },
+    {
+      "family": "master-key-container-door-reset",
+      "completeReportEqual": true,
+      "compactReportBytesEqual": true,
+      "mainReportSHA256": "b00d8b2070bed434594f9f60c37b6530216138c1ea830adfe755fee2eea185e1",
+      "command": {
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/master-key-container-door-reset-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/master-key-container-door-reset-main.json"
+        ],
+        "seconds": 2.72,
+        "exit": 0,
+        "maxHeapMB": 512,
+        "timeoutSeconds": 55,
+        "logSHA256": "0ed3b243158dd708bc6cb9e239085ce6a94be66f4b4a05e994f102983325ffea",
+        "reportSHA256": "b00d8b2070bed434594f9f60c37b6530216138c1ea830adfe755fee2eea185e1"
+      }
+    },
+    {
+      "family": "master-key-container-heat",
+      "completeReportEqual": true,
+      "compactReportBytesEqual": true,
+      "mainReportSHA256": "9711fd46df66a22abf78455f65d889998c7d919558e9a72f5ac766032b6c14a5",
+      "command": {
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/master-key-container-heat-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/master-key-container-heat-main.json"
+        ],
+        "seconds": 1.747,
+        "exit": 0,
+        "maxHeapMB": 512,
+        "timeoutSeconds": 55,
+        "logSHA256": "061d8362655aa018df1878f8f91153545cacb6bf0bc8940966629cacc7fb65b3",
+        "reportSHA256": "9711fd46df66a22abf78455f65d889998c7d919558e9a72f5ac766032b6c14a5"
+      }
+    }
+  ],
+  "promotionSealSHA256": "3012a65f16dc796d310973f1de4de1b9340c1fc8f6b142afa988d6571d742dd1",
+  "installManifestSHA256": "9de3477bea36484d03e214a18e6f1dd481a6286c80a580cb76c115a53464eb6f",
+  "publicInstallSHA256": "10bcf2e1cc2dfe1505257d857e4c7828cca4551331c3233ed90969e80fa1b274",
+  "focused": {
+    "ordinary": {
+      "passed": 318,
+      "total": 318,
+      "families": [
+        {
+          "name": "master-key-floor-trap-warning",
+          "passed": 60,
+          "total": 60,
+          "rowsSHA256": "95e6b2acbc9e3695a9600c9edc94c0e2950379f18165546b682aeb68021504cc"
+        },
+        {
+          "name": "master-key-container-door-reset",
+          "passed": 100,
+          "total": 100,
+          "rowsSHA256": "a1a57a0fd25dc5753923b2203b8589e90edb989e260784ec4c614bb53862142c"
+        },
+        {
+          "name": "master-key-container-heat",
+          "passed": 158,
+          "total": 158,
+          "rowsSHA256": "9c373e5fb0112bbea99305825dde085b53671a3087774352315551fd88eb00ca"
+        }
+      ]
+    },
+    "neutrality": 24,
+    "negativeHashes": 30,
+    "wholeNegativeOrdinaryRows": 6,
+    "wholeNegativeNativeRows": 6,
+    "fullFreshRowsAndStateHashesMatch": true,
+    "sourceBodiesUnchanged": true,
+    "originalExpandedDiagnostic": "316/318",
+    "originalContainerDiagnostic": "98/100",
+    "correctedContainer": "100/100",
+    "correctionSHA256": "ae56edb0b906f7f24474bddefe97b236eeace4d50f7133fb00625b6e4dc9f63a",
+    "native": {
+      "attribution": "parent original-C comparisons retained, no promotion native replay",
+      "baseline": "6/12",
+      "candidate": "12/12",
+      "boundaries": 4935,
+      "calls": 31573,
+      "frames": 0
+    },
+    "preflightNegativeControls": "8/8",
+    "defaultRunnerTreeUnchanged": true,
+    "optionalNewReportMatchesStdout": true,
+    "batchSeconds": 6.535,
+    "runtimeSHA256": "cee507d3845d7dcf7fbd4567d2717df7aab6067e53ba435997c44b7ace018ad3",
+    "runtimePayloadFiles": 0,
+    "branchRows": 12,
+    "coverageAdditions": 0,
+    "coverageCount": 111
+  },
+  "branchRows": 4825,
+  "aggregateCoverageRows": 111,
+  "retained": [
+    {
+      "name": "monster-magic-key-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-magic-key-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.012,
+      "log": ".cache/restart-20261122/master-key-trap-warning-retained-monster-magic-key-input-gate.log",
+      "sha256": "a4d6f9952764be814eace7dad2b397e47ade82a40d1b6763d38023ca016d8014"
+    },
+    {
+      "name": "artifact-touch-alignment-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/artifact-touch-alignment-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.329,
+      "log": ".cache/restart-20261122/master-key-trap-warning-retained-artifact-touch-alignment-input-gate.log",
+      "sha256": "e22584737f7c7d748c2eed1113c69cc8bcff9385b56f9d4cfbde2f606bb744ec"
+    },
+    {
+      "name": "save-inventory-letter-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/save-inventory-letter-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.164,
+      "log": ".cache/restart-20261122/master-key-trap-warning-retained-save-inventory-letter-state-gate.log",
+      "sha256": "0d7161bf1a4661daf8eac3369f41ef3afaf378ccc50c7be1cedb0a83402d7ff2"
+    },
+    {
+      "name": "welcome-restore-branches-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/welcome-restore-branches-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 8.741,
+      "log": ".cache/restart-20261122/master-key-trap-warning-retained-welcome-restore-branches-input-gate.log",
+      "sha256": "d33eb23c76cee2f420382dc57d4d9f4f18898ceb65f5c81d89a6d4020b0f1304"
+    },
+    {
+      "name": "save-date-luck-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/save-date-luck-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.286,
+      "log": ".cache/restart-20261122/master-key-trap-warning-retained-save-date-luck-input-gate.log",
+      "sha256": "e6862a37a0e392ea7070499f30f4bf6a7f79967e330175fd2f760fd9f7a7e3b3"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/master-key-floor-trap-warning.session.json",
+      "tools/gen-sessions/generated/master-key-container-door-reset.session.json",
+      "tools/gen-sessions/generated/master-key-container-heat.session.json"
+    ],
+    "exit": 0,
+    "seconds": 33.516,
+    "targets": 47,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/master-key-trap-warning-public47-strict.log",
+    "sha256": "07eaa04722bebc4d6cd99d15f89d29eb68c3c47523305f2ab6ec3fe0552a0e58"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-27T04:33:23.818612+00:00",
+    "sessions": 959,
+    "passed": 959,
+    "failures": [],
+    "totals": {
+      "screens": 957161,
+      "cursors": 957161,
+      "rngCalls": 20907172,
+      "animFrames": 33380
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 959,
+    "allFilesFixed": 1250,
+    "allFilesSHA256": "cda1d588fb0fcc30d9ea3f36058b5cf8f3a00500b316839fb86fc5e10b5711bf",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-27T04:22:46.033848+00:00",
+      "workers": 2,
+      "pid": 3714334,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.5205078125,
+        1.20263671875,
+        1.0634765625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "cda1d588fb0fcc30d9ea3f36058b5cf8f3a00500b316839fb86fc5e10b5711bf"
+    },
+    "logs": {
+      "shard-0.log": "4679e66da56644d106137c087d5b27f327397bcb92b64d4e01c3c260bad1a0eb",
+      "shard-1.log": "3d055aefeada51d095254b3c24ae0a83fbab000de5943c20627508243c8b6fbd"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionSHA256": "8c8412ab0bd2fab3f883b227bb4a48f960907f3a2619f1019fba353b1bd5d0e6"
+}

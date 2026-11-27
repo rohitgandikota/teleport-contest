@@ -1,5 +1,110 @@
 # STATUS — live handoff board
 
+## 2026-11-27: Master Key ready to publish; combined HP fix passes
+
+Master Key promotion104 is installed: 74 payloads, three exact C recordings
+and 12 appended branch rows, now 4,825. Aggregate coverage remains 111.
+All three fresh installed gates reproduce the portable reports exactly,
+including compact stdout bytes: 318/318, 24 neutrality comparisons and all
+30 negative hashes. Their run times are 3.168s, 2.720s and 1.747s. Full959,
+five retained gates, 47 strict workers and source audit all pass. Commit the
+exact stage paths and push immediately. Promotion seal:
+3012a65f16dc796d310973f1de4de1b9340c1fc8f6b142afa988d6571d742dd1.
+
+Human HP candidate368 passes 1,193/1,193 and 5/5 native, versus 4/5 before.
+Its scoped replacements were applied to the current Master Key graph in a
+separate parent graph, preserving all newer trap changes. That combined graph
+passes its sole 11.312s batch; all five ordinary reports, the complete native
+report and the negative-hash file are byte-identical to candidate368.
+Combined runtime: c88fe4b75110eabbdfd76436f2fae521d5f21f66b945f922e7492b477f97d6ad.
+Comparison proof: bc24c56ebf152ed34eab6027ffaf3be73727f6ca22f67ffcff80fa68c15223b8.
+Main still has only the Master Key runtime changes. The HP raw is installed
+but must not be staged with that separate checkpoint. Full960 runs on tokyo,
+PID 3787788, from the combined graph with 1,251 fixed files, two workers,
+default limits and no retries. Its all-files hash is
+fc91523053b8601ec53a2c01dbfd38206b718822ff437cbe78319ef8d0fa18b2.
+Sartre owns the HP portable gate and five branch rows.
+
+Wizard producer26 preserves its sole source batch: 56/64 checks, 9/9 neutrality,
+both positive cases create and remove the actual Wizard, set demigod/count 137,
+then complete 350 real waits without decrementing it. Two setup expectations
+also fail: a shield becomes unworn and Escape suppresses prayer-finish text.
+Actual three-turn prayer protection is observed. Euclid is reviewing those
+premises without rerunning or changing inputs. No C recording or candidate
+is authorized yet. Seal: 345e32905bcd7a23ff66a1e4a55673066627a2942db880a4b42ecce380c32056.
+
+## 2026-11-27: Master Key full regression passes; promotion pending
+
+Published HEAD remains `786d3781eeb02b1335cb426b0851e9af5cd0a239`.
+The four installed Master Key runtime files match candidate343 and the complete
+parent graph `cee507d3845d7dcf7fbd4567d2717df7aab6067e53ba435997c44b7ace018ad3`.
+All three original C recordings are installed exactly. All 12 native cases
+match, versus six before, covering floor traps, trapped containers and doors,
+all seven heat descriptions, repeated counts, equipment and ordinary-key
+controls. Six whole ordinary/native negative rows and 30 hashes are unchanged.
+There are 24 observer-neutrality comparisons.
+
+Full959 passes all 959 recordings on NFS: 957,161 screens/cursors, 20,907,172
+random calls and 33,380 animation frames. All 1,250 files are fixed, with two
+workers, default 45-second limits and no retries. Verification SHA:
+8c8412ab0bd2fab3f883b227bb4a48f960907f3a2619f1019fba353b1bd5d0e6.
+All-files SHA: cda1d588fb0fcc30d9ea3f36058b5cf8f3a00500b316839fb86fc5e10b5711bf.
+Five retained artifact/save gates and 47 strict workers pass; source audit is
+empty. Results are under `.cache/restart-20261122/master-key-trap-warning-*`.
+
+Original focused checks are 316/318. A separately preserved C-backed correction
+changes exactly two glove-removal predictions: the warning runs before unmul
+finishes taking off the gloves, so that final boundary retains count zero and
+emits no warning. Corrected accounting is 318/318; no replay was used to make
+that correction. The next turn after removal is not tested. Preserve the
+original 98/100 container report, both failed source proposals and correction
+ae56edb0b906f7f24474bddefe97b236eeace4d50f7133fb00625b6e4dc9f63a.
+Leibniz owns three portable gates and 12 registry rows. Its first transport
+disconnect was resumed; inspect receipts before running anything again.
+Parent must verify/install the sealed packet, run fresh installed gates,
+append rows (4,813 to 4,825, coverage 111 unchanged), commit and immediately
+push. Do not change the already-tested runtime while promotion is pending.
+
+Human HP source54 reaches all five producers and eight real floor crossings.
+It passes 1,185/1,193 original checks; the eight failures are missing human
+level loss. All five original C cases were recorded once, raw SHA
+a4288ae68cdb12f9fda42f3bf92be1614124cc6b4d6fe84e3ab2deb2bc3a20dd.
+Exact C preflight passes before game imports, including all 18,165 keys and
+five locked native windows. Baseline on fixed2b is 4/5, with all four controls
+exact. Only positive case zero differs, first at boundary 7,559. Sartre owns
+the isolated minimal human HP-floor candidate and its one bounded batch.
+Source54, metadata7 and baseline32 are immutable. Parent will compose onto
+current main later and verify that combination before publication.
+
+Euclid owns the ordinary Wizard-removal/intervention producer plan and one
+bounded three-case source batch. The missing C intervention and countdown
+owners are confirmed; no runtime candidate or new C recording is authorized
+until the real producer and fixed observation windows are verified.
+
+Official feed fetched at 14:29 UTC on November 27 reports agentic rank 7,
+overall rank 11 and 655 unmatched screens. Our lastScored is 13:35:40 UTC
+(8:35 a.m. EST), with 44/44 public and 44/56 held-out sessions passing.
+Held-out screens are 95.0099%; public screens and RNG remain 100%.
+The feed has no scored commit SHA. Snapshot SHA:
+20dbe1a52ba9624e0790ab67f3354ffb6d4bf60fb79719d5909ef851a5778457.
+
+## 2026-11-26: entry-vision pushed; Master Key C mismatch confirmed
+
+Entry-vision is pushed as786d3781eeb02b1335cb426b0851e9af5cd0a239.
+All1,247 tested Git blobs match, publication receipt SHA:
+92d4af7192181e749bb32d7bb2f1ec2bf022a832b585f49954e2cb0f1ca01df4.
+Main has no unpublished runtime edits.
+
+Master Key C5 preflight passed every field/presence, key, root metadata,
+integrity and primary assertion before JS imports. Baseline on297 is3/5:
+only positive0step220 and positive1step242 each differ in24 glyph cells.
+All random calls, cursors and frames are exact. Three native negatives are
+exact. Leibniz owns the isolated faithful count_surround_traps/mkot_trap_warn
+port, actual game initialization and turn-loop call, with a pre-edit lock and
+one focused batch. Parent is preparing a separate broader source family for
+heat levels, trap visibility, container/door locations and equipment resets.
+Original failed source17 and corrected source15 remain immutable.
+
 ## 2026-11-26: entry-vision full956 verified, ready to publish
 
 The three-line fire-entry vision change is verified. All seven C cases match,
